@@ -9,4 +9,4 @@ package uk.co.mtford.abduction.logic.program;
  * @author mtford
  */
 public interface IRule {
-}
+} 
