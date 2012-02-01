@@ -14,12 +14,12 @@ import uk.co.mtford.abduction.logic.program.Denial;
  *
  * @author mtford
  */
-public abstract class ALP implements iALP {
+public abstract class ALP implements IALP {
     
     protected State currentState;
     
     public ALP() {
-        currentState = State.getBlankState();
+        currentState = new State();
     }
 
     public Set<IUnifiable> compute() {

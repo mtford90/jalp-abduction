@@ -12,5 +12,14 @@ import java.lang.Thread.State;
  */
 public abstract class InferenceRule {
     protected InferenceRule next;
-    public abstract State[] applyRule(State s);
+
+    public InferenceRule getNext() {
+        return next;
+    }
+
+    public void setNext(InferenceRule next) {
+        this.next = next;
+    }
+    
+    public abstract State[] applyRuleChain(State s);
 }

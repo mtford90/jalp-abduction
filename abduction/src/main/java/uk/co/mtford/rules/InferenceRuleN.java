@@ -11,7 +11,7 @@ package uk.co.mtford.rules;
 public class InferenceRuleN extends InferenceRule {
 
     @Override
-    public Thread.State[] applyRule(Thread.State s) {
+    public Thread.State[] applyRuleChain(Thread.State s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

@@ -103,6 +103,26 @@ public class UnifierTest {
         assertTrue(sub2.get(Y).equals(gOfa));
     }
     
+    /** unify(X = Y, Y = a) should return {X/a,Y/a} */
+    @Test
+    public void simpleEqualitiesUnificationTest() throws CouldNotUnifyException {
+        Variable X = new Variable("X");
+        Variable Y = new Variable("Y");
+        Constant a = new Constant("a");
+        Equality e1 = new Equality(X,Y);
+        Equality e2 = new Equality(Y,a);
+        
+        Map<Variable,IUnifiable> sub1 = unifier.unify(e1,e2);
+        Map<Variable,IUnifiable> sub2 = unifier.unify(e2,e1);
+        
+        assertTrue(sub1.size()==2);
+        assertTrue(sub2.size()==2);
+        assertTrue(sub1.containsKey(X)&&sub1.containsKey(Y));
+        assertTrue(sub2.containsKey(X)&&sub2.containsKey(Y));
+        assertTrue(sub1.get(X).equals(a));
+        assertTrue(sub2.get(Y).equals(a));
+    }
+    
     /** occurs(A,P(A,B)) should return true */
     @Test
     public void occursTestA() {

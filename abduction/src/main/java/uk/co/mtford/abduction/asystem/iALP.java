@@ -11,6 +11,6 @@ import uk.co.mtford.abduction.logic.IUnifiable;
  *
  * @author mtford
  */
-public interface iALP {
+public interface IALP {
     public Set<IUnifiable> compute();
 }

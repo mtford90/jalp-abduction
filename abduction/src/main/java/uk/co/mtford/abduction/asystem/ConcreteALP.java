@@ -15,11 +15,9 @@ public class ConcreteALP extends ALP {
     
     private PriorityQueue<State> fringe;
 
-    public ConcreteALP(PriorityQueue<State> fringe) {
-        this.fringe = fringe;
+    public ConcreteALP() {
+        this.fringe = new PriorityQueue<State>();
     }
-    
-    
 
     @Override
     public Denial getNextGoal() {

@@ -13,7 +13,7 @@ import java.lang.Thread.State;
 public class InferenceRuleD extends InferenceRule {
 
     @Override
-    public State[] applyRule(State s) {
+    public State[] applyRuleChain(State s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
