@@ -31,6 +31,11 @@ public class Equality extends AbstractPredicate {
         parameters[0]=param1;
         parameters[1]=param2;
     }
+
+    @Override
+    public String toString() {
+        return parameters[0]+"="+parameters[1];
+    }
     
     
     

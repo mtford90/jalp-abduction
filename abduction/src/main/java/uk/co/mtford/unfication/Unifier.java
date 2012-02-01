@@ -102,11 +102,11 @@ public class Unifier {
                         throw new CouldNotUnifyException();
                     }
                 }
-                else if (s instanceof Predicate && t instanceof Predicate) {
-                    IUnifiable[] sTerm = ((Predicate)s).getParameters();
-                    IUnifiable[] tTerm = ((Predicate)t).getParameters();
-                    boolean sameName = ((Predicate)s).getName().equals(((Predicate)t).getName());
-                    boolean sameParamSize = ((Predicate)s).getParameters().length==((Predicate)t).getParameters().length;
+                else if (s instanceof AbstractPredicate && t instanceof AbstractPredicate) {
+                    IUnifiable[] sTerm = ((AbstractPredicate)s).getParameters();
+                    IUnifiable[] tTerm = ((AbstractPredicate)t).getParameters();
+                    boolean sameName = ((AbstractPredicate)s).getName().equals(((AbstractPredicate)t).getName());
+                    boolean sameParamSize = ((AbstractPredicate)s).getParameters().length==((AbstractPredicate)t).getParameters().length;
                     if (sameName&&sameParamSize) {  
                         for (int i = 0; i<sTerm.length; i++) {
                             IUnifiable[] termPair = new IUnifiable[2];
