@@ -16,8 +16,6 @@ import uk.co.mtford.abduction.logic.Variable;
  */
 public class Predicate extends AbstractPredicate {
 
-    private String name;
-
     public Predicate(String name, IUnifiable ... parameters) {
         this.name = name;
         this.parameters = parameters;
@@ -48,29 +46,5 @@ public class Predicate extends AbstractPredicate {
         paramList = paramList.substring(0, paramList.length() - 1);
         return name + "(" + paramList + ")";
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Predicate other = (Predicate) obj;
-        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 11 * hash + (this.name != null ? this.name.hashCode() : 0);
-        return hash;
-    }
-    
-    
 
 }
