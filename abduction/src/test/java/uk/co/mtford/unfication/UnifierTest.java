@@ -42,7 +42,7 @@ public class UnifierTest {
         
         A = new Variable("A");
         B = new Variable("B");
-        C = new Variable("A");
+        C = new Variable("C");
         p = new Predicate("p", A, B);
         q = new Predicate("q", C);
     }
@@ -125,19 +125,19 @@ public class UnifierTest {
     
     /** occurs(A,P(A,B)) should return true */
     @Test
-    public void occursTestA() {
+    public void predicateOccursTestA() {
         assertTrue(unifier.occurs(A, p, new HashMap<Variable,IUnifiable>()));
     }
     
      /** occurs(B,P(A,B)) should return true */
     @Test
-    public void occursTestB() {
+    public void predicateOccursTestB() {
         assertTrue(unifier.occurs(B, p, new HashMap<Variable,IUnifiable>()));
     }
     
      /** occurs(C,P(A,B)) should return false */
     @Test
-    public void occursTestC() {
+    public void predicateOccursTestC() {
         assertFalse(unifier.occurs(C, p, new HashMap<Variable,IUnifiable>()));
     }
     

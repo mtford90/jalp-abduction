@@ -25,9 +25,6 @@ public class Constant implements Term {
         this.value = value;
     }
     
-    public boolean equals(Constant c) {
-       return value.equals(c.value); 
-    }
 
     @Override
     public String toString() {

@@ -28,8 +28,8 @@ public class Unifier {
         
         while (!stack.empty()) {
             t = stack.pop();
-            if (t instanceof Predicate) {
-                Predicate p = (Predicate) t;
+            if (t instanceof AbstractPredicate) {
+                AbstractPredicate p = (AbstractPredicate) t;
                 stack.addAll(Arrays.asList(p.getParameters()));
             }
             else if (t instanceof Variable) {
