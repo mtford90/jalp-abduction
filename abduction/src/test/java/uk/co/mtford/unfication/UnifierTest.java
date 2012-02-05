@@ -9,6 +9,7 @@ import java.util.Map;
 import org.junit.*;
 import static org.junit.Assert.*;
 import uk.co.mtford.abduction.logic.*;
+import uk.co.mtford.unfication.CouldNotUnifyException;
 
 /**
  *
@@ -59,15 +60,109 @@ public class UnifierTest {
     public void tearDown() {
     }
     
-    /** unify(Knows(John,x),Knows(John,Jane)) should return {x/Jane} */
+    /** unify(a,a) = {} */
     @Test
-    public void simpleUnificationTest() throws CouldNotUnifyException {
-        Map<Variable,IUnifiable> sub = unifier.unify(new Predicate("Knows", John, x), new Predicate("Knows", John, Jane));
-        assertTrue(sub.size()==1);
-        assertTrue(sub.containsKey(x)&&sub.get(x).equals(Jane));
+    public void simpleConstantTestA() throws CouldNotUnifyException {
+        Map<Variable,IUnifiable> sub = unifier.unify(new Constant("a"), 
+                                                     new Constant("a"));
+        assertTrue(sub.isEmpty());
     }
     
-    /** unify(f(g(X)),f(Y)) should return {Y/g(X)} */
+    /** unify(a,b) = FAIL */
+    @Test(expected=CouldNotUnifyException.class)
+    public void simpleConstantTestB() throws CouldNotUnifyException {
+        Map<Variable,IUnifiable> sub = unifier.unify(new Constant("a"), 
+                                            new Constant("b"));
+    }
+    
+    /** unify(X,X) = {} */
+    @Test
+    public void simpleVariableTestA() throws CouldNotUnifyException {
+       Map<Variable,IUnifiable> sub = unifier.unify(new Variable("X"),
+               new Variable("X"));
+       assertTrue(sub.isEmpty());
+    }
+    
+    /** unify(X,Y) = {X/Y} */
+    @Test
+    public void simpleVariableTestB() throws CouldNotUnifyException {
+        final Variable X = new Variable("X");
+        final Variable Y = new Variable("Y");
+       
+        Map<Variable,IUnifiable> sub = unifier.unify(X, Y);
+        assertTrue(sub.size()==1);
+        assertTrue(sub.containsKey(X)&&sub.get(X).equals(Y));
+    }
+    
+    /** unify(X,a) = {X/a} */
+    @Test
+    public void simpleVariableConstantTest() throws CouldNotUnifyException {
+        final Constant a = new Constant("a");
+        final Variable X = new Variable("X");
+       
+        Map<Variable,IUnifiable> sub = unifier.unify(X, a);
+        assertTrue(sub.size()==1);
+        assertTrue(sub.containsKey(X)&&sub.get(X).equals(a));
+    }
+    
+    /** unify(f(a,X),f(a,b) = {X/b} */
+    @Test
+    public void simpleFunctionTestA() throws CouldNotUnifyException {
+        final Constant a = new Constant("a");
+        final Constant b = new Constant("b");
+        final Variable X = new Variable("X");
+        final Function f1 = new Function("f",a,X);
+        final Function f2 = new Function("f",a,b);
+       
+        Map<Variable,IUnifiable> sub = unifier.unify(f1, f2);
+        assertTrue(sub.size()==1);
+        assertTrue(sub.containsKey(X)&&sub.get(X).equals(b));
+    }
+    
+    /** unify(f(a),g(a)) = FAIL */
+    @Test(expected=CouldNotUnifyException.class)
+    public void simpleFunctionTestB() throws CouldNotUnifyException {
+        final Constant a = new Constant("a");
+        final Function f = new Function("f",a);
+        final Function g = new Function("g",a);
+       
+        Map<Variable,IUnifiable> sub = unifier.unify(f,g);
+    }
+    
+    /** unify(f(X),f(Y)) = {X/Y} */
+    @Test
+    public void simpleFunctionTestC() throws CouldNotUnifyException {
+        final Variable X = new Variable("X");
+        final Variable Y = new Variable("Y");
+        final Function f1 = new Function("f",X);
+        final Function f2 = new Function("f",Y); 
+        Map<Variable,IUnifiable> sub = unifier.unify(f1,f2);
+        assertTrue(sub.size()==1);
+        assertTrue(sub.containsKey(X)&&sub.get(X).equals(Y));
+    }
+    
+    /** unify(f(X),g(Y)) = FAIL */
+    @Test(expected=CouldNotUnifyException.class)
+    public void simpleFunctionTestD() throws CouldNotUnifyException {
+        final Variable X = new Variable("X");
+        final Variable Y = new Variable("X");
+        final Function f = new Function("f",X);
+        final Function g = new Function("g",Y); 
+        Map<Variable,IUnifiable> sub = unifier.unify(f,g);
+    }
+    
+    /** unify(f(X),g(Y)) = FAIL */
+    @Test(expected=CouldNotUnifyException.class)
+    public void simpleFunctionTestE() throws CouldNotUnifyException {
+        final Variable X = new Variable("X");
+        final Variable Y = new Variable("X");
+        final Variable Z = new Variable("X");
+        final Function f1 = new Function("f",X);
+        final Function f2 = new Function("f",Y,Z); 
+        Map<Variable,IUnifiable> sub = unifier.unify(f1,f2);
+    }
+    
+    /** unify(f(g(X)),f(Y)) = {Y/g(X)} */
     @Test
     public void simpleFunctionUnificationTest() throws CouldNotUnifyException {
         Variable X = new Variable("X");
@@ -82,7 +177,16 @@ public class UnifierTest {
         assertTrue(sub1.get(Y).equals(g)&&sub2.get(Y).equals(g));
     }
     
-    /** unify(f(g(X),X),f(Y,a)) should return {X/a,Y/g(a)}  */
+    /** unify(X,f(X)) = FAIL (due to occurs check) */
+    @Test(expected=CouldNotUnifyException.class)
+    public void simpleFunctionAndVariableUnificationTest() throws CouldNotUnifyException {
+        Variable X = new Variable("X");
+        Function f = new Function("f",X);
+        Map<Variable,IUnifiable> sub1 = unifier.unify(X,f);
+        sub1 = unifier.unify(f,X);
+    }
+    
+    /** unify(f(g(X),X),f(Y,a)) = {X/a,Y/g(a)} */
     @Test
     public void complexFunctionUnificationTest() throws CouldNotUnifyException {
         Variable X = new Variable("X");
@@ -103,9 +207,17 @@ public class UnifierTest {
         assertTrue(sub2.get(Y).equals(gOfa));
     }
     
-    /** unify(X = Y, Y = a) should return {X/a,Y/a} */
+    /** unify(Knows(John,x),Knows(John,Jane)) = {x/Jane} */
     @Test
-    public void simpleEqualitiesUnificationTest() throws CouldNotUnifyException {
+    public void simplePredicateTest() throws CouldNotUnifyException {
+        Map<Variable,IUnifiable> sub = unifier.unify(new Predicate("Knows", John, x), new Predicate("Knows", John, Jane));
+        assertTrue(sub.size()==1);
+        assertTrue(sub.containsKey(x)&&sub.get(x).equals(Jane));
+    }
+    
+    /** unify(X = Y, Y = a) = {X/a,Y/a} */
+    @Test
+    public void simpleEqualitiesUnificationTestA() throws CouldNotUnifyException {
         Variable X = new Variable("X");
         Variable Y = new Variable("Y");
         Constant a = new Constant("a");
@@ -121,6 +233,41 @@ public class UnifierTest {
         assertTrue(sub2.containsKey(X)&&sub2.containsKey(Y));
         assertTrue(sub1.get(X).equals(a));
         assertTrue(sub2.get(Y).equals(a));
+    }
+    
+    /** unify(a = Y, X = Y) = {X/a,Y/a} */
+    @Test
+    public void simpleEqualitiesUnificationTestB() throws CouldNotUnifyException {
+        Variable X = new Variable("X");
+        Variable Y = new Variable("Y");
+        Constant a = new Constant("a");
+        Equality e1 = new Equality(a,Y);
+        Equality e2 = new Equality(X,Y);
+        
+        Map<Variable,IUnifiable> sub1 = unifier.unify(e1,e2);
+        Map<Variable,IUnifiable> sub2 = unifier.unify(e2,e1);
+        
+        assertTrue(sub1.size()==2);
+        assertTrue(sub2.size()==2);
+        assertTrue(sub1.containsKey(X));
+        assertTrue(sub2.containsKey(Y));
+        assertTrue(sub1.get(X).equals(a));
+        assertTrue(sub1.get(Y).equals(a));
+        assertTrue(sub2.get(X).equals(a));
+        assertTrue(sub2.get(Y).equals(a));
+    }
+    
+    /** unify(X = a, b = X) = FAIL */
+    @Test(expected=CouldNotUnifyException.class)
+    public void simpleEqualitiesUnificationTestC() throws CouldNotUnifyException {
+        Variable X = new Variable("X");
+        Variable Y = new Variable("Y");
+        Constant a = new Constant("a");
+        Constant b = new Constant("b");
+        Equality e1 = new Equality(X,a);
+        Equality e2 = new Equality(b,X);
+        
+        Map<Variable,IUnifiable> sub1 = unifier.unify(e1,e2);
     }
     
     /** occurs(A,P(A,B)) should return true */

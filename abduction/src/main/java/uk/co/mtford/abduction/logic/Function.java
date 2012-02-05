@@ -35,6 +35,35 @@ public class Function implements Term {
     public void setParameters(Term[] parameters) {
         this.parameters = parameters;
     }
+    
+    public boolean replaceParameter(int num, Term parameter) {
+        if (num<0||num>parameters.length) {
+            return false;
+        }
+        parameters[num] = parameter;
+        return true;
+    }
+    
+    public boolean replaceParameter(Term toBeReplaced, Term toReplace) {
+        for (int i=0; i<parameters.length; i++) {
+            if (parameters[i].equals(toBeReplaced)) {
+                parameters[i] = toReplace;
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean contains(Term parameter) {
+        for (int i=0; i<parameters.length; i++) {
+            if (parameters[i].equals(parameter)) return true;
+        }
+        return false;
+    }
+    
+    public int getNumParams() {
+        return parameters.length;
+    }
 
     @Override
     public String toString() {

@@ -31,6 +31,31 @@ public abstract class AbstractPredicate implements IPredicate {
         }
         return true;
     }
+    
+    public boolean contains(IUnifiable parameter) {
+        for (int i=0;i<parameters.length;i++) {
+            if (parameters[i].equals(parameter)) return true;
+        }
+        return false;
+    }
+    
+    public boolean replaceParameter(int num, IUnifiable parameter) {
+        if (num<0||num>parameters.length) {
+            return false;
+        }
+        parameters[num] = parameter;
+        return true;
+    }
+    
+    public boolean replaceParameter(IUnifiable toBeReplaced, IUnifiable toReplace) {
+        for (int i=0; i<parameters.length; i++) {
+            if (parameters[i].equals(toBeReplaced)) {
+                parameters[i] = toReplace;
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public int hashCode() {

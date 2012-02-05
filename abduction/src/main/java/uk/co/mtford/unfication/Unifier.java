@@ -19,7 +19,6 @@ public class Unifier {
     private static Constant John;
     private static Constant Jane;
     private static Variable x;
-     
     
     public boolean occurs(Variable x, IUnifiable t, Map<Variable,IUnifiable> sub) {
         
@@ -66,6 +65,10 @@ public class Unifier {
             while (s instanceof Variable && sub.containsKey((Variable)s)) s = sub.get((Variable)s);
             while (t instanceof Variable && sub.containsKey((Variable)t)) t = sub.get((Variable)t);
             if (!s.equals(t)) {
+                if (s instanceof Constant && t instanceof Constant) {
+                    // If got to this point then they are no the same constant.
+                    throw new CouldNotUnifyException("Different constants.");
+                }
                 if (s instanceof Variable && t instanceof Variable) {
                     sub.put((Variable)s,(Variable)t);
                 }

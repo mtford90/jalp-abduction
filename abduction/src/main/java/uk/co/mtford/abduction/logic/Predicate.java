@@ -36,6 +36,10 @@ public class Predicate extends AbstractPredicate {
     public void setParameters(IUnifiable[] parameters) {
         this.parameters = parameters;
     }
+    
+     public int getNumParams() {
+        return parameters.length;
+    }
 
     @Override
     public String toString() {
