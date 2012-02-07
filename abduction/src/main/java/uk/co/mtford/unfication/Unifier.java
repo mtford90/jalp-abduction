@@ -5,9 +5,7 @@
 package uk.co.mtford.unfication;
 
 import java.util.*;
-import org.junit.BeforeClass;
 import uk.co.mtford.abduction.logic.*;
-import uk.co.mtford.abduction.logic.Variable;
 
 /**
  *
@@ -15,12 +13,7 @@ import uk.co.mtford.abduction.logic.Variable;
  */
 public class Unifier {
     
-    private static Predicate Knows;
-    private static Constant John;
-    private static Constant Jane;
-    private static Variable x;
-    
-    public boolean occurs(Variable x, IUnifiable t, Map<Variable,IUnifiable> sub) {
+    public boolean occurs(Variable x, IUnifiable t, Set<Variable> sub) {
         
         Stack<IUnifiable> stack = new Stack<IUnifiable>();
         stack.push(t);
@@ -36,8 +29,8 @@ public class Unifier {
                 if (x.equals(y)) {
                     return true;
                 }
-                if (sub.containsKey(y)) {
-                    stack.push(sub.get(y));
+                if (sub.contains(y)) {
+                    stack.push(y.getValue());
                 }
             }
             else if (t instanceof Function ) {
@@ -49,84 +42,174 @@ public class Unifier {
 	return false;
     }
     
-    public Map<Variable,IUnifiable> unify(IUnifiable s, IUnifiable t) throws CouldNotUnifyException {
+    
+    /** Returns the substitutions that unify s and t. 
+     * @param left
+     * @param right
+     * @return 
+     */
+    public Set<Variable> unify(IUnifiable left, IUnifiable right) throws CouldNotUnifyException {
+       
         
+        Set<Variable> subst = new HashSet<Variable>();
+        
+        // Pairs of formulae waiting to unified.
         Stack<IUnifiable[]> stack = new Stack<IUnifiable[]>();
-        Map<Variable, IUnifiable> sub = new HashMap<Variable,IUnifiable>();
         
-        IUnifiable[] pair = new IUnifiable[2];
-        pair[0] = s;
-        pair[1] = t;
-        stack.push(pair);
-        while(!stack.isEmpty()) {
-            pair = stack.pop();
-            s = pair[0];
-            t = pair[1];
-            while (s instanceof Variable && sub.containsKey((Variable)s)) s = sub.get((Variable)s);
-            while (t instanceof Variable && sub.containsKey((Variable)t)) t = sub.get((Variable)t);
-            if (!s.equals(t)) {
-                if (s instanceof Constant && t instanceof Constant) {
-                    // If got to this point then they are no the same constant.
-                    throw new CouldNotUnifyException("Different constants.");
-                }
-                if (s instanceof Variable && t instanceof Variable) {
-                    sub.put((Variable)s,(Variable)t);
-                }
-                else if (s instanceof Variable && t instanceof IUnifiable) {
-                    if (!occurs((Variable)s,t,sub)) {
-                        sub.put((Variable)s,t);
-                    }
-                    else {
-                        throw new CouldNotUnifyException();
-                    }
-                }
-                else if (s instanceof IUnifiable && t instanceof Variable) {
-                    if (!occurs((Variable)t,s,sub)) {
-                        sub.put((Variable)t,s);
-                    }
-                    else {
-                        throw new CouldNotUnifyException();
-                    }
-                }
-                else if (s instanceof Function && t instanceof Function) {
-                    Term[] sTerm = ((Function)s).getParameters();
-                    Term[] tTerm = ((Function)t).getParameters();
-                    boolean sameName = ((Function)s).getName().equals(((Function)t).getName());
-                    boolean sameParamSize = ((Function)s).getParameters().length==((Function)t).getParameters().length;
-                    if (sameName&&sameParamSize) {
-                        for (int i = 0; i<sTerm.length; i++) {
-                            Term[] termPair = new Term[2];
-                            termPair[0] = sTerm[i];
-                            termPair[1] = tTerm[i];
-                            stack.add(termPair);
-                        }
-                    }
-                    else { // Different functions.
-                        throw new CouldNotUnifyException();
-                    }
-                }
-                else if (s instanceof AbstractPredicate && t instanceof AbstractPredicate) {
-                    IUnifiable[] sTerm = ((AbstractPredicate)s).getParameters();
-                    IUnifiable[] tTerm = ((AbstractPredicate)t).getParameters();
-                    boolean sameName = ((AbstractPredicate)s).getName().equals(((AbstractPredicate)t).getName());
-                    boolean sameParamSize = ((AbstractPredicate)s).getParameters().length==((AbstractPredicate)t).getParameters().length;
-                    if (sameName&&sameParamSize) {  
-                        for (int i = 0; i<sTerm.length; i++) {
-                            IUnifiable[] termPair = new IUnifiable[2];
-                            termPair[0] = sTerm[i];
-                            termPair[1] = tTerm[i];
-                            stack.add(termPair);
-                        }
-                    }
-                    else { // Different functions.
-                        throw new CouldNotUnifyException();
-                    }
+        // The current pair we are unifying.
+        IUnifiable[] currentPair = new IUnifiable[2];
+        currentPair[0]=left;currentPair[1]=right;
+        stack.push(currentPair);
+        
+        // Whilst we still have formulae to unify.
+        while (!stack.empty()) {
+            
+            currentPair = stack.pop();
+            left = currentPair[0];
+            right = currentPair[1];
+            
+            // Replace variables with their substitutions.
+            if (left instanceof Variable) {
+                while (left instanceof Variable) {
+                    Variable var = (Variable)left;
+                    left = var.getValue();    
                 }
             }
+            if (right instanceof Variable) {
+                while (right instanceof Variable) {
+                    Variable var = (Variable)right;
+                    right = var.getValue();    
+                }
+            }
+            
+            // Perform unification
+            if (!left.equals(right)) {  
+                
+                // One formula is a variable.
+                if (left instanceof Variable) {
+                    Variable var = (Variable) left;
+                    if (!occurs(var,right,subst)) {
+                        var.setValue(right);
+                        subst.add(var);
+                    }
+                    else {
+                        throw new CouldNotUnifyException();
+                    }
+                }
+                if (right instanceof Variable) {
+                    Variable var = (Variable) right;
+                    if (!occurs(var,left,subst)) {
+                        var.setValue(left);
+                        subst.add(var);
+                    }
+                    else {
+                        throw new CouldNotUnifyException();
+                    }
+                }
+                
+                // Both functions
+                if (left instanceof Function && 
+                    right instanceof Function) {
+                    Function leftFunction = (Function)left;
+                    Function rightFunction = (Function)right;
+                    boolean sameName = leftFunction.getName().equals(rightFunction.getName());
+                    boolean sameNumParams = leftFunction.getNumParams()==rightFunction.getNumParams();
+                    if (sameName&&sameNumParams) {
+                        Term[] leftParamArray = leftFunction.getParameters();
+                        Term[] rightParamArray = rightFunction.getParameters();
+                        int length = leftParamArray.length; // Both same length.
+                        for (int i=0;i<length;i++) {
+                            Term[] unifyPair = new Term[2];
+                            unifyPair[0]=leftParamArray[i];
+                            unifyPair[1]=rightParamArray[i];
+                            stack.add(unifyPair);
+                        }
+                        
+                    }
+                    else {
+                        throw new CouldNotUnifyException("Incompatible functions");
+                    }
+                }
+                
+                // Both predicates
+                if (left instanceof AbstractPredicate &&
+                    right instanceof AbstractPredicate) {
+                    // TODO
+                }
+                
+                
+            
+                
+            }
+            
         }
         
-        return sub;
+        
+        return subst;
         
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private class Substitution {
+        private Variable v;
+        private IUnifiable i;
+
+        public Substitution(Variable v, IUnifiable i) {
+            this.v = v;
+            this.i = i;
+        }
+
+        public IUnifiable getI() {
+            return i;
+        }
+
+        public void setI(IUnifiable i) {
+            this.i = i;
+        }
+
+        public Variable getV() {
+            return v;
+        }
+
+        public void setV(Variable v) {
+            this.v = v;
+        }
+        
+    }
+              
+   
+   
+    
+ 
+    
+
  
 }

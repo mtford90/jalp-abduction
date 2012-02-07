@@ -65,4 +65,12 @@ public abstract class AbstractPredicate implements IPredicate {
         return hash;
     }
     
+    public int getNumParams() {
+        return parameters.length;
+    }
+
+    public void setParameters(IUnifiable[] params) {
+        this.parameters=params;
+    }
+    
 }

@@ -63,23 +63,24 @@ public class UnifierTest {
     /** unify(a,a) = {} */
     @Test
     public void simpleConstantTestA() throws CouldNotUnifyException {
-        Map<Variable,IUnifiable> sub = unifier.unify(new Constant("a"), 
-                                                     new Constant("a"));
+        Constant a = new Constant("a");
+        Map<Variable,IUnifiable> sub = unifier.unify(a,a);
         assertTrue(sub.isEmpty());
     }
     
     /** unify(a,b) = FAIL */
     @Test(expected=CouldNotUnifyException.class)
     public void simpleConstantTestB() throws CouldNotUnifyException {
-        Map<Variable,IUnifiable> sub = unifier.unify(new Constant("a"), 
-                                            new Constant("b"));
+        Constant a = new Constant("a");
+        Constant b = new Constant("b");
+        Map<Variable,IUnifiable> sub = unifier.unify(a,b);
     }
     
     /** unify(X,X) = {} */
     @Test
     public void simpleVariableTestA() throws CouldNotUnifyException {
-       Map<Variable,IUnifiable> sub = unifier.unify(new Variable("X"),
-               new Variable("X"));
+       Variable X = new Variable("X");
+       Map<Variable,IUnifiable> sub = unifier.unify(X,X);
        assertTrue(sub.isEmpty());
     }
     
@@ -204,7 +205,7 @@ public class UnifierTest {
         assertTrue(sub1.containsKey(X)&&sub1.containsKey(Y));
         assertTrue(sub2.containsKey(X)&&sub2.containsKey(Y));
         assertTrue(sub1.get(X).equals(a));
-        assertTrue(sub2.get(Y).equals(gOfa));
+        assertTrue(sub2.get(Y).equals(gOfa)); // Test for (Y/g(a))
     }
     
     /** unify(Knows(John,x),Knows(John,Jane)) = {x/Jane} */
@@ -261,7 +262,6 @@ public class UnifierTest {
     @Test(expected=CouldNotUnifyException.class)
     public void simpleEqualitiesUnificationTestC() throws CouldNotUnifyException {
         Variable X = new Variable("X");
-        Variable Y = new Variable("Y");
         Constant a = new Constant("a");
         Constant b = new Constant("b");
         Equality e1 = new Equality(X,a);
