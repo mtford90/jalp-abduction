@@ -242,64 +242,6 @@ public class UnifierTest {
         assertTrue(subContainsVariable(x, sub)&&getSubstitutedVariable(x, sub).getValue().equals(Jane));
     }
     
-    /** unify(X = Y, Y = a) = {X/a,Y/a} */
-    @Test
-    public void simpleEqualitiesUnificationTestA() throws CouldNotUnifyException {
-        Variable X = new Variable("X");
-        Variable Y = new Variable("Y");
-        Constant a = new Constant("a");
-        Equality e1 = new Equality(X,Y);
-        Equality e2 = new Equality(Y,a);
-        
-        Set<Variable> sub1 = unifier.unify(e1,e2);
-        Set<Variable> sub2 = unifier.unify(e2,e1);
-        
-        assertTrue(sub1.size()==2);
-        assertTrue(sub2.size()==2);
-        assertTrue(subContainsVariable(X, sub1)&&subContainsVariable(Y, sub1));
-        assertTrue(subContainsVariable(X, sub2)&&subContainsVariable(Y, sub2));
-        assertTrue(getSubstitutedVariable(X, sub1).getValue().equals(a));
-        assertTrue(getSubstitutedVariable(Y, sub1).getValue().equals(a));
-        assertTrue(getSubstitutedVariable(X, sub2).getValue().equals(a));
-        assertTrue(getSubstitutedVariable(Y, sub2).getValue().equals(a));
-    }
-    
-    /** unify(a = Y, X = Y) = {X/a,Y/a} */
-    @Test
-    public void simpleEqualitiesUnificationTestB() throws CouldNotUnifyException {
-        Variable X = new Variable("X");
-        Variable Y = new Variable("Y");
-        Constant a = new Constant("a");
-        Equality e1 = new Equality(a,Y);
-        Equality e2 = new Equality(X,Y);
-        
-        Set<Variable> sub1 = unifier.unify(e1,e2);
-        Set<Variable> sub2 = unifier.unify(e2,e1);
-        
-        assertTrue(sub1.size()==2);
-        assertTrue(sub2.size()==2);
-        assertTrue(subContainsVariable(X, sub1));
-        assertTrue(subContainsVariable(Y, sub1));
-        assertTrue(subContainsVariable(X, sub2));
-        assertTrue(subContainsVariable(Y, sub2));
-        assertTrue(getSubstitutedVariable(X, sub1).getValue().equals(a));
-        assertTrue(getSubstitutedVariable(X, sub2).getValue().equals(a));
-        assertTrue(getSubstitutedVariable(Y, sub1).getValue().equals(a));
-        assertTrue(getSubstitutedVariable(Y, sub2).getValue().equals(a));
-    }
-    
-    /** unify(X = a, b = X) = FAIL */
-    @Test(expected=CouldNotUnifyException.class)
-    public void simpleEqualitiesUnificationTestC() throws CouldNotUnifyException {
-        Variable X = new Variable("X");
-        Constant a = new Constant("a");
-        Constant b = new Constant("b");
-        Equality e1 = new Equality(X,a);
-        Equality e2 = new Equality(b,X);
-        
-        Set<Variable> sub1 = unifier.unify(e1,e2);
-    }
-    
     /** occurs(A,P(A,B)) should return true */
     @Test
     public void predicateOccursTestA() {
