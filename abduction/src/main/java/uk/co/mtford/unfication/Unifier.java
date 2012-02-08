@@ -50,10 +50,6 @@ public class Unifier {
      */
     public Set<Variable> unify(IUnifiable left, IUnifiable right) throws CouldNotUnifyException {
         
-        // Get new copies of the unfiables to prevent modifying them.
-        left = (IUnifiable) left.clone();
-        right = (IUnifiable) right.clone();
-        
         Set<Variable> subst = new HashSet<Variable>();
         
         // Pairs of formulae waiting to unified.
