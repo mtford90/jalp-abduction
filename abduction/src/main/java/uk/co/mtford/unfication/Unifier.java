@@ -49,7 +49,10 @@ public class Unifier {
      * @return 
      */
     public Set<Variable> unify(IUnifiable left, IUnifiable right) throws CouldNotUnifyException {
-       
+        
+        // Get new copies of the unfiables to prevent modifying them.
+        left = (IUnifiable) left.clone();
+        right = (IUnifiable) right.clone();
         
         Set<Variable> subst = new HashSet<Variable>();
         
@@ -68,16 +71,32 @@ public class Unifier {
             left = currentPair[0];
             right = currentPair[1];
             
+            if (left instanceof Constant && 
+                right instanceof Constant) {
+               if (left.equals(right)) {
+                   return subst;
+               } 
+               else {
+                   throw new CouldNotUnifyException("Incompatible constants.");
+               }
+            }
+            
             // Replace variables with their substitutions.
             if (left instanceof Variable) {
                 while (left instanceof Variable) {
                     Variable var = (Variable)left;
+                    if (!var.isAssigned()) {
+                        break;
+                    }
                     left = var.getValue();    
                 }
             }
             if (right instanceof Variable) {
                 while (right instanceof Variable) {
                     Variable var = (Variable)right;
+                    if (!var.isAssigned()) {
+                        break;
+                    }
                     right = var.getValue();    
                 }
             }
@@ -96,7 +115,7 @@ public class Unifier {
                         throw new CouldNotUnifyException();
                     }
                 }
-                if (right instanceof Variable) {
+                else if (right instanceof Variable) {
                     Variable var = (Variable) right;
                     if (!occurs(var,left,subst)) {
                         var.setValue(left);
@@ -108,7 +127,7 @@ public class Unifier {
                 }
                 
                 // Both functions
-                if (left instanceof Function && 
+                else if (left instanceof Function && 
                     right instanceof Function) {
                     Function leftFunction = (Function)left;
                     Function rightFunction = (Function)right;
@@ -132,19 +151,33 @@ public class Unifier {
                 }
                 
                 // Both predicates
-                if (left instanceof AbstractPredicate &&
+                else if (left instanceof AbstractPredicate &&
                     right instanceof AbstractPredicate) {
-                    // TODO
-                }
-                
-                
-            
+                    AbstractPredicate leftFunction = (AbstractPredicate)left;
+                    AbstractPredicate rightFunction = (AbstractPredicate)right;
+                    boolean sameName = leftFunction.getName().equals(rightFunction.getName());
+                    boolean sameNumParams = leftFunction.getNumParams()==rightFunction.getNumParams();
+                    if (sameName&&sameNumParams) {
+                        IUnifiable[] leftParamArray = leftFunction.getParameters();
+                        IUnifiable[] rightParamArray = rightFunction.getParameters();
+                        int length = leftParamArray.length; // Both same length.
+                        for (int i=0;i<length;i++) {
+                            IUnifiable[] unifyPair = new Term[2];
+                            unifyPair[0]=leftParamArray[i];
+                            unifyPair[1]=rightParamArray[i];
+                            stack.add(unifyPair);
+                        }
+                        
+                    }
+                    else {
+                        throw new CouldNotUnifyException("Incompatible predicates");
+                    }
+                }          
                 
             }
             
         }
-        
-        
+          
         return subst;
         
     }

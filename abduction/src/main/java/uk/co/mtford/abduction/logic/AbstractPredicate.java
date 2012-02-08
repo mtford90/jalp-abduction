@@ -73,4 +73,7 @@ public abstract class AbstractPredicate implements IPredicate {
         this.parameters=params;
     }
     
+    @Override
+    public abstract Object clone();
+    
 }

@@ -4,8 +4,7 @@
  */
 package uk.co.mtford.unfication;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import org.junit.*;
 import static org.junit.Assert.*;
 import uk.co.mtford.abduction.logic.*;
@@ -60,11 +59,33 @@ public class UnifierTest {
     public void tearDown() {
     }
     
+    /** Returns whether or not a variable exists within a substitution. */
+    private boolean subContainsVariable(Variable X, Set<Variable> subst) {
+        LinkedList<Variable> subList = new LinkedList<Variable>(subst);
+        for (int i=0;i<subList.size();i++) {
+            if (subList.get(i).equals(X)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /** If available returns version of the variable that was substituted. */
+    private Variable getSubstitutedVariable(Variable X, Set<Variable> subst) {
+        LinkedList<Variable> subList = new LinkedList<Variable>(subst);
+        for (int i=0;i<subList.size();i++) {
+            if (subList.get(i).equals(X)) {
+                return subList.get(i);
+            }
+        }
+        return null;
+    }
+    
     /** unify(a,a) = {} */
     @Test
     public void simpleConstantTestA() throws CouldNotUnifyException {
         Constant a = new Constant("a");
-        Map<Variable,IUnifiable> sub = unifier.unify(a,a);
+        Set<Variable> sub = unifier.unify(a,a);
         assertTrue(sub.isEmpty());
     }
     
@@ -73,14 +94,14 @@ public class UnifierTest {
     public void simpleConstantTestB() throws CouldNotUnifyException {
         Constant a = new Constant("a");
         Constant b = new Constant("b");
-        Map<Variable,IUnifiable> sub = unifier.unify(a,b);
+        Set<Variable> sub = unifier.unify(a,b);
     }
     
     /** unify(X,X) = {} */
     @Test
     public void simpleVariableTestA() throws CouldNotUnifyException {
        Variable X = new Variable("X");
-       Map<Variable,IUnifiable> sub = unifier.unify(X,X);
+       Set<Variable> sub = unifier.unify(X,X);
        assertTrue(sub.isEmpty());
     }
     
@@ -90,10 +111,13 @@ public class UnifierTest {
         final Variable X = new Variable("X");
         final Variable Y = new Variable("Y");
        
-        Map<Variable,IUnifiable> sub = unifier.unify(X, Y);
+        Set<Variable> sub = unifier.unify(X, Y);
+        
         assertTrue(sub.size()==1);
-        assertTrue(sub.containsKey(X)&&sub.get(X).equals(Y));
+        assertTrue(subContainsVariable(X, sub));
     }
+    
+    
     
     /** unify(X,a) = {X/a} */
     @Test
@@ -101,9 +125,9 @@ public class UnifierTest {
         final Constant a = new Constant("a");
         final Variable X = new Variable("X");
        
-        Map<Variable,IUnifiable> sub = unifier.unify(X, a);
+        Set<Variable> sub = unifier.unify(X, a);
         assertTrue(sub.size()==1);
-        assertTrue(sub.containsKey(X)&&sub.get(X).equals(a));
+        assertTrue(subContainsVariable(X, sub)&&getSubstitutedVariable(X, sub).getValue().equals(a));
     }
     
     /** unify(f(a,X),f(a,b) = {X/b} */
@@ -115,9 +139,9 @@ public class UnifierTest {
         final Function f1 = new Function("f",a,X);
         final Function f2 = new Function("f",a,b);
        
-        Map<Variable,IUnifiable> sub = unifier.unify(f1, f2);
+        Set<Variable> sub = unifier.unify(f1, f2);
         assertTrue(sub.size()==1);
-        assertTrue(sub.containsKey(X)&&sub.get(X).equals(b));
+        assertTrue(subContainsVariable(X, sub)&&getSubstitutedVariable(X, sub).getValue().equals(b));
     }
     
     /** unify(f(a),g(a)) = FAIL */
@@ -127,7 +151,7 @@ public class UnifierTest {
         final Function f = new Function("f",a);
         final Function g = new Function("g",a);
        
-        Map<Variable,IUnifiable> sub = unifier.unify(f,g);
+        Set<Variable> sub = unifier.unify(f,g);
     }
     
     /** unify(f(X),f(Y)) = {X/Y} */
@@ -137,9 +161,9 @@ public class UnifierTest {
         final Variable Y = new Variable("Y");
         final Function f1 = new Function("f",X);
         final Function f2 = new Function("f",Y); 
-        Map<Variable,IUnifiable> sub = unifier.unify(f1,f2);
+        Set<Variable> sub = unifier.unify(f1,f2);
         assertTrue(sub.size()==1);
-        assertTrue(sub.containsKey(X)&&sub.get(X).equals(Y));
+        assertTrue(subContainsVariable(X, sub)&&getSubstitutedVariable(X, sub).getValue().equals(Y));
     }
     
     /** unify(f(X),g(Y)) = FAIL */
@@ -149,7 +173,7 @@ public class UnifierTest {
         final Variable Y = new Variable("X");
         final Function f = new Function("f",X);
         final Function g = new Function("g",Y); 
-        Map<Variable,IUnifiable> sub = unifier.unify(f,g);
+        Set<Variable> sub = unifier.unify(f,g);
     }
     
     /** unify(f(X),g(Y)) = FAIL */
@@ -160,7 +184,7 @@ public class UnifierTest {
         final Variable Z = new Variable("X");
         final Function f1 = new Function("f",X);
         final Function f2 = new Function("f",Y,Z); 
-        Map<Variable,IUnifiable> sub = unifier.unify(f1,f2);
+        Set<Variable> sub = unifier.unify(f1,f2);
     }
     
     /** unify(f(g(X)),f(Y)) = {Y/g(X)} */
@@ -169,13 +193,13 @@ public class UnifierTest {
         Variable X = new Variable("X");
         Function g = new Function("g",X);
         Variable Y = new Variable("Y");
-        Map<Variable,IUnifiable> sub1 = unifier.unify(new Function("f",g),
+        Set<Variable> sub1 = unifier.unify(new Function("f",g),
                                                       new Function("f",Y));
-        Map<Variable,IUnifiable> sub2 = unifier.unify(new Function("f",Y),
+        Set<Variable> sub2 = unifier.unify(new Function("f",Y),
                                                       new Function("f",g));
         assertTrue(sub1.size()==1&&sub2.size()==1);
-        assertTrue(sub1.containsKey(Y)&&sub2.containsKey(Y));
-        assertTrue(sub1.get(Y).equals(g)&&sub2.get(Y).equals(g));
+        assertTrue(subContainsVariable(Y, sub1)&&subContainsVariable(Y, sub2));
+        assertTrue(getSubstitutedVariable(Y, sub1).getValue().equals(g)&&getSubstitutedVariable(Y, sub2).getValue().equals(g));
     }
     
     /** unify(X,f(X)) = FAIL (due to occurs check) */
@@ -183,7 +207,7 @@ public class UnifierTest {
     public void simpleFunctionAndVariableUnificationTest() throws CouldNotUnifyException {
         Variable X = new Variable("X");
         Function f = new Function("f",X);
-        Map<Variable,IUnifiable> sub1 = unifier.unify(X,f);
+        Set<Variable> sub1 = unifier.unify(X,f);
         sub1 = unifier.unify(f,X);
     }
     
@@ -196,24 +220,26 @@ public class UnifierTest {
         Function gOfa = new Function("g",a);
         Variable Y = new Variable("Y");
         
-        Map<Variable,IUnifiable> sub1 = unifier.unify(new Function("f",gOfX, X),
+        Set<Variable> sub1 = unifier.unify(new Function("f",gOfX, X),
                                                       new Function("f",Y,a));
-        Map<Variable,IUnifiable> sub2 = unifier.unify(new Function("f",Y, a),
+        Set<Variable> sub2 = unifier.unify(new Function("f",Y, a),
                                                       new Function("f",gOfX, X));
         assertTrue(sub1.size()==2);
         assertTrue(sub2.size()==2);
-        assertTrue(sub1.containsKey(X)&&sub1.containsKey(Y));
-        assertTrue(sub2.containsKey(X)&&sub2.containsKey(Y));
-        assertTrue(sub1.get(X).equals(a));
-        assertTrue(sub2.get(Y).equals(gOfa)); // Test for (Y/g(a))
+        assertTrue(subContainsVariable(X, sub1)&&subContainsVariable(Y, sub1));
+        assertTrue(subContainsVariable(X, sub2)&&subContainsVariable(Y, sub2));
+        assertTrue(getSubstitutedVariable(X, sub1).getValue().equals(a));
+        assertTrue(getSubstitutedVariable(Y, sub1).getValue().equals(gOfa)); 
+        assertTrue(getSubstitutedVariable(X, sub2).getValue().equals(a));
+        assertTrue(getSubstitutedVariable(Y, sub2).getValue().equals(gOfa)); 
     }
     
     /** unify(Knows(John,x),Knows(John,Jane)) = {x/Jane} */
     @Test
     public void simplePredicateTest() throws CouldNotUnifyException {
-        Map<Variable,IUnifiable> sub = unifier.unify(new Predicate("Knows", John, x), new Predicate("Knows", John, Jane));
+        Set<Variable> sub = unifier.unify(new Predicate("Knows", John, x), new Predicate("Knows", John, Jane));
         assertTrue(sub.size()==1);
-        assertTrue(sub.containsKey(x)&&sub.get(x).equals(Jane));
+        assertTrue(subContainsVariable(x, sub)&&getSubstitutedVariable(x, sub).getValue().equals(Jane));
     }
     
     /** unify(X = Y, Y = a) = {X/a,Y/a} */
@@ -225,15 +251,17 @@ public class UnifierTest {
         Equality e1 = new Equality(X,Y);
         Equality e2 = new Equality(Y,a);
         
-        Map<Variable,IUnifiable> sub1 = unifier.unify(e1,e2);
-        Map<Variable,IUnifiable> sub2 = unifier.unify(e2,e1);
+        Set<Variable> sub1 = unifier.unify(e1,e2);
+        Set<Variable> sub2 = unifier.unify(e2,e1);
         
         assertTrue(sub1.size()==2);
         assertTrue(sub2.size()==2);
-        assertTrue(sub1.containsKey(X)&&sub1.containsKey(Y));
-        assertTrue(sub2.containsKey(X)&&sub2.containsKey(Y));
-        assertTrue(sub1.get(X).equals(a));
-        assertTrue(sub2.get(Y).equals(a));
+        assertTrue(subContainsVariable(X, sub1)&&subContainsVariable(Y, sub1));
+        assertTrue(subContainsVariable(X, sub2)&&subContainsVariable(Y, sub2));
+        assertTrue(getSubstitutedVariable(X, sub1).getValue().equals(a));
+        assertTrue(getSubstitutedVariable(Y, sub1).getValue().equals(a));
+        assertTrue(getSubstitutedVariable(X, sub2).getValue().equals(a));
+        assertTrue(getSubstitutedVariable(Y, sub2).getValue().equals(a));
     }
     
     /** unify(a = Y, X = Y) = {X/a,Y/a} */
@@ -245,17 +273,19 @@ public class UnifierTest {
         Equality e1 = new Equality(a,Y);
         Equality e2 = new Equality(X,Y);
         
-        Map<Variable,IUnifiable> sub1 = unifier.unify(e1,e2);
-        Map<Variable,IUnifiable> sub2 = unifier.unify(e2,e1);
+        Set<Variable> sub1 = unifier.unify(e1,e2);
+        Set<Variable> sub2 = unifier.unify(e2,e1);
         
         assertTrue(sub1.size()==2);
         assertTrue(sub2.size()==2);
-        assertTrue(sub1.containsKey(X));
-        assertTrue(sub2.containsKey(Y));
-        assertTrue(sub1.get(X).equals(a));
-        assertTrue(sub1.get(Y).equals(a));
-        assertTrue(sub2.get(X).equals(a));
-        assertTrue(sub2.get(Y).equals(a));
+        assertTrue(subContainsVariable(X, sub1));
+        assertTrue(subContainsVariable(Y, sub1));
+        assertTrue(subContainsVariable(X, sub2));
+        assertTrue(subContainsVariable(Y, sub2));
+        assertTrue(getSubstitutedVariable(X, sub1).getValue().equals(a));
+        assertTrue(getSubstitutedVariable(X, sub2).getValue().equals(a));
+        assertTrue(getSubstitutedVariable(Y, sub1).getValue().equals(a));
+        assertTrue(getSubstitutedVariable(Y, sub2).getValue().equals(a));
     }
     
     /** unify(X = a, b = X) = FAIL */
@@ -267,25 +297,25 @@ public class UnifierTest {
         Equality e1 = new Equality(X,a);
         Equality e2 = new Equality(b,X);
         
-        Map<Variable,IUnifiable> sub1 = unifier.unify(e1,e2);
+        Set<Variable> sub1 = unifier.unify(e1,e2);
     }
     
     /** occurs(A,P(A,B)) should return true */
     @Test
     public void predicateOccursTestA() {
-        assertTrue(unifier.occurs(A, p, new HashMap<Variable,IUnifiable>()));
+        assertTrue(unifier.occurs(A, p, new HashSet<Variable>()));
     }
     
      /** occurs(B,P(A,B)) should return true */
     @Test
     public void predicateOccursTestB() {
-        assertTrue(unifier.occurs(B, p, new HashMap<Variable,IUnifiable>()));
+        assertTrue(unifier.occurs(B, p, new HashSet<Variable>()));
     }
     
      /** occurs(C,P(A,B)) should return false */
     @Test
     public void predicateOccursTestC() {
-        assertFalse(unifier.occurs(C, p, new HashMap<Variable,IUnifiable>()));
+        assertFalse(unifier.occurs(C, p, new HashSet<Variable>()));
     }
     
 }

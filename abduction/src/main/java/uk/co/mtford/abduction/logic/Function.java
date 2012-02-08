@@ -105,6 +105,16 @@ public class Function implements Term {
         return hash;
     }
     
+    @Override
+    public Object clone() {
+        String clonedName = new String(name);
+        Term[] clonedParams = new Term[parameters.length];
+        for (int i=0;i<clonedParams.length;i++) {
+            clonedParams[i]=(Term) parameters[i].clone();
+        }
+        return new Function(clonedName,clonedParams);
+    }
+    
     
     
 }

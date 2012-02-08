@@ -60,11 +60,11 @@ public class Variable implements Term {
         if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
             return false;
         }
-        if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
-            return false;
-        }
         return true;
     }
+
+    /** Returns true if variable names at the same. Not concerned with value. */
+    
 
     @Override
     public int hashCode() {
@@ -74,7 +74,15 @@ public class Variable implements Term {
         return hash;
     }
 
-    
+    @Override
+    public Object clone() {
+        String clonedName = new String(name);
+        IUnifiable clonedValue = null;
+        if (value!=null) {
+            clonedValue = (IUnifiable) value.clone();
+        }
+        return new Variable(clonedName,clonedValue);
+    }
     
     
 }

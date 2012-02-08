@@ -51,4 +51,15 @@ public class Predicate extends AbstractPredicate {
         return name + "(" + paramList + ")";
     }
 
+    @Override
+    public Object clone() {
+        String clonedName = new String(name);
+        IUnifiable[] clonedParams = new IUnifiable[parameters.length];
+        for (int i=0;i<clonedParams.length;i++) {
+            clonedParams[i]=(IUnifiable) parameters[i].clone();
+        }
+        return new Predicate(clonedName,clonedParams);
+    }
+    
+    
 }

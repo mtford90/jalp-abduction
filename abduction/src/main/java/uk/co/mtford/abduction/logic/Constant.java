@@ -53,4 +53,9 @@ public class Constant implements Term {
         return hash;
     }
     
+    @Override
+    public Object clone(){
+        return new Constant(value);
+    }
+    
 }

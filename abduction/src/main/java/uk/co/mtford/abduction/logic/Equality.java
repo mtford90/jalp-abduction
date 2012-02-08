@@ -36,6 +36,16 @@ public class Equality extends AbstractPredicate {
     public String toString() {
         return parameters[0]+"="+parameters[1];
     }
+
+    @Override
+    public Object clone() {
+        String clonedName = new String(name);
+        IUnifiable[] clonedParams = new IUnifiable[parameters.length];
+        for (int i=0;i<clonedParams.length;i++) {
+            clonedParams[i]=(IUnifiable) parameters[i].clone();
+        }
+        return new Predicate(clonedName,clonedParams);
+    }
     
     
     
