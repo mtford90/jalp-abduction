@@ -39,6 +39,7 @@ public class Unifier {
 	return false;
     }
     
+    // TODO: Consider using a table instead....
     
     /** Returns the substitutions that unify s and t. 
      * @param left

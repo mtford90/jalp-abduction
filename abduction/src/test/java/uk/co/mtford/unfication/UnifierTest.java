@@ -333,6 +333,17 @@ public class UnifierTest {
         assertTrue(YValue.equals(gOfa)); 
     }
     
+    /** unify(P(f(P(X)),P(X) = FAIL */
+    @Test(expected=CouldNotUnifyException.class)
+    public void complexPredicateUnificationTest3() throws CouldNotUnifyException {
+        Variable X = new Variable("X");
+        Predicate POfX = new Predicate("P",X);
+        Predicate f = new Predicate("f",POfX);
+        Predicate P2 = new Predicate("P",f);
+        
+        Set<Variable> sub = unifier.unify(P2,POfX);   
+    }
+    
     /** unify(Knows(John,x),Knows(John,Jane)) = {x/Jane} */
     @Test
     public void simplePredicateTest1() throws CouldNotUnifyException {

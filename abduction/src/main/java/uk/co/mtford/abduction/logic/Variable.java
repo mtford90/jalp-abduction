@@ -4,8 +4,6 @@
  */
 package uk.co.mtford.abduction.logic;
 
-import java.util.Map;
-
 /**
  *
  * @author mtford
