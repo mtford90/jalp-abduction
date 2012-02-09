@@ -31,6 +31,10 @@ public class Variable implements Term {
         this.name = name;
     }
 
+    /** Returns the actual assigned value.
+     * 
+     * @return 
+     */
     public IUnifiable getValue() {
         return value;
     }
@@ -45,13 +49,17 @@ public class Variable implements Term {
     
     @Override
     public String toString() {
-        return name;
+        if (value==null) return name;
+        return name+"="+value.toString();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
+        }
+        if (value instanceof Constant) {
+            return value.equals(obj);
         }
         if (getClass() != obj.getClass()) {
             return false;
@@ -62,6 +70,8 @@ public class Variable implements Term {
         }
         return true;
     }
+    
+ 
 
     /** Returns true if variable names at the same. Not concerned with value. */
     

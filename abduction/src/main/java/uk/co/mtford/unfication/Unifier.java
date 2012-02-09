@@ -33,10 +33,7 @@ public class Unifier {
                     stack.push(y.getValue());
                 }
             }
-            else if (t instanceof Function ) {
-                Function p = (Function) t;
-                stack.addAll(Arrays.asList(p.getParameters()));
-            }
+            
 	}
 	
 	return false;
@@ -122,43 +119,19 @@ public class Unifier {
                     }
                 }
                 
-                // Both functions
-                else if (left instanceof Function && 
-                    right instanceof Function) {
-                    Function leftFunction = (Function)left;
-                    Function rightFunction = (Function)right;
-                    boolean sameName = leftFunction.getName().equals(rightFunction.getName());
-                    boolean sameNumParams = leftFunction.getNumParams()==rightFunction.getNumParams();
-                    if (sameName&&sameNumParams) {
-                        Term[] leftParamArray = leftFunction.getParameters();
-                        Term[] rightParamArray = rightFunction.getParameters();
-                        int length = leftParamArray.length; // Both same length.
-                        for (int i=0;i<length;i++) {
-                            Term[] unifyPair = new Term[2];
-                            unifyPair[0]=leftParamArray[i];
-                            unifyPair[1]=rightParamArray[i];
-                            stack.add(unifyPair);
-                        }
-                        
-                    }
-                    else {
-                        throw new CouldNotUnifyException("Incompatible functions");
-                    }
-                }
-                
                 // Both predicates
                 else if (left instanceof AbstractPredicate &&
                     right instanceof AbstractPredicate) {
-                    AbstractPredicate leftFunction = (AbstractPredicate)left;
-                    AbstractPredicate rightFunction = (AbstractPredicate)right;
-                    boolean sameName = leftFunction.getName().equals(rightFunction.getName());
-                    boolean sameNumParams = leftFunction.getNumParams()==rightFunction.getNumParams();
+                    AbstractPredicate leftPredicate = (AbstractPredicate)left;
+                    AbstractPredicate rightPredicate = (AbstractPredicate)right;
+                    boolean sameName = leftPredicate.getName().equals(rightPredicate.getName());
+                    boolean sameNumParams = leftPredicate.getNumParams()==rightPredicate.getNumParams();
                     if (sameName&&sameNumParams) {
-                        IUnifiable[] leftParamArray = leftFunction.getParameters();
-                        IUnifiable[] rightParamArray = rightFunction.getParameters();
+                        IUnifiable[] leftParamArray = leftPredicate.getParameters();
+                        IUnifiable[] rightParamArray = rightPredicate.getParameters();
                         int length = leftParamArray.length; // Both same length.
                         for (int i=0;i<length;i++) {
-                            IUnifiable[] unifyPair = new Term[2];
+                            IUnifiable[] unifyPair = new IUnifiable[2];
                             unifyPair[0]=leftParamArray[i];
                             unifyPair[1]=rightParamArray[i];
                             stack.add(unifyPair);

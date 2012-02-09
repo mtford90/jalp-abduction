@@ -4,37 +4,16 @@
  */
 package uk.co.mtford.abduction.logic;
 
-import java.util.Map;
-
 /**
  *
  * @author mtford
  */
 public class Equality extends AbstractPredicate {
-    
-    public Equality(IUnifiable param1, IUnifiable param2) {
-        this.parameters=new IUnifiable[2];
+
+    public Equality(String name, IUnifiable param1, IUnifiable param2) {
+        super(name, new IUnifiable[2]);
         parameters[0]=param1;
         parameters[1]=param2;
-        name="equals";
-    }
-
-    public String getName() {
-       return name;
-    }
-
-    public IUnifiable[] getParameters() {
-        return parameters;
-    }
-    
-    public void setParameters(IUnifiable param1, IUnifiable param2) {
-        parameters[0]=param1;
-        parameters[1]=param2;
-    }
-
-    @Override
-    public String toString() {
-        return parameters[0]+"="+parameters[1];
     }
 
     @Override
@@ -44,10 +23,17 @@ public class Equality extends AbstractPredicate {
         for (int i=0;i<clonedParams.length;i++) {
             clonedParams[i]=(IUnifiable) parameters[i].clone();
         }
-        return new Predicate(clonedName,clonedParams);
+        return new Equality(clonedName,clonedParams[0],clonedParams[1]);
+    }
+
+    public IUnifiable[] getParameters() {
+        return parameters;
     }
     
-    
-    
+    public void setParameters(IUnifiable param1, IUnifiable param2) {
+        parameters = new IUnifiable[2];
+        parameters[0]=param1;
+        parameters[1]=param2;
+    }
     
 }

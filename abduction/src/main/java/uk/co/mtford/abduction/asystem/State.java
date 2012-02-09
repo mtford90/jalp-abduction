@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import uk.co.mtford.abduction.logic.AbstractPredicate;
 import uk.co.mtford.abduction.logic.Equality;
+
 import uk.co.mtford.abduction.logic.program.Denial;
 
 /**

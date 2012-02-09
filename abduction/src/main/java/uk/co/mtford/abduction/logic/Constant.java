@@ -36,6 +36,13 @@ public class Constant implements Term {
         if (obj == null) {
             return false;
         }
+        if (obj instanceof Variable) {
+            Variable var = (Variable)obj;
+            IUnifiable value = var.getValue();
+            if (value instanceof Constant) {
+                return this.equals(value);
+            }
+        }
         if (getClass() != obj.getClass()) {
             return false;
         }

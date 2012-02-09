@@ -13,6 +13,21 @@ import java.util.Arrays;
 public abstract class AbstractPredicate implements IPredicate {
     protected String name;
     protected IUnifiable[] parameters;
+    
+    public AbstractPredicate(String name, IUnifiable[] parameters) {
+        this.name=name;
+        this.parameters=parameters;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    
 
     @Override
     public boolean equals(Object obj) {
@@ -39,7 +54,7 @@ public abstract class AbstractPredicate implements IPredicate {
         return false;
     }
     
-    public boolean replaceParameter(int num, IUnifiable parameter) {
+    public boolean replaceParameter(int num, Variable parameter) {
         if (num<0||num>parameters.length) {
             return false;
         }
@@ -47,7 +62,7 @@ public abstract class AbstractPredicate implements IPredicate {
         return true;
     }
     
-    public boolean replaceParameter(IUnifiable toBeReplaced, IUnifiable toReplace) {
+    public boolean replaceParameter(Variable toBeReplaced, Variable toReplace) {
         for (int i=0; i<parameters.length; i++) {
             if (parameters[i].equals(toBeReplaced)) {
                 parameters[i] = toReplace;
@@ -69,8 +84,13 @@ public abstract class AbstractPredicate implements IPredicate {
         return parameters.length;
     }
 
-    public void setParameters(IUnifiable[] params) {
+    public void setParameters(Variable[] params) {
         this.parameters=params;
+    }
+    
+    public IUnifiable getParameter(int i) {
+        if (i>parameters.length||i<0) return null;
+        return parameters[i];
     }
     
     @Override
