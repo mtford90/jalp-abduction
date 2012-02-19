@@ -4,12 +4,13 @@
  */
 package uk.co.mtford.unfication;
 
+import uk.co.mtford.unification.Unifier;
 import java.util.*;
 import org.junit.*;
 import static org.junit.Assert.*;
 import uk.co.mtford.abduction.logic.*;
 import uk.co.mtford.abduction.tools.NameGenerator;
-import uk.co.mtford.unfication.CouldNotUnifyException;
+import uk.co.mtford.unification.CouldNotUnifyException;
 
 /**
  *
