@@ -16,8 +16,6 @@ public class ASystemStateRewriter extends StateRewriter {
     public ASystemStateRewriter(AbductiveFramework abductiveFramework) {
         super(abductiveFramework);
     }
-    
-    
 
     @Override
     protected Set<AbstractPredicate> getNextGoal(Set<Set<AbstractPredicate>> goals) {

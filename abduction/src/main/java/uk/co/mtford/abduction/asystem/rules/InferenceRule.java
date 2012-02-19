@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.rules;
+package uk.co.mtford.abduction.asystem.rules;
 
 import java.lang.Thread.State;
 
