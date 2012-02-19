@@ -6,6 +6,7 @@ package uk.co.mtford.abduction.asystem;
 
 import java.util.Set;
 import uk.co.mtford.abduction.logic.AbstractPredicate;
+import uk.co.mtford.abduction.logic.program.Denial;
 
 /**
  *
@@ -18,13 +19,17 @@ public class ASystemStateRewriter extends StateRewriter {
     }
 
     @Override
-    protected Set<AbstractPredicate> getNextGoal(Set<Set<AbstractPredicate>> goals) {
+    protected AbstractPredicate getNextGoal(Set<AbstractPredicate> goals) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    protected State getNextState(Set<AbstractPredicate> goal) {
+    protected State getNextState(AbstractPredicate goal) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public State applyInferenceRule(Denial denial) {
+        return null;
     }
     
 }

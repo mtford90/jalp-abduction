@@ -7,6 +7,8 @@ package uk.co.mtford.abduction.logic;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Stack;
+import uk.co.mtford.abduction.asystem.ASystemInferable;
+import uk.co.mtford.abduction.asystem.State;
 import uk.co.mtford.abduction.logic.*;
 import uk.co.mtford.abduction.logic.Variable;
 import uk.co.mtford.abduction.tools.NameGenerator;
@@ -15,7 +17,7 @@ import uk.co.mtford.abduction.tools.NameGenerator;
  *
  * @author mtford
  */
-public class Predicate extends AbstractPredicate {
+public class Predicate extends AbstractPredicate implements ASystemInferable {
 
     public Predicate(String name, IUnifiable ... parameters) {
         super(name,parameters);
@@ -61,6 +63,11 @@ public class Predicate extends AbstractPredicate {
             clonedParams[i]=(IUnifiable) parameters[i].clone();
         }
         return new Predicate(clonedName,clonedParams);
+    }
+
+    // TODO
+    public State[] applyInferenceRule(State s) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     

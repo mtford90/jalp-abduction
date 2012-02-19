@@ -45,7 +45,7 @@ public abstract class StateRewriter implements IAbductiveLogicProgrammingSystem 
     private boolean moveToNextState(Set<AbstractPredicate> goals)  {
         State newState;
         if (goals == null || goals.isEmpty()) return false;
-        Set<AbstractPredicate> currentGoal = getNextGoal(goals); 
+        AbstractPredicate currentGoal = getNextGoal(goals); 
         if (currentGoal==null) {
             success = true;
             return false;
@@ -61,14 +61,14 @@ public abstract class StateRewriter implements IAbductiveLogicProgrammingSystem 
      * @param goals
      * @return 
      */
-    protected abstract Set<AbstractPredicate> getNextGoal(Set<AbstractPredicate> goals);
+    protected abstract AbstractPredicate getNextGoal(Set<AbstractPredicate> goals);
     
     /** Implements a state transition strategy.
      * 
      * @param goal
      * @return 
      */
-    protected abstract State getNextState(Set<AbstractPredicate> goal);
+    protected abstract State getNextState(AbstractPredicate goal);
     
     
 } 

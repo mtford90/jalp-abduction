@@ -4,11 +4,15 @@
  */
 package uk.co.mtford.abduction.logic;
 
+import uk.co.mtford.abduction.asystem.ASystemInferable;
+import uk.co.mtford.abduction.asystem.ASystemStateRewriter;
+import uk.co.mtford.abduction.asystem.State;
+
 /**
  *
  * @author mtford
  */
-public class Equality extends AbstractPredicate {
+public class Equality extends AbstractPredicate implements ASystemInferable  {
 
     public Equality(IUnifiable param1, IUnifiable param2) {
         super("Equals", new IUnifiable[2]);
@@ -35,7 +39,10 @@ public class Equality extends AbstractPredicate {
         parameters[0]=param1;
         parameters[1]=param2;
     }
-    
-    
+
+    // TODO
+    public State[] applyInferenceRule(State s) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

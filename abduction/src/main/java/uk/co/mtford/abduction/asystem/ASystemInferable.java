@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.abduction.logic;
+package uk.co.mtford.abduction.asystem;
 
 import uk.co.mtford.abduction.asystem.State;
 
@@ -10,7 +10,7 @@ import uk.co.mtford.abduction.asystem.State;
  *
  * @author mtford
  */
-public interface Inferable {
+public interface ASystemInferable {
     /** Applies the ASystem inference rule relevant to this particular
      *  logical sentence.
      * @param s
