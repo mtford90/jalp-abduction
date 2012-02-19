@@ -30,8 +30,8 @@ public abstract class StateRewriter implements IAbductiveLogicProgrammingSystem 
     }
     
     public State computeExplanation(Set<AbstractPredicate> query) {
-        Set<Set<AbstractPredicate>> goals = new HashSet<Set<AbstractPredicate>>();
-        goals.add(query);
+        Set<AbstractPredicate> goals = new HashSet<AbstractPredicate>();
+        goals.addAll(query);
         while (moveToNextState(goals)) {
             // Keep going.
         }
@@ -42,7 +42,7 @@ public abstract class StateRewriter implements IAbductiveLogicProgrammingSystem 
         return null;
     }
 
-    private boolean moveToNextState(Set<Set<AbstractPredicate>> goals)  {
+    private boolean moveToNextState(Set<AbstractPredicate> goals)  {
         State newState;
         if (goals == null || goals.isEmpty()) return false;
         Set<AbstractPredicate> currentGoal = getNextGoal(goals); 
@@ -61,7 +61,7 @@ public abstract class StateRewriter implements IAbductiveLogicProgrammingSystem 
      * @param goals
      * @return 
      */
-    protected abstract Set<AbstractPredicate> getNextGoal(Set<Set<AbstractPredicate>> goals);
+    protected abstract Set<AbstractPredicate> getNextGoal(Set<AbstractPredicate> goals);
     
     /** Implements a state transition strategy.
      * 

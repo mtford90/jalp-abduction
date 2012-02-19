@@ -10,8 +10,8 @@ package uk.co.mtford.abduction.logic;
  */
 public class Equality extends AbstractPredicate {
 
-    public Equality(String name, IUnifiable param1, IUnifiable param2) {
-        super(name, new IUnifiable[2]);
+    public Equality(IUnifiable param1, IUnifiable param2) {
+        super("Equals", new IUnifiable[2]);
         parameters[0]=param1;
         parameters[1]=param2;
     }
@@ -23,7 +23,7 @@ public class Equality extends AbstractPredicate {
         for (int i=0;i<clonedParams.length;i++) {
             clonedParams[i]=(IUnifiable) parameters[i].clone();
         }
-        return new Equality(clonedName,clonedParams[0],clonedParams[1]);
+        return new Equality(clonedParams[0],clonedParams[1]);
     }
 
     public IUnifiable[] getParameters() {
