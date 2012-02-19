@@ -16,7 +16,7 @@ import uk.co.mtford.abduction.logic.program.Denial;
  *
  * @author mtford
  */
-public class State implements Comparable {
+public class State implements Comparable, Cloneable {
     
     private Collection<AbstractPredicate> abducibles;
     private Collection<Denial> denials;

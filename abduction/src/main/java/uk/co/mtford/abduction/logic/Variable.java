@@ -51,29 +51,8 @@ public class Variable implements Term {
         return name+"="+value.toString();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (value instanceof Constant) {
-            return value.equals(obj);
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Variable other = (Variable) obj;
-        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
-            return false;
-        }
-        return true;
-    }
-    
- 
-
     /** Returns true if variable names at the same. Not concerned with value. */
     
-
     @Override
     public int hashCode() {
         int hash = 7;
@@ -91,6 +70,5 @@ public class Variable implements Term {
         }
         return new Variable(clonedName,clonedValue);
     }
-    
-    
+   
 }

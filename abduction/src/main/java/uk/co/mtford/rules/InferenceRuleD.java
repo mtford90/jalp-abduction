@@ -17,4 +17,6 @@ public class InferenceRuleD extends InferenceRule {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    
+    
 }

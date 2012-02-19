@@ -36,4 +36,6 @@ public class Equality extends AbstractPredicate {
         parameters[1]=param2;
     }
     
+    
+    
 }
