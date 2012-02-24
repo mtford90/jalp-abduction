@@ -20,8 +20,8 @@ public class Unifier {
         
         while (!stack.empty()) {
             t = stack.pop();
-            if (t instanceof AbstractPredicateInstance) {
-                AbstractPredicateInstance p = (AbstractPredicateInstance) t;
+            if (t instanceof PredicateInstance) {
+                PredicateInstance p = (PredicateInstance) t;
                 stack.addAll(Arrays.asList(p.getParameters()));
             }
             else if (t instanceof VariableInstance) {
@@ -123,10 +123,10 @@ public class Unifier {
                 }
                 
                 // Both predicates
-                else if (left instanceof AbstractPredicateInstance &&
-                    right instanceof AbstractPredicateInstance) {
-                    AbstractPredicateInstance leftPredicate = (AbstractPredicateInstance)left;
-                    AbstractPredicateInstance rightPredicate = (AbstractPredicateInstance)right;
+                else if (left instanceof PredicateInstance &&
+                    right instanceof PredicateInstance) {
+                    PredicateInstance leftPredicate = (PredicateInstance)left;
+                    PredicateInstance rightPredicate = (PredicateInstance)right;
                     boolean sameName = leftPredicate.getName().equals(rightPredicate.getName());
                     boolean sameNumParams = leftPredicate.getNumParams()==rightPredicate.getNumParams();
                     if (sameName&&sameNumParams) {

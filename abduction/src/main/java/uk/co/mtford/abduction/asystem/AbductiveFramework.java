@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import uk.co.mtford.abduction.logic.AbstractPredicateInstance;
+import uk.co.mtford.abduction.logic.PredicateInstance;
 import uk.co.mtford.abduction.logic.program.Denial;
 import uk.co.mtford.abduction.logic.program.Rule;
 
@@ -18,22 +18,22 @@ import uk.co.mtford.abduction.logic.program.Rule;
  */
 public class AbductiveFramework {
     protected List<Rule> P; // Logic program.
-    protected List<AbstractPredicateInstance> A; // Abducibles.
+    protected List<PredicateInstance> A; // Abducibles.
     protected List<Denial> IC; // Integrity constraints.
     
     public AbductiveFramework() {
         P = new LinkedList<Rule>();
-        A = new LinkedList<AbstractPredicateInstance>();
+        A = new LinkedList<PredicateInstance>();
         IC = new LinkedList<Denial>();
     }
 
-    public AbductiveFramework(List<Rule> P, List<AbstractPredicateInstance> A, List<Denial> IC) {
+    public AbductiveFramework(List<Rule> P, List<PredicateInstance> A, List<Denial> IC) {
         this.P = P;
         this.A = A;
         this.IC = IC;
     }
 
-    public void setA(List<AbstractPredicateInstance> A) {
+    public void setA(List<PredicateInstance> A) {
         this.A = A;
     }
 
@@ -45,7 +45,7 @@ public class AbductiveFramework {
         this.P = P;
     }
 
-    public List<AbstractPredicateInstance> getA() {
+    public List<PredicateInstance> getA() {
         return A;
     }
 

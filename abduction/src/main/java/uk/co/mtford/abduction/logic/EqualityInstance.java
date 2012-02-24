@@ -14,8 +14,8 @@ import uk.co.mtford.abduction.asystem.State;
  */
 public class EqualityInstance implements ASystemInferable  {
 
-    AbstractPredicateInstance left;
-    AbstractPredicateInstance right;
+    PredicateInstance left;
+    PredicateInstance right;
 
     // TODO: Equality solver implementation.
     public LogicalFormulaeInstance solveEquality() {

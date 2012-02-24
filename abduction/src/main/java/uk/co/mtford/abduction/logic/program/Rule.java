@@ -5,7 +5,7 @@
 package uk.co.mtford.abduction.logic.program;
 
 import java.util.List;
-import uk.co.mtford.abduction.logic.AbstractPredicateInstance;
+import uk.co.mtford.abduction.logic.PredicateInstance;
 import uk.co.mtford.abduction.logic.PredicateInstance;
 
 /**
@@ -13,39 +13,39 @@ import uk.co.mtford.abduction.logic.PredicateInstance;
  * @author mtford
  */
 public class Rule implements IRule {
-    private List<AbstractPredicateInstance> clause;
+    private List<PredicateInstance> clause;
     private PredicateInstance head;
 
-    public Rule(List<AbstractPredicateInstance> clause, PredicateInstance head) {
+    public Rule(List<PredicateInstance> clause, PredicateInstance head) {
         this.clause = clause;
         this.head = head;
     }
     
-    public void addClause(AbstractPredicateInstance p) {
+    public void addClause(PredicateInstance p) {
         clause.add(p);
     }
     
-    public void removeClause(AbstractPredicateInstance p) {
+    public void removeClause(PredicateInstance p) {
         clause.remove(p);
     }
     
-    public boolean containsClause(AbstractPredicateInstance p) {
+    public boolean containsClause(PredicateInstance p) {
         return clause.contains(p);
     }
     
-    public AbstractPredicateInstance getClause(int i) {
+    public PredicateInstance getClause(int i) {
         return clause.get(i);
     }
     
-    public AbstractPredicateInstance removeClause(int i) {
+    public PredicateInstance removeClause(int i) {
         return clause.remove(i);
     }
     
-    public AbstractPredicateInstance pop() {
+    public PredicateInstance pop() {
         return clause.get(0);
     }
     
-    public void push(AbstractPredicateInstance p) {
+    public void push(PredicateInstance p) {
         clause.add(0, p);
     }
 

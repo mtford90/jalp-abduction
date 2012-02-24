@@ -5,7 +5,7 @@
 package uk.co.mtford.abduction.asystem;
 
 import java.util.*;
-import uk.co.mtford.abduction.logic.AbstractPredicateInstance;
+import uk.co.mtford.abduction.logic.PredicateInstance;
 import uk.co.mtford.abduction.logic.EqualityInstance;
 
 import uk.co.mtford.abduction.logic.program.Denial;
@@ -16,18 +16,18 @@ import uk.co.mtford.abduction.logic.program.Denial;
  */
 public class Store implements Comparable, Cloneable {
     
-    private List<AbstractPredicateInstance> abducibles;
+    private List<PredicateInstance> abducibles;
     private List<Denial> denials;
     private List<EqualityInstance> equalities;
     
     
     public Store() {
-        abducibles = new LinkedList<AbstractPredicateInstance>();
+        abducibles = new LinkedList<PredicateInstance>();
         denials = new LinkedList<Denial>();
         equalities = new LinkedList<EqualityInstance>();
     }
     
-    public void put(AbstractPredicateInstance abducible) {
+    public void put(PredicateInstance abducible) {
         abducibles.add(abducible);
     }
     
@@ -39,7 +39,7 @@ public class Store implements Comparable, Cloneable {
         denials.add(denial);
     }
     
-    public boolean contains(AbstractPredicateInstance abducible) {
+    public boolean contains(PredicateInstance abducible) {
         return abducibles.contains(abducible);
     }
     
@@ -51,7 +51,7 @@ public class Store implements Comparable, Cloneable {
         return equalities.contains(equality);
     }
     
-    public boolean remove(AbstractPredicateInstance abducible) {
+    public boolean remove(PredicateInstance abducible) {
         return abducibles.remove(abducible);
     }
     

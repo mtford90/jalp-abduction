@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
-import uk.co.mtford.abduction.logic.AbstractPredicateInstance;
+import uk.co.mtford.abduction.logic.PredicateInstance;
 import uk.co.mtford.abduction.logic.IUnifiableInstance;
 import uk.co.mtford.abduction.logic.PredicateInstance;
 
@@ -17,11 +17,11 @@ import uk.co.mtford.abduction.logic.PredicateInstance;
  * @author mtford
  */
 public abstract class State implements Cloneable {
-    protected List<AbstractPredicateInstance> goals;
+    protected List<PredicateInstance> goals;
     protected Store store;
     protected AbductiveFramework abductiveFramework;
     
-    public State(List<AbstractPredicateInstance> goals, AbductiveFramework abductiveFramework) {
+    public State(List<PredicateInstance> goals, AbductiveFramework abductiveFramework) {
         this.goals = goals;
         store = new Store();
         this.abductiveFramework=abductiveFramework;
@@ -31,7 +31,7 @@ public abstract class State implements Cloneable {
      * 
      * @param goals 
      */
-    public void reset(List<AbstractPredicateInstance> goals, AbductiveFramework abductiveFramework) {
+    public void reset(List<PredicateInstance> goals, AbductiveFramework abductiveFramework) {
         this.goals = goals;
         store = new Store();
         this.abductiveFramework=abductiveFramework;
@@ -44,7 +44,7 @@ public abstract class State implements Cloneable {
      */
     public boolean moveToNextState() {
         if (goals.isEmpty()) return false;
-        AbstractPredicateInstance goal = getNextGoal();
+        PredicateInstance goal = getNextGoal();
         if (goal == null) return false;
         if (stateTransition(goal)) {
             return true;
@@ -78,14 +78,14 @@ public abstract class State implements Cloneable {
      * @param goals
      * @return 
      */
-    protected abstract AbstractPredicateInstance getNextGoal();
+    protected abstract PredicateInstance getNextGoal();
     
     /** Implements a state transition strategy.
      * 
      * @param goal
      * @return 
      */
-    protected abstract boolean stateTransition(AbstractPredicateInstance goal);
+    protected abstract boolean stateTransition(PredicateInstance goal);
     
     @Override
     public abstract Object clone();

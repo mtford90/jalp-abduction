@@ -5,7 +5,7 @@
 package uk.co.mtford.abduction.asystem;
 
 import java.util.List;
-import uk.co.mtford.abduction.logic.AbstractPredicateInstance;
+import uk.co.mtford.abduction.logic.PredicateInstance;
 
 /**
  *
@@ -13,17 +13,17 @@ import uk.co.mtford.abduction.logic.AbstractPredicateInstance;
  */
 public class ConcreteState extends State {
 
-    public ConcreteState(List<AbstractPredicateInstance> goals, AbductiveFramework abductiveFramework) {
+    public ConcreteState(List<PredicateInstance> goals, AbductiveFramework abductiveFramework) {
         super(goals, abductiveFramework);
     }
 
     @Override
-    protected AbstractPredicateInstance getNextGoal() {
+    protected PredicateInstance getNextGoal() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    protected boolean stateTransition(AbstractPredicateInstance goal) {
+    protected boolean stateTransition(PredicateInstance goal) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
