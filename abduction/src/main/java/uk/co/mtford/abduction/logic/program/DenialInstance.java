@@ -13,11 +13,11 @@ import uk.co.mtford.abduction.logic.LogicalFormulaeInstance;
  *
  * @author mtford
  */
-public class Denial implements IRule, ASystemInferable  {
+public class DenialInstance implements IRule, ASystemInferable  {
     
     private List<ASystemInferable> clause;
 
-    public Denial(List<ASystemInferable> clause) {
+    public DenialInstance(List<ASystemInferable> clause) {
         this.clause = clause;
     }
     
