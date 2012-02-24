@@ -4,6 +4,9 @@
  */
 package uk.co.mtford.abduction.logic;
 
+import uk.co.mtford.unification.CouldNotUnifyException;
+import uk.co.mtford.unification.Unifier;
+
 /**
  *
  * @author mtford
@@ -131,7 +134,12 @@ public class VariableInstance implements TermInstance {
     }
 
     public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            Unifier.unify(this, other);
+        } catch (CouldNotUnifyException ex) {
+            return new LogicalFalseInstance();
+        }
+        return new LogicalTrueInstance();
     }
 
    

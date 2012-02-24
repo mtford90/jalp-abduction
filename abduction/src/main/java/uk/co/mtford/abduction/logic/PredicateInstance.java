@@ -5,6 +5,8 @@
 package uk.co.mtford.abduction.logic;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import uk.co.mtford.abduction.asystem.ASystemInferable;
 import uk.co.mtford.abduction.asystem.AbductiveFramework;
 import uk.co.mtford.abduction.asystem.State;
@@ -12,6 +14,8 @@ import uk.co.mtford.abduction.asystem.Store;
 import uk.co.mtford.abduction.logic.*;
 import uk.co.mtford.abduction.logic.VariableInstance;
 import uk.co.mtford.abduction.tools.NameGenerator;
+import uk.co.mtford.unification.CouldNotUnifyException;
+import uk.co.mtford.unification.Unifier;
 
 /**
  *
@@ -72,8 +76,15 @@ public class PredicateInstance extends AbstractPredicateInstance implements ASys
     }
 
     public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            Unifier.unify(this, other);
+        } catch (CouldNotUnifyException ex) {
+            return new LogicalFalseInstance();
+        }
+        return new LogicalTrueInstance();
     }
+
+    
     
     
 }

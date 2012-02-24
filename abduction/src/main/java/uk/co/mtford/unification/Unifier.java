@@ -13,7 +13,7 @@ import uk.co.mtford.abduction.logic.*;
  */
 public class Unifier {
     
-    public boolean occurs(VariableInstance x, IUnifiableInstance t, Set<VariableInstance> sub) {
+    public static boolean occurs(VariableInstance x, IUnifiableInstance t, Set<VariableInstance> sub) {
         
         Stack<IUnifiableInstance> stack = new Stack<IUnifiableInstance>();
         stack.push(t);
@@ -40,13 +40,15 @@ public class Unifier {
     }
     
     // TODO: Consider using a table instead....
+    // TODO: Consider returning null rather than throwing exception. 
+    //       Is it really an 'exceptional' event??
     
     /** Returns the substitutions that unify s and t. 
      * @param left
      * @param right
      * @return 
      */
-    public Set<VariableInstance> unify(IUnifiableInstance left, IUnifiableInstance right) throws CouldNotUnifyException {
+    public static Set<VariableInstance> unify(IUnifiableInstance left, IUnifiableInstance right) throws CouldNotUnifyException {
         
         Set<VariableInstance> subst = new HashSet<VariableInstance>();
         
