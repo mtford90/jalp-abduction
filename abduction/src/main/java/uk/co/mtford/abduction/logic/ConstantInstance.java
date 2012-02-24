@@ -39,6 +39,15 @@ public class ConstantInstance implements TermInstance {
         if (obj instanceof VariableInstance) { // Special case whereby variables have been assigned a constant value.
             VariableInstance var = (VariableInstance)obj;
             IUnifiableInstance varValue = var.getValue();
+            if (varValue==null) {
+                return false;
+            }
+            while (varValue instanceof VariableInstance) {
+                varValue = ((VariableInstance)varValue).value;
+            }
+            if (varValue==null) {
+                return false;
+            }
             if (varValue instanceof ConstantInstance) {
                 return this.equals(varValue);
             }
@@ -67,6 +76,17 @@ public class ConstantInstance implements TermInstance {
     @Override
     public Object clone(){
         return new ConstantInstance(value);
+    }
+
+    /** If this constant is the same as other, then return true, otherwise
+     *  return false.
+     * 
+     * @param other
+     * @return 
+     */
+    public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other) {
+        if (this.equals(other)) return new LogicalTrueInstance();
+        return new LogicalFalseInstance();
     }
     
 }

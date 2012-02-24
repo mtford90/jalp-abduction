@@ -20,4 +20,5 @@ public interface ASystemInferable {
      * @return 
      */
     public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, State s);
+    
 }

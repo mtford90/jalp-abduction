@@ -5,7 +5,6 @@
 package uk.co.mtford.abduction.asystem;
 
 import java.util.List;
-import java.util.Set;
 import uk.co.mtford.abduction.logic.AbstractPredicateInstance;
 
 /**

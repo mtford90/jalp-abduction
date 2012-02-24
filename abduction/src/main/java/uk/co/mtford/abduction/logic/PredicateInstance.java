@@ -70,6 +70,10 @@ public class PredicateInstance extends AbstractPredicateInstance implements ASys
         List<AbstractPredicateInstance> abducibles = abductiveFramework.getA();
         return false;
     }
+
+    public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
     
 }

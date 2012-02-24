@@ -11,4 +11,5 @@ package uk.co.mtford.abduction.logic;
  */
 public interface IUnifiableInstance extends Cloneable, LogicalFormulaeInstance {
     public Object clone();
+    public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other);
 }

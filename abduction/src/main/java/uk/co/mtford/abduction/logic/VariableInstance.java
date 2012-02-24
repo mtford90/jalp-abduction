@@ -105,7 +105,14 @@ public class VariableInstance implements TermInstance {
             if (value == null ) {
                 return false;
             }
-            if (value instanceof ConstantInstance) {
+            IUnifiableInstance realValue = value;
+            while (realValue instanceof VariableInstance) {
+                realValue=((VariableInstance)realValue).value;
+            }
+            if (realValue== null) {
+                return false;
+            }
+            if (realValue instanceof ConstantInstance) {
                 return value.equals(constant);
             }
             return false;
@@ -123,10 +130,9 @@ public class VariableInstance implements TermInstance {
         return true;
     }
 
-    
+    public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
-    
-    
-    
    
 }
