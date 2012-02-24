@@ -6,6 +6,7 @@ package uk.co.mtford.unfication;
 
 import uk.co.mtford.unification.Unifier;
 import java.util.*;
+import org.apache.log4j.PropertyConfigurator;
 import org.junit.*;
 import static org.junit.Assert.*;
 import uk.co.mtford.abduction.logic.*;
@@ -26,6 +27,7 @@ public class UnifierTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         unifier = new Unifier();
+        PropertyConfigurator.configure("log4j.properties");
     }
 
     @AfterClass

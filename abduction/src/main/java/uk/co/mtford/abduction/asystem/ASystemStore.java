@@ -20,7 +20,6 @@ public class ASystemStore implements Comparable, Cloneable {
     private List<DenialInstance> denials;
     private List<EqualityInstance> equalities;
     
-    
     public ASystemStore() {
         abducibles = new LinkedList<PredicateInstance>();
         denials = new LinkedList<DenialInstance>();
@@ -88,10 +87,41 @@ public class ASystemStore implements Comparable, Cloneable {
     @Override
     public Object clone() {
         ASystemStore newStore = new ASystemStore();
-        newStore.abducibles.addAll(abducibles);
-        newStore.denials.addAll(denials);
-        newStore.equalities.addAll(equalities);
+        for (PredicateInstance abducible:abducibles) {
+            newStore.abducibles.add((PredicateInstance)abducible.clone());
+        }
+        for (DenialInstance denial:denials) {
+            newStore.denials.add((DenialInstance)denial.clone());
+        }
+        List<EqualityInstance> equalities;
         return newStore;
     }
+
+    @Override
+    public String toString() {
+        String output="S:{";
+        output+="{";
+        for (PredicateInstance abducible:abducibles) {
+            output+=abducible+", ";
+        }
+        output=output.substring(0, output.length());
+        output+="}, ";
+        output+="{";
+        for (DenialInstance denial:denials) {
+            output+=denial+", ";
+        }
+        output=output.substring(0, output.length());
+        output+="}, ";
+        output+="{";
+        for (EqualityInstance equality:equalities) {
+            output+=equality+", ";
+        }
+        output=output.substring(0, output.length());
+        output+="}}";
+        return output;
+        
+    }
+    
+    
     
 }

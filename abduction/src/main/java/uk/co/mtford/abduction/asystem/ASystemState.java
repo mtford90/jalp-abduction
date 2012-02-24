@@ -66,6 +66,7 @@ public abstract class ASystemState implements Cloneable {
         if (((ASystemState)this.clone()).moveToNextState()) {
             return true;
         }
+        
         return false;
     }
 
@@ -88,6 +89,15 @@ public abstract class ASystemState implements Cloneable {
 
     public ASystemStore getStore() {
         return store;
+    }
+
+    public List<LogicalFormulaeInstance> getGoals() {
+        return goals;
+    }
+
+    @Override
+    public String toString() {
+        return "ASystemState{" + "goals=" + goals + ", store=" + store + '}';
     }
     
 }

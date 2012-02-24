@@ -175,12 +175,6 @@ public class PredicateInstance implements IPredicateInstance, ASystemInferable {
         return new PredicateInstance(clonedName,clonedParams);
     }
 
-    public boolean applyInferenceRule(ASystemState s) {
-        AbductiveFramework abductiveFramework = s.getAbductiveFramework();
-        List<PredicateInstance> abducibles = abductiveFramework.getA();
-        return false;
-    }
-
     public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other) {
         try {
             Unifier.unify(this, other);
@@ -188,6 +182,14 @@ public class PredicateInstance implements IPredicateInstance, ASystemInferable {
             return new LogicalFalseInstance();
         }
         return new LogicalTrueInstance();
+    }
+
+    public List<ASystemState> applyInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public List<ASystemState> applyDenialInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     

@@ -6,16 +6,15 @@ package uk.co.mtford.abduction.logic.program;
 
 import java.util.List;
 import uk.co.mtford.abduction.logic.PredicateInstance;
-import uk.co.mtford.abduction.logic.PredicateInstance;
 
 /**
  *
  * @author mtford
  */
 public class Rule {
-    private List<PredicateInstance> clause;
     private PredicateInstance head;
-
+    private List<PredicateInstance> clause;
+    
     public Rule(List<PredicateInstance> clause, PredicateInstance head) {
         this.clause = clause;
         this.head = head;
@@ -56,7 +55,11 @@ public class Rule {
     public void setHead(PredicateInstance head) {
         this.head = head;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Rule{" + "head=" + head + ", clause=" + clause + '}';
+    }
     
     
 }

@@ -4,21 +4,25 @@
  */
 package uk.co.mtford.abduction.logic;
 
+import java.util.LinkedList;
 import java.util.List;
 import uk.co.mtford.abduction.asystem.ASystemInferable;
 import uk.co.mtford.abduction.asystem.ASystemState;
-import uk.co.mtford.abduction.logic.LogicalFormulaeInstance;
 
 /**
  *
  * @author mtford
  */
-public class DenialInstance implements ASystemInferable  {
+public class DenialInstance implements ASystemInferable, Cloneable  {
     
     private List<ASystemInferable> clause;
 
     public DenialInstance(List<ASystemInferable> clause) {
         this.clause = clause;
+    }
+    
+    public DenialInstance() {
+        clause = new LinkedList<ASystemInferable>();
     }
     
     public void addClause(ASystemInferable p) {
@@ -49,9 +53,26 @@ public class DenialInstance implements ASystemInferable  {
         clause.add(0, p);
     }
 
-    public boolean applyInferenceRule(ASystemState s) {
+    public List<ASystemState> applyInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public List<ASystemState> applyDenialInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    @Override
+    public Object clone() {
+        DenialInstance clone = new DenialInstance();
+        for (ASystemInferable inferable:clause) {
+            clone.clause.add((ASystemInferable)inferable.clone());
+        }
+        return clone;
+    }
+
+    @Override
+    public String toString() {
+        return "DenialInstance{" + "clause=" + clause + '}';
+    }
     
 }

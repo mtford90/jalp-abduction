@@ -13,19 +13,20 @@ import uk.co.mtford.abduction.asystem.ASystemState;
  */
 public class LogicalFalseInstance implements TruthValueInstance {
 
-
-    public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, ASystemState s) {
-        return false;
-    }
-
     public boolean deepEquals(Object obj) {
         return this.equals(obj);
     }
 
-    public boolean applyInferenceRule(ASystemState s) {
-        return true;
+    public List<ASystemState> applyInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public List<ASystemState> applyDenialInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
-    
+    public Object clone() {
+        return new LogicalFalseInstance();
+    }
+ 
 }

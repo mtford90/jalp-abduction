@@ -7,6 +7,7 @@ package uk.co.mtford.abduction.logic;
 import java.util.List;
 import uk.co.mtford.abduction.asystem.ASystemInferable;
 import uk.co.mtford.abduction.asystem.ASystemState;
+import uk.co.mtford.abduction.asystem.ASystemStore;
 
 /**
  *
@@ -38,13 +39,16 @@ public class EqualityInstance implements ASystemInferable  {
         this.right = right;
     }
 
-    /** Solves the equality, and adds it to the store.
-     * 
-     * @param s
-     * @return 
-     */
-    public boolean applyInferenceRule(ASystemState s) {
+    public List<ASystemState> applyInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public List<ASystemState> applyDenialInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public Object clone() {
+        return new EqualityInstance((IUnifiableInstance)left.clone(),(IUnifiableInstance)right.clone());
     }
 
 }

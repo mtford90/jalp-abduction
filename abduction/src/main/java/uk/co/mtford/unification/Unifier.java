@@ -5,6 +5,7 @@
 package uk.co.mtford.unification;
 
 import java.util.*;
+import org.apache.log4j.Logger;
 import uk.co.mtford.abduction.logic.*;
 
 /**
@@ -13,7 +14,12 @@ import uk.co.mtford.abduction.logic.*;
  */
 public class Unifier {
     
+    private static final Logger LOGGER = Logger.getLogger(Unifier.class);
+    
     public static boolean occurs(VariableInstance x, IUnifiableInstance t, Set<VariableInstance> sub) {
+        
+        String logHead = "occurs("+x+", "+t+"): ";
+        LOGGER.info(logHead+"starting.");
         
         Stack<IUnifiableInstance> stack = new Stack<IUnifiableInstance>();
         stack.push(t);
@@ -27,6 +33,7 @@ public class Unifier {
             else if (t instanceof VariableInstance) {
                 VariableInstance y = (VariableInstance) t;
                 if (x.equals(y)) {
+                    LOGGER.info(logHead+"Finished. Yes it occurs.");
                     return true;
                 }
                 if (sub.contains(y)) {
@@ -35,7 +42,7 @@ public class Unifier {
             }
             
 	}
-	
+	LOGGER.info(logHead+"Finished. No it doesn't occur.");
 	return false;
     }
     
@@ -50,6 +57,9 @@ public class Unifier {
      */
     public static Set<VariableInstance> unify(IUnifiableInstance left, IUnifiableInstance right) throws CouldNotUnifyException {
         
+        String logHead = "unify("+left+", "+right+"): ";
+        LOGGER.info(logHead+"starting.");
+
         Set<VariableInstance> subst = new HashSet<VariableInstance>();
         
         // Pairs of formulae waiting to unified.
@@ -73,6 +83,7 @@ public class Unifier {
                    return subst;
                } 
                else {
+                   LOGGER.info("Couldn't unify. Different constants.");
                    throw new CouldNotUnifyException("Incompatible constants.");
                }
             }
@@ -108,6 +119,7 @@ public class Unifier {
                         subst.add(var);
                     }
                     else {
+                        LOGGER.info("Couldn't unify. Occurs check failed.");
                         throw new CouldNotUnifyException();
                     }
                 }
@@ -118,6 +130,7 @@ public class Unifier {
                         subst.add(var);
                     }
                     else {
+                        LOGGER.info("Couldn't unify. Occurs check failed.");
                         throw new CouldNotUnifyException();
                     }
                 }
@@ -142,6 +155,7 @@ public class Unifier {
                         
                     }
                     else {
+                        LOGGER.info(logHead+"Could not unify. Predicates dont match.");
                         throw new CouldNotUnifyException("Incompatible predicates");
                     }
                 }          
@@ -149,7 +163,8 @@ public class Unifier {
             }
             
         }
-          
+        
+        LOGGER.info(logHead+"Successful.");
         return subst;
         
     }
