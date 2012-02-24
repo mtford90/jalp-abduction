@@ -9,6 +9,6 @@ package uk.co.mtford.abduction.logic;
  *
  * @author mtford
  */
-public interface IUnifiableInstance extends Cloneable, LogicalFormulae {
+public interface IUnifiableInstance extends Cloneable, LogicalFormulaeInstance {
     public Object clone();
 }

@@ -8,6 +8,8 @@ package uk.co.mtford.abduction.logic;
  *
  * @author mtford
  */
-public interface LogicalFormulae {
-    
+public interface LogicalFormulaeInstance {
+    @Override
+    public boolean equals(Object obj);
+    public boolean deepEquals(Object obj);
 }

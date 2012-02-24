@@ -13,10 +13,14 @@ import uk.co.mtford.abduction.asystem.Store;
  *
  * @author mtford
  */
-public class LogicalTrue implements TruthValue {
+public class LogicalTrueInstance implements TruthValueInstance {
 
-    public boolean applyInferenceRule(List<LogicalFormulae> goals, State s) {
+    public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, State s) {
         return true; // No need to modify anything.
+    }
+    
+     public boolean deepEquals(Object obj) {
+        return this.equals(obj);
     }
     
 }

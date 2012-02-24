@@ -96,7 +96,7 @@ public class Unifier {
             }
             
             // Perform unification
-            if (!left.equals(right)) {  
+            if (!left.deepEquals(right)) {  
                 
                 // One formula is a variable.
                 if (left instanceof VariableInstance) {
@@ -151,68 +151,6 @@ public class Unifier {
         return subst;
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private class Substitution {
-        private VariableInstance v;
-        private IUnifiableInstance i;
-
-        public Substitution(VariableInstance v, IUnifiableInstance i) {
-            this.v = v;
-            this.i = i;
-        }
-
-        public IUnifiableInstance getI() {
-            return i;
-        }
-
-        public void setI(IUnifiableInstance i) {
-            this.i = i;
-        }
-
-        public VariableInstance getV() {
-            return v;
-        }
-
-        public void setV(VariableInstance v) {
-            this.v = v;
-        }
-        
-    }
-              
-   
-   
-    
- 
-    
-
+       
  
 }

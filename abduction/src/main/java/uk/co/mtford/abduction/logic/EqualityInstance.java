@@ -48,7 +48,7 @@ public class EqualityInstance extends AbstractPredicateInstance implements ASyst
         return false;
     }
 
-    public boolean applyInferenceRule(List<LogicalFormulae> goals, State s) {
+    public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, State s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

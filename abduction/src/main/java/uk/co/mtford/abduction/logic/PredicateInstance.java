@@ -65,7 +65,7 @@ public class PredicateInstance extends AbstractPredicateInstance implements ASys
         return new PredicateInstance(clonedName,clonedParams);
     }
 
-    public boolean applyInferenceRule(List<LogicalFormulae> goals, State s) {
+    public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, State s) {
         AbductiveFramework abductiveFramework = s.getAbductiveFramework();
         List<AbstractPredicateInstance> abducibles = abductiveFramework.getA();
         return false;

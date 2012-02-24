@@ -7,7 +7,7 @@ package uk.co.mtford.abduction.asystem;
 import java.util.List;
 import java.util.Set;
 import uk.co.mtford.abduction.asystem.Store;
-import uk.co.mtford.abduction.logic.LogicalFormulae;
+import uk.co.mtford.abduction.logic.LogicalFormulaeInstance;
 
 /**
  *
@@ -19,5 +19,5 @@ public interface ASystemInferable {
      * @param s
      * @return 
      */
-    public boolean applyInferenceRule(List<LogicalFormulae> goals, State s);
+    public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, State s);
 }

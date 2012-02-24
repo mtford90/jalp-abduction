@@ -27,6 +27,11 @@ public abstract class AbstractPredicateInstance implements IPredicateInstance {
         this.name = name;
     }
 
+    /** Returns true if same name and same num parameters.
+     * 
+     * @param obj
+     * @return 
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -39,11 +44,42 @@ public abstract class AbstractPredicateInstance implements IPredicateInstance {
         if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
             return false;
         }
-        if (!Arrays.deepEquals(this.parameters, other.parameters)) {
+        if (this.parameters.length!=other.parameters.length) {
             return false;
         }
         return true;
     }
+    
+    /** Returns true if same name and parameters are the same.
+     * 
+     * @param obj
+     * @return 
+     */
+    @Override
+    public boolean deepEquals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AbstractPredicateInstance other = (AbstractPredicateInstance) obj;
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if (this.parameters.length!=other.parameters.length) {
+            return false;
+        }
+        for (int i=0;i<parameters.length;i++) {
+            if (!parameters[i].deepEquals(other.parameters[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    
+    
     
     public boolean contains(IUnifiableInstance parameter) {
         for (int i=0;i<parameters.length;i++) {

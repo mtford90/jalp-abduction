@@ -52,6 +52,10 @@ public class ConstantInstance implements TermInstance {
         }
         return true;
     }
+    
+    public boolean deepEquals(Object obj) {
+        return equals(obj);
+    }
 
     @Override
     public int hashCode() {

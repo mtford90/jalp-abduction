@@ -10,7 +10,7 @@ import uk.co.mtford.abduction.asystem.ASystemInferable;
 import uk.co.mtford.abduction.asystem.State;
 import uk.co.mtford.abduction.asystem.Store;
 import uk.co.mtford.abduction.logic.AbstractPredicateInstance;
-import uk.co.mtford.abduction.logic.LogicalFormulae;
+import uk.co.mtford.abduction.logic.LogicalFormulaeInstance;
 
 /**
  *
@@ -52,7 +52,7 @@ public class Denial implements IRule, ASystemInferable  {
         clause.add(0, p);
     }
 
-    public boolean applyInferenceRule(List<LogicalFormulae> goals, State s) {
+    public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, State s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

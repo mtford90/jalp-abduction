@@ -71,8 +71,32 @@ public class VariableInstance implements TermInstance {
         return new VariableInstance(clonedName,clonedValue);
     }
 
+    /** Returns true if same name.
+     * 
+     * @param obj
+     * @return 
+     */
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final VariableInstance other = (VariableInstance) obj;
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        return true;
+    }
+    
+    /** Returns true if same name or same value.
+     * 
+     * @param obj
+     * @return 
+     */
+    public boolean deepEquals(Object obj) {
         if (obj == null) {
             return false;
         }
@@ -93,7 +117,7 @@ public class VariableInstance implements TermInstance {
         if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
             return false;
         }
-        if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
+        if (this.value != other.value && (this.value == null || !this.value.deepEquals(other.value))) {
             return false;
         }
         return true;
