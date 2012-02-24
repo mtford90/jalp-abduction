@@ -8,18 +8,18 @@ package uk.co.mtford.abduction.logic;
  *
  * @author mtford
  */
-public class Negation {
-    IUnifiable formula;
+public class NegationInstance {
+    IUnifiableInstance formula;
 
-    public Negation(IUnifiable formula) {
+    public NegationInstance(IUnifiableInstance formula) {
         this.formula = formula;
     }
 
-    public IUnifiable getFormula() {
+    public IUnifiableInstance getFormula() {
         return formula;
     }
 
-    public void setFormula(IUnifiable formula) {
+    public void setFormula(IUnifiableInstance formula) {
         this.formula = formula;
     }
     

@@ -8,6 +8,6 @@ package uk.co.mtford.abduction.logic;
  *
  * @author mtford
  */
-public class Conjunction {
-    
+public interface TermInstance extends IUnifiableInstance {
+   public Object clone();
 }

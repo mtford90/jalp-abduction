@@ -10,11 +10,11 @@ import java.util.Arrays;
  *
  * @author mtford
  */
-public abstract class AbstractPredicate implements IPredicate {
+public abstract class AbstractPredicateInstance implements IPredicateInstance {
     protected String name;
-    protected IUnifiable[] parameters;
+    protected IUnifiableInstance[] parameters;
     
-    public AbstractPredicate(String name, IUnifiable[] parameters) {
+    public AbstractPredicateInstance(String name, IUnifiableInstance[] parameters) {
         this.name=name;
         this.parameters=parameters;
     }
@@ -26,8 +26,6 @@ public abstract class AbstractPredicate implements IPredicate {
     public void setName(String name) {
         this.name = name;
     }
-    
-    
 
     @Override
     public boolean equals(Object obj) {
@@ -37,7 +35,7 @@ public abstract class AbstractPredicate implements IPredicate {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final AbstractPredicate other = (AbstractPredicate) obj;
+        final AbstractPredicateInstance other = (AbstractPredicateInstance) obj;
         if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
             return false;
         }
@@ -47,14 +45,14 @@ public abstract class AbstractPredicate implements IPredicate {
         return true;
     }
     
-    public boolean contains(IUnifiable parameter) {
+    public boolean contains(IUnifiableInstance parameter) {
         for (int i=0;i<parameters.length;i++) {
             if (parameters[i].equals(parameter)) return true;
         }
         return false;
     }
     
-    public boolean replaceParameter(int num, Variable parameter) {
+    public boolean replaceParameter(int num, VariableInstance parameter) {
         if (num<0||num>parameters.length) {
             return false;
         }
@@ -62,7 +60,7 @@ public abstract class AbstractPredicate implements IPredicate {
         return true;
     }
     
-    public boolean replaceParameter(Variable toBeReplaced, Variable toReplace) {
+    public boolean replaceParameter(VariableInstance toBeReplaced, VariableInstance toReplace) {
         for (int i=0; i<parameters.length; i++) {
             if (parameters[i].equals(toBeReplaced)) {
                 parameters[i] = toReplace;
@@ -84,11 +82,11 @@ public abstract class AbstractPredicate implements IPredicate {
         return parameters.length;
     }
 
-    public void setParameters(Variable[] params) {
+    public void setParameters(VariableInstance[] params) {
         this.parameters=params;
     }
     
-    public IUnifiable getParameter(int i) {
+    public IUnifiableInstance getParameter(int i) {
         if (i>parameters.length||i<0) return null;
         return parameters[i];
     }

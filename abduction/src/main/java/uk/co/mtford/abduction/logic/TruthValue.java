@@ -10,6 +10,6 @@ import uk.co.mtford.abduction.asystem.ASystemInferable;
  *
  * @author mtford
  */
-public interface TruthValue extends LogicalFormula, ASystemInferable {
+public interface TruthValue extends LogicalFormulae, ASystemInferable {
     
 }

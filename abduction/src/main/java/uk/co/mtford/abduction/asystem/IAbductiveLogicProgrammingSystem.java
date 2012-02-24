@@ -4,13 +4,15 @@
  */
 package uk.co.mtford.abduction.asystem;
 
+import java.util.List;
 import java.util.Set;
-import uk.co.mtford.abduction.logic.AbstractPredicate;
+import uk.co.mtford.abduction.logic.AbstractPredicateInstance;
 
 /**
  *
  * @author mtford
  */
 public interface IAbductiveLogicProgrammingSystem {
-   public abstract State computeExplanation(Set<AbstractPredicate> query);
+   public abstract Store computeExplanation(List<AbstractPredicateInstance> query,
+                                            AbductiveFramework abductiveFramework);
 }

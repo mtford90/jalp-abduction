@@ -13,19 +13,19 @@ import uk.co.mtford.abduction.logic.*;
  */
 public class Unifier {
     
-    public boolean occurs(Variable x, IUnifiable t, Set<Variable> sub) {
+    public boolean occurs(VariableInstance x, IUnifiableInstance t, Set<VariableInstance> sub) {
         
-        Stack<IUnifiable> stack = new Stack<IUnifiable>();
+        Stack<IUnifiableInstance> stack = new Stack<IUnifiableInstance>();
         stack.push(t);
         
         while (!stack.empty()) {
             t = stack.pop();
-            if (t instanceof AbstractPredicate) {
-                AbstractPredicate p = (AbstractPredicate) t;
+            if (t instanceof AbstractPredicateInstance) {
+                AbstractPredicateInstance p = (AbstractPredicateInstance) t;
                 stack.addAll(Arrays.asList(p.getParameters()));
             }
-            else if (t instanceof Variable) {
-                Variable y = (Variable) t;
+            else if (t instanceof VariableInstance) {
+                VariableInstance y = (VariableInstance) t;
                 if (x.equals(y)) {
                     return true;
                 }
@@ -46,15 +46,15 @@ public class Unifier {
      * @param right
      * @return 
      */
-    public Set<Variable> unify(IUnifiable left, IUnifiable right) throws CouldNotUnifyException {
+    public Set<VariableInstance> unify(IUnifiableInstance left, IUnifiableInstance right) throws CouldNotUnifyException {
         
-        Set<Variable> subst = new HashSet<Variable>();
+        Set<VariableInstance> subst = new HashSet<VariableInstance>();
         
         // Pairs of formulae waiting to unified.
-        Stack<IUnifiable[]> stack = new Stack<IUnifiable[]>();
+        Stack<IUnifiableInstance[]> stack = new Stack<IUnifiableInstance[]>();
         
         // The current pair we are unifying.
-        IUnifiable[] currentPair = new IUnifiable[2];
+        IUnifiableInstance[] currentPair = new IUnifiableInstance[2];
         currentPair[0]=left;currentPair[1]=right;
         stack.push(currentPair);
         
@@ -65,8 +65,8 @@ public class Unifier {
             left = currentPair[0];
             right = currentPair[1];
             
-            if (left instanceof Constant && 
-                right instanceof Constant) {
+            if (left instanceof ConstantInstance && 
+                right instanceof ConstantInstance) {
                if (left.equals(right)) {
                    return subst;
                } 
@@ -76,18 +76,18 @@ public class Unifier {
             }
             
             // Replace variables with their substitutions.
-            if (left instanceof Variable) {
-                while (left instanceof Variable) {
-                    Variable var = (Variable)left;
+            if (left instanceof VariableInstance) {
+                while (left instanceof VariableInstance) {
+                    VariableInstance var = (VariableInstance)left;
                     if (!var.isAssigned()) {
                         break;
                     }
                     left = var.getValue();    
                 }
             }
-            if (right instanceof Variable) {
-                while (right instanceof Variable) {
-                    Variable var = (Variable)right;
+            if (right instanceof VariableInstance) {
+                while (right instanceof VariableInstance) {
+                    VariableInstance var = (VariableInstance)right;
                     if (!var.isAssigned()) {
                         break;
                     }
@@ -99,8 +99,8 @@ public class Unifier {
             if (!left.equals(right)) {  
                 
                 // One formula is a variable.
-                if (left instanceof Variable) {
-                    Variable var = (Variable) left;
+                if (left instanceof VariableInstance) {
+                    VariableInstance var = (VariableInstance) left;
                     if (!occurs(var,right,subst)) {
                         var.setValue(right);
                         subst.add(var);
@@ -109,8 +109,8 @@ public class Unifier {
                         throw new CouldNotUnifyException();
                     }
                 }
-                else if (right instanceof Variable) {
-                    Variable var = (Variable) right;
+                else if (right instanceof VariableInstance) {
+                    VariableInstance var = (VariableInstance) right;
                     if (!occurs(var,left,subst)) {
                         var.setValue(left);
                         subst.add(var);
@@ -121,18 +121,18 @@ public class Unifier {
                 }
                 
                 // Both predicates
-                else if (left instanceof AbstractPredicate &&
-                    right instanceof AbstractPredicate) {
-                    AbstractPredicate leftPredicate = (AbstractPredicate)left;
-                    AbstractPredicate rightPredicate = (AbstractPredicate)right;
+                else if (left instanceof AbstractPredicateInstance &&
+                    right instanceof AbstractPredicateInstance) {
+                    AbstractPredicateInstance leftPredicate = (AbstractPredicateInstance)left;
+                    AbstractPredicateInstance rightPredicate = (AbstractPredicateInstance)right;
                     boolean sameName = leftPredicate.getName().equals(rightPredicate.getName());
                     boolean sameNumParams = leftPredicate.getNumParams()==rightPredicate.getNumParams();
                     if (sameName&&sameNumParams) {
-                        IUnifiable[] leftParamArray = leftPredicate.getParameters();
-                        IUnifiable[] rightParamArray = rightPredicate.getParameters();
+                        IUnifiableInstance[] leftParamArray = leftPredicate.getParameters();
+                        IUnifiableInstance[] rightParamArray = rightPredicate.getParameters();
                         int length = leftParamArray.length; // Both same length.
                         for (int i=0;i<length;i++) {
-                            IUnifiable[] unifyPair = new IUnifiable[2];
+                            IUnifiableInstance[] unifyPair = new IUnifiableInstance[2];
                             unifyPair[0]=leftParamArray[i];
                             unifyPair[1]=rightParamArray[i];
                             stack.add(unifyPair);
@@ -182,27 +182,27 @@ public class Unifier {
     
     
     private class Substitution {
-        private Variable v;
-        private IUnifiable i;
+        private VariableInstance v;
+        private IUnifiableInstance i;
 
-        public Substitution(Variable v, IUnifiable i) {
+        public Substitution(VariableInstance v, IUnifiableInstance i) {
             this.v = v;
             this.i = i;
         }
 
-        public IUnifiable getI() {
+        public IUnifiableInstance getI() {
             return i;
         }
 
-        public void setI(IUnifiable i) {
+        public void setI(IUnifiableInstance i) {
             this.i = i;
         }
 
-        public Variable getV() {
+        public VariableInstance getV() {
             return v;
         }
 
-        public void setV(Variable v) {
+        public void setV(VariableInstance v) {
             this.v = v;
         }
         

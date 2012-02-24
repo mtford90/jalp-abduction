@@ -4,10 +4,11 @@
  */
 package uk.co.mtford.abduction.logic;
 
+
 /**
  *
  * @author mtford
  */
-public interface Term extends IUnifiable {
-   public Object clone();
+public interface IUnifiableInstance extends Cloneable, LogicalFormulae {
+    public Object clone();
 }

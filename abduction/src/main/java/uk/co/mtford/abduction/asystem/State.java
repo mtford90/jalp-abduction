@@ -4,86 +4,96 @@
  */
 package uk.co.mtford.abduction.asystem;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import uk.co.mtford.abduction.logic.AbstractPredicate;
-import uk.co.mtford.abduction.logic.Equality;
-
-import uk.co.mtford.abduction.logic.program.Denial;
+import java.util.Stack;
+import uk.co.mtford.abduction.logic.AbstractPredicateInstance;
+import uk.co.mtford.abduction.logic.IUnifiableInstance;
+import uk.co.mtford.abduction.logic.PredicateInstance;
 
 /**
  *
  * @author mtford
  */
-public class State implements Comparable, Cloneable {
+public abstract class State implements Cloneable {
+    protected List<AbstractPredicateInstance> goals;
+    protected Store store;
+    protected AbductiveFramework abductiveFramework;
     
-    private Collection<AbstractPredicate> abducibles;
-    private Collection<Denial> denials;
-    private Collection<Equality> equalities;
-    
-    public State() {
-        abducibles = new HashSet<AbstractPredicate>();
-        denials = new HashSet<Denial>();
-        equalities = new HashSet<Equality>();
+    public State(List<AbstractPredicateInstance> goals, AbductiveFramework abductiveFramework) {
+        this.goals = goals;
+        store = new Store();
+        this.abductiveFramework=abductiveFramework;
     }
     
-    public void put(AbstractPredicate abducible) {
-        abducibles.add(abducible);
+    /** Resets this state with new goals.
+     * 
+     * @param goals 
+     */
+    public void reset(List<AbstractPredicateInstance> goals, AbductiveFramework abductiveFramework) {
+        this.goals = goals;
+        store = new Store();
+        this.abductiveFramework=abductiveFramework;
     }
     
-    public void put(Equality equality) {
-        equalities.add(equality);
-    }
-    
-    public void put(Denial denial) {
-        denials.add(denial);
-    }
-    
-    public boolean contains(AbstractPredicate abducible) {
-        return abducibles.contains(abducible);
-    }
-    
-    public boolean contains(Denial denial) {
-        return denials.contains(denial);
-    }
-    
-    public boolean contains(Equality equality) {
-        return equalities.contains(equality);
-    }
-    
-    public boolean remove(AbstractPredicate abducible) {
-        return abducibles.remove(abducible);
-    }
-    
-    public boolean remove(Equality equality) {
-        return equalities.remove(equality);
-    }
-    
-    public boolean remove(Denial denial) {
-        return denials.remove(denial);
-    }
-    
-    public int numAbducibles() {
-        return abducibles.size();
-    }
-    
-    public int numDenials() {
-        return denials.size();
-    }
-    
-    public int numEqualities() {
-        return equalities.size();
-    }
-    
-    /** Very simple useless heuristic. Orders by num of 
-     *  abducibles collected.
-     * @param t
+    /** Uses latest goal and inference rules to progress onto the next
+     *  state.
+     * 
      * @return 
      */
-    public int compareTo(Object t) {
-        if (t == this) return 0;
-        return abducibles.size() - ((State)t).numAbducibles();
+    public boolean moveToNextState() {
+        if (goals.isEmpty()) return false;
+        AbstractPredicateInstance goal = getNextGoal();
+        if (goal == null) return false;
+        if (stateTransition(goal)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
+    
+    public AbductiveFramework getAbductiveFramework() {
+        return abductiveFramework;
+    }
+    
+    public boolean hasGoalsRemaining() {
+        return goals.size()>0;
+    }
+    
+    /** Returns true if this state can be progressed.
+     * 
+     * @return 
+     */
+    public boolean canMoveToAnotherState() {
+        if (((State)this.clone()).moveToNextState()) {
+            return true;
+        }
+        return false;
+    }
+
+    /** Implements a goal selection strategy.
+     * 
+     * @param goals
+     * @return 
+     */
+    protected abstract AbstractPredicateInstance getNextGoal();
+    
+    /** Implements a state transition strategy.
+     * 
+     * @param goal
+     * @return 
+     */
+    protected abstract boolean stateTransition(AbstractPredicateInstance goal);
+    
+    @Override
+    public abstract Object clone();
+
+    public Store getStore() {
+        return store;
+    }
+    
+    
     
 }

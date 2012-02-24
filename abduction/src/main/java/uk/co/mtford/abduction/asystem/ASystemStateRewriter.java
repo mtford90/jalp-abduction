@@ -4,32 +4,44 @@
  */
 package uk.co.mtford.abduction.asystem;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import uk.co.mtford.abduction.logic.AbstractPredicate;
-import uk.co.mtford.abduction.logic.program.Denial;
+import uk.co.mtford.abduction.logic.AbstractPredicateInstance;
 
 /**
  *
  * @author mtford
  */
-public class ASystemStateRewriter extends StateRewriter {
+public class ASystemStateRewriter implements IAbductiveLogicProgrammingSystem {
+    
+    protected boolean success;
 
-    public ASystemStateRewriter(AbductiveFramework abductiveFramework) {
-        super(abductiveFramework);
-    }
-
-    @Override
-    protected AbstractPredicate getNextGoal(Set<AbstractPredicate> goals) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected State getNextState(AbstractPredicate goal) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public ASystemStateRewriter() {
+        success = false;
     }
     
-    public State applyInferenceRule(Denial denial) {
-        return null;
+    private void resetSystem() {
+        success = false;
     }
     
-}
+    /** Computes an abductive explanation in the form of an ASystem
+     *  store.
+     * 
+     * @param query
+     * @param abductiveFramework
+     * @return 
+     */
+    public Store computeExplanation(List<AbstractPredicateInstance> query, 
+                                    AbductiveFramework abductiveFramework) {
+        State state = new ConcreteState(query, abductiveFramework);
+        while (state.moveToNextState()) {
+            // Keep going.
+        }
+        if (state.hasGoalsRemaining()) {
+            return null;
+        }
+        return state.getStore();
+    }
+    
+} 

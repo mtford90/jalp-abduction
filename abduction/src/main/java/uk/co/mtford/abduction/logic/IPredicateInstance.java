@@ -8,6 +8,7 @@ package uk.co.mtford.abduction.logic;
  *
  * @author mtford
  */
-public interface LogicalFormula {
-    
+public interface IPredicateInstance extends IUnifiableInstance {
+    public String getName();
+    public IUnifiableInstance[] getParameters();
 }

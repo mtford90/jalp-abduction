@@ -10,10 +10,10 @@ import java.util.Map;
  *
  * @author mtford
  */
-public class Constant implements Term {
+public class ConstantInstance implements TermInstance {
     private String value;
 
-    public Constant(String value) {
+    public ConstantInstance(String value) {
         this.value = value;
     }
 
@@ -36,17 +36,17 @@ public class Constant implements Term {
         if (obj == null) {
             return false;
         }
-        if (obj instanceof Variable) { // Special case whereby variables have been assigned a constant value.
-            Variable var = (Variable)obj;
-            IUnifiable varValue = var.getValue();
-            if (varValue instanceof Constant) {
+        if (obj instanceof VariableInstance) { // Special case whereby variables have been assigned a constant value.
+            VariableInstance var = (VariableInstance)obj;
+            IUnifiableInstance varValue = var.getValue();
+            if (varValue instanceof ConstantInstance) {
                 return this.equals(varValue);
             }
         }
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Constant other = (Constant) obj;
+        final ConstantInstance other = (ConstantInstance) obj;
         if ((this.value == null) ? (other.value != null) : !this.value.equals(other.value)) {
             return false;
         }
@@ -62,7 +62,7 @@ public class Constant implements Term {
     
     @Override
     public Object clone(){
-        return new Constant(value);
+        return new ConstantInstance(value);
     }
     
 }
