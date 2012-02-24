@@ -2,10 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.abduction.asystem;
+package uk.co.mtford.abduction;
 
+import uk.co.mtford.abduction.AbductiveFramework;
 import java.util.List;
 import java.util.Set;
+import uk.co.mtford.abduction.asystem.ASystemStore;
+import uk.co.mtford.abduction.logic.LogicalFormulaeInstance;
 import uk.co.mtford.abduction.logic.PredicateInstance;
 
 /**
@@ -13,6 +16,6 @@ import uk.co.mtford.abduction.logic.PredicateInstance;
  * @author mtford
  */
 public interface IAbductiveLogicProgrammingSystem {
-   public abstract Store computeExplanation(List<PredicateInstance> query,
+   public abstract ASystemStore computeExplanation(List<LogicalFormulaeInstance> query,
                                             AbductiveFramework abductiveFramework);
 }

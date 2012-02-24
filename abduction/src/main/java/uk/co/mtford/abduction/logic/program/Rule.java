@@ -12,7 +12,7 @@ import uk.co.mtford.abduction.logic.PredicateInstance;
  *
  * @author mtford
  */
-public class Rule implements IRule {
+public class Rule {
     private List<PredicateInstance> clause;
     private PredicateInstance head;
 

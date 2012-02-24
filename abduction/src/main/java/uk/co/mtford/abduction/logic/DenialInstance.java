@@ -2,18 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.abduction.logic.program;
+package uk.co.mtford.abduction.logic;
 
 import java.util.List;
 import uk.co.mtford.abduction.asystem.ASystemInferable;
-import uk.co.mtford.abduction.asystem.State;
+import uk.co.mtford.abduction.asystem.ASystemState;
 import uk.co.mtford.abduction.logic.LogicalFormulaeInstance;
 
 /**
  *
  * @author mtford
  */
-public class DenialInstance implements IRule, ASystemInferable  {
+public class DenialInstance implements ASystemInferable  {
     
     private List<ASystemInferable> clause;
 
@@ -49,7 +49,7 @@ public class DenialInstance implements IRule, ASystemInferable  {
         clause.add(0, p);
     }
 
-    public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, State s) {
+    public boolean applyInferenceRule(ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

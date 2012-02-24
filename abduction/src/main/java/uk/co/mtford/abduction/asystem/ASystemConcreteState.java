@@ -4,16 +4,18 @@
  */
 package uk.co.mtford.abduction.asystem;
 
+import uk.co.mtford.abduction.AbductiveFramework;
 import java.util.List;
+import uk.co.mtford.abduction.logic.LogicalFormulaeInstance;
 import uk.co.mtford.abduction.logic.PredicateInstance;
 
 /**
  *
  * @author mtford
  */
-public class ConcreteState extends State {
+public class ASystemConcreteState extends ASystemState {
 
-    public ConcreteState(List<PredicateInstance> goals, AbductiveFramework abductiveFramework) {
+    public ASystemConcreteState(List<LogicalFormulaeInstance> goals, AbductiveFramework abductiveFramework) {
         super(goals, abductiveFramework);
     }
 
@@ -23,14 +25,14 @@ public class ConcreteState extends State {
     }
 
     @Override
-    protected boolean stateTransition(PredicateInstance goal) {
+    protected boolean stateTransition(LogicalFormulaeInstance goal) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public Object clone() {
-        ConcreteState newState = new ConcreteState(goals,abductiveFramework);
-        newState.store=(Store) store.clone();
+        ASystemConcreteState newState = new ASystemConcreteState(goals,abductiveFramework);
+        newState.store=(ASystemStore) store.clone();
         return newState;
     }
     

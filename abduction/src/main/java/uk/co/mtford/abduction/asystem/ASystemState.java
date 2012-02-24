@@ -4,26 +4,22 @@
  */
 package uk.co.mtford.abduction.asystem;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.Stack;
-import uk.co.mtford.abduction.logic.PredicateInstance;
-import uk.co.mtford.abduction.logic.IUnifiableInstance;
-import uk.co.mtford.abduction.logic.PredicateInstance;
+import uk.co.mtford.abduction.AbductiveFramework;
+import uk.co.mtford.abduction.logic.LogicalFormulaeInstance;
 
 /**
  *
  * @author mtford
  */
-public abstract class State implements Cloneable {
-    protected List<PredicateInstance> goals;
-    protected Store store;
+public abstract class ASystemState implements Cloneable {
+    protected List<LogicalFormulaeInstance> goals;
+    protected ASystemStore store;
     protected AbductiveFramework abductiveFramework;
     
-    public State(List<PredicateInstance> goals, AbductiveFramework abductiveFramework) {
+    public ASystemState(List<LogicalFormulaeInstance> goals, AbductiveFramework abductiveFramework) {
         this.goals = goals;
-        store = new Store();
+        store = new ASystemStore();
         this.abductiveFramework=abductiveFramework;
     }
     
@@ -31,9 +27,9 @@ public abstract class State implements Cloneable {
      * 
      * @param goals 
      */
-    public void reset(List<PredicateInstance> goals, AbductiveFramework abductiveFramework) {
+    public void reset(List<LogicalFormulaeInstance> goals, AbductiveFramework abductiveFramework) {
         this.goals = goals;
-        store = new Store();
+        store = new ASystemStore();
         this.abductiveFramework=abductiveFramework;
     }
     
@@ -44,7 +40,7 @@ public abstract class State implements Cloneable {
      */
     public boolean moveToNextState() {
         if (goals.isEmpty()) return false;
-        PredicateInstance goal = getNextGoal();
+        LogicalFormulaeInstance goal = getNextGoal();
         if (goal == null) return false;
         if (stateTransition(goal)) {
             return true;
@@ -67,7 +63,7 @@ public abstract class State implements Cloneable {
      * @return 
      */
     public boolean canMoveToAnotherState() {
-        if (((State)this.clone()).moveToNextState()) {
+        if (((ASystemState)this.clone()).moveToNextState()) {
             return true;
         }
         return false;
@@ -78,22 +74,20 @@ public abstract class State implements Cloneable {
      * @param goals
      * @return 
      */
-    protected abstract PredicateInstance getNextGoal();
+    protected abstract LogicalFormulaeInstance getNextGoal();
     
     /** Implements a state transition strategy.
      * 
      * @param goal
      * @return 
      */
-    protected abstract boolean stateTransition(PredicateInstance goal);
+    protected abstract boolean stateTransition(LogicalFormulaeInstance goal);
     
     @Override
     public abstract Object clone();
 
-    public Store getStore() {
+    public ASystemStore getStore() {
         return store;
     }
-    
-    
     
 }

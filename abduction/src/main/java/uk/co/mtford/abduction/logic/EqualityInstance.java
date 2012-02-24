@@ -6,7 +6,7 @@ package uk.co.mtford.abduction.logic;
 
 import java.util.List;
 import uk.co.mtford.abduction.asystem.ASystemInferable;
-import uk.co.mtford.abduction.asystem.State;
+import uk.co.mtford.abduction.asystem.ASystemState;
 
 /**
  *
@@ -14,15 +14,36 @@ import uk.co.mtford.abduction.asystem.State;
  */
 public class EqualityInstance implements ASystemInferable  {
 
-    PredicateInstance left;
-    PredicateInstance right;
+    private IUnifiableInstance left;
+    private IUnifiableInstance right;
 
-    // TODO: Equality solver implementation.
-    public LogicalFormulaeInstance solveEquality() {
-        return left.equalitySolve(right);
+    public EqualityInstance(IUnifiableInstance left, IUnifiableInstance right) {
+        this.left = left;
+        this.right = right;
     }
 
-    public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, State s) {
+    public IUnifiableInstance getLeft() {
+        return left;
+    }
+
+    public void setLeft(IUnifiableInstance left) {
+        this.left = left;
+    }
+
+    public IUnifiableInstance getRight() {
+        return right;
+    }
+
+    public void setRight(IUnifiableInstance right) {
+        this.right = right;
+    }
+
+    /** Solves the equality, and adds it to the store.
+     * 
+     * @param s
+     * @return 
+     */
+    public boolean applyInferenceRule(ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

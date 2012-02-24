@@ -7,8 +7,8 @@ package uk.co.mtford.abduction.logic;
 import java.util.Arrays;
 import java.util.List;
 import uk.co.mtford.abduction.asystem.ASystemInferable;
-import uk.co.mtford.abduction.asystem.AbductiveFramework;
-import uk.co.mtford.abduction.asystem.State;
+import uk.co.mtford.abduction.AbductiveFramework;
+import uk.co.mtford.abduction.asystem.ASystemState;
 import uk.co.mtford.unification.CouldNotUnifyException;
 import uk.co.mtford.unification.Unifier;
 
@@ -49,42 +49,6 @@ public class PredicateInstance implements IPredicateInstance, ASystemInferable {
     public void setParameters(IUnifiableInstance[] parameters) {
         this.parameters = parameters;
     }
-
-    @Override
-    public String toString() {
-        String paramList = "";
-        for (IUnifiableInstance v : parameters) {
-            paramList += v + ",";
-        }
-        paramList = paramList.substring(0, paramList.length() - 1);
-        return name + "(" + paramList + ")";
-    }
-
-    @Override
-    public Object clone() {
-        String clonedName = new String(name);
-        IUnifiableInstance[] clonedParams = new IUnifiableInstance[parameters.length];
-        for (int i=0;i<clonedParams.length;i++) {
-            clonedParams[i]=(IUnifiableInstance) parameters[i].clone();
-        }
-        return new PredicateInstance(clonedName,clonedParams);
-    }
-
-    public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, State s) {
-        AbductiveFramework abductiveFramework = s.getAbductiveFramework();
-        List<PredicateInstance> abducibles = abductiveFramework.getA();
-        return false;
-    }
-
-    public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other) {
-        try {
-            Unifier.unify(this, other);
-        } catch (CouldNotUnifyException ex) {
-            return new LogicalFalseInstance();
-        }
-        return new LogicalTrueInstance();
-    }
-
 
     public String getName() {
         return name;
@@ -145,9 +109,6 @@ public class PredicateInstance implements IPredicateInstance, ASystemInferable {
         return true;
     }
     
-    
-    
-    
     public boolean contains(IUnifiableInstance parameter) {
         for (int i=0;i<parameters.length;i++) {
             if (parameters[i].equals(parameter)) return true;
@@ -192,6 +153,41 @@ public class PredicateInstance implements IPredicateInstance, ASystemInferable {
     public IUnifiableInstance getParameter(int i) {
         if (i>parameters.length||i<0) return null;
         return parameters[i];
+    }
+    
+    @Override
+    public String toString() {
+        String paramList = "";
+        for (IUnifiableInstance v : parameters) {
+            paramList += v + ",";
+        }
+        paramList = paramList.substring(0, paramList.length() - 1);
+        return name + "(" + paramList + ")";
+    }
+
+    @Override
+    public Object clone() {
+        String clonedName = new String(name);
+        IUnifiableInstance[] clonedParams = new IUnifiableInstance[parameters.length];
+        for (int i=0;i<clonedParams.length;i++) {
+            clonedParams[i]=(IUnifiableInstance) parameters[i].clone();
+        }
+        return new PredicateInstance(clonedName,clonedParams);
+    }
+
+    public boolean applyInferenceRule(ASystemState s) {
+        AbductiveFramework abductiveFramework = s.getAbductiveFramework();
+        List<PredicateInstance> abducibles = abductiveFramework.getA();
+        return false;
+    }
+
+    public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other) {
+        try {
+            Unifier.unify(this, other);
+        } catch (CouldNotUnifyException ex) {
+            return new LogicalFalseInstance();
+        }
+        return new LogicalTrueInstance();
     }
     
     

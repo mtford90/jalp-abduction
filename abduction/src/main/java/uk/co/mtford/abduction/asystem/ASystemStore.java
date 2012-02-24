@@ -8,20 +8,20 @@ import java.util.*;
 import uk.co.mtford.abduction.logic.PredicateInstance;
 import uk.co.mtford.abduction.logic.EqualityInstance;
 
-import uk.co.mtford.abduction.logic.program.DenialInstance;
+import uk.co.mtford.abduction.logic.DenialInstance;
 
 /** An ASystem store of collectables.
  *
  * @author mtford
  */
-public class Store implements Comparable, Cloneable {
+public class ASystemStore implements Comparable, Cloneable {
     
     private List<PredicateInstance> abducibles;
     private List<DenialInstance> denials;
     private List<EqualityInstance> equalities;
     
     
-    public Store() {
+    public ASystemStore() {
         abducibles = new LinkedList<PredicateInstance>();
         denials = new LinkedList<DenialInstance>();
         equalities = new LinkedList<EqualityInstance>();
@@ -82,12 +82,12 @@ public class Store implements Comparable, Cloneable {
      */
     public int compareTo(Object t) {
         if (t == this) return 0;
-        return abducibles.size() - ((Store)t).numAbducibles();
+        return abducibles.size() - ((ASystemStore)t).numAbducibles();
     }
     
     @Override
     public Object clone() {
-        Store newStore = new Store();
+        ASystemStore newStore = new ASystemStore();
         newStore.abducibles.addAll(abducibles);
         newStore.denials.addAll(denials);
         newStore.equalities.addAll(equalities);

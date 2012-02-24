@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.abduction.asystem;
+package uk.co.mtford.abduction;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import uk.co.mtford.abduction.logic.PredicateInstance;
-import uk.co.mtford.abduction.logic.program.DenialInstance;
+import uk.co.mtford.abduction.logic.DenialInstance;
 import uk.co.mtford.abduction.logic.program.Rule;
 
 /**

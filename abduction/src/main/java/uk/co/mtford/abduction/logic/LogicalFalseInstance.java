@@ -5,9 +5,7 @@
 package uk.co.mtford.abduction.logic;
 
 import java.util.List;
-import java.util.Set;
-import uk.co.mtford.abduction.asystem.State;
-import uk.co.mtford.abduction.asystem.Store;
+import uk.co.mtford.abduction.asystem.ASystemState;
 
 /**
  *
@@ -16,12 +14,16 @@ import uk.co.mtford.abduction.asystem.Store;
 public class LogicalFalseInstance implements TruthValueInstance {
 
 
-    public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, State s) {
+    public boolean applyInferenceRule(List<LogicalFormulaeInstance> goals, ASystemState s) {
         return false;
     }
 
     public boolean deepEquals(Object obj) {
         return this.equals(obj);
+    }
+
+    public boolean applyInferenceRule(ASystemState s) {
+        return true;
     }
 
 
