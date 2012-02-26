@@ -1,18 +1,20 @@
 /*
 
-ALP -> ((Rule | Denial) <EOL>)* <EOF>
-Rule -> Predicate DEFINES Clause <DOT>
+LL(2) grammar for ALP in prolog style.
+
+ALP -> ((Rule | Denial))* <EOF>
+Rule -> Predicate (DEFINES Clause)? <DOT>
 Denial -> IC DEFINES Clause <DOT>
 Clause -> Predicate (COMMA Predicate)*
-Predicate -> LCASENAME LBRACKET ParameterList RBRACKET
+Predicate -> LCASENAME (LBRACKET ParameterList RBRACKET)?
 Equality -> Parameter EQUALS Parameter
-ParameterList -> Parameter (COMMA Parameter)*
+ParameterList -> (Parameter (COMMA Parameter)*)?
 Parameter -> (UCASENAME | LCASENAME | Predicate)
 
 */
 
 options {
-  LOOKAHEAD = 1;
+  LOOKAHEAD = 2;
   CHOICE_AMBIGUITY_CHECK = 2;
   OTHER_AMBIGUITY_CHECK = 1;
   STATIC = true;
@@ -31,19 +33,19 @@ options {
   FORCE_LA_CHECK = false;
 }
 
-PARSER_BEGIN(Abduction)
+PARSER_BEGIN(AbductiveLogicProgram)
 
-public class Abduction {
+public class AbductiveLogicProgram {
 
   /** Main entry point. */
   public static void main(String args[]) throws ParseException {
-    Abduction parser = new Abduction(System.in);
-    parser.Input();
+    AbductiveLogicProgram parser = new AbductiveLogicProgram(System.in);
+    parser.AbductiveLogicProgram();
   }
 
 }
 
-PARSER_END(Abduction)
+PARSER_END(AbductiveLogicProgram)
 
 SKIP :
 {
@@ -59,7 +61,7 @@ TOKEN :
   <RBRACKET: ")"> |
   <DEFINES: ":-"> |
   <COMMA: ","> |
-  <DOT: "." |
+  <DOT: "."> |
   <EQUALS: "="> |
   <IC: "ic"> |
   <LCASENAME: ["a"-"z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
@@ -67,38 +69,39 @@ TOKEN :
 }
 
 /* Top level production */
-void AbductiveLogicProgram() 
+void AbductiveLogicProgram():
 {
 }
 {
 	(
-		HornClause()
-		<EOL>
+		Rule() | Denial()
 	)*
 	<EOF>
 }
 
-void Rule() 
+void Rule():
 {
 }
 {
 	Predicate()
+	[
+		<DEFINES>
+		Clause()
+	]
+	<DOT>
+}
+
+void Denial():
+{
+}
+{
+	<IC>
 	<DEFINES>
 	Clause()
 	<DOT>
 }
 
-void Denial() 
-{
-}
-{
-	<DENIAL>
-	<DEFINES>
-	Clause()
-	<DOT>
-}
-
-void Clause() 
+void Clause():
 {
 }
 {
@@ -109,17 +112,19 @@ void Clause()
 	)*
 }
 
-void Predicate() 
+void Predicate():
 {
 }
 {
 	<LCASENAME>
-	<LBRACKET>
-	ParameterList()
-	<RBRACKET>
+	[	
+		<LBRACKET>
+		ParameterList()
+		<RBRACKET>
+	]
 }
 
-void Equality() 
+void Equality():
 {
 }
 {
@@ -128,18 +133,20 @@ void Equality()
 	Parameter()
 }
 
-void ParameterList()
+void ParameterList():
 {
 }
 {
-	Parameter()
-	(
-		<COMMA>
+	[
 		Parameter()
-	)*
+		(
+			<COMMA>
+			Parameter()
+		)*
+ 	]
 }
 
-void Parameter() 
+void Parameter():
 {
 }
 {
@@ -149,5 +156,3 @@ void Parameter()
 		Predicate()
 	)
 }
-
-
