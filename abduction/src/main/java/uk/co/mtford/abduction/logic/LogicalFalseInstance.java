@@ -5,6 +5,7 @@
 package uk.co.mtford.abduction.logic;
 
 import java.util.List;
+import uk.co.mtford.abduction.asystem.IASystemInferable;
 import uk.co.mtford.abduction.asystem.ASystemState;
 
 /**
@@ -17,11 +18,11 @@ public class LogicalFalseInstance implements TruthValueInstance {
         return this.equals(obj);
     }
 
-    public List<ASystemState> applyInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
+    public List<ASystemState> applyInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public List<ASystemState> applyDenialInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
+    public List<ASystemState> applyDenialInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

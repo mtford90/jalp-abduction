@@ -4,12 +4,12 @@
  */
 package uk.co.mtford.abduction.logic;
 
-import uk.co.mtford.abduction.asystem.ASystemInferable;
+import uk.co.mtford.abduction.asystem.IASystemInferable;
 
 /**
  *
  * @author mtford
  */
-public interface TruthValueInstance extends LogicalFormulaeInstance, ASystemInferable {
+public interface TruthValueInstance extends IASystemInferable {
     
 }

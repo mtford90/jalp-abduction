@@ -6,18 +6,17 @@ package uk.co.mtford.abduction.asystem;
 
 import java.util.List;
 import uk.co.mtford.abduction.AbductiveFramework;
-import uk.co.mtford.abduction.logic.LogicalFormulaeInstance;
 
 /**
  *
  * @author mtford
  */
 public abstract class ASystemState implements Cloneable {
-    protected List<LogicalFormulaeInstance> goals;
+    protected List<IASystemInferable> goals;
     protected ASystemStore store;
     protected AbductiveFramework abductiveFramework;
     
-    public ASystemState(List<LogicalFormulaeInstance> goals, AbductiveFramework abductiveFramework) {
+    public ASystemState(List<IASystemInferable> goals, AbductiveFramework abductiveFramework) {
         this.goals = goals;
         store = new ASystemStore();
         this.abductiveFramework=abductiveFramework;
@@ -27,7 +26,7 @@ public abstract class ASystemState implements Cloneable {
      * 
      * @param goals 
      */
-    public void reset(List<LogicalFormulaeInstance> goals, AbductiveFramework abductiveFramework) {
+    public void reset(List<IASystemInferable> goals, AbductiveFramework abductiveFramework) {
         this.goals = goals;
         store = new ASystemStore();
         this.abductiveFramework=abductiveFramework;
@@ -40,7 +39,7 @@ public abstract class ASystemState implements Cloneable {
      */
     public boolean moveToNextState() {
         if (goals.isEmpty()) return false;
-        LogicalFormulaeInstance goal = getNextGoal();
+        IASystemInferable goal = getNextGoal();
         if (goal == null) return false;
         if (stateTransition(goal)) {
             return true;
@@ -75,14 +74,14 @@ public abstract class ASystemState implements Cloneable {
      * @param goals
      * @return 
      */
-    protected abstract LogicalFormulaeInstance getNextGoal();
+    protected abstract IASystemInferable getNextGoal();
     
     /** Implements a state transition strategy.
      * 
      * @param goal
      * @return 
      */
-    protected abstract boolean stateTransition(LogicalFormulaeInstance goal);
+    protected abstract boolean stateTransition(IASystemInferable goal);
     
     @Override
     public abstract Object clone();
@@ -91,7 +90,7 @@ public abstract class ASystemState implements Cloneable {
         return store;
     }
 
-    public List<LogicalFormulaeInstance> getGoals() {
+    public List<IASystemInferable> getGoals() {
         return goals;
     }
 

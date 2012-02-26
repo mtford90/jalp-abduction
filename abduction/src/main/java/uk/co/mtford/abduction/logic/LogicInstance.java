@@ -4,12 +4,13 @@
  */
 package uk.co.mtford.abduction.logic;
 
-
 /**
  *
  * @author mtford
  */
-public interface IUnifiableInstance extends Cloneable, LogicInstance {
+public interface LogicInstance extends Cloneable {
+    @Override
+    public boolean equals(Object obj);
+    public boolean deepEquals(Object obj);
     public Object clone();
-    public boolean equalitySolve(IUnifiableInstance other);
 }

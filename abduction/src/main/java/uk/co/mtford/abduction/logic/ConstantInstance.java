@@ -84,9 +84,10 @@ public class ConstantInstance implements TermInstance {
      * @param other
      * @return 
      */
-    public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other) {
-        if (this.equals(other)) return new LogicalTrueInstance();
-        return new LogicalFalseInstance();
+    public boolean
+           equalitySolve(IUnifiableInstance other) {
+        if (this.equals(other)) return true;
+        return false;
     }
     
 }

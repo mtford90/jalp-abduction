@@ -7,7 +7,6 @@ package uk.co.mtford.abduction.asystem;
 import java.util.List;
 import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.IAbductiveLogicProgrammingSystem;
-import uk.co.mtford.abduction.logic.LogicalFormulaeInstance;
 
 /**
  *
@@ -32,7 +31,7 @@ public class ASystemStateRewriter implements IAbductiveLogicProgrammingSystem {
      * @param abductiveFramework
      * @return 
      */
-    public ASystemStore computeExplanation(List<LogicalFormulaeInstance> query, 
+    public ASystemStore computeExplanation(List<IASystemInferable> query, 
                                     AbductiveFramework abductiveFramework) {
         ASystemState state = new ASystemConcreteState(query, abductiveFramework);
         while (state.moveToNextState()) {

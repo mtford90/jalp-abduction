@@ -6,7 +6,7 @@ package uk.co.mtford.abduction.logic;
 
 import java.util.Arrays;
 import java.util.List;
-import uk.co.mtford.abduction.asystem.ASystemInferable;
+import uk.co.mtford.abduction.asystem.IASystemInferable;
 import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.asystem.ASystemState;
 import uk.co.mtford.unification.CouldNotUnifyException;
@@ -16,7 +16,7 @@ import uk.co.mtford.unification.Unifier;
  *
  * @author mtford
  */
-public class PredicateInstance implements IPredicateInstance, ASystemInferable {
+public class PredicateInstance implements IPredicateInstance, IASystemInferable {
     protected String name;
     protected IUnifiableInstance[] parameters;
     
@@ -175,20 +175,20 @@ public class PredicateInstance implements IPredicateInstance, ASystemInferable {
         return new PredicateInstance(clonedName,clonedParams);
     }
 
-    public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other) {
+    public boolean equalitySolve(IUnifiableInstance other) {
         try {
             Unifier.unify(this, other);
         } catch (CouldNotUnifyException ex) {
-            return new LogicalFalseInstance();
+            return false;
         }
-        return new LogicalTrueInstance();
+        return true;
     }
 
-    public List<ASystemState> applyInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
+    public List<ASystemState> applyInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public List<ASystemState> applyDenialInferenceRule(List<LogicalFormulaeInstance> currentGoals, ASystemState s) {
+    public List<ASystemState> applyDenialInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

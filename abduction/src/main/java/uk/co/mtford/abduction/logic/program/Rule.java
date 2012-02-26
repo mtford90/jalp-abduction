@@ -15,7 +15,7 @@ public class Rule {
     private PredicateInstance head;
     private List<PredicateInstance> clause;
     
-    public Rule(List<PredicateInstance> clause, PredicateInstance head) {
+    public Rule(PredicateInstance head,List<PredicateInstance> clause) {
         this.clause = clause;
         this.head = head;
     }

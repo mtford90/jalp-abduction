@@ -133,13 +133,13 @@ public class VariableInstance implements TermInstance {
         return true;
     }
 
-    public LogicalFormulaeInstance equalitySolve(IUnifiableInstance other) {
+    public boolean equalitySolve(IUnifiableInstance other) {
         try {
             Unifier.unify(this, other);
         } catch (CouldNotUnifyException ex) {
-            return new LogicalFalseInstance();
+            return false;
         }
-        return new LogicalTrueInstance();
+        return true;
     }
 
    
