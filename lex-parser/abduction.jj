@@ -1,0 +1,153 @@
+/*
+
+ALP -> ((Rule | Denial) <EOL>)* <EOF>
+Rule -> Predicate DEFINES Clause <DOT>
+Denial -> IC DEFINES Clause <DOT>
+Clause -> Predicate (COMMA Predicate)*
+Predicate -> LCASENAME LBRACKET ParameterList RBRACKET
+Equality -> Parameter EQUALS Parameter
+ParameterList -> Parameter (COMMA Parameter)*
+Parameter -> (UCASENAME | LCASENAME | Predicate)
+
+*/
+
+options {
+  LOOKAHEAD = 1;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = true;
+  DEBUG_PARSER = false;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = false;
+}
+
+PARSER_BEGIN(Abduction)
+
+public class Abduction {
+
+  /** Main entry point. */
+  public static void main(String args[]) throws ParseException {
+    Abduction parser = new Abduction(System.in);
+    parser.Input();
+  }
+
+}
+
+PARSER_END(Abduction)
+
+SKIP :
+{
+  " " |
+  "\t" |
+  "\n" |
+  "\r"  
+}
+
+TOKEN :
+{
+  <LBRACKET: "("> |
+  <RBRACKET: ")"> |
+  <DEFINES: ":-"> |
+  <COMMA: ","> |
+  <DOT: "." |
+  <EQUALS: "="> |
+  <IC: "ic"> |
+  <LCASENAME: ["a"-"z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
+  <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> 
+}
+
+/* Top level production */
+void AbductiveLogicProgram() 
+{
+}
+{
+	(
+		HornClause()
+		<EOL>
+	)*
+	<EOF>
+}
+
+void Rule() 
+{
+}
+{
+	Predicate()
+	<DEFINES>
+	Clause()
+	<DOT>
+}
+
+void Denial() 
+{
+}
+{
+	<DENIAL>
+	<DEFINES>
+	Clause()
+	<DOT>
+}
+
+void Clause() 
+{
+}
+{
+	Predicate()
+	(
+		<COMMA>
+		Predicate()
+	)*
+}
+
+void Predicate() 
+{
+}
+{
+	<LCASENAME>
+	<LBRACKET>
+	ParameterList()
+	<RBRACKET>
+}
+
+void Equality() 
+{
+}
+{
+	Parameter()
+	<EQUALS>
+	Parameter()
+}
+
+void ParameterList()
+{
+}
+{
+	Parameter()
+	(
+		<COMMA>
+		Parameter()
+	)*
+}
+
+void Parameter() 
+{
+}
+{
+	(
+		<UCASENAME> | 
+		<LCASENAME> | 
+		Predicate()
+	)
+}
+
+
