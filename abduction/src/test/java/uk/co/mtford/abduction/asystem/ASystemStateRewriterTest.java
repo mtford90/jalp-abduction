@@ -9,8 +9,6 @@ import java.util.List;
 import org.junit.*;
 import static org.junit.Assert.*;
 import uk.co.mtford.abduction.AbductiveFramework;
-import uk.co.mtford.abduction.logic.DenialInstance;
-import uk.co.mtford.abduction.logic.LogicFactory;
 import uk.co.mtford.abduction.logic.PredicateInstance;
 import uk.co.mtford.abduction.logic.VariableInstance;
 

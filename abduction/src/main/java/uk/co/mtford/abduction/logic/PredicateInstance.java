@@ -16,24 +16,30 @@ import uk.co.mtford.unification.Unifier;
  *
  * @author mtford
  */
-public class PredicateInstance implements IPredicateInstance, IASystemInferable {
+public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     protected String name;
-    protected IUnifiableInstance[] parameters;
+    protected IAtomInstance[] parameters;
     
-    public PredicateInstance(String name, IUnifiableInstance ... parameters) {
+    public PredicateInstance(String name, IAtomInstance ... parameters) {
         this.name=name;
         this.parameters=parameters;
     }
     
-    public PredicateInstance(String name, String varName, IUnifiableInstance varValue) {
+     public PredicateInstance(String name, List<IAtomInstance> parameters) {
         this.name=name;
-        this.parameters=new IUnifiableInstance[1];
+        this.parameters=parameters.toArray(new IAtomInstance[1]);
+    }
+    
+    
+    public PredicateInstance(String name, String varName, IAtomInstance varValue) {
+        this.name=name;
+        this.parameters=new IAtomInstance[1];
         parameters[0] = new VariableInstance(varName,varValue);
     }
     
     public PredicateInstance(String name, String varName) {
         this.name=name;
-        this.parameters=new IUnifiableInstance[1];
+        this.parameters=new IAtomInstance[1];
         parameters[0] = new VariableInstance(varName);
     }
     
@@ -42,11 +48,11 @@ public class PredicateInstance implements IPredicateInstance, IASystemInferable 
         this.parameters=null;
     }
 
-    public IUnifiableInstance[] getParameters() {
+    public IAtomInstance[] getParameters() {
         return parameters;
     }
 
-    public void setParameters(IUnifiableInstance[] parameters) {
+    public void setParameters(IAtomInstance[] parameters) {
         this.parameters = parameters;
     }
 
@@ -86,7 +92,7 @@ public class PredicateInstance implements IPredicateInstance, IASystemInferable 
      * @param obj
      * @return 
      */
-    @Override
+    
     public boolean deepEquals(Object obj) {
         if (obj == null) {
             return false;
@@ -109,7 +115,7 @@ public class PredicateInstance implements IPredicateInstance, IASystemInferable 
         return true;
     }
     
-    public boolean contains(IUnifiableInstance parameter) {
+    public boolean contains(IAtomInstance parameter) {
         for (int i=0;i<parameters.length;i++) {
             if (parameters[i].equals(parameter)) return true;
         }
@@ -150,7 +156,7 @@ public class PredicateInstance implements IPredicateInstance, IASystemInferable 
         this.parameters=params;
     }
     
-    public IUnifiableInstance getParameter(int i) {
+    public IAtomInstance getParameter(int i) {
         if (i>parameters.length||i<0) return null;
         return parameters[i];
     }
@@ -158,7 +164,7 @@ public class PredicateInstance implements IPredicateInstance, IASystemInferable 
     @Override
     public String toString() {
         String paramList = "";
-        for (IUnifiableInstance v : parameters) {
+        for (IAtomInstance v : parameters) {
             paramList += v + ",";
         }
         paramList = paramList.substring(0, paramList.length() - 1);
@@ -168,14 +174,14 @@ public class PredicateInstance implements IPredicateInstance, IASystemInferable 
     @Override
     public Object clone() {
         String clonedName = new String(name);
-        IUnifiableInstance[] clonedParams = new IUnifiableInstance[parameters.length];
+        IAtomInstance[] clonedParams = new IAtomInstance[parameters.length];
         for (int i=0;i<clonedParams.length;i++) {
-            clonedParams[i]=(IUnifiableInstance) parameters[i].clone();
+            clonedParams[i]=(IAtomInstance) parameters[i].clone();
         }
         return new PredicateInstance(clonedName,clonedParams);
     }
 
-    public boolean equalitySolve(IUnifiableInstance other) {
+    public boolean equalitySolve(IAtomInstance other) {
         try {
             Unifier.unify(this, other);
         } catch (CouldNotUnifyException ex) {

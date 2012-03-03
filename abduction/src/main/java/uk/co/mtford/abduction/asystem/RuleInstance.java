@@ -2,50 +2,51 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.abduction.logic.program;
+package uk.co.mtford.abduction.asystem;
 
 import java.util.List;
+import uk.co.mtford.abduction.logic.ILiteralInstance;
 import uk.co.mtford.abduction.logic.PredicateInstance;
 
 /**
  *
  * @author mtford
  */
-public class Rule {
+public class RuleInstance {
     private PredicateInstance head;
-    private List<PredicateInstance> clause;
+    private List<ILiteralInstance> body;
     
-    public Rule(PredicateInstance head,List<PredicateInstance> clause) {
-        this.clause = clause;
+    public RuleInstance(PredicateInstance head,List<ILiteralInstance> body) {
+        this.body = body;
         this.head = head;
     }
     
-    public void addClause(PredicateInstance p) {
-        clause.add(p);
+    public void addLiteral(ILiteralInstance p) {
+        body.add(p);
     }
     
-    public void removeClause(PredicateInstance p) {
-        clause.remove(p);
+    public void removeLiteral(ILiteralInstance p) {
+        body.remove(p);
     }
     
-    public boolean containsClause(PredicateInstance p) {
-        return clause.contains(p);
+    public boolean containsLiteral(ILiteralInstance p) {
+        return body.contains(p);
     }
     
-    public PredicateInstance getClause(int i) {
-        return clause.get(i);
+    public ILiteralInstance getLiteral(int i) {
+        return body.get(i);
     }
     
-    public PredicateInstance removeClause(int i) {
-        return clause.remove(i);
+    public ILiteralInstance removeLiteral(int i) {
+        return body.remove(i);
     }
     
-    public PredicateInstance pop() {
-        return clause.get(0);
+    public ILiteralInstance popLiteral() {
+        return body.get(0);
     }
     
-    public void push(PredicateInstance p) {
-        clause.add(0, p);
+    public void pushLiteral(ILiteralInstance p) {
+        body.add(0, p);
     }
 
     public PredicateInstance getHead() {
@@ -55,10 +56,22 @@ public class Rule {
     public void setHead(PredicateInstance head) {
         this.head = head;
     }
+    
+    public List<ILiteralInstance> getBody() {
+        return body;
+    }
 
     @Override
     public String toString() {
-        return "Rule{" + "head=" + head + ", clause=" + clause + '}';
+        String ruleRep = "";
+        ruleRep += head;
+        if (body!=null) {
+            String bodyRep = body.toString();
+            bodyRep = bodyRep.substring(1, bodyRep.length()-1);
+            ruleRep += " :- "+bodyRep;
+        }
+        ruleRep += ".";
+        return ruleRep;
     }
     
     

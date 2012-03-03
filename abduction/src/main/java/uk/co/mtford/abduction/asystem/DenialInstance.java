@@ -2,60 +2,59 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.abduction.logic;
+package uk.co.mtford.abduction.asystem;
 
 import java.util.LinkedList;
 import java.util.List;
-import uk.co.mtford.abduction.asystem.IASystemInferable;
-import uk.co.mtford.abduction.asystem.ASystemState;
+import uk.co.mtford.abduction.logic.ILiteralInstance;
 
 /**
  *
  * @author mtford
  */
-public class DenialInstance implements IASystemInferable, Cloneable  {
+public class DenialInstance implements ILiteralInstance  {
     
-    private List<IASystemInferable> clause;
+    private List<ILiteralInstance> body;
 
-    public DenialInstance(List<IASystemInferable> clause) {
-        this.clause = clause;
+    public DenialInstance(List<ILiteralInstance> body) {
+        this.body = body;
     }
     
-    public DenialInstance(IASystemInferable inferable) {
-        clause = new LinkedList<IASystemInferable>();
-        clause.add(inferable);
+    public DenialInstance(ILiteralInstance logic) {
+        body = new LinkedList<ILiteralInstance>();
+        body.add(logic);
     }
     
     public DenialInstance() {
-        clause = new LinkedList<IASystemInferable>();
+        body = new LinkedList<ILiteralInstance>();
     }
     
-    public void addClause(IASystemInferable p) {
-        clause.add(p);
+    public void addbody(ILiteralInstance p) {
+        body.add(p);
     }
     
-    public void removeClause(IASystemInferable p) {
-        clause.remove(p);
+    public void removebody(ILiteralInstance p) {
+        body.remove(p);
     }
     
-    public boolean containsClause(IASystemInferable p) {
-        return clause.contains(p);
+    public boolean containsbody(ILiteralInstance p) {
+        return body.contains(p);
     }
     
-    public IASystemInferable getClause(int i) {
-        return clause.get(i);
+    public ILiteralInstance getbody(int i) {
+        return body.get(i);
     }
     
-    public IASystemInferable removeClause(int i) {
-        return clause.remove(i);
+    public ILiteralInstance removebody(int i) {
+        return body.remove(i);
     }
     
-    public IASystemInferable pop() {
-        return clause.get(0);
+    public ILiteralInstance pop() {
+        return body.get(0);
     }
     
-    public void push(IASystemInferable p) {
-        clause.add(0, p);
+    public void push(ILiteralInstance p) {
+        body.add(0, p);
     }
 
     public List<ASystemState> applyInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
@@ -69,15 +68,19 @@ public class DenialInstance implements IASystemInferable, Cloneable  {
     @Override
     public Object clone() {
         DenialInstance clone = new DenialInstance();
-        for (IASystemInferable inferable:clause) {
-            clone.clause.add((IASystemInferable)inferable.clone());
+        for (IASystemInferable logic:body) {
+            clone.body.add((ILiteralInstance)logic.clone());
         }
         return clone;
     }
 
     @Override
     public String toString() {
-        return "DenialInstance{" + "clause=" + clause + '}';
+        String rep = "ic :- ";
+        String bodyRep = body.toString();
+        bodyRep = bodyRep.substring(1, bodyRep.length()-1);
+        rep += bodyRep+".";
+        return rep;
     }
 
     public boolean deepEquals(Object obj) {

@@ -2,12 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.abduction.logic;
+package uk.co.mtford.abduction.asystem;
 
+import uk.co.mtford.abduction.logic.ILiteralInstance;
+import java.io.File;
+import uk.co.mtford.abduction.asystem.EqualityInstance;
+import uk.co.mtford.abduction.asystem.DenialInstance;
 import java.util.Arrays;
 import java.util.List;
 import uk.co.mtford.abduction.asystem.IASystemInferable;
-import uk.co.mtford.abduction.logic.program.Rule;
+import uk.co.mtford.abduction.asystem.RuleInstance;
+import uk.co.mtford.abduction.logic.ConstantInstance;
+import uk.co.mtford.abduction.logic.IAtomInstance;
+import uk.co.mtford.abduction.logic.PredicateInstance;
+import uk.co.mtford.abduction.logic.VariableInstance;
 import uk.co.mtford.abduction.tools.NameGenerator;
 
 /**
@@ -43,32 +51,25 @@ public class LogicFactory {
         return new PredicateInstance(name,variableInstances);
     }
     
-    public PredicateInstance getPredicateInstance(String name, IUnifiableInstance ... params) {
+    public PredicateInstance getPredicateInstance(String name, IAtomInstance ... params) {
         return new PredicateInstance(name,params);
     }
+   
     
-    public NegationInstance getNegationInstance(IASystemInferable inferable) {
-        return new NegationInstance(inferable);
-    }
-    
-    public EqualityInstance getEqualityInstance(IASystemInferable left, IASystemInferable right) {
-        return new EqualityInstance(left,right);
-    }
-    
-    public DenialInstance getDenialInstance(List<IASystemInferable> clauses) {
+    public DenialInstance getDenialInstance(List<ILiteralInstance> clauses) {
         return new DenialInstance(clauses);
     }
     
-    public DenialInstance getDenialInstance(IASystemInferable[] clause) {
+    public DenialInstance getDenialInstance(ILiteralInstance[] clause) {
         return new DenialInstance(Arrays.asList(clause));
     }
     
-    public Rule getRuleInstance(PredicateInstance head, PredicateInstance[] clause) {
-        return new Rule(head,Arrays.asList(clause));
+    public RuleInstance getRuleInstance(PredicateInstance head, ILiteralInstance[] clause) {
+        return new RuleInstance(head,Arrays.asList(clause));
     }
     
-    public Rule getRuleInstance(PredicateInstance head, List<PredicateInstance> clause) {
-        return new Rule(head,clause);
+    public RuleInstance getRuleInstance(PredicateInstance head, List<ILiteralInstance> clause) {
+        return new RuleInstance(head,clause);
     }
     
     private boolean isLowerCase(char c) {

@@ -6,9 +6,7 @@ package uk.co.mtford.abduction.asystem;
 
 import java.util.*;
 import uk.co.mtford.abduction.logic.PredicateInstance;
-import uk.co.mtford.abduction.logic.EqualityInstance;
 
-import uk.co.mtford.abduction.logic.DenialInstance;
 
 /** An ASystem store of collectables.
  *
@@ -18,12 +16,12 @@ public class ASystemStore implements Comparable, Cloneable {
     
     private List<PredicateInstance> abducibles;
     private List<DenialInstance> denials;
-    private List<EqualityInstance> equalities;
+    private List<EqualityInstance> inequalities;
     
     public ASystemStore() {
         abducibles = new LinkedList<PredicateInstance>();
         denials = new LinkedList<DenialInstance>();
-        equalities = new LinkedList<EqualityInstance>();
+        inequalities = new LinkedList<EqualityInstance>();
     }
     
     public void put(PredicateInstance abducible) {
@@ -31,7 +29,7 @@ public class ASystemStore implements Comparable, Cloneable {
     }
     
     public void put(EqualityInstance equality) {
-        equalities.add(equality);
+        inequalities.add(equality);
     }
     
     public void put(DenialInstance denial) {
@@ -47,7 +45,7 @@ public class ASystemStore implements Comparable, Cloneable {
     }
     
     public boolean contains(EqualityInstance equality) {
-        return equalities.contains(equality);
+        return inequalities.contains(equality);
     }
     
     public boolean remove(PredicateInstance abducible) {
@@ -55,7 +53,7 @@ public class ASystemStore implements Comparable, Cloneable {
     }
     
     public boolean remove(EqualityInstance equality) {
-        return equalities.remove(equality);
+        return inequalities.remove(equality);
     }
     
     public boolean remove(DenialInstance denial) {
@@ -71,7 +69,7 @@ public class ASystemStore implements Comparable, Cloneable {
     }
     
     public int numEqualities() {
-        return equalities.size();
+        return inequalities.size();
     }
     
     /** Very simple useless heuristic. Orders by num of 
@@ -113,7 +111,7 @@ public class ASystemStore implements Comparable, Cloneable {
         output=output.substring(0, output.length());
         output+="}, ";
         output+="{";
-        for (EqualityInstance equality:equalities) {
+        for (EqualityInstance equality:inequalities) {
             output+=equality+", ";
         }
         output=output.substring(0, output.length());

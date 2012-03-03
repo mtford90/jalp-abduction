@@ -4,14 +4,20 @@
  */
 package uk.co.mtford.unfication;
 
-import uk.co.mtford.unification.Unifier;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 import org.apache.log4j.PropertyConfigurator;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.*;
-import static org.junit.Assert.*;
-import uk.co.mtford.abduction.logic.*;
+import uk.co.mtford.abduction.logic.ConstantInstance;
+import uk.co.mtford.abduction.logic.IAtomInstance;
+import uk.co.mtford.abduction.logic.PredicateInstance;
+import uk.co.mtford.abduction.logic.VariableInstance;
 import uk.co.mtford.abduction.tools.NameGenerator;
 import uk.co.mtford.unification.CouldNotUnifyException;
+import uk.co.mtford.unification.Unifier;
 
 /**
  *
@@ -68,7 +74,7 @@ public class UnifierTest {
     @Test
     public void simpleConstantTestA() throws CouldNotUnifyException {
         ConstantInstance a = new ConstantInstance(NameGenerator.lowerCaseNameGen.getNextName());
-        Set<VariableInstance> sub = unifier.unify(a,a);
+        Set<VariableInstance> sub = unifier.unifyReplace(a,a);
         assertTrue(sub.isEmpty());
     }
     
@@ -77,7 +83,7 @@ public class UnifierTest {
     public void simpleConstantTestB1() throws CouldNotUnifyException {
         ConstantInstance a = new ConstantInstance(NameGenerator.lowerCaseNameGen.getNextName());
         ConstantInstance b = new ConstantInstance(NameGenerator.lowerCaseNameGen.getNextName());
-        Set<VariableInstance> sub = unifier.unify(a,b);
+        Set<VariableInstance> sub = unifier.unifyReplace(a,b);
     }
     
     /** unify(b,a) = FAIL */
@@ -85,14 +91,14 @@ public class UnifierTest {
     public void simpleConstantTestB2() throws CouldNotUnifyException {
         ConstantInstance a = new ConstantInstance(NameGenerator.lowerCaseNameGen.getNextName());
         ConstantInstance b = new ConstantInstance(NameGenerator.lowerCaseNameGen.getNextName());
-        Set<VariableInstance> sub = unifier.unify(b,a);
+        Set<VariableInstance> sub = unifier.unifyReplace(b,a);
     }
     
     /** unify(X,X) = {} */
     @Test
     public void simpleVariableTestA() throws CouldNotUnifyException {
        VariableInstance X = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
-       Set<VariableInstance> sub = unifier.unify(X,X);
+       Set<VariableInstance> sub = unifier.unifyReplace(X,X);
        assertTrue(sub.isEmpty());
     }
     
@@ -102,7 +108,7 @@ public class UnifierTest {
         final VariableInstance X = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
         final VariableInstance Y = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
        
-        Set<VariableInstance> sub = unifier.unify(X, Y);
+        Set<VariableInstance> sub = unifier.unifyReplace(X, Y);
         
         assertTrue(sub.size()==1);
         assertTrue(subContainsVariable(X, sub));
@@ -114,7 +120,7 @@ public class UnifierTest {
         final VariableInstance X = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
         final VariableInstance Y = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
        
-        Set<VariableInstance> sub = unifier.unify(Y, X);
+        Set<VariableInstance> sub = unifier.unifyReplace(Y, X);
         
         assertTrue(sub.size()==1);
         assertTrue(subContainsVariable(Y, sub));
@@ -128,7 +134,7 @@ public class UnifierTest {
         final ConstantInstance a = new ConstantInstance(NameGenerator.lowerCaseNameGen.getNextName());
         final VariableInstance X = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
        
-        Set<VariableInstance> sub = unifier.unify(X, a);
+        Set<VariableInstance> sub = unifier.unifyReplace(X, a);
         assertTrue(sub.size()==1);
         assertTrue(subContainsVariable(X, sub)&&getSubstitutedVariable(X, sub).getValue().equals(a));
     }
@@ -139,7 +145,7 @@ public class UnifierTest {
         final ConstantInstance a = new ConstantInstance(NameGenerator.lowerCaseNameGen.getNextName());
         final VariableInstance X = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
        
-        Set<VariableInstance> sub = unifier.unify(a,X);
+        Set<VariableInstance> sub = unifier.unifyReplace(a,X);
         assertTrue(sub.size()==1);
         assertTrue(subContainsVariable(X, sub)&&getSubstitutedVariable(X, sub).getValue().equals(a));
     }
@@ -155,7 +161,7 @@ public class UnifierTest {
         final PredicateInstance f1 = new PredicateInstance(fName,a,X);
         final PredicateInstance f2 = new PredicateInstance(fName,a,b);
        
-        Set<VariableInstance> sub = unifier.unify(f1, f2);
+        Set<VariableInstance> sub = unifier.unifyReplace(f1, f2);
         assertTrue(sub.size()==1);
         assertTrue(subContainsVariable(X, sub)&&getSubstitutedVariable(X, sub).getValue().equals(b));
     }
@@ -170,7 +176,7 @@ public class UnifierTest {
         final PredicateInstance f1 = new PredicateInstance(fName,a,X);
         final PredicateInstance f2 = new PredicateInstance(fName,a,b);
        
-        Set<VariableInstance> sub = unifier.unify(f2, f1);
+        Set<VariableInstance> sub = Unifier.unifyReplace(f2, f1);
         assertTrue(sub.size()==1);
         assertTrue(subContainsVariable(X, sub)&&getSubstitutedVariable(X, sub).getValue().equals(b));
     }
@@ -182,7 +188,7 @@ public class UnifierTest {
         final PredicateInstance f = new PredicateInstance(NameGenerator.lowerCaseNameGen.getNextName(),a);
         final PredicateInstance g = new PredicateInstance(NameGenerator.lowerCaseNameGen.getNextName(),a);
        
-        Set<VariableInstance> sub = unifier.unify(f,g);
+        Set<VariableInstance> sub = unifier.unifyReplace(f,g);
     }
     
     /** unify(f(a),g(a)) = FAIL */
@@ -192,7 +198,7 @@ public class UnifierTest {
         final PredicateInstance f = new PredicateInstance(NameGenerator.lowerCaseNameGen.getNextName(),a);
         final PredicateInstance g = new PredicateInstance(NameGenerator.lowerCaseNameGen.getNextName(),a);
        
-        Set<VariableInstance> sub = unifier.unify(g,f);
+        Set<VariableInstance> sub = unifier.unifyReplace(g,f);
     }
     
     /** unify(f(X),f(Y)) = {X/Y} */
@@ -203,7 +209,7 @@ public class UnifierTest {
         final String fName = NameGenerator.lowerCaseNameGen.getNextName();
         final PredicateInstance f1 = new PredicateInstance(fName,X);
         final PredicateInstance f2 = new PredicateInstance(fName,Y); 
-        Set<VariableInstance> sub = unifier.unify(f1,f2);
+        Set<VariableInstance> sub = unifier.unifyReplace(f1,f2);
         assertTrue(sub.size()==1);
         assertTrue(subContainsVariable(X, sub)&&getSubstitutedVariable(X, sub).getValue().equals(Y));
     }
@@ -216,7 +222,7 @@ public class UnifierTest {
         final String fName = NameGenerator.lowerCaseNameGen.getNextName();
         final PredicateInstance f1 = new PredicateInstance(fName,X);
         final PredicateInstance f2 = new PredicateInstance(fName,Y); 
-        Set<VariableInstance> sub = unifier.unify(f2,f1);
+        Set<VariableInstance> sub = unifier.unifyReplace(f2,f1);
         assertTrue(sub.size()==1);
         assertTrue(subContainsVariable(Y, sub)&&getSubstitutedVariable(Y, sub).getValue().equals(X));
     }
@@ -228,7 +234,7 @@ public class UnifierTest {
         final VariableInstance Y = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
         final PredicateInstance f = new PredicateInstance(NameGenerator.lowerCaseNameGen.getNextName(),X);
         final PredicateInstance g = new PredicateInstance(NameGenerator.lowerCaseNameGen.getNextName(),Y); 
-        Set<VariableInstance> sub = unifier.unify(f,g);
+        Set<VariableInstance> sub = unifier.unifyReplace(f,g);
     }
     
     /** unify(g(Y),f(X)) = FAIL */
@@ -238,7 +244,7 @@ public class UnifierTest {
         final VariableInstance Y = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
         final PredicateInstance f = new PredicateInstance(NameGenerator.lowerCaseNameGen.getNextName(),X);
         final PredicateInstance g = new PredicateInstance(NameGenerator.lowerCaseNameGen.getNextName(),Y); 
-        Set<VariableInstance> sub = unifier.unify(g,f);
+        Set<VariableInstance> sub = unifier.unifyReplace(g,f);
     }
     
     /** unify(f(X),g(Y,Z)) = FAIL */
@@ -249,7 +255,7 @@ public class UnifierTest {
         final VariableInstance Z = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
         final PredicateInstance f1 = new PredicateInstance(NameGenerator.upperCaseNameGen.getNextName(),X);
         final PredicateInstance f2 = new PredicateInstance(NameGenerator.upperCaseNameGen.getNextName(),Y,Z); 
-        Set<VariableInstance> sub = unifier.unify(f1,f2);
+        Set<VariableInstance> sub = unifier.unifyReplace(f1,f2);
     }
     
     /** unify(g(Y),f(X,Z)) = FAIL */
@@ -260,7 +266,7 @@ public class UnifierTest {
         final VariableInstance Z = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
         final PredicateInstance f1 = new PredicateInstance(NameGenerator.upperCaseNameGen.getNextName(),X);
         final PredicateInstance f2 = new PredicateInstance(NameGenerator.upperCaseNameGen.getNextName(),Y,Z); 
-        Set<VariableInstance> sub = unifier.unify(f2,f1);
+        Set<VariableInstance> sub = unifier.unifyReplace(f2,f1);
     }
     
     /** unify(f(g(X)),f(Y)) = {Y/g(X)} */
@@ -270,7 +276,7 @@ public class UnifierTest {
         PredicateInstance g = new PredicateInstance(NameGenerator.lowerCaseNameGen.getNextName(),X);
         VariableInstance Y = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
         String fName = NameGenerator.lowerCaseNameGen.getNextName();
-        Set<VariableInstance> sub1 = unifier.unify(new PredicateInstance(fName,g),
+        Set<VariableInstance> sub1 = unifier.unifyReplace(new PredicateInstance(fName,g),
                                                       new PredicateInstance(fName,Y));
         assertTrue(sub1.size()==1);
         assertTrue(subContainsVariable(Y, sub1));
@@ -282,8 +288,8 @@ public class UnifierTest {
     public void simplePredicateAndVariableUnificationTest1() throws CouldNotUnifyException {
         VariableInstance X = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
         PredicateInstance f = new PredicateInstance(NameGenerator.lowerCaseNameGen.getNextName(),X);
-        Set<VariableInstance> sub1 = unifier.unify(f,X);
-        sub1 = unifier.unify(f,X);
+        Set<VariableInstance> sub1 = unifier.unifyReplace(f,X);
+        sub1 = unifier.unifyReplace(f,X);
     }
     
     /** unify(X,f(X)) = FAIL (due to occurs check) */
@@ -291,8 +297,8 @@ public class UnifierTest {
     public void simplePredicateAndVariableUnificationTest2() throws CouldNotUnifyException {
         VariableInstance X = new VariableInstance(NameGenerator.upperCaseNameGen.getNextName());
         PredicateInstance f = new PredicateInstance(NameGenerator.lowerCaseNameGen.getNextName(),X);
-        Set<VariableInstance> sub1 = unifier.unify(X,f);
-        sub1 = unifier.unify(f,X);
+        Set<VariableInstance> sub1 = unifier.unifyReplace(X,f);
+        sub1 = unifier.unifyReplace(f,X);
     }
     
     /** unify(f(g(X),X),f(Y,a)) = {X/a,Y/g(a)} */
@@ -305,13 +311,13 @@ public class UnifierTest {
         VariableInstance Y = new VariableInstance("Y");
         String fName = "f";
         
-        Set<VariableInstance> sub1 = unifier.unify(new PredicateInstance(fName,gOfX, X),
+        Set<VariableInstance> sub1 = unifier.unifyReplace(new PredicateInstance(fName,gOfX, X),
                                                       new PredicateInstance(fName,Y,a));
         assertTrue(sub1.size()==2);
         assertTrue(subContainsVariable(X, sub1)&&subContainsVariable(Y, sub1));
         assertTrue(getSubstitutedVariable(X, sub1).getValue().equals(a));
         VariableInstance YSub = getSubstitutedVariable(Y, sub1);
-        IUnifiableInstance YValue = YSub.getValue();
+        IAtomInstance YValue = YSub.getValue();
         assertTrue(YValue.equals(gOfa)); 
     }
     
@@ -325,14 +331,14 @@ public class UnifierTest {
         VariableInstance Y = new VariableInstance("Y");
         String fName = "f";
         
-        Set<VariableInstance> sub1 = unifier.unify(new PredicateInstance(fName,Y,a),
+        Set<VariableInstance> sub1 = unifier.unifyReplace(new PredicateInstance(fName,Y,a),
                 new PredicateInstance(fName,gOfX, X)
                                                       );
         assertTrue(sub1.size()==2);
         assertTrue(subContainsVariable(X, sub1)&&subContainsVariable(Y, sub1));
         assertTrue(getSubstitutedVariable(X, sub1).getValue().equals(a));
         VariableInstance YSub = getSubstitutedVariable(Y, sub1);
-        IUnifiableInstance YValue = YSub.getValue();
+        IAtomInstance YValue = YSub.getValue();
         assertTrue(YValue.equals(gOfa)); 
     }
     
@@ -344,7 +350,7 @@ public class UnifierTest {
         PredicateInstance f = new PredicateInstance("f",POfX);
         PredicateInstance P2 = new PredicateInstance("P",f);
         
-        Set<VariableInstance> sub = unifier.unify(P2,POfX);   
+        Set<VariableInstance> sub = unifier.unifyReplace(P2,POfX);   
     }
     
     /** unify(Knows(John,x),Knows(John,Jane)) = {x/Jane} */
@@ -357,7 +363,7 @@ public class UnifierTest {
         
         String Knows = NameGenerator.upperCaseNameGen.getNextName();
         
-        Set<VariableInstance> sub = unifier.unify(new PredicateInstance(Knows, John, x), new PredicateInstance(Knows, John, Jane));
+        Set<VariableInstance> sub = unifier.unifyReplace(new PredicateInstance(Knows, John, x), new PredicateInstance(Knows, John, Jane));
         assertTrue(sub.size()==1);
         assertTrue(subContainsVariable(x, sub)&&getSubstitutedVariable(x, sub).getValue().equals(Jane));
     }
@@ -369,7 +375,7 @@ public class UnifierTest {
         ConstantInstance Jane = new ConstantInstance(NameGenerator.lowerCaseNameGen.getNextName());
         VariableInstance x = new VariableInstance(NameGenerator.lowerCaseNameGen.getNextName());
         String Knows = NameGenerator.upperCaseNameGen.getNextName();
-        Set<VariableInstance> sub = unifier.unify(new PredicateInstance(Knows, John, Jane),new PredicateInstance(Knows, John, x));
+        Set<VariableInstance> sub = unifier.unifyReplace(new PredicateInstance(Knows, John, Jane),new PredicateInstance(Knows, John, x));
         assertTrue(sub.size()==1);
         assertTrue(subContainsVariable(x, sub)&&getSubstitutedVariable(x, sub).getValue().equals(Jane));
     }

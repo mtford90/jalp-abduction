@@ -8,6 +8,6 @@ package uk.co.mtford.abduction.logic;
  *
  * @author mtford
  */
-public interface TermInstance extends IUnifiableInstance {
+public interface ITermInstance extends IAtomInstance {
    public Object clone();
 }

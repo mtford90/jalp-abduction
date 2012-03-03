@@ -2,40 +2,39 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.abduction.logic;
+package uk.co.mtford.abduction.asystem;
 
+import uk.co.mtford.abduction.logic.ILiteralInstance;
 import java.util.List;
-import uk.co.mtford.abduction.asystem.IASystemInferable;
-import uk.co.mtford.abduction.asystem.ASystemState;
-import uk.co.mtford.abduction.asystem.ASystemStore;
+import uk.co.mtford.abduction.logic.IAtomInstance;
 
 /**
  *
  * @author mtford
  */
-public class EqualityInstance implements IASystemInferable  {
+public class EqualityInstance implements ILiteralInstance  {
 
-    private IASystemInferable left;
-    private IASystemInferable right;
+    private IAtomInstance left;
+    private IAtomInstance right;
 
-    public EqualityInstance(IASystemInferable left, IASystemInferable right) {
+    public EqualityInstance(IAtomInstance left, IAtomInstance right) {
         this.left = left;
         this.right = right;
     }
 
-    public IASystemInferable getLeft() {
+    public IAtomInstance getLeft() {
         return left;
     }
 
-    public void setLeft(IASystemInferable left) {
+    public void setLeft(IAtomInstance left) {
         this.left = left;
     }
 
-    public IASystemInferable getRight() {
+    public IAtomInstance getRight() {
         return right;
     }
 
-    public void setRight(IASystemInferable right) {
+    public void setRight(IAtomInstance right) {
         this.right = right;
     }
 
@@ -48,9 +47,9 @@ public class EqualityInstance implements IASystemInferable  {
     }
     
     public Object clone() {
-        return new EqualityInstance((IASystemInferable)left.clone(),(IASystemInferable)right.clone());
+        return new EqualityInstance((IAtomInstance)left.clone(),(IAtomInstance)right.clone());
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -68,16 +67,8 @@ public class EqualityInstance implements IASystemInferable  {
         }
         return true;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + (this.left != null ? this.left.hashCode() : 0);
-        hash = 89 * hash + (this.right != null ? this.right.hashCode() : 0);
-        return hash;
-    }
-
-    public boolean deepEquals(Object obj) {
+    
+     public boolean deepEquals(Object obj) {
         if (obj == null) {
             return false;
         }
@@ -93,5 +84,15 @@ public class EqualityInstance implements IASystemInferable  {
         }
         return true;
     }
+ 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 89 * hash + (this.left != null ? this.left.hashCode() : 0);
+        hash = 89 * hash + (this.right != null ? this.right.hashCode() : 0);
+        return hash;
+    }
+
+   
 
 }

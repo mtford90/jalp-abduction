@@ -4,48 +4,46 @@
  */
 package uk.co.mtford.abduction;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import uk.co.mtford.abduction.asystem.DenialInstance;
+import uk.co.mtford.abduction.asystem.RuleInstance;
 import uk.co.mtford.abduction.logic.PredicateInstance;
-import uk.co.mtford.abduction.logic.DenialInstance;
-import uk.co.mtford.abduction.logic.program.Rule;
 
 /**
  *
  * @author mtford
  */
 public class AbductiveFramework {
-    protected List<Rule> P; // Logic program.
-    protected List<PredicateInstance> A; // Abducibles.
+    protected List<RuleInstance> P; // Logic program.
+    protected List<String> A; // Abducibles.
     protected List<DenialInstance> IC; // Integrity constraints.
     
     public AbductiveFramework() {
-        P = new LinkedList<Rule>();
-        A = new LinkedList<PredicateInstance>();
+        P = new LinkedList<RuleInstance>();
+        A = new LinkedList<String>();
         IC = new LinkedList<DenialInstance>();
     }
-
-    public AbductiveFramework(List<Rule> P, List<PredicateInstance> A, List<DenialInstance> IC) {
+ 
+    public AbductiveFramework(List<RuleInstance> P, List<String> A, List<DenialInstance> IC) {
         this.P = P;
         this.A = A;
         this.IC = IC;
-    }
-
-    public void setA(List<PredicateInstance> A) {
-        this.A = A;
     }
 
     public void setIC(List<DenialInstance> IC) {
         this.IC = IC;
     }
 
-    public void setP(List<Rule> P) {
+    public void setP(List<RuleInstance> P) {
         this.P = P;
     }
+    
+    public void setA(List<String> A) {
+        this.A = A;
+    }
 
-    public List<PredicateInstance> getA() {
+    public List<String> getA() {
         return A;
     }
 
@@ -53,10 +51,12 @@ public class AbductiveFramework {
         return IC;
     }
 
-    public List<Rule> getP() {
+    public List<RuleInstance> getP() {
         return P;
     }
     
-    
+    public boolean isAbducible(PredicateInstance predicate) {
+        return A.contains(predicate.getName());
+    }
     
 }

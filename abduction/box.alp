@@ -1,0 +1,23 @@
+on(X,Y,T) :- initially(X,Y), ~moved(X,Y,0,T).
+on(X,Y,T) :- move(X,Y,E), E < T, ~moved(X,Y,E,T).
+moved(X,Y,E,T) :- move(X,Z,C), Z /= Y, between(C,E,T).
+between(C,E,T) :- E <= C, C<T.
+
+succeeds_move(X,Y,E) :- ablock(X), location(Y), time(E),
+					    X /= Y, clear_block(X,E), 
+						clear_location(Y,E).
+clear_block(X,E) :- ~something_on(X,E).
+something_on(X,E) :- on(Y,X,E).
+clear_location(0,E). // 0 Denotes table.
+claer_location(Y,E) :-Y/=0, clear_block(Y,E).
+
+ic :- move(X,Y,E), ~succeeds_move(X,Y,E).
+ic :- move(X,Y1,T), move(X,Y2,T), Y1 \= Y2.
+ic :- move(X1,Y,T), move(X2,Y,T), X1 \= X2. // X2 is implicitly existential.
+
+initially(1,2).
+initially(2,3).
+initially(3,0).
+ablock(X) :- X >= 1, X<=3.
+location(X) :- X >=0, X<=3.
+time(X) :- X >=1, X<=6.

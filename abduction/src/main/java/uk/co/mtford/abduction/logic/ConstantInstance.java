@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author mtford
  */
-public class ConstantInstance implements TermInstance {
+public class ConstantInstance implements ITermInstance {
     private String value;
 
     public ConstantInstance(String value) {
@@ -38,7 +38,7 @@ public class ConstantInstance implements TermInstance {
         }
         if (obj instanceof VariableInstance) { // Special case whereby variables have been assigned a constant value.
             VariableInstance var = (VariableInstance)obj;
-            IUnifiableInstance varValue = var.getValue();
+            IAtomInstance varValue = var.getValue();
             if (varValue==null) {
                 return false;
             }
@@ -85,7 +85,7 @@ public class ConstantInstance implements TermInstance {
      * @return 
      */
     public boolean
-           equalitySolve(IUnifiableInstance other) {
+           equalitySolve(IAtomInstance other) {
         if (this.equals(other)) return true;
         return false;
     }

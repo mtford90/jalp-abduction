@@ -11,11 +11,11 @@ import uk.co.mtford.unification.Unifier;
  *
  * @author mtford
  */
-public class VariableInstance implements TermInstance {
+public class VariableInstance implements ITermInstance {
     String name;
-    IUnifiableInstance value;
+    IAtomInstance value;
 
-    public VariableInstance(String name, IUnifiableInstance value) {
+    public VariableInstance(String name, IAtomInstance value) {
         this.name = name;
         this.value = value;
     }
@@ -36,11 +36,11 @@ public class VariableInstance implements TermInstance {
      * 
      * @return 
      */
-    public IUnifiableInstance getValue() {
+    public IAtomInstance getValue() {
         return value;
     }
 
-    public void setValue(IUnifiableInstance value) {
+    public void setValue(IAtomInstance value) {
         this.value = value;
     }
     
@@ -67,9 +67,9 @@ public class VariableInstance implements TermInstance {
     @Override
     public Object clone() {
         String clonedName = new String(name);
-        IUnifiableInstance clonedValue = null;
+        IAtomInstance clonedValue = null;
         if (value!=null) {
-            clonedValue = (IUnifiableInstance) value.clone();
+            clonedValue = (IAtomInstance) value.clone();
         }
         return new VariableInstance(clonedName,clonedValue);
     }
@@ -108,7 +108,7 @@ public class VariableInstance implements TermInstance {
             if (value == null ) {
                 return false;
             }
-            IUnifiableInstance realValue = value;
+            IAtomInstance realValue = value;
             while (realValue instanceof VariableInstance) {
                 realValue=((VariableInstance)realValue).value;
             }
@@ -133,7 +133,7 @@ public class VariableInstance implements TermInstance {
         return true;
     }
 
-    public boolean equalitySolve(IUnifiableInstance other) {
+    public boolean equalitySolve(IAtomInstance other) {
         try {
             Unifier.unify(this, other);
         } catch (CouldNotUnifyException ex) {

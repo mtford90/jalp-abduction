@@ -6,6 +6,7 @@ package uk.co.mtford.unification;
 
 import java.util.*;
 import org.apache.log4j.Logger;
+import uk.co.mtford.abduction.asystem.EqualityInstance;
 import uk.co.mtford.abduction.logic.*;
 
 /**
@@ -16,19 +17,19 @@ public class Unifier {
     
     private static final Logger LOGGER = Logger.getLogger(Unifier.class);
     
-    public static boolean occurs(VariableInstance x, IUnifiableInstance t, Set<VariableInstance> sub) {
+    public static boolean occurs(VariableInstance x, IAtomInstance t, Set<VariableInstance> sub) {
         
         String logHead = "occurs("+x+", "+t+"): ";
         LOGGER.info(logHead+"starting.");
         
-        Stack<IUnifiableInstance> stack = new Stack<IUnifiableInstance>();
+        Stack<IAtomInstance> stack = new Stack<IAtomInstance>();
         stack.push(t);
         
         while (!stack.empty()) {
             t = stack.pop();
             if (t instanceof PredicateInstance) {
                 PredicateInstance p = (PredicateInstance) t;
-                stack.addAll(Arrays.asList(p.getParameters()));
+                stack.addAll((Arrays.asList(p.getParameters())));
             }
             else if (t instanceof VariableInstance) {
                 VariableInstance y = (VariableInstance) t;
@@ -46,6 +47,21 @@ public class Unifier {
 	return false;
     }
     
+    public static Set<VariableInstance> unifyReplace(IAtomInstance left, IAtomInstance right) throws CouldNotUnifyException {
+        Set<VariableInstance> subst = new HashSet<VariableInstance>();
+        unify(left,right,subst,new HashSet<EqualityInstance>());
+        return subst; 
+    }
+    
+    public static Set<EqualityInstance> unify(IAtomInstance left, IAtomInstance right) throws CouldNotUnifyException {
+        // Clone in order to prevent altering.
+        left = (IAtomInstance) left.clone();
+        right = (IAtomInstance) right.clone();
+        Set<EqualityInstance> equalities = new HashSet<EqualityInstance>();
+        unify(left,right,new HashSet<VariableInstance>(),equalities);
+        return equalities;
+    }
+    
     // TODO: Consider using a table instead....
     // TODO: Consider returning null rather than throwing exception. 
     //       Is it really an 'exceptional' event??
@@ -55,18 +71,18 @@ public class Unifier {
      * @param right
      * @return 
      */
-    public static Set<VariableInstance> unify(IUnifiableInstance left, IUnifiableInstance right) throws CouldNotUnifyException {
+    private static void unify(IAtomInstance left, IAtomInstance right, Set<VariableInstance> subst, Set<EqualityInstance> equalities) throws CouldNotUnifyException {
+        
+        
         
         String logHead = "unify("+left+", "+right+"): ";
         LOGGER.info(logHead+"starting.");
-
-        Set<VariableInstance> subst = new HashSet<VariableInstance>();
         
         // Pairs of formulae waiting to unified.
-        Stack<IUnifiableInstance[]> stack = new Stack<IUnifiableInstance[]>();
+        Stack<IAtomInstance[]> stack = new Stack<IAtomInstance[]>();
         
         // The current pair we are unifying.
-        IUnifiableInstance[] currentPair = new IUnifiableInstance[2];
+        IAtomInstance[] currentPair = new IAtomInstance[2];
         currentPair[0]=left;currentPair[1]=right;
         stack.push(currentPair);
         
@@ -80,7 +96,7 @@ public class Unifier {
             if (left instanceof ConstantInstance && 
                 right instanceof ConstantInstance) {
                if (left.equals(right)) {
-                   return subst;
+                    return;
                } 
                else {
                    LOGGER.info("Couldn't unify. Different constants.");
@@ -117,6 +133,7 @@ public class Unifier {
                     if (!occurs(var,right,subst)) {
                         var.setValue(right);
                         subst.add(var);
+                        equalities.add(new EqualityInstance(var,right));
                     }
                     else {
                         LOGGER.info("Couldn't unify. Occurs check failed.");
@@ -128,6 +145,7 @@ public class Unifier {
                     if (!occurs(var,left,subst)) {
                         var.setValue(left);
                         subst.add(var);
+                        equalities.add(new EqualityInstance(var,left));
                     }
                     else {
                         LOGGER.info("Couldn't unify. Occurs check failed.");
@@ -143,11 +161,11 @@ public class Unifier {
                     boolean sameName = leftPredicate.getName().equals(rightPredicate.getName());
                     boolean sameNumParams = leftPredicate.getNumParams()==rightPredicate.getNumParams();
                     if (sameName&&sameNumParams) {
-                        IUnifiableInstance[] leftParamArray = leftPredicate.getParameters();
-                        IUnifiableInstance[] rightParamArray = rightPredicate.getParameters();
+                        IAtomInstance[] leftParamArray = leftPredicate.getParameters();
+                        IAtomInstance[] rightParamArray = rightPredicate.getParameters();
                         int length = leftParamArray.length; // Both same length.
                         for (int i=0;i<length;i++) {
-                            IUnifiableInstance[] unifyPair = new IUnifiableInstance[2];
+                            IAtomInstance[] unifyPair = new IAtomInstance[2];
                             unifyPair[0]=leftParamArray[i];
                             unifyPair[1]=rightParamArray[i];
                             stack.add(unifyPair);
@@ -165,7 +183,6 @@ public class Unifier {
         }
         
         LOGGER.info(logHead+"Successful.");
-        return subst;
         
     }
        
