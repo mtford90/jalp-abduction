@@ -6,6 +6,7 @@ package uk.co.mtford.abduction.asystem;
 
 import java.io.FileNotFoundException;
 import java.util.List;
+import org.apache.log4j.Logger;
 import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.IAbductiveLogicProgrammingSystem;
 import uk.co.mtford.abduction.logic.PredicateInstance;
@@ -16,16 +17,16 @@ import uk.co.mtford.abduction.parse.ParseException;
  *
  * @author mtford
  */
-public class ASystemStateRewriter implements IAbductiveLogicProgrammingSystem {
+public abstract class ASystemStateRewriter implements IAbductiveLogicProgrammingSystem {
     
-    final static String FILE_OPTION = "-f";
-    final static String CONSOLE_OPTION = "-c";
-    final static String HELP_OPTION = "-h";
+    final private static Logger LOGGER = Logger.getLogger(ASystemStateRewriter.class);
     
+    final protected static String FILE_OPTION = "-f";
+    final protected static String CONSOLE_OPTION = "-c";
+    final protected static String HELP_OPTION = "-h";
     
-    
-    protected boolean success;
-    
+    protected AbductiveFramework abductiveFramework;
+        
     public static void main(String[] args) throws ParseException, FileNotFoundException {
        boolean console = false;
        boolean file = false;
@@ -76,33 +77,39 @@ public class ASystemStateRewriter implements IAbductiveLogicProgrammingSystem {
         System.err.println(error);
         System.exit(-1);
     }
-
-    public ASystemStateRewriter() {
-        success = false;
-    }
     
-    private void resetSystem() {
-        success = false;
+    public ASystemStateRewriter(AbductiveFramework abductiveFramework) {
+        this.abductiveFramework=abductiveFramework;
     }
     
     /** Computes an abductive explanation in the form of an ASystem
-     *  store.
+     *  store. Returns null if no possible explanation.
      * 
      * @param query
      * @param abductiveFramework
      * @return 
      */
-    public ASystemStore computeExplanation(List<IASystemInferable> query, 
-                                    AbductiveFramework abductiveFramework) {
-        ASystemState state = new ASystemConcreteState(query, abductiveFramework);
-        while (state.moveToNextState()) {
-            // Keep going.
+    public ASystemStore computeExplanation(List<IASystemInferable> query) {
+        ASystemState currentState = new ASystemState(query); // Initial state.
+        IASystemInferable chosenGoal;
+        while ((chosenGoal = getNextGoal(currentState))!=null) {
+            currentState = stateTransition(chosenGoal,currentState);
+            if (currentState==null) {
+                return null; // Failed to move to another state.
+            }
         }
-        if (state.hasGoalsRemaining()) {
-            return null;
-        }
-        return state.getStore();
+        return currentState.getStore();
     }
+    
+    protected abstract IASystemInferable getNextGoal(ASystemState state);
+    
+    /** Returns the next state. Returns null if not possible to move to next.
+     * 
+     * @param goal
+     * @return 
+     */
+    protected abstract ASystemState stateTransition(IASystemInferable goal, ASystemState state);
+    
     
 
     

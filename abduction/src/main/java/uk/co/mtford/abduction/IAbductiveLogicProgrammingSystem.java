@@ -16,6 +16,5 @@ import uk.co.mtford.abduction.logic.PredicateInstance;
  * @author mtford
  */
 public interface IAbductiveLogicProgrammingSystem {
-   public abstract ASystemStore computeExplanation(List<IASystemInferable> query,
-                                            AbductiveFramework abductiveFramework);
+   public abstract ASystemStore computeExplanation(List<IASystemInferable> query);
 }
