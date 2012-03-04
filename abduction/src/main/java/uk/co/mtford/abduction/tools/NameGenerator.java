@@ -12,7 +12,8 @@ public abstract class NameGenerator {
     
     public static LowerCaseNameGenerator lowerCaseNameGen = new LowerCaseNameGenerator();
     public static UpperCaseNameGenerator upperCaseNameGen = new UpperCaseNameGenerator();
-   
+    public static PrimeNameGenerator primeNameGen = new PrimeNameGenerator();
+    
     public abstract String getNextName();
    
 }

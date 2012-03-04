@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import uk.co.mtford.abduction.asystem.DenialInstance;
 import uk.co.mtford.abduction.asystem.RuleInstance;
-import uk.co.mtford.abduction.logic.PredicateInstance;
+import uk.co.mtford.abduction.logic.instance.PredicateInstance;
 
 /**
  *
@@ -58,5 +58,7 @@ public class AbductiveFramework {
     public boolean isAbducible(PredicateInstance predicate) {
         return A.contains(predicate.getName());
     }
+   
+        
     
 }

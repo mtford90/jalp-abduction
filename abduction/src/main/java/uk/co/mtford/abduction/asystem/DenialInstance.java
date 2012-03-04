@@ -6,7 +6,7 @@ package uk.co.mtford.abduction.asystem;
 
 import java.util.LinkedList;
 import java.util.List;
-import uk.co.mtford.abduction.logic.ILiteralInstance;
+import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
 
 /**
  *
@@ -55,14 +55,6 @@ public class DenialInstance implements ILiteralInstance  {
     
     public void push(ILiteralInstance p) {
         body.add(0, p);
-    }
-
-    public List<ASystemState> applyInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public List<ASystemState> applyDenialInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     @Override

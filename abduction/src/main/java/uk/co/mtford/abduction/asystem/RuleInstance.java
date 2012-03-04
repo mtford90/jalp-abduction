@@ -5,8 +5,8 @@
 package uk.co.mtford.abduction.asystem;
 
 import java.util.List;
-import uk.co.mtford.abduction.logic.ILiteralInstance;
-import uk.co.mtford.abduction.logic.PredicateInstance;
+import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
+import uk.co.mtford.abduction.logic.instance.PredicateInstance;
 
 /**
  *

@@ -4,10 +4,10 @@
  */
 package uk.co.mtford.abduction.asystem;
 
-import uk.co.mtford.abduction.logic.ILiteralInstance;
+import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
 import java.util.List;
-import uk.co.mtford.abduction.logic.IAtomInstance;
-import uk.co.mtford.abduction.logic.VariableInstance;
+import uk.co.mtford.abduction.logic.instance.IAtomInstance;
+import uk.co.mtford.abduction.logic.instance.VariableInstance;
 
 /**
  *
@@ -39,13 +39,6 @@ public class EqualityInstance implements ILiteralInstance  {
         this.right = right;
     }
 
-    public List<ASystemState> applyInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public List<ASystemState> applyDenialInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
     
     public Object clone() {
         return new EqualityInstance((IAtomInstance)left.clone(),(IAtomInstance)right.clone());

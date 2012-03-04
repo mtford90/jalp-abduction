@@ -5,7 +5,8 @@
 package uk.co.mtford.abduction.asystem;
 
 import java.util.List;
-import uk.co.mtford.abduction.logic.ILogicInstance;
+import uk.co.mtford.abduction.AbductiveFramework;
+import uk.co.mtford.abduction.logic.instance.ILogicInstance;
 
 /**
  *
@@ -17,7 +18,7 @@ public interface IASystemInferable extends ILogicInstance {
      * @param s
      * @return 
      */
-    public List<ASystemState> applyInferenceRule(List<IASystemInferable> currentGoals, ASystemState s);
-    public List<ASystemState> applyDenialInferenceRule(List<IASystemInferable> currentGoals, ASystemState s);
+    public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s);
+    public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s);
 
 }

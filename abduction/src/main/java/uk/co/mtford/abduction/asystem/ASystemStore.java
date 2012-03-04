@@ -5,7 +5,7 @@
 package uk.co.mtford.abduction.asystem;
 
 import java.util.*;
-import uk.co.mtford.abduction.logic.PredicateInstance;
+import uk.co.mtford.abduction.logic.instance.PredicateInstance;
 
 
 /** An ASystem store of collectables.

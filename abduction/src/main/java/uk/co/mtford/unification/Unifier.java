@@ -4,10 +4,13 @@
  */
 package uk.co.mtford.unification;
 
+import uk.co.mtford.abduction.logic.instance.ConstantInstance;
+import uk.co.mtford.abduction.logic.instance.PredicateInstance;
+import uk.co.mtford.abduction.logic.instance.IAtomInstance;
+import uk.co.mtford.abduction.logic.instance.VariableInstance;
 import java.util.*;
 import org.apache.log4j.Logger;
 import uk.co.mtford.abduction.asystem.EqualityInstance;
-import uk.co.mtford.abduction.logic.*;
 
 /**
  *

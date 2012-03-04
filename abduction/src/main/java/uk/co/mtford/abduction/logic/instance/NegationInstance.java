@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.abduction.logic;
+package uk.co.mtford.abduction.logic.instance;
 
 import java.util.List;
 import uk.co.mtford.abduction.asystem.ASystemState;
@@ -26,14 +26,6 @@ public class NegationInstance implements ILiteralInstance {
 
     public void setSubFormula(ILiteralInstance subFormula) {
         this.subFormula = subFormula;
-    }
-
-    public List<ASystemState> applyInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public List<ASystemState> applyDenialInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     @Override

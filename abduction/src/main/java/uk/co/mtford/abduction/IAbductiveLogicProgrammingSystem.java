@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import uk.co.mtford.abduction.asystem.IASystemInferable;
 import uk.co.mtford.abduction.asystem.ASystemStore;
-import uk.co.mtford.abduction.logic.PredicateInstance;
+import uk.co.mtford.abduction.logic.instance.PredicateInstance;
 
 /**
  *

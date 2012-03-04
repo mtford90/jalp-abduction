@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.IAbductiveLogicProgrammingSystem;
-import uk.co.mtford.abduction.logic.PredicateInstance;
+import uk.co.mtford.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.abduction.parse.ALPParser;
 import uk.co.mtford.abduction.parse.ParseException;
 

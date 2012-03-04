@@ -47,7 +47,7 @@ public class ASystemBasicStateRewriter extends ASystemStateRewriter {
         } 
         LinkedList<IASystemInferable> list = new LinkedList<IASystemInferable>();
         list.add(goal);
-        List<ASystemState> states = goal.applyInferenceRule(list, state);
+        List<ASystemState> states = goal.applyInferenceRule(abductiveFramework, state);
         LOGGER.info(logHead+"Generated new states "+states);
         stateStack.addAll(states);
         if (stateStack.isEmpty()) {

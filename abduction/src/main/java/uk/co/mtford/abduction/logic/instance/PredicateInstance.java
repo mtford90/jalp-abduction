@@ -2,13 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.abduction.logic;
+package uk.co.mtford.abduction.logic.instance;
 
 import java.util.Arrays;
 import java.util.List;
-import uk.co.mtford.abduction.asystem.IASystemInferable;
 import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.asystem.ASystemState;
+import uk.co.mtford.abduction.asystem.EqualityInstance;
+import uk.co.mtford.abduction.tools.PrimeNameGenerator;
 import uk.co.mtford.unification.CouldNotUnifyException;
 import uk.co.mtford.unification.Unifier;
 
@@ -189,14 +190,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         }
         return true;
     }
-
-    public List<ASystemState> applyInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public List<ASystemState> applyDenialInferenceRule(List<IASystemInferable> currentGoals, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    
     
     
 }

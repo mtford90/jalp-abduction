@@ -4,7 +4,7 @@
  */
 package uk.co.mtford.abduction.asystem;
 
-import uk.co.mtford.abduction.logic.ILiteralInstance;
+import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
 import java.io.File;
 import uk.co.mtford.abduction.asystem.EqualityInstance;
 import uk.co.mtford.abduction.asystem.DenialInstance;
@@ -12,10 +12,10 @@ import java.util.Arrays;
 import java.util.List;
 import uk.co.mtford.abduction.asystem.IASystemInferable;
 import uk.co.mtford.abduction.asystem.RuleInstance;
-import uk.co.mtford.abduction.logic.ConstantInstance;
-import uk.co.mtford.abduction.logic.IAtomInstance;
-import uk.co.mtford.abduction.logic.PredicateInstance;
-import uk.co.mtford.abduction.logic.VariableInstance;
+import uk.co.mtford.abduction.logic.instance.ConstantInstance;
+import uk.co.mtford.abduction.logic.instance.IAtomInstance;
+import uk.co.mtford.abduction.logic.instance.PredicateInstance;
+import uk.co.mtford.abduction.logic.instance.VariableInstance;
 import uk.co.mtford.abduction.tools.NameGenerator;
 
 /**

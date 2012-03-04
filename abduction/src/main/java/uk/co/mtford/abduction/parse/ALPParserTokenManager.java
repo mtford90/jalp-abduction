@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.HashMap;
 import uk.co.mtford.abduction.AbductiveFramework;
-import uk.co.mtford.abduction.logic.*;
 import uk.co.mtford.abduction.asystem.*;
 
 /** Token Manager. */
