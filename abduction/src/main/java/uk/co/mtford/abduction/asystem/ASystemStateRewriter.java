@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.IAbductiveLogicProgrammingSystem;
+import uk.co.mtford.abduction.logic.PredicateInstance;
 import uk.co.mtford.abduction.parse.ALPParser;
 import uk.co.mtford.abduction.parse.ParseException;
 
@@ -20,6 +21,8 @@ public class ASystemStateRewriter implements IAbductiveLogicProgrammingSystem {
     final static String FILE_OPTION = "-f";
     final static String CONSOLE_OPTION = "-c";
     final static String HELP_OPTION = "-h";
+    
+    
     
     protected boolean success;
     
@@ -100,5 +103,7 @@ public class ASystemStateRewriter implements IAbductiveLogicProgrammingSystem {
         }
         return state.getStore();
     }
+    
+
     
 } 

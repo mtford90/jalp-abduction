@@ -13,8 +13,8 @@ import uk.co.mtford.abduction.AbductiveFramework;
  */
 public abstract class ASystemState implements Cloneable {
     protected List<IASystemInferable> goals;
-    protected ASystemStore store;
     protected AbductiveFramework abductiveFramework;
+    protected ASystemStore store;
     
     public ASystemState(List<IASystemInferable> goals, AbductiveFramework abductiveFramework) {
         this.goals = goals;

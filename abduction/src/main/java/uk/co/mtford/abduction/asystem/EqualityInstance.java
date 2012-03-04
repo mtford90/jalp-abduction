@@ -7,6 +7,7 @@ package uk.co.mtford.abduction.asystem;
 import uk.co.mtford.abduction.logic.ILiteralInstance;
 import java.util.List;
 import uk.co.mtford.abduction.logic.IAtomInstance;
+import uk.co.mtford.abduction.logic.VariableInstance;
 
 /**
  *
