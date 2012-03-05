@@ -6,6 +6,7 @@ package uk.co.mtford.abduction.asystem;
 
 import java.util.List;
 import uk.co.mtford.abduction.AbductiveFramework;
+import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
 
 /**
  *
@@ -44,6 +45,10 @@ public class ASystemState implements Cloneable {
     @Override
     public String toString() {
         return "ASystemState{" + "goals=" + goals + ", store=" + store + '}';
+    }
+
+    public void putGoals(List<ILiteralInstance> unfold) {
+        goals.addAll(0, unfold);
     }
     
 }
