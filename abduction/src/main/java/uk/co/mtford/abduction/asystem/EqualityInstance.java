@@ -4,8 +4,10 @@
  */
 package uk.co.mtford.abduction.asystem;
 
+import java.util.LinkedList;
 import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
 import java.util.List;
+import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.logic.instance.IAtomInstance;
 import uk.co.mtford.abduction.logic.instance.VariableInstance;
 
@@ -85,6 +87,20 @@ public class EqualityInstance implements ILiteralInstance  {
         hash = 89 * hash + (this.left != null ? this.left.hashCode() : 0);
         hash = 89 * hash + (this.right != null ? this.right.hashCode() : 0);
         return hash;
+    }
+
+    /** Implements inference rule E1.
+     * 
+     * @param framework
+     * @param s
+     * @return 
+     */
+    public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
+        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
+    }
+
+    public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
    

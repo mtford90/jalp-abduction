@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.asystem.ASystemState;
+import uk.co.mtford.abduction.asystem.EqualityInstance;
 import uk.co.mtford.abduction.asystem.RuleUnfoldException;
 import uk.co.mtford.abduction.tools.PrimeNameGenerator;
 import uk.co.mtford.unification.CouldNotUnifyException;
@@ -188,13 +189,29 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         return new PredicateInstance(clonedName,clonedParams);
     }
 
-    public boolean equalitySolve(IAtomInstance other) {
+    public boolean equalitySolveAssign(IAtomInstance other) {
         try {
             Unifier.unify(this, other);
         } catch (CouldNotUnifyException ex) {
             return false;
         }
         return true;
+    }
+    
+    public List<EqualityInstance> equalitySolve(IAtomInstance other) {
+        List<EqualityInstance> equalityInstances = new LinkedList<EqualityInstance>();
+        if (other.getClass().equals(this.getClass())) {
+            PredicateInstance otherPredicate = (PredicateInstance)other;
+            if (this.equals(otherPredicate)) {
+                for (int i=0;i<parameters.length;i++) {
+                    EqualityInstance equalityInstance = new EqualityInstance(parameters[i],otherPredicate.getParameter(i));
+                    equalityInstances.add(equalityInstance);
+                }
+                return equalityInstances;
+            }
+            return null;
+        }
+        return null;
     }
 
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {

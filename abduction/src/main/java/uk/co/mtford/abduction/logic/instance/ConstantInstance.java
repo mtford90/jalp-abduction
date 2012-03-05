@@ -4,7 +4,10 @@
  */
 package uk.co.mtford.abduction.logic.instance;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import uk.co.mtford.abduction.asystem.EqualityInstance;
 
 /**
  *
@@ -85,9 +88,13 @@ public class ConstantInstance implements ITermInstance {
      * @return 
      */
     public boolean
-           equalitySolve(IAtomInstance other) {
+           equalitySolveAssign(IAtomInstance other) {
         if (this.equals(other)) return true;
         return false;
+    }
+
+    public List<EqualityInstance> equalitySolve(IAtomInstance other) {
+        return new LinkedList<EqualityInstance>();
     }
     
 }
