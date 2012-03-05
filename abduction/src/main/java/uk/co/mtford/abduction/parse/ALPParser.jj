@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.HashMap;
 import uk.co.mtford.abduction.AbductiveFramework;
-import uk.co.mtford.abduction.logic.*;
+import uk.co.mtford.abduction.logic.instance.*;
 import uk.co.mtford.abduction.asystem.*;
 
 public class ALPParser {
@@ -99,6 +99,8 @@ AbductiveFramework AbductiveLogicProgram():
     LinkedList<DenialInstance> constraints = new LinkedList<DenialInstance>();
     LinkedList<String> abducibles = new LinkedList<String>();
 
+    LinkedList<String> defined = new LinkedList<String>(); // Defined predicates.
+
     RuleInstance r;
     DenialInstance d;
     
@@ -106,12 +108,20 @@ AbductiveFramework AbductiveLogicProgram():
 {
 	(
 		r = Rule(abducibles) 
-        { program.add(r); } |
+        { 
+            program.add(r); 
+            if (!defined.contains(r.getHead().getName())) {
+                defined.add(r.getHead().getName());
+            }
+        } |
         d = Denial()
         { constraints.add(d); }
 	)*
 	<EOF>
-	{ return new AbductiveFramework(program,abducibles,constraints); }
+	{ 
+        abducibles.removeAll(defined); // Remove all defined predicates from abducibles.
+        return new AbductiveFramework(program,abducibles,constraints);
+    }
 }
 
 RuleInstance Rule(LinkedList<String> abducibles):
