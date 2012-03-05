@@ -28,6 +28,12 @@ public class ASystemState implements Cloneable {
         return goals;
     }
     
+    public IASystemInferable popGoal() {
+        IASystemInferable goal = goals.get(0);
+        goals.remove(0);
+        return goal;
+    }
+    
     @Override
     public Object clone() {
         ASystemState newState = new ASystemState(goals);

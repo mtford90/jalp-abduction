@@ -93,7 +93,7 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
         ASystemState currentState = new ASystemState(query); // Initial state.
         IASystemInferable chosenGoal;
         while ((chosenGoal = getNextGoal(currentState))!=null) {
-            currentState = stateTransition(chosenGoal,currentState);
+            currentState = stateTransition(chosenGoal,(ASystemState)currentState.clone());
             if (currentState==null) {
                 return null; // Failed to move to another state.
             }

@@ -17,7 +17,7 @@ public interface IAtomInstance extends ILogicInstance {
      * 
      * @param other
      * @return Empty list if can't be broken down into further equalities
-     *         otherwise list of new equalities.
+     *         otherwise list of new equalities. Returns null if incompatible i.e. different predicates.
      */
     public List<EqualityInstance> equalitySolve(IAtomInstance other);
 }
