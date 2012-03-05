@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.asystem.ASystemState;
+import uk.co.mtford.abduction.asystem.DenialInstance;
 import uk.co.mtford.abduction.asystem.EqualityInstance;
 import uk.co.mtford.abduction.asystem.RuleUnfoldException;
 import uk.co.mtford.unification.CouldNotUnifyException;
@@ -222,7 +223,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         if (framework.isAbducible(this)) { // A1
-            
+            // TODO
         }
         else { // D1
             List<List<ILiteralInstance>> possibleUnfolds = null;
@@ -248,7 +249,27 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
      * @return 
      */
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        if (framework.isAbducible(this)) { // A2
+            // TODO
+        } 
+        
+        else { // D2
+            List<List<ILiteralInstance>> possibleUnfolds = null;
+            try {
+                possibleUnfolds = framework.unfoldRule(this);
+            } catch (RuleUnfoldException ex) {
+                LOGGER.error(ex);
+                System.exit(-1);
+            }
+            for (List<ILiteralInstance> unfold:possibleUnfolds) {
+                DenialInstance newDenial = new DenialInstance();
+                newDenial.addbody(0, unfold);
+                s.putGoal(newDenial);
+            }
+            possibleStates.add(s);
+        }
+        return possibleStates;
     }
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {

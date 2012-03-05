@@ -50,5 +50,9 @@ public class ASystemState implements Cloneable {
     public void putGoals(List<ILiteralInstance> unfold) {
         goals.addAll(0, unfold);
     }
+
+    public void putGoal(IASystemInferable goal) {
+        goals.add(0,goal);
+    }
     
 }

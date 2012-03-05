@@ -38,6 +38,15 @@ public class DenialInstance implements IASystemInferable  {
         body.add(p);
     }
     
+    public void addbody(int i, ILiteralInstance p) {
+        body.add(i,p);
+    }
+    
+    public void addbody(int i, List<ILiteralInstance> p) {
+        body.addAll(i,p);
+    }
+    
+    
     public void removebody(ILiteralInstance p) {
         body.remove(p);
     }
