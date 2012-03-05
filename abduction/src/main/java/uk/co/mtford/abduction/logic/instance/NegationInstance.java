@@ -62,8 +62,25 @@ public class NegationInstance implements ILiteralInstance {
         return possibleStates;
     }
 
+    /** Implements rule N2
+     * 
+     * @param framework
+     * @param s
+     * @return 
+     */
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        // Branch 1. Assumes that the denial that negation was part of is
+        // still at front of goal stack. (even if it has empty body).
+        s.getGoals().remove(0);
+        ASystemState clonedState = (ASystemState) s.clone();
+        clonedState.getGoals().add(0,subFormula);
+        possibleStates.add(clonedState);  
+        // Branch 2
+        clonedState = (ASystemState) s.clone();
+        clonedState.getGoals().add(0,this);
+        possibleStates.add(clonedState);
+        return possibleStates;
     }
     
     
