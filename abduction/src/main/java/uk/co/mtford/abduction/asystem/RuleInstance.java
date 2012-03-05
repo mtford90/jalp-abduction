@@ -7,9 +7,6 @@ package uk.co.mtford.abduction.asystem;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import javax.naming.OperationNotSupportedException;
-import uk.co.mtford.abduction.logic.Predicate;
 import uk.co.mtford.abduction.logic.instance.IAtomInstance;
 import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
 import uk.co.mtford.abduction.logic.instance.PredicateInstance;
@@ -20,6 +17,7 @@ import uk.co.mtford.abduction.logic.instance.VariableInstance;
  * @author mtford
  */
 public class RuleInstance {
+    
     private PredicateInstance head;
     private List<ILiteralInstance> body;
     
@@ -96,12 +94,16 @@ public class RuleInstance {
     @Override
     protected Object clone() { 
         HashMap<String, VariableInstance> variables = new HashMap<String, VariableInstance>();
-        for (IAtomInstance a:head.getParameters()) {
-            VariableInstance v = (VariableInstance)a;
-            variables.put(v.getName(), (VariableInstance)v.clone());
+        VariableInstance[] newParameters = new VariableInstance[head.getNumParams()];
+        for (int i=0;i<head.getNumParams();i++) {
+            newParameters[i]=(VariableInstance) head.getParameter(i).clone();
+            variables.put(newParameters[i].getName(),newParameters[i]);
         }
-        throw new UnsupportedOperationException("Not supported yet.");
+        LinkedList<ILiteralInstance> newBody = new LinkedList<ILiteralInstance>();
+        for (int i=0;i<body.size();i++) {
+            newBody.addLast((ILiteralInstance)body.remove(0).clone(variables));
+        }
+        return new RuleInstance(new PredicateInstance(head.getName(),newParameters),newBody);
     }
-    
     
 }

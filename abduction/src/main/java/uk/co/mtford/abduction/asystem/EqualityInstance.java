@@ -98,20 +98,7 @@ public class EqualityInstance implements ILiteralInstance  {
      * @return 
      */
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
-        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        ASystemState clonedState = (ASystemState) s.clone();
-        EqualityInstance clonedEquality = (EqualityInstance) clonedState.goals.get(0);
-        clonedState.goals.remove(0);
-        List<EqualityInstance> equalities = clonedEquality.left.equalitySolve(clonedEquality.right);
-        if (equalities==null) return possibleStates; // Failed.
-        if (equalities.isEmpty()){
-            clonedEquality.left.equalitySolve(right); // Perform assignments
-        }
-        if (!equalities.isEmpty()) {
-            clonedState.goals.addAll(0,equalities);
-        }
-        possibleStates.add(clonedState);
-        return possibleStates;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
