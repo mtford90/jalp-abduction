@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import uk.co.mtford.abduction.asystem.DenialInstance;
 import uk.co.mtford.abduction.asystem.RuleInstance;
+import uk.co.mtford.abduction.asystem.RuleUnfoldException;
+import uk.co.mtford.abduction.logic.instance.IAtomInstance;
+import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
 import uk.co.mtford.abduction.logic.instance.PredicateInstance;
 
 /**
@@ -59,6 +62,21 @@ public class AbductiveFramework {
         return A.contains(predicate.getName());
     }
    
+    /** Unfolds predicate head, if infact it is the head of a rule.
+     * 
+     * @param head
+     * @return
+     * @throws RuleUnfoldException 
+     */
+    public List<List<ILiteralInstance>> unfoldRule (PredicateInstance head) throws RuleUnfoldException {
+        List<List<ILiteralInstance>> possibleUnfolds = new LinkedList<List<ILiteralInstance>>();
+        for (RuleInstance r:P) {
+            if (r.getHead().equals(head)) {
+                possibleUnfolds.add(r.unfold(head.getParameters()));
+            }
+        }
+        return possibleUnfolds;
+    }
         
     
 }

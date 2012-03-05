@@ -4,15 +4,19 @@
  */
 package uk.co.mtford.abduction.asystem;
 
+import java.util.LinkedList;
 import java.util.List;
+import uk.co.mtford.abduction.logic.Predicate;
+import uk.co.mtford.abduction.logic.instance.IAtomInstance;
 import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
 import uk.co.mtford.abduction.logic.instance.PredicateInstance;
+import uk.co.mtford.abduction.logic.instance.VariableInstance;
 
 /**
  *
  * @author mtford
  */
-public class RuleInstance {
+public class RuleInstance implements Cloneable {
     private PredicateInstance head;
     private List<ILiteralInstance> body;
     
@@ -60,6 +64,18 @@ public class RuleInstance {
     public List<ILiteralInstance> getBody() {
         return body;
     }
+    
+    public List<ILiteralInstance> unfold(IAtomInstance ... params) throws RuleUnfoldException {
+        if (params.length!=head.getNumParams()) {
+            throw new RuleUnfoldException("Wrong number of parameters when expanding rule: "+this);
+        }
+        RuleInstance clonedInstance = (RuleInstance) this.clone();
+        for (int i=0;i<params.length;i++) {
+            VariableInstance param = (VariableInstance) clonedInstance.head.getParameter(i);
+            param.setValue(params[i]);
+        }
+        return clonedInstance.body;
+    }
 
     @Override
     public String toString() {
@@ -72,6 +88,15 @@ public class RuleInstance {
         }
         ruleRep += ".";
         return ruleRep;
+    }
+    
+    @Override
+    public Object clone() { 
+        RuleInstance newRuleInstance = new RuleInstance((PredicateInstance)head.clone(),new LinkedList<ILiteralInstance>());
+        for (ILiteralInstance i:body) {
+            newRuleInstance.addLiteral((ILiteralInstance)i.clone());
+        }
+        return newRuleInstance;
     }
     
     
