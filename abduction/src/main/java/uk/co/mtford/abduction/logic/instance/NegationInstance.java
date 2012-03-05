@@ -54,14 +54,11 @@ public class NegationInstance implements ILiteralInstance {
      * @return 
      */
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
-        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        ASystemState newState = (ASystemState) s.clone();
-        NegationInstance thisCloned = (NegationInstance) s.getGoals().get(0);
-        s.getGoals().remove(0);
-        DenialInstance denialInstance = new DenialInstance();
-        newState.getGoals().add(0,(NegationInstance)this.clone());
-        possibleStates.add(newState);
-        return possibleStates;
+        NegationInstance thisClone = (NegationInstance) s.popGoal();
+        s.putGoal(new DenialInstance(thisClone.subFormula));
+        LinkedList list = new LinkedList<ASystemState>();
+        list.add(s);
+        return list;
     }
 
     /** Implements rule N2
