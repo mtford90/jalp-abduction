@@ -56,7 +56,7 @@ public class NegationInstance implements ILiteralInstance {
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
         NegationInstance thisClone = (NegationInstance) s.popGoal();
         s.putGoal(new DenialInstance(thisClone.subFormula));
-        LinkedList list = new LinkedList<ASystemState>();
+        LinkedList<ASystemState> list = new LinkedList<ASystemState>();
         list.add(s);
         return list;
     }
@@ -68,7 +68,19 @@ public class NegationInstance implements ILiteralInstance {
      * @return 
      */
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        ASystemState clonedState = (ASystemState) s.clone();
+        DenialInstance denial = (DenialInstance) clonedState.popGoal();
+        NegationInstance thisClone = (NegationInstance) denial.removeBodyMember(0);
+        clonedState.putGoal(thisClone.subFormula);
+        possibleStates.add(clonedState);
+        clonedState = (ASystemState) s.clone();
+        denial = (DenialInstance) clonedState.popGoal();
+        thisClone = (NegationInstance) denial.removeBodyMember(0);
+        clonedState.putGoal(denial);
+        clonedState.putGoal(thisClone);
+        possibleStates.add(clonedState);
+        return possibleStates; 
     }
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {

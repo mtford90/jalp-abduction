@@ -59,7 +59,7 @@ public class DenialInstance implements IASystemInferable  {
         return body.get(i);
     }
     
-    public ILiteralInstance removebody(int i) {
+    public ILiteralInstance removeBodyMember(int i) {
         return body.remove(i);
     }
     
