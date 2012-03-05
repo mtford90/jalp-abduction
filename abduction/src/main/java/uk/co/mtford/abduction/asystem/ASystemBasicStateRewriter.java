@@ -31,7 +31,6 @@ public class ASystemBasicStateRewriter extends ASystemStateRewriter {
         IASystemInferable goal = null;
         if (!state.goals.isEmpty()) {
             goal = state.goals.get(0);
-            state.goals.remove(0);
         }
         LOGGER.info(logHead+"chosen goal is "+goal);
         return goal;
@@ -45,8 +44,6 @@ public class ASystemBasicStateRewriter extends ASystemStateRewriter {
             LOGGER.info(logHead+"Ran out of goals.");
             return null;
         } 
-        LinkedList<IASystemInferable> list = new LinkedList<IASystemInferable>();
-        list.add(goal);
         List<ASystemState> states = goal.applyInferenceRule(abductiveFramework, state);
         LOGGER.info(logHead+"Generated new states "+states);
         stateStack.addAll(states);

@@ -7,6 +7,7 @@ package uk.co.mtford.abduction.logic.instance;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import uk.co.mtford.abduction.AbductiveFramework;
@@ -215,33 +216,20 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     }
 
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
-        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        if (!framework.isAbducible(this)) { // D1
-            List<List<ILiteralInstance>> possibleUnfolds = null;
-            try {
-                possibleUnfolds = framework.unfoldRule(this);
-            } catch (RuleUnfoldException ex) {
-                java.util.logging.Logger.getLogger(PredicateInstance.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            for (List<ILiteralInstance> unfold:possibleUnfolds) {
-                ASystemState state = (ASystemState) s.clone();
-                s.getGoals().addAll(0, unfold);
-                possibleStates.add(state);
-            }
-            // TODO: Maybe need to use new prime variable names...?
-        }
-        else { // A1
-                // Select an abducible from the abducible store s.t.
-                    // Same predicate name.
-                    // Add equalities to goal stack for adjacent parameters.
-            // OR
-                // 
-        }
-        return possibleStates;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+        String clonedName = new String(name);
+        IAtomInstance[] clonedParams = new IAtomInstance[parameters.length];
+        for (int i=0;i<clonedParams.length;i++) {
+            clonedParams[i]=(IAtomInstance) parameters[i].clone(variablesSoFar);
+        }
+        return new PredicateInstance(clonedName,clonedParams);
     }
     
 }

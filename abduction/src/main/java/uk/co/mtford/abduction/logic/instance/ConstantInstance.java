@@ -96,5 +96,9 @@ public class ConstantInstance implements ITermInstance {
     public List<EqualityInstance> equalitySolve(IAtomInstance other) {
         return new LinkedList<EqualityInstance>();
     }
+
+    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+        return clone();
+    }
     
 }

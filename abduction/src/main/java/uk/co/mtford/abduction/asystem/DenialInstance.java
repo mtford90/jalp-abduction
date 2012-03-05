@@ -6,18 +6,23 @@ package uk.co.mtford.abduction.asystem;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
+import uk.co.mtford.abduction.logic.instance.VariableInstance;
 
 /**
  *
  * @author mtford
  */
-public class DenialInstance implements ILiteralInstance  {
+public class DenialInstance implements IASystemInferable  {
     
     private List<ILiteralInstance> body;
+    private Map<String, VariableInstance> variables;
 
-    public DenialInstance(List<ILiteralInstance> body) {
+    public DenialInstance(List<ILiteralInstance> body, Map<String, VariableInstance> variables) {
         this.body = body;
+        this.variables = variables;
     }
     
     public DenialInstance(ILiteralInstance logic) {
@@ -61,7 +66,7 @@ public class DenialInstance implements ILiteralInstance  {
     public Object clone() {
         DenialInstance clone = new DenialInstance();
         for (IASystemInferable logic:body) {
-            clone.body.add((ILiteralInstance)logic.clone());
+            clone.body.add((ILiteralInstance)logic.clone(variables));
         }
         return clone;
     }
@@ -78,5 +83,24 @@ public class DenialInstance implements ILiteralInstance  {
     public boolean deepEquals(Object obj) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
+    public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    // TODO: This may not be the right thing to do....
+    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+        variablesSoFar.putAll(variables);
+        DenialInstance clone = new DenialInstance();
+        for (IASystemInferable logic:body) {
+            clone.body.add((ILiteralInstance)logic.clone(variables));
+        }
+        return clone;
+    }
+
+
 }

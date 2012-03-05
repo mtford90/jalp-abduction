@@ -151,7 +151,7 @@ DenialInstance Denial():
 	<DEFINES>
 	body = Body(variablesSoFar,null)
 	<DOT>
-    { return new DenialInstance(body); }
+    { return new DenialInstance(body, variablesSoFar); }
 }
 
 List<ILiteralInstance> Body(HashMap<String, VariableInstance> variablesSoFar, LinkedList<String> abducibles):

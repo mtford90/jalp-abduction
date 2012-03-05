@@ -6,6 +6,7 @@ package uk.co.mtford.abduction.logic.instance;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import uk.co.mtford.abduction.asystem.EqualityInstance;
 import uk.co.mtford.unification.CouldNotUnifyException;
 import uk.co.mtford.unification.Unifier;
@@ -148,8 +149,17 @@ public class VariableInstance implements ITermInstance {
     public List<EqualityInstance> equalitySolve(IAtomInstance other) {
         return new LinkedList<EqualityInstance>();
     }
-    
-    
 
+    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+        if (variablesSoFar.containsKey(name)) {
+            return variablesSoFar.get(name);
+        }
+        else {
+            VariableInstance clone = (VariableInstance)this.clone();
+            variablesSoFar.put(name,clone);
+            return clone;
+        }
+    }
+    
    
 }

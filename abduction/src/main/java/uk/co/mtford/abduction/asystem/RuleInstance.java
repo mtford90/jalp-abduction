@@ -4,8 +4,11 @@
  */
 package uk.co.mtford.abduction.asystem;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import javax.naming.OperationNotSupportedException;
 import uk.co.mtford.abduction.logic.Predicate;
 import uk.co.mtford.abduction.logic.instance.IAtomInstance;
 import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
@@ -16,7 +19,7 @@ import uk.co.mtford.abduction.logic.instance.VariableInstance;
  *
  * @author mtford
  */
-public class RuleInstance implements Cloneable {
+public class RuleInstance {
     private PredicateInstance head;
     private List<ILiteralInstance> body;
     
@@ -91,12 +94,13 @@ public class RuleInstance implements Cloneable {
     }
     
     @Override
-    public Object clone() { 
-        RuleInstance newRuleInstance = new RuleInstance((PredicateInstance)head.clone(),new LinkedList<ILiteralInstance>());
-        for (ILiteralInstance i:body) {
-            newRuleInstance.addLiteral((ILiteralInstance)i.clone());
+    protected Object clone() { 
+        HashMap<String, VariableInstance> variables = new HashMap<String, VariableInstance>();
+        for (IAtomInstance a:head.getParameters()) {
+            VariableInstance v = (VariableInstance)a;
+            variables.put(v.getName(), (VariableInstance)v.clone());
         }
-        return newRuleInstance;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     

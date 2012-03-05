@@ -88,7 +88,7 @@ public class ALPParser implements ALPParserConstants {
     jj_consume_token(DEFINES);
     body = Body(variablesSoFar,null);
     jj_consume_token(DOT);
-      {if (true) return new DenialInstance(body);}
+      {if (true) return new DenialInstance(body, variablesSoFar);}
     throw new Error("Missing return statement in function");
   }
 

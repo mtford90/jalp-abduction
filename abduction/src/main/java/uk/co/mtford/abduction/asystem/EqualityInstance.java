@@ -7,6 +7,7 @@ package uk.co.mtford.abduction.asystem;
 import java.util.LinkedList;
 import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
 import java.util.List;
+import java.util.Map;
 import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.logic.instance.IAtomInstance;
 import uk.co.mtford.abduction.logic.instance.VariableInstance;
@@ -42,6 +43,7 @@ public class EqualityInstance implements ILiteralInstance  {
     }
 
     
+    @Override
     public Object clone() {
         return new EqualityInstance((IAtomInstance)left.clone(),(IAtomInstance)right.clone());
     }
@@ -97,10 +99,27 @@ public class EqualityInstance implements ILiteralInstance  {
      */
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
         List<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        ASystemState clonedState = (ASystemState) s.clone();
+        EqualityInstance clonedEquality = (EqualityInstance) clonedState.goals.get(0);
+        clonedState.goals.remove(0);
+        List<EqualityInstance> equalities = clonedEquality.left.equalitySolve(clonedEquality.right);
+        if (equalities==null) return possibleStates; // Failed.
+        if (equalities.isEmpty()){
+            clonedEquality.left.equalitySolve(right); // Perform assignments
+        }
+        if (!equalities.isEmpty()) {
+            clonedState.goals.addAll(0,equalities);
+        }
+        possibleStates.add(clonedState);
+        return possibleStates;
     }
 
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+        return new EqualityInstance((IAtomInstance)left.clone(variablesSoFar),(IAtomInstance)right.clone(variablesSoFar));
     }
 
    
