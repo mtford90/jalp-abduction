@@ -282,7 +282,6 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         return possibleStates;
     }
     
-    
     public List<ASystemState> applyRuleA2(AbductiveFramework framework, ASystemState s) throws CouldNotUnifyException {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         DenialInstance denial = (DenialInstance) s.popGoal();

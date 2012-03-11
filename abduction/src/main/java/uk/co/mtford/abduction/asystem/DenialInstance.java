@@ -93,7 +93,14 @@ public class DenialInstance implements IASystemInferable  {
     }
 
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        DenialInstance thisClone = (DenialInstance) s.getGoals().get(0); 
+        if (!thisClone.getBody().isEmpty()) {
+            ILiteralInstance first = body.get(0);
+            return first.applyDenialInferenceRule(framework, s);
+        }
+        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        possibleStates.add(s);
+        return possibleStates;
     }
 
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
