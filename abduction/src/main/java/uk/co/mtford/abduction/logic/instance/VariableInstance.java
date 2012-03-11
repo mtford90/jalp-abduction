@@ -161,5 +161,17 @@ public class VariableInstance implements ITermInstance {
         }
     }
     
+    /** If this variable instance has a variable value (or a chain
+     *  of variable assignments then condenses those assignments down
+     *  into a single variable.
+     */
+    public void condenseVariableAssignments() {
+        while (value instanceof VariableInstance) {
+            VariableInstance assignedVariable = (VariableInstance) value;
+            name = assignedVariable.name;
+            value = assignedVariable.value;
+        }
+    }
    
+    
 }

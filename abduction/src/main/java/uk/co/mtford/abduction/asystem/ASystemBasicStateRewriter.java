@@ -4,7 +4,6 @@
  */
 package uk.co.mtford.abduction.asystem;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 import org.apache.log4j.Logger;

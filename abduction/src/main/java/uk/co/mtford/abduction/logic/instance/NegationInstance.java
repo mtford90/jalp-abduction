@@ -10,7 +10,6 @@ import java.util.Map;
 import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.asystem.ASystemState;
 import uk.co.mtford.abduction.asystem.DenialInstance;
-import uk.co.mtford.abduction.asystem.IASystemInferable;
 
 /**
  *

@@ -74,6 +74,7 @@ public class RuleInstance {
         for (int i=0;i<params.length;i++) {
             VariableInstance param = (VariableInstance) clonedInstance.head.getParameter(i);
             param.setValue(params[i]);
+            param.condenseVariableAssignments();
         }
         return clonedInstance.body;
     }

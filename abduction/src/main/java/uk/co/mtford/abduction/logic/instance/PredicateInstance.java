@@ -214,61 +214,50 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         return null;
     }
 
-    /** Implementation of D1 and A1.
-     * 
-     * @param framework
-     * @param s
-     * @return 
-     */
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        if (framework.isAbducible(this)) { // A1
-            // TODO
+        if (framework.isAbducible(this)) { 
+            possibleStates.addAll(applyRuleA1(framework,s));
         }
-        else { // D1
-            List<List<ILiteralInstance>> possibleUnfolds = null;
-            try {
-                possibleUnfolds = framework.unfoldRule(this);
-            } catch (RuleUnfoldException ex) {
-                LOGGER.error(ex);
-                System.exit(-1);
-            }
-            for (List<ILiteralInstance> unfold:possibleUnfolds) {
-                ASystemState possibleState = (ASystemState) s.clone();
-                possibleState.putGoals(unfold);
-                possibleStates.add(possibleState);
-            }
+        else { 
+            possibleStates.addAll(applyRuleD1(framework,s));
         }
         return possibleStates;
     }
 
-    /** Implementation of D2 and A2.
-     * 
-     * @param framework
-     * @param s
-     * @return 
-     */
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        if (framework.isAbducible(this)) { // A2
-            // TODO
+        if (framework.isAbducible(this)) { 
+            possibleStates.addAll(applyRuleA2(framework,s));
         } 
-        
-        else { // D2
-            List<List<ILiteralInstance>> possibleUnfolds = null;
-            try {
-                possibleUnfolds = framework.unfoldRule(this);
-            } catch (RuleUnfoldException ex) {
-                LOGGER.error(ex);
-                System.exit(-1);
-            }
-            for (List<ILiteralInstance> unfold:possibleUnfolds) {
-                DenialInstance newDenial = new DenialInstance();
-                newDenial.addbody(0, unfold);
-                s.putGoal(newDenial);
-            }
-            possibleStates.add(s);
+        else { 
+            possibleStates.addAll(applyRuleD2(framework,s));
         }
+        return possibleStates;
+    }
+    
+    public List<ASystemState> applyRuleD1(AbductiveFramework framework, ASystemState s) {
+        LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        // TODO
+        return possibleStates;
+    }
+    
+    public List<ASystemState> applyRuleD2(AbductiveFramework framework, ASystemState s) {
+        LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        // TODO
+        return possibleStates;
+    }
+    
+    public List<ASystemState> applyRuleA1(AbductiveFramework framework, ASystemState s) {
+        LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        // TODO
+        return possibleStates;
+    }
+    
+    
+    public List<ASystemState> applyRuleA2(AbductiveFramework framework, ASystemState s) {
+        LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        // TODO
         return possibleStates;
     }
 
