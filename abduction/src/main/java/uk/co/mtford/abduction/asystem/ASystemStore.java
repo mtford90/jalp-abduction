@@ -95,6 +95,20 @@ public class ASystemStore implements Comparable, Cloneable {
         return newStore;
     }
 
+    public List<PredicateInstance> getAbducibles() {
+        return abducibles;
+    }
+
+    public List<DenialInstance> getDenials() {
+        return denials;
+    }
+
+    public List<EqualityInstance> getInequalities() {
+        return inequalities;
+    }
+    
+    
+
     @Override
     public String toString() {
         String output="S:{";

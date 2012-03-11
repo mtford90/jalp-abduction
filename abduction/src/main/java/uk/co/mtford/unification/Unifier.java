@@ -20,7 +20,7 @@ public class Unifier {
     
     private static final Logger LOGGER = Logger.getLogger(Unifier.class);
     
-    public static boolean occurs(VariableInstance x, IAtomInstance t, Set<VariableInstance> sub) {
+    public static boolean occurs(VariableInstance x, IAtomInstance t, List<VariableInstance> sub) {
         
         String logHead = "occurs("+x+", "+t+"): ";
         LOGGER.info(logHead+"starting.");
@@ -50,18 +50,18 @@ public class Unifier {
 	return false;
     }
     
-    public static Set<VariableInstance> unifyReplace(IAtomInstance left, IAtomInstance right) throws CouldNotUnifyException {
-        Set<VariableInstance> subst = new HashSet<VariableInstance>();
-        unify(left,right,subst,new HashSet<EqualityInstance>());
+    public static LinkedList<VariableInstance> unifyReplace(IAtomInstance left, IAtomInstance right) throws CouldNotUnifyException {
+        LinkedList<VariableInstance> subst = new LinkedList<VariableInstance>();
+        unify(left,right,subst,new LinkedList<EqualityInstance>());
         return subst; 
     }
     
-    public static Set<EqualityInstance> unify(IAtomInstance left, IAtomInstance right) throws CouldNotUnifyException {
+    public static List<EqualityInstance> unify(IAtomInstance left, IAtomInstance right) throws CouldNotUnifyException {
         // Clone in order to prevent altering.
         left = (IAtomInstance) left.clone();
         right = (IAtomInstance) right.clone();
-        Set<EqualityInstance> equalities = new HashSet<EqualityInstance>();
-        unify(left,right,new HashSet<VariableInstance>(),equalities);
+        List<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
+        unify(left,right,new LinkedList<VariableInstance>(),equalities);
         return equalities;
     }
     
@@ -74,10 +74,8 @@ public class Unifier {
      * @param right
      * @return 
      */
-    private static void unify(IAtomInstance left, IAtomInstance right, Set<VariableInstance> subst, Set<EqualityInstance> equalities) throws CouldNotUnifyException {
-        
-        
-        
+    private static void unify(IAtomInstance left, IAtomInstance right, List<VariableInstance> subst, List<EqualityInstance> equalities) throws CouldNotUnifyException {
+         
         String logHead = "unify("+left+", "+right+"): ";
         LOGGER.info(logHead+"starting.");
         

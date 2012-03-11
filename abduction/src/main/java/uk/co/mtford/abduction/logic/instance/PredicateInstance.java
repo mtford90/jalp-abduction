@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import uk.co.mtford.abduction.AbductiveFramework;
 import uk.co.mtford.abduction.asystem.ASystemState;
@@ -220,7 +221,12 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
             possibleStates.addAll(applyRuleA1(framework,s));
         }
         else { 
-            possibleStates.addAll(applyRuleD1(framework,s));
+            try {
+                possibleStates.addAll(applyRuleD1(framework,s));
+            }
+            catch (RuleUnfoldException e) {
+                return possibleStates;
+            }
         }
         return possibleStates;
     }
@@ -228,23 +234,45 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         if (framework.isAbducible(this)) { 
-            possibleStates.addAll(applyRuleA2(framework,s));
+            try {
+                possibleStates.addAll(applyRuleA2(framework,s));
+            } catch (CouldNotUnifyException ex) {
+                return possibleStates;
+            }
         } 
         else { 
-            possibleStates.addAll(applyRuleD2(framework,s));
+            try {
+                possibleStates.addAll(applyRuleD2(framework,s));
+            }
+            catch (RuleUnfoldException e) {
+                return possibleStates;
+            }
         }
         return possibleStates;
     }
     
-    public List<ASystemState> applyRuleD1(AbductiveFramework framework, ASystemState s) {
+    public List<ASystemState> applyRuleD1(AbductiveFramework framework, ASystemState s) throws RuleUnfoldException {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        // TODO
+        PredicateInstance thisClone = (PredicateInstance) s.popGoal();
+        List<List<ILiteralInstance>> possibleUnfolds = framework.unfoldRule(thisClone);
+        for (List<ILiteralInstance> unfold:possibleUnfolds) {
+            ASystemState clonedState = (ASystemState) s.clone();
+            clonedState.putGoals(unfold);
+            possibleStates.add(clonedState);
+        }
         return possibleStates;
     }
     
-    public List<ASystemState> applyRuleD2(AbductiveFramework framework, ASystemState s) {
+    public List<ASystemState> applyRuleD2(AbductiveFramework framework, ASystemState s) throws RuleUnfoldException {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        // TODO
+        DenialInstance denial = (DenialInstance) s.popGoal();
+        PredicateInstance thisClone = (PredicateInstance) denial.removeLiteral(0);
+        List<List<ILiteralInstance>> possibleUnfolds = framework.unfoldRule(thisClone);
+        for (List<ILiteralInstance> unfold:possibleUnfolds) {
+            denial.addLiteral(0, unfold);
+        }   
+        s.putGoal(denial);
+        possibleStates.add(s);
         return possibleStates;
     }
     
@@ -255,9 +283,22 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     }
     
     
-    public List<ASystemState> applyRuleA2(AbductiveFramework framework, ASystemState s) {
+    public List<ASystemState> applyRuleA2(AbductiveFramework framework, ASystemState s) throws CouldNotUnifyException {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        // TODO
+        DenialInstance denial = (DenialInstance) s.popGoal();
+        PredicateInstance thisClone = (PredicateInstance) denial.removeLiteral(0);
+        for (PredicateInstance collectedAbducible:s.getStore().getAbducibles()) {
+            if (thisClone.name.equals(collectedAbducible.name)) {
+                List<EqualityInstance> equalities = Unifier.unify(thisClone, collectedAbducible);
+                DenialInstance newDenial = new DenialInstance();
+                for (EqualityInstance e:equalities) {
+                    newDenial.addLiteral(e);
+                }
+                newDenial.addLiteral(0,((DenialInstance)denial.clone()).getBody());
+                s.putGoal(newDenial);
+            }
+        }
+        possibleStates.add(s);
         return possibleStates;
     }
 

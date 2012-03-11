@@ -34,40 +34,39 @@ public class DenialInstance implements IASystemInferable  {
         body = new LinkedList<ILiteralInstance>();
     }
     
-    public void addbody(ILiteralInstance p) {
+    public void addLiteral(ILiteralInstance p) {
         body.add(p);
     }
     
-    public void addbody(int i, ILiteralInstance p) {
+    public void addLiteral(int i, ILiteralInstance p) {
         body.add(i,p);
     }
     
-    public void addbody(int i, List<ILiteralInstance> p) {
+    public void addLiteral(int i, List<ILiteralInstance> p) {
         body.addAll(i,p);
     }
     
-    
-    public void removebody(ILiteralInstance p) {
+    public void removeLiteral(ILiteralInstance p) {
         body.remove(p);
     }
     
-    public boolean containsbody(ILiteralInstance p) {
+    public boolean containsLiteral(ILiteralInstance p) {
         return body.contains(p);
     }
     
-    public ILiteralInstance getbody(int i) {
+    public ILiteralInstance getLiteral(int i) {
         return body.get(i);
     }
     
-    public ILiteralInstance removeBodyMember(int i) {
+    public ILiteralInstance removeLiteral(int i) {
         return body.remove(i);
     }
     
-    public ILiteralInstance pop() {
+    public ILiteralInstance popLiteral() {
         return body.get(0);
     }
     
-    public void push(ILiteralInstance p) {
+    public void pushLiteral(ILiteralInstance p) {
         body.add(0, p);
     }
     
@@ -110,6 +109,12 @@ public class DenialInstance implements IASystemInferable  {
         }
         return clone;
     }
+
+    public List<ILiteralInstance> getBody() {
+        return body;
+    }
+    
+    
 
 
 }

@@ -70,12 +70,14 @@ public class RuleInstance {
         if (params.length!=head.getNumParams()) {
             throw new RuleUnfoldException("Wrong number of parameters when expanding rule: "+this);
         }
+        LinkedList<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
         RuleInstance clonedInstance = (RuleInstance) this.clone();
         for (int i=0;i<params.length;i++) {
             VariableInstance param = (VariableInstance) clonedInstance.head.getParameter(i);
-            param.setValue(params[i]);
-            param.condenseVariableAssignments();
+            EqualityInstance equality = new EqualityInstance(param,params[i]);
+            equalities.add(equality);
         }
+        clonedInstance.body.addAll(0, equalities);
         return clonedInstance.body;
     }
 
