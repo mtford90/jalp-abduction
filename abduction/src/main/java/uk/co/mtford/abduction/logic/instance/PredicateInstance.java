@@ -39,7 +39,6 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         this.parameters=parameters.toArray(new IAtomInstance[1]);
     }
     
-    
     public PredicateInstance(String name, String varName, IAtomInstance varValue) {
         this.name=name;
         this.parameters=new IAtomInstance[1];
@@ -218,7 +217,12 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         if (framework.isAbducible(this)) { 
-            possibleStates.addAll(applyRuleA1(framework,s));
+            try {
+                possibleStates.addAll(applyRuleA1(framework,s));
+            } catch (CouldNotUnifyException ex) {
+                LOGGER.fatal("Something went very wrong with inference rule A1",ex);
+               System.exit(-1);            
+            }
         }
         else { 
             try {
@@ -237,7 +241,8 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
             try {
                 possibleStates.addAll(applyRuleA2(framework,s));
             } catch (CouldNotUnifyException ex) {
-                return possibleStates;
+               LOGGER.fatal("Something went very wrong with inference rule A2",ex);
+               System.exit(-1);            
             }
         } 
         else { 
@@ -276,19 +281,65 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         return possibleStates;
     }
     
-    public List<ASystemState> applyRuleA1(AbductiveFramework framework, ASystemState s) {
+    public List<ASystemState> applyRuleA1(AbductiveFramework framework, ASystemState s) throws CouldNotUnifyException  {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        // TODO
+        // Unify with an already collected abducible
+        List<PredicateInstance> collectedAbducibles = s.getStore().getAbducibles();
+        for (PredicateInstance abducible:collectedAbducibles) {
+            ASystemState clonedState = (ASystemState) s.clone();
+            PredicateInstance clonedThis = (PredicateInstance) clonedState.popGoal();
+            List<EqualityInstance> unificationResult = null;
+                unificationResult = Unifier.unify(clonedThis,abducible);
+            for (EqualityInstance e:unificationResult) {
+                clonedState.putGoal(e);
+            }
+            possibleStates.add(clonedState);
+        }
+        // OR Add a new collected abducible and check that the 
+        // collected constraints are satisified.
+        ASystemState clonedState = (ASystemState) s.clone();
+        PredicateInstance clonedThis = (PredicateInstance) clonedState.popGoal();
+        // Check against existing constraints.
+        List<DenialInstance> denials = clonedState.getStore().getDenials();
+        for (DenialInstance d:denials) {
+            ILiteralInstance literal = d.peekLiteral();
+            if (literal.equals(clonedThis)) {
+                List<EqualityInstance> equalities = null;
+                equalities = Unifier.unify((IAtomInstance)literal, clonedThis);
+                d.popLiteral();
+                for (EqualityInstance e:equalities) {
+                    d.addLiteral(0,e);
+                }
+                clonedState.putGoal(d);
+            }
+        }
+        // Check against existing abducibles.
+        List<PredicateInstance> abducibles = clonedState.getStore().getAbducibles();
+        for (PredicateInstance a:abducibles) {
+            if (a.equals(clonedThis)) {
+                List<EqualityInstance> equalities = Unifier.unify(a,clonedThis);
+                for (EqualityInstance e:equalities) {
+                    clonedState.putGoal(e);
+                }
+                // TODO: Need to make inequality class...
+            }
+        }
+        // Add new abducible.
+        clonedState.getStore().getAbducibles().add(clonedThis);
+        possibleStates.add(clonedState);
+        
         return possibleStates;
     }
     
-    public List<ASystemState> applyRuleA2(AbductiveFramework framework, ASystemState s) throws CouldNotUnifyException {
+    public List<ASystemState> applyRuleA2(AbductiveFramework framework, ASystemState s) throws CouldNotUnifyException  {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         DenialInstance denial = (DenialInstance) s.popGoal();
         PredicateInstance thisClone = (PredicateInstance) denial.removeLiteral(0);
         for (PredicateInstance collectedAbducible:s.getStore().getAbducibles()) {
             if (thisClone.name.equals(collectedAbducible.name)) {
-                List<EqualityInstance> equalities = Unifier.unify(thisClone, collectedAbducible);
+                List<EqualityInstance> equalities = null;
+                    equalities = Unifier.unify(thisClone, collectedAbducible);
+
                 DenialInstance newDenial = new DenialInstance();
                 for (EqualityInstance e:equalities) {
                     newDenial.addLiteral(e);

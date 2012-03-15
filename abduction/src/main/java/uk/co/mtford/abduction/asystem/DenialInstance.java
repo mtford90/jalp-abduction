@@ -63,8 +63,16 @@ public class DenialInstance implements IASystemInferable  {
     }
     
     public ILiteralInstance popLiteral() {
-        return body.get(0);
+        ILiteralInstance i = body.get(0);
+        body.remove(0);
+        return i;
     }
+    
+    public ILiteralInstance peekLiteral() {
+        ILiteralInstance i = body.get(0);
+        return i;
+    }
+    
     
     public void pushLiteral(ILiteralInstance p) {
         body.add(0, p);
@@ -103,6 +111,7 @@ public class DenialInstance implements IASystemInferable  {
         return possibleStates;
     }
 
+    // TODO: Support nested denials?
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }

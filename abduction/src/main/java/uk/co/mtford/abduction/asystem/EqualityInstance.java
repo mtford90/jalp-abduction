@@ -17,6 +17,7 @@ import uk.co.mtford.abduction.logic.instance.VariableInstance;
  * @author mtford
  */
 public class EqualityInstance implements ILiteralInstance  {
+    
 
     private IAtomInstance left;
     private IAtomInstance right;

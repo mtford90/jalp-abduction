@@ -16,19 +16,19 @@ public class ASystemStore implements Comparable, Cloneable {
     
     private List<PredicateInstance> abducibles;
     private List<DenialInstance> denials;
-    private List<EqualityInstance> inequalities;
+    private List<InequalityInstance> inequalities;
     
     public ASystemStore() {
         abducibles = new LinkedList<PredicateInstance>();
         denials = new LinkedList<DenialInstance>();
-        inequalities = new LinkedList<EqualityInstance>();
+        inequalities = new LinkedList<InequalityInstance>();
     }
     
     public void put(PredicateInstance abducible) {
         abducibles.add(abducible);
     }
     
-    public void put(EqualityInstance equality) {
+    public void put(InequalityInstance equality) {
         inequalities.add(equality);
     }
     
@@ -103,7 +103,7 @@ public class ASystemStore implements Comparable, Cloneable {
         return denials;
     }
 
-    public List<EqualityInstance> getInequalities() {
+    public List<InequalityInstance> getInequalities() {
         return inequalities;
     }
     
@@ -125,7 +125,7 @@ public class ASystemStore implements Comparable, Cloneable {
         output=output.substring(0, output.length());
         output+="}, ";
         output+="{";
-        for (EqualityInstance equality:inequalities) {
+        for (InequalityInstance equality:inequalities) {
             output+=equality+", ";
         }
         output=output.substring(0, output.length());
