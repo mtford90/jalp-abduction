@@ -321,7 +321,6 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
                 for (EqualityInstance e:equalities) {
                     clonedState.putGoal(e);
                 }
-                // TODO: Need to make inequality class...
             }
         }
         // Add new abducible.

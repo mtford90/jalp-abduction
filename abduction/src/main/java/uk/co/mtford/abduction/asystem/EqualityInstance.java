@@ -8,9 +8,15 @@ import java.util.LinkedList;
 import uk.co.mtford.abduction.logic.instance.ILiteralInstance;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import org.apache.log4j.Logger;
+
 import uk.co.mtford.abduction.AbductiveFramework;
+import uk.co.mtford.abduction.logic.instance.ConstantInstance;
 import uk.co.mtford.abduction.logic.instance.IAtomInstance;
 import uk.co.mtford.abduction.logic.instance.VariableInstance;
+import uk.co.mtford.unification.CouldNotUnifyException;
+import uk.co.mtford.unification.Unifier;
 
 /**
  *
@@ -18,6 +24,7 @@ import uk.co.mtford.abduction.logic.instance.VariableInstance;
  */
 public class EqualityInstance implements ILiteralInstance  {
     
+    private static Logger LOGGER = Logger.getLogger(EqualityInstance.class);
 
     private IAtomInstance left;
     private IAtomInstance right;
@@ -116,7 +123,54 @@ public class EqualityInstance implements ILiteralInstance  {
     }
 
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        ASystemState clonedState = (ASystemState) s.clone();
+        DenialInstance d = (DenialInstance) clonedState.popGoal();
+        EqualityInstance clonedThis = (EqualityInstance) d.popLiteral();
+        List<EqualityInstance> equalitySolution = clonedThis.left.equalitySolve(right);
+        if (!equalitySolution.isEmpty()) {  // E.2
+            for (EqualityInstance e:equalitySolution) {
+                d.addLiteral(0,e);
+            }
+            clonedState.getGoals().add(0,d);
+            possibleStates.add(clonedState);
+        }
+        else {
+            boolean varAndConstant = 
+                    clonedThis.left instanceof VariableInstance && 
+                    clonedThis.right instanceof ConstantInstance ||
+                    clonedThis.left instanceof ConstantInstance &&
+                    clonedThis.right instanceof VariableInstance;
+            
+            if (varAndConstant) { // E.2.b
+                InequalityInstance inequalityInstance = 
+                        new InequalityInstance(clonedThis.left,clonedThis.right);
+                clonedState.store.getInequalities().add(inequalityInstance);
+                clonedState.goals.add(d);
+                possibleStates.add(clonedState);
+                // OR
+                clonedState = (ASystemState) s.clone();
+                d = (DenialInstance) clonedState.popGoal();
+                clonedThis = (EqualityInstance) d.popLiteral();
+                try {
+                    Unifier.unifyReplace(clonedThis.left, clonedThis.right);
+                } catch (CouldNotUnifyException ex) {
+                    LOGGER.fatal("Something went very wrong with E.2.b",ex);
+                }
+                clonedState.goals.add(d);
+                possibleStates.add(clonedState);
+            }
+            else {  // E.2.c: Two variables.
+                try {
+                    Unifier.unifyReplace(clonedThis.right, clonedThis.left);
+                } catch (CouldNotUnifyException ex) {
+                    LOGGER.fatal("Something went very wrong with E.2.c",ex);
+                }
+                clonedState.goals.add(d);
+                possibleStates.add(clonedState);
+            }
+        }
+        return possibleStates;
     }
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {

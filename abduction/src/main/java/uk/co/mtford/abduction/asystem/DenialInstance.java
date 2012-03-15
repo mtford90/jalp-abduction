@@ -15,7 +15,7 @@ import uk.co.mtford.abduction.logic.instance.VariableInstance;
  *
  * @author mtford
  */
-public class DenialInstance implements IASystemInferable  {
+public class DenialInstance implements IASystemInferable {
     
     private List<ILiteralInstance> body;
     private Map<String, VariableInstance> variables;
@@ -130,7 +130,4 @@ public class DenialInstance implements IASystemInferable  {
         return body;
     }
     
-    
-
-
 }
