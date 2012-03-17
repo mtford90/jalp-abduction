@@ -15,7 +15,6 @@ import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.logic.instance.ConstantInstance;
 import uk.co.mtford.alp.abduction.logic.instance.IAtomInstance;
 import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
-import uk.co.mtford.alp.unification.CouldNotUnifyException;
 import uk.co.mtford.alp.unification.Unifier;
 
 /**
@@ -152,20 +151,17 @@ public class EqualityInstance implements ILiteralInstance  {
                 clonedState = (ASystemState) s.clone();
                 d = (DenialInstance) clonedState.popGoal();
                 clonedThis = (EqualityInstance) d.popLiteral();
-                try {
-                    Unifier.unifyReplace(clonedThis.left, clonedThis.right);
-                } catch (CouldNotUnifyException ex) {
-                    LOGGER.fatal("Something went very wrong with E.2.b",ex);
-                }
+                
+                Unifier.unifyReplace(clonedThis.left, clonedThis.right);
+
                 clonedState.goals.add(d);
                 possibleStates.add(clonedState);
             }
             else {  // E.2.c: Two variables.
-                try {
-                    Unifier.unifyReplace(clonedThis.right, clonedThis.left);
-                } catch (CouldNotUnifyException ex) {
-                    LOGGER.fatal("Something went very wrong with E.2.c",ex);
-                }
+                   
+                
+                Unifier.unifyReplace(clonedThis.right, clonedThis.left);
+
                 clonedState.goals.add(d);
                 possibleStates.add(clonedState);
             }

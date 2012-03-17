@@ -15,7 +15,6 @@ import uk.co.mtford.alp.abduction.asystem.ASystemState;
 import uk.co.mtford.alp.abduction.asystem.DenialInstance;
 import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
 import uk.co.mtford.alp.abduction.asystem.RuleUnfoldException;
-import uk.co.mtford.alp.unification.CouldNotUnifyException;
 import uk.co.mtford.alp.unification.Unifier;
 
 /**
@@ -190,11 +189,8 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     }
 
     public boolean equalitySolveAssign(IAtomInstance other) {
-        try {
-            Unifier.unify(this, other);
-        } catch (CouldNotUnifyException ex) {
-            return false;
-        }
+        List<EqualityInstance> unify = Unifier.unify(this, other);
+        if (unify==null) return false;
         return true;
     }
     
@@ -217,12 +213,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         if (framework.isAbducible(this)) { 
-            try {
-                possibleStates.addAll(applyRuleA1(framework,s));
-            } catch (CouldNotUnifyException ex) {
-                LOGGER.fatal("Something went very wrong with inference rule A1",ex);
-               System.exit(-1);            
-            }
+            possibleStates.addAll(applyRuleA1(framework,s));
         }
         else { 
             try {
@@ -238,12 +229,9 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         if (framework.isAbducible(this)) { 
-            try {
+
                 possibleStates.addAll(applyRuleA2(framework,s));
-            } catch (CouldNotUnifyException ex) {
-               LOGGER.fatal("Something went very wrong with inference rule A2",ex);
-               System.exit(-1);            
-            }
+
         } 
         else { 
             try {
@@ -281,7 +269,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         return possibleStates;
     }
     
-    public List<ASystemState> applyRuleA1(AbductiveFramework framework, ASystemState s) throws CouldNotUnifyException  {
+    public List<ASystemState> applyRuleA1(AbductiveFramework framework, ASystemState s)   {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         // Unify with an already collected abducible
         List<PredicateInstance> collectedAbducibles = s.getStore().getAbducibles();
@@ -330,7 +318,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         return possibleStates;
     }
     
-    public List<ASystemState> applyRuleA2(AbductiveFramework framework, ASystemState s) throws CouldNotUnifyException  {
+    public List<ASystemState> applyRuleA2(AbductiveFramework framework, ASystemState s) {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         DenialInstance denial = (DenialInstance) s.popGoal();
         PredicateInstance thisClone = (PredicateInstance) denial.removeLiteral(0);

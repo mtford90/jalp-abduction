@@ -53,18 +53,22 @@ public class Unifier {
         return false;
     }
     
-    public static LinkedList<VariableInstance> unifyReplace(IAtomInstance left, IAtomInstance right) throws CouldNotUnifyException {
+    public static LinkedList<VariableInstance> unifyReplace(IAtomInstance left, IAtomInstance right)  {
         LinkedList<VariableInstance> subst = new LinkedList<VariableInstance>();
-        unify(left,right,subst,new LinkedList<EqualityInstance>());
+        if (!unify(left,right,subst,new LinkedList<EqualityInstance>())) {
+            return null;
+        }
         return subst; 
     }
     
-    public static List<EqualityInstance> unify(IAtomInstance left, IAtomInstance right) throws CouldNotUnifyException {
+    public static List<EqualityInstance> unify(IAtomInstance left, IAtomInstance right) {
         // Clone in order to prevent altering.
         left = (IAtomInstance) left.clone();
         right = (IAtomInstance) right.clone();
         List<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
-        unify(left,right,new LinkedList<VariableInstance>(),equalities);
+        if (!unify(left,right,new LinkedList<VariableInstance>(),equalities)) {
+            return null;
+        }
         return equalities;
     }
     
@@ -77,7 +81,7 @@ public class Unifier {
      * @param right
      * @return 
      */
-    private static void unify(IAtomInstance left, IAtomInstance right, List<VariableInstance> subst, List<EqualityInstance> equalities) throws CouldNotUnifyException {
+    private static boolean unify(IAtomInstance left, IAtomInstance right, List<VariableInstance> subst, List<EqualityInstance> equalities) {
          
         String logHead = "unify("+left+", "+right+"): ";
         if (LOGGER.isDebugEnabled()) LOGGER.debug(logHead+"starting.");
@@ -100,11 +104,11 @@ public class Unifier {
             if (left instanceof ConstantInstance && 
                 right instanceof ConstantInstance) {
                if (left.equals(right)) {
-                    return;
+                    return true;
                } 
                else {
                    if (LOGGER.isDebugEnabled()) LOGGER.debug("Couldn't unify. Different constants.");
-                   throw new CouldNotUnifyException("Incompatible constants.");
+                   return false;
                }
             }
             
@@ -141,7 +145,7 @@ public class Unifier {
                     }
                     else {
                         if (LOGGER.isDebugEnabled()) LOGGER.debug("Couldn't unify. Occurs check failed.");
-                        throw new CouldNotUnifyException();
+                        return false;
                     }
                 }
                 else if (right instanceof VariableInstance) {
@@ -153,7 +157,7 @@ public class Unifier {
                     }
                     else {
                         if (LOGGER.isDebugEnabled()) LOGGER.debug("Couldn't unify. Occurs check failed.");
-                        throw new CouldNotUnifyException();
+                        return false;
                     }
                 }
                 
@@ -178,7 +182,7 @@ public class Unifier {
                     }
                     else {
                         if (LOGGER.isDebugEnabled()) LOGGER.debug(logHead+"Could not unify. Predicates dont match.");
-                        throw new CouldNotUnifyException("Incompatible predicates");
+                        return false;
                     }
                 }          
                 
@@ -187,6 +191,7 @@ public class Unifier {
         }
         
         if (LOGGER.isDebugEnabled()) LOGGER.debug(logHead+"Successful.");
+        return true;
         
     }
        

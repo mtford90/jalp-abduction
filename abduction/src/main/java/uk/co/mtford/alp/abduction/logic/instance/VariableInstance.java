@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
-import uk.co.mtford.alp.unification.CouldNotUnifyException;
 import uk.co.mtford.alp.unification.Unifier;
 
 /**
@@ -142,11 +141,8 @@ public class VariableInstance implements ITermInstance {
     }
 
     public boolean equalitySolveAssign(IAtomInstance other) {
-        try {
-            Unifier.unify(this, other);
-        } catch (CouldNotUnifyException ex) {
-            return false;
-        }
+        List<EqualityInstance> unify = Unifier.unify(this, other);
+        if (unify==null) return false;
         return true;
     }
 
