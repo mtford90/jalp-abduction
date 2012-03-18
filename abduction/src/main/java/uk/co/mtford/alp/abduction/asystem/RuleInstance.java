@@ -69,6 +69,16 @@ public class RuleInstance {
         return body;
     }
     
+    public int getNumLiterals() {
+        return body.size();
+    }
+    
+    public boolean hasBody() {
+        if (body==null) return false;
+        if (body.size()==0) return false;
+        return true;
+    }
+    
     public List<ILiteralInstance> unfold(IAtomInstance ... params) throws RuleUnfoldException {
         if (params.length!=head.getNumParams()) {
             throw new RuleUnfoldException("Wrong number of parameters when expanding rule: "+this);

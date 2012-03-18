@@ -95,6 +95,17 @@ public class AbductiveFramework implements Cloneable {
         }
         return possibleUnfolds;
     }
+
+    @Override
+    public String toString() {
+        return "AbductiveFramework" + "\n" +
+               "{" + "\n" +
+               "P  = " + P + "\n" +
+               "A  = " + A + "\n" +
+               "IC = " + IC + "\n" +
+               "}";
+    }
         
+    
     
 }
