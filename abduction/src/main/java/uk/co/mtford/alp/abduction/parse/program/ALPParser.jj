@@ -54,10 +54,6 @@ import uk.co.mtford.alp.abduction.logic.instance.*;
 
 public class ALPParser {
 
-    public static void main (String[] args) throws ParseException {
-        readFromConsole();
-    }
-
     public static AbductiveFramework readFromConsole() throws ParseException {
         ALPParser parser = new ALPParser(System.in);
         return parser.AbductiveLogicProgram();
@@ -75,7 +71,7 @@ public class ALPParser {
         inputStream = new ByteArrayInputStream(buf);
         ALPParser parser = new ALPParser(inputStream);
         return parser.AbductiveLogicProgram();
-    }
+      }
 
 }
 
