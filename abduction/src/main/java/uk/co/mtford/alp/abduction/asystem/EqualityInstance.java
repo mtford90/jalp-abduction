@@ -175,7 +175,7 @@ public class EqualityInstance implements IEqualityInstance  {
 
     @Override
     public String toString() {
-        return left + "=" + right;
+        return "<"+left+">" + "=" + "<"+right+">";
     }
 
    

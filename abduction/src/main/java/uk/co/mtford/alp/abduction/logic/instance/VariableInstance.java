@@ -60,7 +60,7 @@ public class VariableInstance implements ITermInstance {
     @Override
     public String toString() {
         if (value==null) return name+"<"+uniqueId+">";
-        return name+"="+value.toString();
+        return name+"<"+uniqueId+">"+"="+value.toString();
     }
 
     /** Returns true if variable names at the same. Not concerned with value. */
@@ -144,7 +144,7 @@ public class VariableInstance implements ITermInstance {
 
     public boolean equalitySolveAssign(IAtomInstance other) {
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality solving "+this+" with "+other);
-        List<EqualityInstance> unify = Unifier.unify(this, other);
+        LinkedList<VariableInstance> unify = Unifier.unifyReplace(this, other);
         if (unify==null) return false;
         return true;
     }
