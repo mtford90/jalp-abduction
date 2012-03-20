@@ -4,10 +4,13 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
+import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
 
 
 /** An ASystem store of collectables.
@@ -88,19 +91,34 @@ public class ASystemStore implements Comparable, Cloneable {
     
     @Override
     public Object clone() {
+        Map<String,VariableInstance> variablesSoFar = new HashMap<String,VariableInstance>();
         ASystemStore newStore = new ASystemStore();
         for (PredicateInstance abducible:abducibles) {
-            newStore.abducibles.add((PredicateInstance)abducible.clone());
+            newStore.abducibles.add((PredicateInstance)abducible.clone(variablesSoFar));
         }
         for (DenialInstance denial:denials) {
-            newStore.denials.add((DenialInstance)denial.clone());
+            newStore.denials.add((DenialInstance)denial.clone(variablesSoFar));
         }
         for (IEqualityInstance equality:equalities) {
-            newStore.equalities.add((IEqualityInstance)equality.clone());
+            newStore.equalities.add((IEqualityInstance)equality.clone(variablesSoFar));
         }
         return newStore;
     }
 
+    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+        ASystemStore newStore = new ASystemStore();
+        for (PredicateInstance abducible:abducibles) {
+            newStore.abducibles.add((PredicateInstance)abducible.clone(variablesSoFar));
+        }
+        for (DenialInstance denial:denials) {
+            newStore.denials.add((DenialInstance)denial.clone(variablesSoFar));
+        }
+        for (IEqualityInstance equality:equalities) {
+            newStore.equalities.add((IEqualityInstance)equality.clone(variablesSoFar));
+        }
+        return newStore;
+    }
+    
     public List<PredicateInstance> getAbducibles() {
         return abducibles;
     }

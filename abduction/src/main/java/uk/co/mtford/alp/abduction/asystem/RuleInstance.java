@@ -80,7 +80,15 @@ public class RuleInstance {
     }
     
     public List<ILiteralInstance> unfold(IAtomInstance ... params) throws RuleUnfoldException {       
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Unfolding "+this+" using "+params);
+        if (LOGGER.isDebugEnabled()) {
+            String message = "Unfolding "+this+" using (";
+            for (IAtomInstance a:params) {
+                message+=a+",";
+            }
+            message=message.substring(0, message.length()-1);
+            message+=")";
+            LOGGER.debug(message);
+        }
         if (params.length!=head.getNumParams()) {
             throw new RuleUnfoldException("Wrong number of parameters when expanding rule: "+this);
         }

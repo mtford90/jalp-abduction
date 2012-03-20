@@ -4,10 +4,12 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.logic.instance.ILiteralInstance;
+import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
 
 /**
  *
@@ -42,11 +44,12 @@ public class ASystemState implements Cloneable {
     @Override
     public Object clone() {
         List<IASystemInferable> newGoals = new LinkedList<IASystemInferable>();
+        HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
         for (IASystemInferable g:goals) {
-            newGoals.add((IASystemInferable)g.clone());
+            newGoals.add((IASystemInferable)g.clone(variablesSoFar));
         }
         ASystemState newState = new ASystemState(newGoals);
-        newState.store=(ASystemStore) store.clone();
+        newState.store=(ASystemStore) store.clone(variablesSoFar);
         return newState;
     }
 

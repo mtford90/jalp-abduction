@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
+import uk.co.mtford.alp.abduction.tools.UniqueIdGenerator;
 import uk.co.mtford.alp.unification.Unifier;
 
 /**
@@ -18,6 +19,7 @@ import uk.co.mtford.alp.unification.Unifier;
 public class VariableInstance implements ITermInstance {
     
     private static final Logger LOGGER = Logger.getLogger(VariableInstance.class);
+    private final int uniqueId = UniqueIdGenerator.getUniqueId();
     
     String name;
     IAtomInstance value;
@@ -57,7 +59,7 @@ public class VariableInstance implements ITermInstance {
     
     @Override
     public String toString() {
-        if (value==null) return name;
+        if (value==null) return name+"<"+uniqueId+">";
         return name+"="+value.toString();
     }
 
@@ -141,6 +143,7 @@ public class VariableInstance implements ITermInstance {
     }
 
     public boolean equalitySolveAssign(IAtomInstance other) {
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality solving "+this+" with "+other);
         List<EqualityInstance> unify = Unifier.unify(this, other);
         if (unify==null) return false;
         return true;

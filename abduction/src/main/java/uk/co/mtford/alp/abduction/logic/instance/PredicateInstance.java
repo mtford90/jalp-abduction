@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.asystem.ASystemState;
@@ -250,8 +249,9 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         PredicateInstance thisClone = (PredicateInstance) s.popGoal();
         List<List<ILiteralInstance>> possibleUnfolds = framework.unfoldRule(thisClone);
         for (List<ILiteralInstance> unfold:possibleUnfolds) {
-            ASystemState clonedState = (ASystemState) s.clone();
-            clonedState.putGoals(unfold);
+            s.putGoals(unfold);
+            ASystemState clonedState = (ASystemState) s.clone(); 
+            for (int i=0;i<unfold.size();i++) s.popGoal();
             possibleStates.add(clonedState);
         }
         return possibleStates;
