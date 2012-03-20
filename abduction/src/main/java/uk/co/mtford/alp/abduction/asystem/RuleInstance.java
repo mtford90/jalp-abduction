@@ -79,20 +79,21 @@ public class RuleInstance {
         return true;
     }
     
-    public List<ILiteralInstance> unfold(IAtomInstance ... params) throws RuleUnfoldException {
-        
-            if (params.length!=head.getNumParams()) {
-                throw new RuleUnfoldException("Wrong number of parameters when expanding rule: "+this);
-            }
-            LinkedList<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
-            RuleInstance clonedInstance = (RuleInstance) this.clone();
-            for (int i=0;i<params.length;i++) {
-                IAtomInstance param = (IAtomInstance) clonedInstance.head.getParameter(i);
-                EqualityInstance equality = new EqualityInstance(param,params[i]);
-                equalities.add(equality);
-            }
-            clonedInstance.body.addAll(0, equalities);
-            return clonedInstance.body;
+    public List<ILiteralInstance> unfold(IAtomInstance ... params) throws RuleUnfoldException {       
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Unfolding "+this+" using "+params);
+        if (params.length!=head.getNumParams()) {
+            throw new RuleUnfoldException("Wrong number of parameters when expanding rule: "+this);
+        }
+        LinkedList<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
+        RuleInstance clonedInstance = (RuleInstance) this.clone();
+        for (int i=0;i<params.length;i++) {
+            IAtomInstance param = (IAtomInstance) clonedInstance.head.getParameter(i);
+            EqualityInstance equality = new EqualityInstance(param,params[i]);
+            equalities.add(equality);
+        }
+        clonedInstance.body.addAll(0, equalities);
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Result of unfold is "+clonedInstance.body);
+        return clonedInstance.body;
     }
 
     @Override
@@ -119,7 +120,7 @@ public class RuleInstance {
             }
             LinkedList<ILiteralInstance> newBody = new LinkedList<ILiteralInstance>();
             for (int i=0;i<body.size();i++) {
-                newBody.addLast((ILiteralInstance)body.remove(0).clone(variables));
+                newBody.addLast((ILiteralInstance)body.get(i).clone(variables));
             }
             return new RuleInstance(new PredicateInstance(head.getName(),newParameters),newBody);
         } 

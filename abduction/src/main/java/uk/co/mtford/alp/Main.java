@@ -27,6 +27,7 @@ public class Main {
     // Command line options.
     private static final String FILE_OPTION = "-f";
     private static final String HELP_OPTION = "-h";
+    private static final String QUERY_OPTION = "-q";
     
     // ALPS commands.
     private static final char FILE_COMMAND = 'l';
@@ -109,9 +110,12 @@ public class Main {
         printMessage(explanation.toString());
     }
     
-    private static void startALPS(AbductiveFramework f) {
-        LOGGER.info("Starting ALPS.");
+    private static void initALPS(AbductiveFramework f) {
         system = new ASystemBasicStateRewriter(f);
+    }
+    
+    private static void startALPS() {
+        LOGGER.info("Starting ALPS.");
         while (true) {
             System.out.print("ALPS -> ");
             String nextLine = sc.nextLine();
@@ -168,11 +172,12 @@ public class Main {
     }
     
     // Initialise
-    public static void main(String[] args) {
-       System.out.println("Welcome to ALPS.");
+    public static void main(String[] args) throws uk.co.mtford.alp.abduction.parse.query.ParseException {
        boolean console = false;
        boolean file = false;
+       boolean query = false;
        String fileName = null;
+       String queryString = null;
        AbductiveFramework f = new AbductiveFramework();
        
        for (int i=0;i<args.length;i++) {
@@ -194,6 +199,12 @@ public class Main {
                printMessage(EXEC_HELP);
            }
            
+           else if (arg.equals(QUERY_OPTION)) {
+               query=true;
+               i++;
+               queryString = args[i];
+           }
+           
            else {
                printMessage(EXEC_ARG_ERROR);
            }
@@ -212,8 +223,15 @@ public class Main {
             
            System.out.println("Successfully read "+fileName);
        }
+       if (query && file) {
+           initALPS(f);
+           processQuery(queryString);
+       }
+       else {
+           initALPS(f);
+           startALPS();
+       }
        
-       startALPS(f);
        
     }
     

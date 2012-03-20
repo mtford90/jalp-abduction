@@ -90,12 +90,11 @@ public class AbductiveFramework implements Cloneable {
         List<List<ILiteralInstance>> possibleUnfolds = new LinkedList<List<ILiteralInstance>>();
         for (RuleInstance r:P) {
             if (r.getHead().equals(head)) {
+                if (LOGGER.isDebugEnabled()) LOGGER.debug("Found a match "+r);
                 possibleUnfolds.add(r.unfold(head.getParameters()));
             }
         }
-        if (LOGGER.isDebugEnabled()){
-            LOGGER.debug("Found "+possibleUnfolds.size()+" possible unfolds for "+head);
-        }
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Found "+possibleUnfolds.size()+" possible rule unfolds.");
         return possibleUnfolds;
     }
 

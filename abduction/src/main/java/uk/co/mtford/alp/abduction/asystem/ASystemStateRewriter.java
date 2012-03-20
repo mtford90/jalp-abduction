@@ -32,6 +32,7 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
      */
     public ASystemStore computeExplanation(List<IASystemInferable> query) {
         ASystemState currentState = new ASystemState(query); // Initial state.
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Initial state is:\n"+currentState);     
         IASystemInferable chosenGoal;
         while ((chosenGoal = getNextGoal(currentState))!=null) {
             currentState = stateTransition(chosenGoal,(ASystemState)currentState.clone());

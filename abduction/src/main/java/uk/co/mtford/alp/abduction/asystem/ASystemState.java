@@ -4,6 +4,7 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
+import java.util.LinkedList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.logic.instance.ILiteralInstance;
@@ -40,7 +41,11 @@ public class ASystemState implements Cloneable {
     
     @Override
     public Object clone() {
-        ASystemState newState = new ASystemState(goals);
+        List<IASystemInferable> newGoals = new LinkedList<IASystemInferable>();
+        for (IASystemInferable g:goals) {
+            newGoals.add((IASystemInferable)g.clone());
+        }
+        ASystemState newState = new ASystemState(newGoals);
         newState.store=(ASystemStore) store.clone();
         return newState;
     }
