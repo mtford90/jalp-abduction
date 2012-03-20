@@ -6,7 +6,6 @@ package uk.co.mtford.alp.abduction.asystem;
 
 import java.util.List;
 import org.apache.log4j.Logger;
-import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.logic.instance.ILiteralInstance;
 
 /**
@@ -48,7 +47,9 @@ public class ASystemState implements Cloneable {
 
     @Override
     public String toString() {
-        return "ASystemState{" + "goals=" + goals + ", store=" + store + '}';
+        String representation = "G:"+goals+"\n"+
+                                "S:"+store;
+        return representation;
     }
 
     public void putGoals(List<ILiteralInstance> unfold) {

@@ -4,7 +4,8 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
 
@@ -19,12 +20,12 @@ public class ASystemStore implements Comparable, Cloneable {
     
     private List<PredicateInstance> abducibles;
     private List<DenialInstance> denials;
-    private List<InequalityInstance> inequalities;
+    private List<IEqualityInstance> equalities;
     
     public ASystemStore() {
         abducibles = new LinkedList<PredicateInstance>();
         denials = new LinkedList<DenialInstance>();
-        inequalities = new LinkedList<InequalityInstance>();
+        equalities = new LinkedList<IEqualityInstance>();
     }
     
     public void put(PredicateInstance abducible) {
@@ -32,7 +33,7 @@ public class ASystemStore implements Comparable, Cloneable {
     }
     
     public void put(InequalityInstance equality) {
-        inequalities.add(equality);
+        equalities.add(equality);
     }
     
     public void put(DenialInstance denial) {
@@ -48,7 +49,7 @@ public class ASystemStore implements Comparable, Cloneable {
     }
     
     public boolean contains(EqualityInstance equality) {
-        return inequalities.contains(equality);
+        return equalities.contains(equality);
     }
     
     public boolean remove(PredicateInstance abducible) {
@@ -56,7 +57,7 @@ public class ASystemStore implements Comparable, Cloneable {
     }
     
     public boolean remove(EqualityInstance equality) {
-        return inequalities.remove(equality);
+        return equalities.remove(equality);
     }
     
     public boolean remove(DenialInstance denial) {
@@ -72,7 +73,7 @@ public class ASystemStore implements Comparable, Cloneable {
     }
     
     public int numEqualities() {
-        return inequalities.size();
+        return equalities.size();
     }
     
     /** Very simple useless heuristic. Orders by num of 
@@ -94,7 +95,9 @@ public class ASystemStore implements Comparable, Cloneable {
         for (DenialInstance denial:denials) {
             newStore.denials.add((DenialInstance)denial.clone());
         }
-        List<EqualityInstance> equalities;
+        for (IEqualityInstance equality:equalities) {
+            newStore.equalities.add((IEqualityInstance)equality.clone());
+        }
         return newStore;
     }
 
@@ -106,32 +109,38 @@ public class ASystemStore implements Comparable, Cloneable {
         return denials;
     }
 
-    public List<InequalityInstance> getInequalities() {
-        return inequalities;
+    public List<IEqualityInstance> getEqualities() {
+        return equalities;
     }
     
     
 
     @Override
     public String toString() {
-        String output="S:{";
+        String output="{";
         output+="{";
-        for (PredicateInstance abducible:abducibles) {
-            output+=abducible+", ";
+        if (!abducibles.isEmpty()) {
+            for (PredicateInstance abducible:abducibles) {
+                output+=abducible+", ";
+            }
+            output=output.substring(0, output.length()-2);
         }
-        output=output.substring(0, output.length());
         output+="}, ";
         output+="{";
-        for (DenialInstance denial:denials) {
-            output+=denial+", ";
+        if (!denials.isEmpty()) {
+            for (DenialInstance denial:denials) {
+                output+=denial+", ";
+            }
+            output=output.substring(0, output.length()-2);           
         }
-        output=output.substring(0, output.length());
         output+="}, ";
         output+="{";
-        for (InequalityInstance equality:inequalities) {
-            output+=equality+", ";
+        if (!equalities.isEmpty()) {
+            for (IEqualityInstance equality:equalities) {
+                output+=equality+", ";
+            }
+            output=output.substring(0, output.length()-2);
         }
-        output=output.substring(0, output.length());
         output+="}}";
         return output;
         

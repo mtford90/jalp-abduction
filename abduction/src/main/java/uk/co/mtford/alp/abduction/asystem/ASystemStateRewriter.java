@@ -35,11 +35,12 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
         IASystemInferable chosenGoal;
         while ((chosenGoal = getNextGoal(currentState))!=null) {
             currentState = stateTransition(chosenGoal,(ASystemState)currentState.clone());
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("State transition has occured.\n"+currentState);        
             if (currentState==null) {
                 return null; // Failed to move to another state.
             }
         }
-        return currentState.getStore();
+        return currentState.getStore(); // No more goals. Succeeded.
     }
     
     protected abstract IASystemInferable getNextGoal(ASystemState state);

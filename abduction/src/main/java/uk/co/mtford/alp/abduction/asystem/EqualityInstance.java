@@ -5,12 +5,9 @@
 package uk.co.mtford.alp.abduction.asystem;
 
 import java.util.LinkedList;
-import uk.co.mtford.alp.abduction.logic.instance.ILiteralInstance;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
-
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.logic.instance.ConstantInstance;
 import uk.co.mtford.alp.abduction.logic.instance.IAtomInstance;
@@ -21,7 +18,7 @@ import uk.co.mtford.alp.unification.Unifier;
  *
  * @author mtford
  */
-public class EqualityInstance implements ILiteralInstance  {
+public class EqualityInstance implements IEqualityInstance  {
     
     private static Logger LOGGER = Logger.getLogger(EqualityInstance.class);
 
@@ -105,6 +102,7 @@ public class EqualityInstance implements ILiteralInstance  {
      * @return 
      */
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule E1 to "+this);
         List<ASystemState> possibleStates = new LinkedList<ASystemState>();
         EqualityInstance e = (EqualityInstance) s.popGoal();
         List<EqualityInstance> newEqualities = e.left.equalitySolve(e.right);
@@ -113,10 +111,12 @@ public class EqualityInstance implements ILiteralInstance  {
         }
         else if (newEqualities.isEmpty()) {
             e.left.equalitySolveAssign(e.right);
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Added "+this+" to equality store.");
+            s.store.getEqualities().add(e);
             possibleStates.add(s);
         }
         else {
-            s.goals.addAll(0,newEqualities);
+            s.goals.addAll(newEqualities);
         }
         return possibleStates;
     }
@@ -144,7 +144,7 @@ public class EqualityInstance implements ILiteralInstance  {
             if (varAndConstant) { // E.2.b
                 InequalityInstance inequalityInstance = 
                         new InequalityInstance(clonedThis.left,clonedThis.right);
-                clonedState.store.getInequalities().add(inequalityInstance);
+                clonedState.store.getEqualities().add(inequalityInstance);
                 clonedState.goals.add(d);
                 possibleStates.add(clonedState);
                 // OR
@@ -171,6 +171,11 @@ public class EqualityInstance implements ILiteralInstance  {
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
         return new EqualityInstance((IAtomInstance)left.clone(variablesSoFar),(IAtomInstance)right.clone(variablesSoFar));
+    }
+
+    @Override
+    public String toString() {
+        return left + "=" + right;
     }
 
    

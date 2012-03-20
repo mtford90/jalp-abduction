@@ -80,18 +80,19 @@ public class RuleInstance {
     }
     
     public List<ILiteralInstance> unfold(IAtomInstance ... params) throws RuleUnfoldException {
-        if (params.length!=head.getNumParams()) {
-            throw new RuleUnfoldException("Wrong number of parameters when expanding rule: "+this);
-        }
-        LinkedList<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
-        RuleInstance clonedInstance = (RuleInstance) this.clone();
-        for (int i=0;i<params.length;i++) {
-            VariableInstance param = (VariableInstance) clonedInstance.head.getParameter(i);
-            EqualityInstance equality = new EqualityInstance(param,params[i]);
-            equalities.add(equality);
-        }
-        clonedInstance.body.addAll(0, equalities);
-        return clonedInstance.body;
+        
+            if (params.length!=head.getNumParams()) {
+                throw new RuleUnfoldException("Wrong number of parameters when expanding rule: "+this);
+            }
+            LinkedList<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
+            RuleInstance clonedInstance = (RuleInstance) this.clone();
+            for (int i=0;i<params.length;i++) {
+                IAtomInstance param = (IAtomInstance) clonedInstance.head.getParameter(i);
+                EqualityInstance equality = new EqualityInstance(param,params[i]);
+                equalities.add(equality);
+            }
+            clonedInstance.body.addAll(0, equalities);
+            return clonedInstance.body;
     }
 
     @Override
@@ -109,17 +110,24 @@ public class RuleInstance {
     
     @Override
     public Object clone() { 
-        HashMap<String, VariableInstance> variables = new HashMap<String, VariableInstance>();
-        VariableInstance[] newParameters = new VariableInstance[head.getNumParams()];
-        for (int i=0;i<head.getNumParams();i++) {
-            newParameters[i]=(VariableInstance) head.getParameter(i).clone();
-            variables.put(newParameters[i].getName(),newParameters[i]);
+        if (hasBody()) { 
+            HashMap<String, VariableInstance> variables = new HashMap<String, VariableInstance>();
+            VariableInstance[] newParameters = new VariableInstance[head.getNumParams()];
+            for (int i=0;i<head.getNumParams();i++) {
+                newParameters[i]=(VariableInstance) head.getParameter(i).clone();
+                variables.put(newParameters[i].getName(),newParameters[i]);
+            }
+            LinkedList<ILiteralInstance> newBody = new LinkedList<ILiteralInstance>();
+            for (int i=0;i<body.size();i++) {
+                newBody.addLast((ILiteralInstance)body.remove(0).clone(variables));
+            }
+            return new RuleInstance(new PredicateInstance(head.getName(),newParameters),newBody);
+        } 
+        else { // Is a fact.
+            PredicateInstance headClone = (PredicateInstance) head.clone();
+            return new RuleInstance(headClone,new LinkedList<ILiteralInstance>());
         }
-        LinkedList<ILiteralInstance> newBody = new LinkedList<ILiteralInstance>();
-        for (int i=0;i<body.size();i++) {
-            newBody.addLast((ILiteralInstance)body.remove(0).clone(variables));
-        }
-        return new RuleInstance(new PredicateInstance(head.getName(),newParameters),newBody);
+            
     }
     
 }
