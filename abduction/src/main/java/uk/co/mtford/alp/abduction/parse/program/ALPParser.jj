@@ -117,8 +117,7 @@ AbductiveFramework AbductiveLogicProgram():
 		r = Rule(abducibles) 
         { 
             program.add(r); 
-            if (!defined.contains(r.getHead().getName())&&
-                r.hasBody()) {
+            if (!defined.contains(r.getHead().getName())) {
                 defined.add(r.getHead().getName());
             }
         } |

@@ -86,7 +86,7 @@ public class NegationInstance implements ILiteralInstance {
     }
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new NegationInstance((ILiteralInstance)subFormula.clone(variablesSoFar));
     }
     
     

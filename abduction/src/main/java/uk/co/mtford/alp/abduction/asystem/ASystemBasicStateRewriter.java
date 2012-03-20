@@ -26,37 +26,39 @@ public class ASystemBasicStateRewriter extends ASystemStateRewriter {
 
     @Override
     protected IASystemInferable getNextGoal(ASystemState state) {
-        String logHead = "getNextGoal(): ";
-        LOGGER.info(logHead+"starting goal selection.");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Starting goal selection.");
+        }
         IASystemInferable goal = null;
         if (!state.goals.isEmpty()) {
             goal = state.goals.get(0);
         }
-        LOGGER.info(logHead+"chosen goal is "+goal);
         return goal;
     }
 
     @Override
     protected ASystemState stateTransition(IASystemInferable goal, ASystemState state) {
-        String logHead = "stateTransition("+goal+"): ";
-        LOGGER.info(logHead+"moving to next state.");
         if (goal==null) { // No more goals.
-            LOGGER.info(logHead+"Ran out of goals.");
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Ran out of goals.");
+            }
             return null;
         } 
         List<ASystemState> states = goal.applyInferenceRule(abductiveFramework, state);
-        LOGGER.info(logHead+"Generated new states "+states);
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("Generated " + states.size() + " new states.");
+        }
         stateStack.addAll(states);
         if (stateStack.isEmpty()) {
             return null;
         }
         ASystemState nextState = stateStack.pop();
-        LOGGER.info(logHead+"Next chosen state is "+nextState);
         return nextState;
     }
 
     @Override
     public void reset() {
+        LOGGER.info("ASystemRewriter has been reset.");
         this.abductiveFramework=new AbductiveFramework();
         this.stateStack=new Stack<ASystemState>();
     }

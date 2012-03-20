@@ -59,8 +59,7 @@ public class ALPParser implements ALPParserConstants {
       if (jj_2_2(2)) {
         r = Rule(abducibles);
             program.add(r);
-            if (!defined.contains(r.getHead().getName())&&
-                r.hasBody()) {
+            if (!defined.contains(r.getHead().getName())) {
                 defined.add(r.getHead().getName());
             }
       } else if (jj_2_3(2)) {

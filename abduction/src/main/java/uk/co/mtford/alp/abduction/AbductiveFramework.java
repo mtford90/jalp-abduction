@@ -93,6 +93,9 @@ public class AbductiveFramework implements Cloneable {
                 possibleUnfolds.add(r.unfold(head.getParameters()));
             }
         }
+        if (LOGGER.isDebugEnabled()){
+            LOGGER.debug("Found "+possibleUnfolds.size()+" possible unfolds for "+head);
+        }
         return possibleUnfolds;
     }
 
