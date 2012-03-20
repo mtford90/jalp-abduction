@@ -20,5 +20,5 @@ public interface IAbductiveLogicProgrammingSystem {
     * @param query
     * @return 
     */
-   public abstract ASystemStore computeExplanation(List<IASystemInferable> query);
+   public abstract List<ASystemStore> computeExplanation(List<IASystemInferable> query);
 }

@@ -38,18 +38,17 @@ public class ASystemBasicStateRewriter extends ASystemStateRewriter {
 
     @Override
     protected ASystemState stateTransition(IASystemInferable goal, ASystemState state) {
-        if (goal==null) { // No more goals.
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Ran out of goals.");
-            }
-            return null;
-        } 
-        List<ASystemState> states = goal.applyInferenceRule(abductiveFramework, state);
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Generated " + states.size() + " new states.");
+        if (goal==null && LOGGER.isDebugEnabled()) {
+           LOGGER.debug("Ran out of goals.");
         }
-        stateStack.addAll(states);
-        if (stateStack.isEmpty()) {
+        if (goal!=null) {
+            List<ASystemState> states = goal.applyInferenceRule(abductiveFramework, state);
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("Generated " + states.size() + " new states.");
+            }
+            stateStack.addAll(states);
+        }
+        if (stateStack.isEmpty()) { // No more possible states.
             return null;
         }
         ASystemState nextState = stateStack.pop();

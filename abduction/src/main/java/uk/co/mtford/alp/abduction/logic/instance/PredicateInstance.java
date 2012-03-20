@@ -245,6 +245,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     }
     
     public List<ASystemState> applyRuleD1(AbductiveFramework framework, ASystemState s) throws RuleUnfoldException {
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule D1 to "+this);
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         PredicateInstance thisClone = (PredicateInstance) s.popGoal();
         List<List<ILiteralInstance>> possibleUnfolds = framework.unfoldRule(thisClone);

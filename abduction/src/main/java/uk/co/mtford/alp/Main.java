@@ -102,12 +102,13 @@ public class Main {
     }
     
     private static void processQuery(String query) throws uk.co.mtford.alp.abduction.parse.query.ParseException { 
-        LOGGER.info("Beginning processing of query.");
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Beginning processing of query.");
         List<PredicateInstance> predicates = ALPQueryParser.readFromString(query);
         List<IASystemInferable> goals = new LinkedList<IASystemInferable>();
         goals.addAll(predicates);
-        ASystemStore explanation = system.computeExplanation(goals);
-        printMessage(explanation.toString());
+        List<ASystemStore> possibleExplanations = system.computeExplanation(goals);
+        printMessage("Found "+possibleExplanations.size()+" possible explanations.");
+        for (ASystemStore s:possibleExplanations) printMessage(s.toString());
     }
     
     private static void initALPS(AbductiveFramework f) {
@@ -115,7 +116,7 @@ public class Main {
     }
     
     private static void startALPS() {
-        LOGGER.info("Starting ALPS.");
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Starting ALPS.");
         while (true) {
             System.out.print("ALPS -> ");
             String nextLine = sc.nextLine();

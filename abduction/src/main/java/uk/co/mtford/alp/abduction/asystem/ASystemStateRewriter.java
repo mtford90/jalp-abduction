@@ -4,6 +4,7 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
+import java.util.LinkedList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
@@ -30,18 +31,19 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
      * @param abductiveFramework
      * @return 
      */
-    public ASystemStore computeExplanation(List<IASystemInferable> query) {
+    public List<ASystemStore> computeExplanation(List<IASystemInferable> query) {
+        List<ASystemStore> possibleExplanations = new LinkedList<ASystemStore>();
         ASystemState currentState = new ASystemState(query); // Initial state.
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Initial state is:\n"+currentState);     
-        IASystemInferable chosenGoal;
-        while ((chosenGoal = getNextGoal(currentState))!=null) {
-            currentState = stateTransition(chosenGoal,(ASystemState)currentState.clone());
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("State transition has occured.\n"+currentState);        
-            if (currentState==null) {
-                return null; // Failed to move to another state.
-            }
+        IASystemInferable chosenGoal = getNextGoal(currentState);
+        while ((currentState = stateTransition(chosenGoal,(ASystemState)currentState.clone()))!=null) {
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("State transition has occured.\n"+currentState);      
+            if (currentState.goals.isEmpty()) {
+                possibleExplanations.add(currentState.store);
+            } 
+            chosenGoal = getNextGoal(currentState);
         }
-        return currentState.getStore(); // No more goals. Succeeded.
+        return possibleExplanations;
     }
     
     protected abstract IASystemInferable getNextGoal(ASystemState state);
