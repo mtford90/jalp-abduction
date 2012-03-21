@@ -44,7 +44,7 @@ public class ASystemBasicStateRewriter extends ASystemStateRewriter {
             if (LOGGER.isInfoEnabled()) {
                 LOGGER.info("Generated " + states.size() + " new states.");
             }
-            stateStack.addAll(states);
+            for (int i=0;i<states.size();i++) stateStack.add(states.get(i));
         }
         if (stateStack.isEmpty()) { // No more possible states.
             return null;
@@ -58,6 +58,11 @@ public class ASystemBasicStateRewriter extends ASystemStateRewriter {
         LOGGER.info("ASystemRewriter has been reset.");
         this.abductiveFramework=new AbductiveFramework();
         this.stateStack=new Stack<ASystemState>();
+    }
+
+    @Override
+    protected boolean hasMoreStates() {
+        return !stateStack.isEmpty();
     }
 
 }

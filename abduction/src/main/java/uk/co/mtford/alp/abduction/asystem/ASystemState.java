@@ -5,6 +5,7 @@
 package uk.co.mtford.alp.abduction.asystem;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -66,6 +67,10 @@ public class ASystemState implements Cloneable {
 
     public void putGoal(IASystemInferable goal) {
         goals.add(0,goal);
+    }
+    
+    public boolean hasGoalsRemaining() {
+        return !goals.isEmpty();
     }
     
 }

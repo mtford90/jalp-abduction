@@ -4,6 +4,7 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -46,6 +47,39 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
         return possibleExplanations;
     }
     
+    public Iterator<ASystemState> getStateIterator(final List<IASystemInferable> query) {
+        return new Iterator<ASystemState>() {
+            private ASystemState currentState;
+            
+            public boolean hasNext() {
+                if (currentState!=null)
+                    return hasMoreStates() || currentState.hasGoalsRemaining();
+                return true;
+            }
+
+            public ASystemState next() {
+                if (currentState==null) {
+                    currentState = new ASystemState(query);
+                }
+                else {
+                    IASystemInferable chosenGoal = getNextGoal(currentState);
+                    currentState = stateTransition(chosenGoal,(ASystemState)currentState.clone());
+                }
+                return currentState;
+            }
+
+            public void remove() { // Skips a state.
+                IASystemInferable chosenGoal = getNextGoal(currentState);
+                stateTransition(chosenGoal,(ASystemState)currentState.clone());
+            }
+            
+            public ASystemState getCurrentState() {
+                return currentState;
+            }
+            
+        };
+    }
+    
     protected abstract IASystemInferable getNextGoal(ASystemState state);
     
     /** Returns the next state. Returns null if not possible to move to next.
@@ -55,13 +89,12 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
      */
     protected abstract ASystemState stateTransition(IASystemInferable goal, ASystemState state);
     
+    protected abstract boolean hasMoreStates();
+    
     public abstract void reset();
 
     public AbductiveFramework getAbductiveFramework() {
         return abductiveFramework;
     }
-    
-    
-
     
 } 

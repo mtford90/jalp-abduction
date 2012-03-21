@@ -1,12 +1,14 @@
 package uk.co.mtford.alp;
 
 import java.io.FileNotFoundException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.asystem.ASystemBasicStateRewriter;
+import uk.co.mtford.alp.abduction.asystem.ASystemState;
 import uk.co.mtford.alp.abduction.asystem.ASystemStore;
 import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
@@ -34,7 +36,8 @@ public class Main {
     private static final char QUERY_COMMAND = 'q';
     private static final char CLEAR_COMMAND = 'c';
     private static final char HELP_COMMAND = 'h';
-    private static final char DUMP_COMMAND = 'd';
+    private static final char DUMP_COMMAND = 'm';
+    private static final char DEBUG_COMMAND = 'd';
     
     // Messages.
     private static final String EXEC_HELP 
@@ -50,7 +53,8 @@ public class Main {
               "Load a file    => :l (<filename>)+" + "\n" +
               "Run a query    => :q (p(u1,...,un),)* p(u1,...,un)" + "\n" +
               "Reset system   => :c" + "\n" +
-              "Memory dump    => :d" + "\n" +
+              "Memory dump    => :m" + "\n" +
+              "Debug mode     => :d" + "\n" +
               "This help      => :h";
     private static final String UNKNOWN_COMMAND 
             = "Command not recognised. Use :h for help.";
@@ -58,6 +62,7 @@ public class Main {
             = "Invalid usage. Use :h help.";
     
     private static ASystemBasicStateRewriter system;
+    private static boolean debugMode = false;
     
     private static void fatalError(String error) {
         System.err.println(error);
@@ -102,13 +107,29 @@ public class Main {
     }
     
     private static void processQuery(String query) throws uk.co.mtford.alp.abduction.parse.query.ParseException { 
-        if (LOGGER.isInfoEnabled()) LOGGER.info("Beginning processing of query.");
         List<PredicateInstance> predicates = ALPQueryParser.readFromString(query);
         List<IASystemInferable> goals = new LinkedList<IASystemInferable>();
         goals.addAll(predicates);
-        List<ASystemStore> possibleExplanations = system.computeExplanation(goals);
-        printMessage("Found "+possibleExplanations.size()+" possible explanations.");
-        for (ASystemStore s:possibleExplanations) printMessage(s.toString());
+        if (debugMode) {
+            Iterator<ASystemState> iterator = system.getStateIterator(goals);
+            while (iterator.hasNext()) {
+                printMessage("Current state is "+iterator.next());
+                printMessage("Enter c to continue or anything else to quit.");
+                String s = sc.nextLine();
+                if (s.trim().equals("c")) {
+                    continue;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+        else {
+            if (LOGGER.isInfoEnabled()) LOGGER.info("Beginning processing of query.");
+            List<ASystemStore> possibleExplanations = system.computeExplanation(goals);
+            printMessage("Found "+possibleExplanations.size()+" possible explanations.");
+            for (ASystemStore s:possibleExplanations) printMessage(s.toString());
+        }
     }
     
     private static void initALPS(AbductiveFramework f) {
@@ -120,7 +141,8 @@ public class Main {
         while (true) {
             System.out.print("ALPS -> ");
             String nextLine = sc.nextLine();
-            char c = nextLine.charAt(0);
+            char c = ' ';
+            if (!nextLine.isEmpty()) c = nextLine.charAt(0);
             if (c==':') {
                 c=nextLine.charAt(1);
                 switch (c) {
@@ -151,11 +173,17 @@ public class Main {
                     case DUMP_COMMAND:
                         printMessage(system.getAbductiveFramework().toString());
                         break;
+                    case DEBUG_COMMAND:
+                        debugMode = !debugMode;
+                        printMessage(debugMode?"Debug mode enabled.":"Debug mode disabled.");
+                        break;
                     default: 
                         printMessage(UNKNOWN_COMMAND);
                 }
             }
-
+            else if (c==' ') {
+                continue;
+            }
             else { 
                 AbductiveFramework newF = null;
                 try {
