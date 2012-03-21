@@ -104,6 +104,7 @@ public class DenialInstance implements IASystemInferable {
     }
 
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rules to "+this);
         DenialInstance thisClone = (DenialInstance) s.getGoals().get(0); 
         if (!thisClone.getBody().isEmpty()) {
             ILiteralInstance first = body.get(0);
@@ -119,12 +120,10 @@ public class DenialInstance implements IASystemInferable {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    // TODO: This may not be the right thing to do....
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
-        variablesSoFar.putAll(variables);
         DenialInstance clone = new DenialInstance();
         for (IASystemInferable logic:body) {
-            clone.body.add((ILiteralInstance)logic.clone(variables));
+            clone.body.add((ILiteralInstance)logic.clone(variablesSoFar));
         }
         return clone;
     }

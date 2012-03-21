@@ -216,19 +216,21 @@ public class Main {
            
             try {
                 f = ALPParser.readFromFile(fileName);
+                 System.out.println("Successfully read "+fileName);
             } catch (FileNotFoundException ex) {
-                LOGGER.fatal("Cannot find file.");
+                LOGGER.error("Cannot find file.");
+                file = false;
             } catch (ParseException ex) {
-                LOGGER.fatal("Syntax error in "+fileName,ex);
+                LOGGER.error("Syntax error in "+fileName,ex);
+                file = false;
             }
-            
-           System.out.println("Successfully read "+fileName);
+          
        }
        if (query && file) {
            initALPS(f);
            processQuery(queryString);
        }
-       else {
+       else if (!query) {
            initALPS(f);
            startALPS();
        }

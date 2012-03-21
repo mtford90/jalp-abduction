@@ -26,13 +26,11 @@ public class ASystemBasicStateRewriter extends ASystemStateRewriter {
 
     @Override
     protected IASystemInferable getNextGoal(ASystemState state) {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Starting goal selection.");
-        }
         IASystemInferable goal = null;
         if (!state.goals.isEmpty()) {
             goal = state.goals.get(0);
         }
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Selected goal "+goal);
         return goal;
     }
 

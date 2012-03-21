@@ -1,0 +1,3 @@
+boy(john).
+
+likes(X,Y) :- boy(X), girl(Y).

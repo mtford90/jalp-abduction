@@ -228,9 +228,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         if (framework.isAbducible(this)) { 
-
                 possibleStates.addAll(applyRuleA2(framework,s));
-
         } 
         else { 
             try {
@@ -258,6 +256,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     }
     
     public List<ASystemState> applyRuleD2(AbductiveFramework framework, ASystemState s) throws RuleUnfoldException {
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule D2 to "+this);
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         DenialInstance denial = (DenialInstance) s.popGoal();
         PredicateInstance thisClone = (PredicateInstance) denial.removeLiteral(0);
@@ -271,6 +270,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     }
     
     public List<ASystemState> applyRuleA1(AbductiveFramework framework, ASystemState s)   {
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule A1 to "+this);
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         // Unify with an already collected abducible
         List<PredicateInstance> collectedAbducibles = s.getStore().getAbducibles();
@@ -320,14 +320,15 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     }
     
     public List<ASystemState> applyRuleA2(AbductiveFramework framework, ASystemState s) {
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule A2 to "+this);
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         DenialInstance denial = (DenialInstance) s.popGoal();
-        PredicateInstance thisClone = (PredicateInstance) denial.removeLiteral(0);
+        PredicateInstance thisClone = (PredicateInstance) denial.getLiteral(0);
         for (PredicateInstance collectedAbducible:s.getStore().getAbducibles()) {
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Looking for already collected abducibles that match.");
             if (thisClone.name.equals(collectedAbducible.name)) {
-                List<EqualityInstance> equalities = null;
-                    equalities = Unifier.unify(thisClone, collectedAbducible);
-
+                if (LOGGER.isDebugEnabled()) LOGGER.debug("Found match: " +collectedAbducible + ". Performing unification to ensure doesn't break.");
+                List<EqualityInstance> equalities = Unifier.unify(thisClone, collectedAbducible);
                 DenialInstance newDenial = new DenialInstance();
                 for (EqualityInstance e:equalities) {
                     newDenial.addLiteral(e);
@@ -336,6 +337,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
                 s.putGoal(newDenial);
             }
         }
+        s.getStore().put(denial);
         possibleStates.add(s);
         return possibleStates;
     }
