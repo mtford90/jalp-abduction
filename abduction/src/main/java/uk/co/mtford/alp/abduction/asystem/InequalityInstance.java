@@ -82,4 +82,10 @@ public class InequalityInstance implements IEqualityInstance {
     public Object clone() {
         return new InequalityInstance((EqualityInstance)e.clone());
     }
+
+    @Override
+    public String toString() {
+        return e.getLeft()+"=/="+e.getRight();
+    }
+    
 }

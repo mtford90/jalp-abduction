@@ -110,6 +110,9 @@ public class DenialInstance implements IASystemInferable {
             ILiteralInstance first = body.get(0);
             return first.applyDenialInferenceRule(framework, s);
         }
+        else {
+            s.popGoal(); 
+        }
         List<ASystemState> possibleStates = new LinkedList<ASystemState>();
         possibleStates.add(s);
         return possibleStates;

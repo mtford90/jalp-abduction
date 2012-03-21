@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
+import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 import uk.co.mtford.alp.abduction.tools.UniqueIdGenerator;
 import uk.co.mtford.alp.unification.Unifier;
 
@@ -142,11 +143,11 @@ public class VariableInstance implements ITermInstance {
         return true;
     }
 
-    public boolean equalitySolveAssign(IAtomInstance other) {
+    public List<IASystemInferable> equalitySolveAssign(IAtomInstance other) {
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality solving "+this+" with "+other);
         LinkedList<VariableInstance> unify = Unifier.unifyReplace(this, other);
-        if (unify==null) return false;
-        return true;
+        if (unify==null) return null;
+        return new LinkedList<IASystemInferable>();
     }
 
     public List<EqualityInstance> equalitySolve(IAtomInstance other) {

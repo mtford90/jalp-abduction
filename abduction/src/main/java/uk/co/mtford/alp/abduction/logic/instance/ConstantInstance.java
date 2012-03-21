@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
+import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 
 /**
  *
@@ -91,13 +92,18 @@ public class ConstantInstance implements ITermInstance {
      * @param other
      * @return 
      */
-    public boolean
+    public List<IASystemInferable>
            equalitySolveAssign(IAtomInstance other) {
-        if (this.equals(other)) return true;
-        return false;
+        List<IASystemInferable> returnList = new LinkedList<IASystemInferable>();
+        if (!(other instanceof ConstantInstance)) return other.equalitySolveAssign(this);
+        else if (this.equals(other)) returnList.add(new TrueInstance());
+        else returnList.add(new FalseInstance());
+        return returnList;
     }
 
     public List<EqualityInstance> equalitySolve(IAtomInstance other) {
+        if (!(other instanceof ConstantInstance)) 
+            return other.equalitySolve(this);
         return new LinkedList<EqualityInstance>();
     }
 

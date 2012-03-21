@@ -6,13 +6,14 @@ package uk.co.mtford.alp.abduction.logic.instance;
 
 import java.util.List;
 import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
+import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 
 /**
  *
  * @author mtford
  */
 public interface IAtomInstance extends ILogicInstance {
-    public boolean equalitySolveAssign(IAtomInstance other);
+    public List<IASystemInferable> equalitySolveAssign(IAtomInstance other);
     /** 
      * 
      * @param other

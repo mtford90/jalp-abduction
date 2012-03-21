@@ -110,10 +110,14 @@ public class EqualityInstance implements IEqualityInstance  {
             return possibleStates; // Failed.
         }
         else if (newEqualities.isEmpty()) {
-            e.left.equalitySolveAssign(e.right);
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Added "+this+" to equality store.");
+            List<IASystemInferable> newGoals = e.left.equalitySolveAssign(e.right);
             s.store.getEqualities().add(e);
-            possibleStates.add(s);
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Added "+this+" to equality store.");
+            for (IASystemInferable goal:newGoals) {
+                s.putGoal(goal);
+                if (LOGGER.isDebugEnabled()) LOGGER.debug("Added new goal: "+goal);
+            }
+            possibleStates.add(0,s);
         }
         else {
             s.goals.addAll(newEqualities);
@@ -132,7 +136,7 @@ public class EqualityInstance implements IEqualityInstance  {
                 d.addLiteral(0,e);
             }
             clonedState.getGoals().add(0,d);
-            possibleStates.add(clonedState);
+            possibleStates.add(0,clonedState);
         }
         else {
             boolean varAndConstant = 
@@ -146,7 +150,7 @@ public class EqualityInstance implements IEqualityInstance  {
                         new InequalityInstance(clonedThis.left,clonedThis.right);
                 clonedState.store.getEqualities().add(inequalityInstance);
                 clonedState.goals.add(d);
-                possibleStates.add(clonedState);
+                possibleStates.add(0,clonedState);
                 // OR
                 clonedState = (ASystemState) s.clone();
                 d = (DenialInstance) clonedState.popGoal();
@@ -155,15 +159,15 @@ public class EqualityInstance implements IEqualityInstance  {
                 Unifier.unifyReplace(clonedThis.left, clonedThis.right);
 
                 clonedState.goals.add(d);
-                possibleStates.add(clonedState);
+                possibleStates.add(0,clonedState);
             }
             else {  // E.2.c: Two variables.
                    
-                
+               
                 Unifier.unifyReplace(clonedThis.right, clonedThis.left);
 
                 clonedState.goals.add(d);
-                possibleStates.add(clonedState);
+                possibleStates.add(0,clonedState);
             }
         }
         return possibleStates;

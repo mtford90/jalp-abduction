@@ -75,13 +75,13 @@ public class NegationInstance implements ILiteralInstance {
         DenialInstance denial = (DenialInstance) clonedState.popGoal();
         NegationInstance thisClone = (NegationInstance) denial.removeLiteral(0);
         clonedState.putGoal(thisClone.subFormula);
-        possibleStates.add(clonedState);
+        possibleStates.add(0,clonedState);
         clonedState = (ASystemState) s.clone();
         denial = (DenialInstance) clonedState.popGoal();
         thisClone = (NegationInstance) denial.removeLiteral(0);
         clonedState.putGoal(denial);
         clonedState.putGoal(thisClone);
-        possibleStates.add(clonedState);
+        possibleStates.add(0,clonedState);
         return possibleStates; 
     }
 

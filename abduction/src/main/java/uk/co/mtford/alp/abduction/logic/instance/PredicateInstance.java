@@ -10,10 +10,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
-import uk.co.mtford.alp.abduction.asystem.ASystemState;
-import uk.co.mtford.alp.abduction.asystem.DenialInstance;
-import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
-import uk.co.mtford.alp.abduction.asystem.RuleUnfoldException;
+import uk.co.mtford.alp.abduction.asystem.*;
 import uk.co.mtford.alp.unification.Unifier;
 
 /**
@@ -187,10 +184,10 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         return new PredicateInstance(clonedName,clonedParams);
     }
 
-    public boolean equalitySolveAssign(IAtomInstance other) {
+    public List<IASystemInferable> equalitySolveAssign(IAtomInstance other) {
         List<EqualityInstance> unify = Unifier.unify(this, other);
-        if (unify==null) return false;
-        return true;
+        if (unify==null) return null;
+        return new LinkedList<IASystemInferable>();
     }
     
     public List<EqualityInstance> equalitySolve(IAtomInstance other) {
@@ -250,7 +247,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
             s.putGoals(unfold);
             ASystemState clonedState = (ASystemState) s.clone(); 
             for (int i=0;i<unfold.size();i++) s.popGoal();
-            possibleStates.add(clonedState);
+            possibleStates.add(0,clonedState);
         }
         return possibleStates;
     }
@@ -265,7 +262,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
             denial.addLiteral(0, unfold);
         }   
         s.putGoal(denial);
-        possibleStates.add(s);
+        possibleStates.add(0,s);
         return possibleStates;
     }
     
@@ -282,7 +279,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
             for (EqualityInstance e:unificationResult) {
                 clonedState.putGoal(e);
             }
-            possibleStates.add(clonedState);
+            possibleStates.add(0,clonedState);
         }
         // OR Add a new collected abducible and check that the 
         // collected constraints are satisified.
@@ -314,7 +311,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         }
         // Add new abducible.
         clonedState.getStore().getAbducibles().add(clonedThis);
-        possibleStates.add(clonedState);
+        possibleStates.add(0,clonedState);
         
         return possibleStates;
     }
@@ -338,7 +335,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
             }
         }
         s.getStore().put(denial);
-        possibleStates.add(s);
+        possibleStates.add(0,s);
         return possibleStates;
     }
 
