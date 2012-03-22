@@ -27,9 +27,11 @@ public interface ALPParserConstants {
   /** RegularExpression Id. */
   int IC = 12;
   /** RegularExpression Id. */
-  int LCASENAME = 13;
+  int ABDUCIBLE = 13;
   /** RegularExpression Id. */
-  int UCASENAME = 14;
+  int LCASENAME = 14;
+  /** RegularExpression Id. */
+  int UCASENAME = 15;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -49,6 +51,7 @@ public interface ALPParserConstants {
     "\"=\"",
     "\"not\"",
     "\"ic\"",
+    "\"abducible\"",
     "<LCASENAME>",
     "<UCASENAME>",
   };

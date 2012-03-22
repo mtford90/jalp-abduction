@@ -2,8 +2,9 @@
 
 LL(2) grammar for ALP in prolog style.
 
-ALP -> ((Rule | Denial))* EOF
+ALP -> ((Rule | Denial | Abducible))* EOF
 Rule -> Predicate (DEFINES Body)? DOT
+Abducible -> ABDUCIBLE LBRACKET Predicate (COMMA Predicate)* RBRACKET DOT
 Denial -> IC DEFINES Body DOT
 Body -> Literal (COMMA Literal)*
 Literal -> PosLiteral | NegLiteral
@@ -95,6 +96,7 @@ TOKEN :
   <EQUALS: "="> |
   <NOT: "not"> |
   <IC: "ic"> |
+  <ABDUCIBLE: "abducible"> |
   <LCASENAME: ["a"-"z","0"-"9"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
   <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> 
 }
@@ -104,34 +106,34 @@ AbductiveFramework AbductiveLogicProgram():
 {
 	LinkedList<RuleInstance> program = new LinkedList<RuleInstance>();
     LinkedList<DenialInstance> constraints = new LinkedList<DenialInstance>();
-    LinkedList<String> abducibles = new LinkedList<String>();
-
-    LinkedList<String> defined = new LinkedList<String>(); // Defined predicates.
+    HashMap<String, Integer> abducibles = new HashMap<String, Integer>();
 
     RuleInstance r;
     DenialInstance d;
-    
+    List<PredicateInstance> newAbducibles;
 }
 {
 	(
-		r = Rule(abducibles) 
+		r = Rule()
         { 
-            program.add(r); 
-            if (!defined.contains(r.getHead().getName())) {
-                defined.add(r.getHead().getName());
-            }
+            program.add(r);
         } |
         d = Denial()
-        { constraints.add(d); }
+        { constraints.add(d); } |
+        newAbducibles = Abducible()
+        {
+            for (PredicateInstance p:newAbducibles) {
+                abducibles.put(p.getName(),p.getNumParams());
+            }
+        }
 	)*
 	<EOF>
 	{ 
-        abducibles.removeAll(defined); // Remove all defined predicates from abducibles.
         return new AbductiveFramework(program,abducibles,constraints);
     }
 }
 
-RuleInstance Rule(LinkedList<String> abducibles):
+RuleInstance Rule():
 {
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
     
@@ -142,7 +144,7 @@ RuleInstance Rule(LinkedList<String> abducibles):
 	head = Predicate(variablesSoFar)
 	[
 		<DEFINES>
-		body = Body(variablesSoFar, abducibles)
+		body = Body(variablesSoFar)
 	]
 	<DOT>
     { return new RuleInstance(head,body); }
@@ -156,64 +158,78 @@ DenialInstance Denial():
 {
 	<IC>
 	<DEFINES>
-	body = Body(variablesSoFar,null)
+	body = Body(variablesSoFar)
 	<DOT>
     { return new DenialInstance(body, variablesSoFar); }
 }
 
-List<ILiteralInstance> Body(HashMap<String, VariableInstance> variablesSoFar, LinkedList<String> abducibles):
+List<PredicateInstance> Abducible():
+{
+    LinkedList<PredicateInstance> predicateList = new LinkedList<PredicateInstance>();
+    PredicateInstance p;
+}
+{
+    <ABDUCIBLE>
+    <LBRACKET>
+    p = Predicate(new HashMap<String, VariableInstance>())
+    { predicateList.add(p); }
+    (
+        <COMMA>
+        p = Predicate(new HashMap<String, VariableInstance>())
+        { predicateList.add(p); }
+    )*
+    <RBRACKET>
+    <DOT>
+    { return predicateList; }
+}
+
+List<ILiteralInstance> Body(HashMap<String, VariableInstance> variablesSoFar):
 {
     LinkedList<ILiteralInstance> body = new LinkedList<ILiteralInstance>();
     ILiteralInstance literal;
 }
 {
-	literal = Literal(variablesSoFar, abducibles)
+	literal = Literal(variablesSoFar)
     { body.add(literal); }
 	(
 		<COMMA>
-		literal = Literal(variablesSoFar, abducibles)
+		literal = Literal(variablesSoFar)
         { body.add(literal); }
 	)*
     { return body; }
 }
 
-ILiteralInstance Literal(HashMap<String, VariableInstance> variablesSoFar, LinkedList<String> abducibles):
+ILiteralInstance Literal(HashMap<String, VariableInstance> variablesSoFar):
 {
     ILiteralInstance literal;
 }
 {
-    literal = PositiveLiteral(variablesSoFar,abducibles)
+    literal = PositiveLiteral(variablesSoFar)
     { return literal; } |
-    literal = NegativeLiteral(variablesSoFar, abducibles)
+    literal = NegativeLiteral(variablesSoFar)
     { return literal; } 
 }
 
-ILiteralInstance PositiveLiteral(HashMap<String, VariableInstance> variablesSoFar, LinkedList<String> abducibles):
+ILiteralInstance PositiveLiteral(HashMap<String, VariableInstance> variablesSoFar):
 {
     ILiteralInstance literal;
 }
 {
     literal = Predicate(variablesSoFar) 
-    {   
-        if (abducibles != null) {
-            String predName = ((PredicateInstance)literal).getName();
-            if (!abducibles.contains(predName)) {
-                abducibles.add(predName);
-            }
-        }
+    {
         return literal;
     } |
     literal = Equality(variablesSoFar)
     { return literal; }
 }
 
-NegationInstance NegativeLiteral(HashMap<String, VariableInstance> variablesSoFar, LinkedList<String> abducibles):
+NegationInstance NegativeLiteral(HashMap<String, VariableInstance> variablesSoFar):
 {
     ILiteralInstance subformula;
 }
 {
     <NOT>
-    subformula = PositiveLiteral(variablesSoFar, abducibles)
+    subformula = PositiveLiteral(variablesSoFar)
     { return new NegationInstance(subformula); }
 }
 

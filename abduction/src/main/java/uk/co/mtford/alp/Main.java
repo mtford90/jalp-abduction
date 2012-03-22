@@ -76,10 +76,15 @@ public class Main {
         System.out.println(str);
     }
     
+    private static void printMessage(String str, Throwable t) {
+        System.out.println(str);
+        t.printStackTrace(System.out);
+    }
+    
     private static void incorporateNewFramework(AbductiveFramework f) {
         LOGGER.info("Incorporating results from new framework.");
         system.getAbductiveFramework().getP().addAll(f.getP());
-        system.getAbductiveFramework().getA().addAll(f.getA());
+        system.getAbductiveFramework().getA().putAll(f.getA());
         system.getAbductiveFramework().getIC().addAll(f.getIC());
     }
     
@@ -96,13 +101,13 @@ public class Main {
                     newF = ALPParser.readFromFile(fileNames[i]);
                 } 
                 catch (FileNotFoundException ex) {
-                    printMessage("No such file.");
+                    printMessage("No such file.",ex);
                 } 
                 catch (ParseException ex) {
-                    printMessage("Parse error in file "+fileNames[i]);
+                    printMessage("Parse error in file "+fileNames[i],ex);
                 }
                 catch (TokenMgrError ex) {
-                    printMessage("Token error\n"+ex.getMessage());
+                    printMessage("Token error\n"+ex.getMessage(),ex);
                 }
                 if (newF!=null) incorporateNewFramework(newF);
             }
@@ -273,4 +278,4 @@ public class Main {
        
     }
     
-} 
+}

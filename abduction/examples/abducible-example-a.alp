@@ -1,3 +1,5 @@
 boy(john).
 
 likes(X,Y) :- boy(X), girl(Y).
+
+abducible(girl(Y)).

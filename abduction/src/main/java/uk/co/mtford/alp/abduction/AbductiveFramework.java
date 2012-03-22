@@ -4,6 +4,7 @@
  */
 package uk.co.mtford.alp.abduction;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -31,16 +32,16 @@ public class AbductiveFramework implements Cloneable {
     private static final Logger LOGGER = Logger.getLogger(AbductiveFramework.class);
     
     protected List<RuleInstance> P; // Logic program.
-    protected List<String> A; // Abducibles.
+    protected HashMap<String, Integer> A; // Abducibles.
     protected List<DenialInstance> IC; // Integrity constraints.
     
     public AbductiveFramework() {
         P = new LinkedList<RuleInstance>();
-        A = new LinkedList<String>();
+        A = new HashMap<String, Integer>();
         IC = new LinkedList<DenialInstance>();
     }
  
-    public AbductiveFramework(List<RuleInstance> P, List<String> A, List<DenialInstance> IC) {
+    public AbductiveFramework(List<RuleInstance> P, HashMap<String,Integer> A, List<DenialInstance> IC) {
         this.P = P;
         this.A = A;
         this.IC = IC;
@@ -53,13 +54,13 @@ public class AbductiveFramework implements Cloneable {
     public void setP(List<RuleInstance> P) {
         this.P = P;
     }
-    
-    public void setA(List<String> A) {
-        this.A = A;
+
+    public HashMap<String, Integer> getA() {
+        return A;
     }
 
-    public List<String> getA() {
-        return A;
+    public void setA(HashMap<String, Integer> a) {
+        A = a;
     }
 
     public List<DenialInstance> getIC() {
@@ -76,7 +77,12 @@ public class AbductiveFramework implements Cloneable {
      * @return 
      */
     public boolean isAbducible(PredicateInstance predicate) {
-        return A.contains(predicate.getName());
+        Integer n = null;
+        n = A.get(predicate);
+        if (n!=null) {
+            return n.equals(predicate.getNumParams());
+        }
+        return false;
     }
    
     /** Unfolds predicate head, if in fact it is the head of a rule.
