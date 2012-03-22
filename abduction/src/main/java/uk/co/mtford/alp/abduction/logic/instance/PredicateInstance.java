@@ -190,8 +190,8 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         return new LinkedList<IASystemInferable>();
     }
     
-    public List<EqualityInstance> equalitySolve(IAtomInstance other) {
-        List<EqualityInstance> equalityInstances = new LinkedList<EqualityInstance>();
+    public List<IASystemInferable> equalitySolve(IAtomInstance other) {
+        List<IASystemInferable> equalityInstances = new LinkedList<IASystemInferable>();
         if (other.getClass().equals(this.getClass())) {
             PredicateInstance otherPredicate = (PredicateInstance)other;
             if (this.equals(otherPredicate)) {
@@ -245,7 +245,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         List<List<ILiteralInstance>> possibleUnfolds = framework.unfoldRule(thisClone);
         for (List<ILiteralInstance> unfold:possibleUnfolds) {
             s.putGoals(unfold);
-            ASystemState clonedState = (ASystemState) s.clone(); 
+            ASystemState clonedState = (ASystemState) s.clone(); // TODO. Breaks here. Cloning is fucked up.
             for (int i=0;i<unfold.size();i++) s.popGoal();
             possibleStates.add(0,clonedState);
         }

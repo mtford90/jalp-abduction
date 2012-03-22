@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
-import uk.co.mtford.alp.abduction.logic.instance.ConstantInstance;
-import uk.co.mtford.alp.abduction.logic.instance.IAtomInstance;
-import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
+import uk.co.mtford.alp.abduction.logic.instance.*;
 import uk.co.mtford.alp.unification.Unifier;
 
 /**
@@ -26,8 +24,8 @@ public class EqualityInstance implements IEqualityInstance  {
     private IAtomInstance right;
 
     public EqualityInstance(IAtomInstance left, IAtomInstance right) {
-        this.left = left;
-        this.right = right;
+        this.left=left;
+        this.right=right;
     }
 
     public IAtomInstance getLeft() {
@@ -102,75 +100,11 @@ public class EqualityInstance implements IEqualityInstance  {
      * @return 
      */
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule E1 to "+this);
-        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        EqualityInstance e = (EqualityInstance) s.popGoal();
-        List<EqualityInstance> newEqualities = e.left.equalitySolve(e.right);
-        if (newEqualities==null) {
-            return possibleStates; // Failed.
-        }
-        else if (newEqualities.isEmpty()) {
-            List<IASystemInferable> newGoals = e.left.equalitySolveAssign(e.right);
-            s.store.getEqualities().add(e);
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Added "+this+" to equality store.");
-            for (IASystemInferable goal:newGoals) {
-                s.putGoal(goal);
-                if (LOGGER.isDebugEnabled()) LOGGER.debug("Added new goal: "+goal);
-            }
-            possibleStates.add(0,s);
-        }
-        else {
-            s.goals.addAll(newEqualities);
-        }
-        return possibleStates;
+        throw new UnsupportedOperationException();
     }
 
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
-        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        ASystemState clonedState = (ASystemState) s.clone();
-        DenialInstance d = (DenialInstance) clonedState.popGoal();
-        EqualityInstance clonedThis = (EqualityInstance) d.popLiteral();
-        List<EqualityInstance> equalitySolution = clonedThis.left.equalitySolve(right);
-        if (!equalitySolution.isEmpty()) {  // E.2
-            for (EqualityInstance e:equalitySolution) {
-                d.addLiteral(0,e);
-            }
-            clonedState.getGoals().add(0,d);
-            possibleStates.add(0,clonedState);
-        }
-        else {
-            boolean varAndConstant = 
-                    clonedThis.left instanceof VariableInstance && 
-                    clonedThis.right instanceof ConstantInstance ||
-                    clonedThis.left instanceof ConstantInstance &&
-                    clonedThis.right instanceof VariableInstance;
-            
-            if (varAndConstant) { // E.2.b
-                InequalityInstance inequalityInstance = 
-                        new InequalityInstance(clonedThis.left,clonedThis.right);
-                clonedState.store.getEqualities().add(inequalityInstance);
-                clonedState.goals.add(d);
-                possibleStates.add(0,clonedState);
-                // OR
-                clonedState = (ASystemState) s.clone();
-                d = (DenialInstance) clonedState.popGoal();
-                clonedThis = (EqualityInstance) d.popLiteral();
-                
-                Unifier.unifyReplace(clonedThis.left, clonedThis.right);
-
-                clonedState.goals.add(d);
-                possibleStates.add(0,clonedState);
-            }
-            else {  // E.2.c: Two variables.
-                   
-               
-                Unifier.unifyReplace(clonedThis.right, clonedThis.left);
-
-                clonedState.goals.add(d);
-                possibleStates.add(0,clonedState);
-            }
-        }
-        return possibleStates;
+        throw new UnsupportedOperationException();
     }
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
@@ -179,7 +113,10 @@ public class EqualityInstance implements IEqualityInstance  {
 
     @Override
     public String toString() {
-        return "<"+left+">" + "=" + "<"+right+">";
+        String leftString = left.toString();
+        String rightString = right.toString();
+        
+        return leftString + "==" + rightString;
     }
 
    

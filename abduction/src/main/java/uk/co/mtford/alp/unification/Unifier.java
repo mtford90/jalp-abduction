@@ -139,6 +139,7 @@ public class Unifier {
                 if (left instanceof VariableInstance) {
                     VariableInstance var = (VariableInstance) left;
                     if (!occurs(var,right,subst)) {
+                        if (LOGGER.isDebugEnabled()) LOGGER.debug("Setting value of "+var+" to "+right);
                         var.setValue(right);
                         subst.add(var);
                         equalities.add(new EqualityInstance(var,right));
@@ -151,6 +152,7 @@ public class Unifier {
                 else if (right instanceof VariableInstance) {
                     VariableInstance var = (VariableInstance) right;
                     if (!occurs(var,left,subst)) {
+                        if (LOGGER.isDebugEnabled()) LOGGER.debug("Setting value of "+var+" to "+left);
                         var.setValue(left);
                         subst.add(var);
                         equalities.add(new EqualityInstance(var,left));

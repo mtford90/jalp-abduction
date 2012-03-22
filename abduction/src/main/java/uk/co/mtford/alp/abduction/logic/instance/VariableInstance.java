@@ -49,6 +49,20 @@ public class VariableInstance implements ITermInstance {
     public IAtomInstance getValue() {
         return value;
     }
+    
+    /** Iterates through the assignment structure and returns the deepest value.
+     *  i.e. X=Y=Z=john.
+     * @return 
+     */
+    public IAtomInstance getDeepValue() {
+        IAtomInstance v = this;
+        while (v instanceof VariableInstance) {
+            IAtomInstance value = ((VariableInstance) v).getValue();
+            if (value!=null) v=value;
+            else break;
+        }
+        return v;
+    }
 
     public void setValue(IAtomInstance value) {
         this.value = value;
@@ -61,7 +75,7 @@ public class VariableInstance implements ITermInstance {
     @Override
     public String toString() {
         if (value==null) return name+"<"+uniqueId+">";
-        return name+"<"+uniqueId+">"+"="+value.toString();
+        return "("+name+"<"+uniqueId+">"+"="+value.toString()+")";
     }
 
     /** Returns true if variable names at the same. Not concerned with value. */
@@ -150,17 +164,18 @@ public class VariableInstance implements ITermInstance {
         return new LinkedList<IASystemInferable>();
     }
 
-    public List<EqualityInstance> equalitySolve(IAtomInstance other) {
-        return new LinkedList<EqualityInstance>();
+    public List<IASystemInferable> equalitySolve(IAtomInstance other) {
+        return new LinkedList<IASystemInferable>();
     }
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
-        if (variablesSoFar.containsKey(name)) {
-            return variablesSoFar.get(name);
+        if (variablesSoFar.containsKey(name+"<"+uniqueId+">")) {
+            return variablesSoFar.get(name+"<"+uniqueId+">");
         }
         else {
-            VariableInstance clone = (VariableInstance)this.clone();
-            variablesSoFar.put(name,clone);
+            VariableInstance clone = new VariableInstance(name);
+            if (value!=null) clone.setValue((IAtomInstance)value.clone(variablesSoFar));
+            variablesSoFar.put(name+"<"+uniqueId+">",clone);
             return clone;
         }
     }

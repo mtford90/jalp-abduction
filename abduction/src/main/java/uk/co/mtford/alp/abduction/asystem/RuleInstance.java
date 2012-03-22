@@ -123,8 +123,7 @@ public class RuleInstance {
             HashMap<String, VariableInstance> variables = new HashMap<String, VariableInstance>();
             VariableInstance[] newParameters = new VariableInstance[head.getNumParams()];
             for (int i=0;i<head.getNumParams();i++) {
-                newParameters[i]=(VariableInstance) head.getParameter(i).clone();
-                variables.put(newParameters[i].getName(),newParameters[i]);
+                newParameters[i]=(VariableInstance) head.getParameter(i).clone(variables);
             }
             LinkedList<ILiteralInstance> newBody = new LinkedList<ILiteralInstance>();
             for (int i=0;i<body.size();i++) {

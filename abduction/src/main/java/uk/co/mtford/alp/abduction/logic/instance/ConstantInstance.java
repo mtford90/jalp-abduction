@@ -101,10 +101,15 @@ public class ConstantInstance implements ITermInstance {
         return returnList;
     }
 
-    public List<EqualityInstance> equalitySolve(IAtomInstance other) {
+    public List<IASystemInferable> equalitySolve(IAtomInstance other) {
         if (!(other instanceof ConstantInstance)) 
             return other.equalitySolve(this);
-        return new LinkedList<EqualityInstance>();
+        else {
+            List<IASystemInferable> returnList = new LinkedList<IASystemInferable>();
+            if (this.equals(other)) returnList.add(new TrueInstance());
+            else returnList.add(new FalseInstance());
+            return returnList;
+        } 
     }
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {

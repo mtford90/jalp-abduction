@@ -30,6 +30,7 @@ public class Main {
     private static final String FILE_OPTION = "-f";
     private static final String HELP_OPTION = "-h";
     private static final String QUERY_OPTION = "-q";
+    private static final String DEBUG_OPTION = "-d";
     
     // ALPS commands.
     private static final char FILE_COMMAND = 'l';
@@ -42,8 +43,10 @@ public class Main {
     // Messages.
     private static final String EXEC_HELP 
             = "Options:" + "\n" +
-              "-h: This help." + "\n" +
-              "-f <file-path>: Read from file."  + "\n";
+              "-h            : This help." + "\n" +
+              "-f <file-path>: Read from file." + "\n" +
+              "-q <query>    : Execute a query on the given file" + "\n" +
+              "-d            : Enables debug mode ";
     private static final String EXEC_ARG_ERROR
             = "Problem with arguments. Use -h option for help.";
     private static final String ALPS_HELP
@@ -232,6 +235,10 @@ public class Main {
                query=true;
                i++;
                queryString = args[i];
+           }
+           
+           else if (arg.equals(DEBUG_OPTION)) {
+               debugMode = true;
            }
            
            else {
