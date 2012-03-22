@@ -4,6 +4,7 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,20 +22,18 @@ public class DenialInstance implements IASystemInferable {
     private static final Logger LOGGER = Logger.getLogger(DenialInstance.class);
     
     private List<ILiteralInstance> body;
-    private Map<String, VariableInstance> variables;
+    private Map<String, VariableInstance> universalVariables;
 
-    public DenialInstance(List<ILiteralInstance> body, Map<String, VariableInstance> variables) {
+    public DenialInstance(List<ILiteralInstance> body,
+                          Map<String, VariableInstance> universalVariables) {
         this.body = body;
-        this.variables = variables;
+        this.universalVariables = universalVariables;
     }
-    
-    public DenialInstance(ILiteralInstance logic) {
-        body = new LinkedList<ILiteralInstance>();
-        body.add(logic);
-    }
+
     
     public DenialInstance() {
         body = new LinkedList<ILiteralInstance>();
+        universalVariables = new HashMap<String, VariableInstance>();
     }
     
     public void addLiteral(ILiteralInstance p) {
@@ -84,8 +83,11 @@ public class DenialInstance implements IASystemInferable {
     @Override
     public Object clone() {
         DenialInstance clone = new DenialInstance();
-        for (IASystemInferable logic:body) {
-            clone.body.add((ILiteralInstance)logic.clone(variables));
+        for (ILiteralInstance l:body) {
+            clone.addLiteral(l);
+        }
+        for (String s:universalVariables.keySet()) {
+            clone.universalVariables.put(s, (VariableInstance) universalVariables.get(s).clone());
         }
         return clone;
     }

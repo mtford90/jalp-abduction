@@ -12,3 +12,4 @@ likes(X,Y) :- girl(X), boy(Y).
 likes(X,Y) :- not insane(Y).
 
 ic :- likes(jane,peter).
+ic(D) :- likes(D,M).

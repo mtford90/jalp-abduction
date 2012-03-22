@@ -1,11 +1,11 @@
 /*
 
-LL(2) grammar for ALP in prolog style.
+LL(2) grammar for ALPS in prolog style.
 
 ALP -> ((Rule | Denial | Abducible))* EOF
 Rule -> Predicate (DEFINES Body)? DOT
 Abducible -> ABDUCIBLE LBRACKET Predicate (COMMA Predicate)* RBRACKET DOT
-Denial -> IC DEFINES Body DOT
+Denial -> IC (LBRACKET VariableList RBRACKET)? DEFINES Body DOT
 Body -> Literal (COMMA Literal)*
 Literal -> PosLiteral | NegLiteral
 PosLiteral -> Predicate | Equality
@@ -13,6 +13,7 @@ NegLiteral -> NOT PosLiteral
 Predicate -> LCASENAME (LBRACKET ParameterList RBRACKET)?
 Equality -> Parameter EQUALS Parameter
 ParameterList -> (Parameter (COMMA Parameter)*)?
+VariableList -> (UCASENAME (COMMA UCASENAME)*)?
 Parameter -> (UCASENAME | LCASENAME | Predicate)
 
 */
@@ -152,15 +153,29 @@ RuleInstance Rule():
 
 DenialInstance Denial():
 {
+    HashMap<String, VariableInstance> universalVariables = new HashMap<String, VariableInstance>();
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
+
     List<ILiteralInstance> body;
+    List<VariableInstance> variableList;
 }
 {
 	<IC>
+	[
+	    <LBRACKET>
+        variableList = VariableList(universalVariables)
+        {
+            variablesSoFar.putAll(universalVariables);
+        }
+	    <RBRACKET>
+
+	]
 	<DEFINES>
 	body = Body(variablesSoFar)
 	<DOT>
-    { return new DenialInstance(body, variablesSoFar); }
+    {
+
+    return new DenialInstance(body, universalVariables); }
 }
 
 List<PredicateInstance> Abducible():
@@ -279,6 +294,39 @@ List<IAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoF
 		)*
  	]
     { return params; }
+}
+
+List<VariableInstance> VariableList(HashMap<String, VariableInstance> variablesSoFar):
+{
+    Token t;
+    LinkedList<VariableInstance> variableList = new LinkedList<VariableInstance>();
+    String name;
+}
+{
+    t = <UCASENAME>
+    {
+        name = t.image;
+        if (!variablesSoFar.containsKey(name)) {
+            VariableInstance v = new VariableInstance(name);
+            variablesSoFar.put(name,v);
+            variableList.add(v);
+        }
+        else {
+            variableList.add(variablesSoFar.get(name));
+        }
+    }
+    (
+        <COMMA>
+        t = <UCASENAME>
+        {
+            name = t.image;
+            if (!variablesSoFar.containsKey(name)) {
+                variableList.add(new VariableInstance(name));
+            }
+        }
+    )*
+
+    { return variableList; }
 }
 
 IAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar):
