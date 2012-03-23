@@ -102,6 +102,22 @@ public class EqualityInstance implements IEqualityInstance  {
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
         throw new UnsupportedOperationException();
     }
+    
+    private List<ASystemState> applyRuleE1(AbductiveFramework framework, ASystemState s) {
+        throw new UnsupportedOperationException();
+    }
+
+    private List<ASystemState> applyRuleE2(AbductiveFramework framework, ASystemState s) {
+        throw new UnsupportedOperationException();
+    }
+
+    private List<ASystemState> applyRuleE2b(AbductiveFramework framework, ASystemState s) {
+        throw new UnsupportedOperationException();
+    }
+
+    private List<ASystemState> applyRuleE2c(AbductiveFramework framework, ASystemState s) {
+        throw new UnsupportedOperationException();
+    }
 
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
         throw new UnsupportedOperationException();

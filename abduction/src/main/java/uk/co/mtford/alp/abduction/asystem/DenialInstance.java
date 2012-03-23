@@ -29,6 +29,11 @@ public class DenialInstance implements IASystemInferable {
         this.body = body;
         this.universalVariables = universalVariables;
     }
+    
+    public DenialInstance(List<ILiteralInstance> body) {
+        this.body=body;
+        this.universalVariables=new HashMap<String,VariableInstance>();
+    }
 
     
     public DenialInstance() {

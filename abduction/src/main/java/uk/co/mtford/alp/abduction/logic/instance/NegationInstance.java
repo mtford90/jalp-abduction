@@ -56,7 +56,15 @@ public class NegationInstance implements ILiteralInstance {
      * @return 
      */
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
-        throw new UnsupportedOperationException();
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule N1 to "+this);
+        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        NegationInstance thisClone = (NegationInstance) s.popGoal();
+        List<ILiteralInstance> literalList = new LinkedList<ILiteralInstance>();
+        literalList.add(subFormula);
+        DenialInstance d = new DenialInstance(literalList); // Terms in subformula are free variables.
+        s.putGoal(d);
+        possibleStates.add(s);
+        return possibleStates;
     }
 
     /** Implements rule N2
@@ -66,7 +74,21 @@ public class NegationInstance implements ILiteralInstance {
      * @return 
      */
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
-        throw new UnsupportedOperationException();
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule N2 to "+this);
+        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
+        ASystemState clonedState = (ASystemState) s.clone();
+        DenialInstance clonedDenial = (DenialInstance) clonedState.popGoal();
+        NegationInstance clonedThis = (NegationInstance) clonedDenial.popLiteral();
+        clonedState.putGoal(clonedThis.subFormula);
+        possibleStates.add(clonedState);
+        // OR
+        clonedState = (ASystemState) s.clone();
+        clonedDenial = (DenialInstance) clonedState.popGoal();
+        clonedThis = (NegationInstance) clonedDenial.popLiteral();
+        clonedState.putGoal(clonedDenial);
+        clonedState.putGoal(clonedThis);
+        possibleStates.add(clonedState);
+        return possibleStates;
     }
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
