@@ -184,28 +184,6 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         return new PredicateInstance(clonedName,clonedParams);
     }
 
-    public List<IASystemInferable> equalitySolveAssign(IAtomInstance other) {
-        List<EqualityInstance> unify = Unifier.unify(this, other);
-        if (unify==null) return null;
-        return new LinkedList<IASystemInferable>();
-    }
-    
-    public List<IASystemInferable> equalitySolve(IAtomInstance other) {
-        List<IASystemInferable> equalityInstances = new LinkedList<IASystemInferable>();
-        if (other.getClass().equals(this.getClass())) {
-            PredicateInstance otherPredicate = (PredicateInstance)other;
-            if (this.equals(otherPredicate)) {
-                for (int i=0;i<parameters.length;i++) {
-                    EqualityInstance equalityInstance = new EqualityInstance(parameters[i],otherPredicate.getParameter(i));
-                    equalityInstances.add(equalityInstance);
-                }
-                return equalityInstances;
-            }
-            return null;
-        }
-        return null;
-    }
-
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         if (framework.isAbducible(this)) { 
@@ -347,5 +325,22 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         }
         return new PredicateInstance(clonedName,clonedParams);
     }
-    
+
+    @Override
+    public List<IASystemInferable> positiveEqualitySolve(IAtomInstance other) {
+        LinkedList<IASystemInferable> newInferables = new LinkedList<IASystemInferable>();
+        if (this.equals(other)) {
+            for (int i=0;i<parameters.length;i++) {
+                PredicateInstance otherPredicate = (PredicateInstance)other;
+                newInferables.add(new EqualityInstance(parameters[i],otherPredicate.getParameter(i)));
+            }
+        }
+        newInferables.add(new FalseInstance());
+        return newInferables;
+    }
+
+    @Override
+    public List<IASystemInferable> negativeEqualitySolve(IAtomInstance other) {
+        return positiveEqualitySolve(other); // Nothing different. Return false or generate new equalities.
+    }
 }

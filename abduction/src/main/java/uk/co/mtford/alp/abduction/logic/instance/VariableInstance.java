@@ -8,10 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
-import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
 import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 import uk.co.mtford.alp.abduction.tools.UniqueIdGenerator;
-import uk.co.mtford.alp.unification.Unifier;
 
 /**
  *
@@ -157,17 +155,6 @@ public class VariableInstance implements ITermInstance {
         return true;
     }
 
-    public List<IASystemInferable> equalitySolveAssign(IAtomInstance other) {
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality solving "+this+" with "+other);
-        LinkedList<VariableInstance> unify = Unifier.unifyReplace(this, other);
-        if (unify==null) return null;
-        return new LinkedList<IASystemInferable>();
-    }
-
-    public List<IASystemInferable> equalitySolve(IAtomInstance other) {
-        return new LinkedList<IASystemInferable>();
-    }
-
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
         if (variablesSoFar.containsKey(name+"<"+uniqueId+">")) {
             return variablesSoFar.get(name+"<"+uniqueId+">");
@@ -179,18 +166,33 @@ public class VariableInstance implements ITermInstance {
             return clone;
         }
     }
-    
-    /** If this variable instance has a variable value (or a chain
-     *  of variable assignments then condenses those assignments down
-     *  into a single variable.
-     */
-    public void condenseVariableAssignments() {
-        while (value instanceof VariableInstance) {
-            VariableInstance assignedVariable = (VariableInstance) value;
-            name = assignedVariable.name;
-            value = assignedVariable.value;
+
+    @Override
+    public List<IASystemInferable> positiveEqualitySolve(IAtomInstance other) {
+        // TODO Occurs check. If fails occurs check, return false instance.
+        LinkedList<IASystemInferable> newInferables = new LinkedList<IASystemInferable>();
+        if (other instanceof VariableInstance) other=((VariableInstance) other).getDeepValue();
+        IAtomInstance deepValue = this.getDeepValue();
+        if (deepValue instanceof VariableInstance) {
+            ((VariableInstance) deepValue).setValue(other);
+            return newInferables;
         }
+        else if (deepValue instanceof ConstantInstance) {
+             if (other instanceof ConstantInstance) {
+                 return deepValue.positiveEqualitySolve(other);
+             }
+             else if (other instanceof VariableInstance) {
+                 ((VariableInstance) other).setValue(deepValue);
+                 return newInferables;
+             }
+        }
+        newInferables.add(new FalseInstance());
+        return newInferables;
     }
-   
-    
+
+    @Override
+    public List<IASystemInferable> negativeEqualitySolve(IAtomInstance other) {
+        // TODO Occurs check. If fails occurs check, return false instance.
+        return positiveEqualitySolve(other);
+    }
 }

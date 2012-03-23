@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
-import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
+import uk.co.mtford.alp.abduction.asystem.DenialInstance;
 import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 
 /**
@@ -86,34 +86,24 @@ public class ConstantInstance implements ITermInstance {
         return new ConstantInstance(value);
     }
 
-    /** If this constant is the same as other, then return true, otherwise
-     *  return false.
-     * 
-     * @param other
-     * @return 
-     */
-    public List<IASystemInferable>
-           equalitySolveAssign(IAtomInstance other) {
-        List<IASystemInferable> returnList = new LinkedList<IASystemInferable>();
-        if (!(other instanceof ConstantInstance)) return other.equalitySolveAssign(this);
-        else if (this.equals(other)) returnList.add(new TrueInstance());
-        else returnList.add(new FalseInstance());
-        return returnList;
-    }
-
-    public List<IASystemInferable> equalitySolve(IAtomInstance other) {
-        if (!(other instanceof ConstantInstance)) 
-            return other.equalitySolve(this);
-        else {
-            List<IASystemInferable> returnList = new LinkedList<IASystemInferable>();
-            if (this.equals(other)) returnList.add(new TrueInstance());
-            else returnList.add(new FalseInstance());
-            return returnList;
-        } 
-    }
-
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
         return clone();
     }
-    
+
+    @Override
+    public List<IASystemInferable> positiveEqualitySolve(IAtomInstance other) {
+        if (!(other instanceof ConstantInstance)) {
+            return other.positiveEqualitySolve(this);
+        }
+        LinkedList<IASystemInferable> newInferables = new LinkedList<IASystemInferable>();
+        if (this.equals(other)) newInferables.add(new TrueInstance());
+        else newInferables.add(new FalseInstance());
+        return newInferables;
+    }
+
+    @Override
+    public List<IASystemInferable> negativeEqualitySolve(IAtomInstance other) {
+        return positiveEqualitySolve(other); // Still returning True or False either way.
+    }
+
 }
