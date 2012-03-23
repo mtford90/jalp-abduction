@@ -21,62 +21,70 @@ public class DenialInstance implements IASystemInferable {
     
     private static final Logger LOGGER = Logger.getLogger(DenialInstance.class);
     
-    private List<ILiteralInstance> body;
+    private List<IASystemInferable> body;
     private Map<String, VariableInstance> universalVariables;
 
-    public DenialInstance(List<ILiteralInstance> body,
+    public DenialInstance(List<IASystemInferable> body,
                           Map<String, VariableInstance> universalVariables) {
         this.body = body;
         this.universalVariables = universalVariables;
     }
-    
-    public DenialInstance(List<ILiteralInstance> body) {
+
+    public Map<String, VariableInstance> getUniversalVariables() {
+        return universalVariables;
+    }
+
+    public void setUniversalVariables(Map<String, VariableInstance> universalVariables) {
+        this.universalVariables = universalVariables;
+    }
+
+    public DenialInstance(List<IASystemInferable> body) {
         this.body=body;
         this.universalVariables=new HashMap<String,VariableInstance>();
     }
 
     
     public DenialInstance() {
-        body = new LinkedList<ILiteralInstance>();
+        body = new LinkedList<IASystemInferable>();
         universalVariables = new HashMap<String, VariableInstance>();
     }
     
-    public void addLiteral(ILiteralInstance p) {
+    public void addLiteral(IASystemInferable p) {
         body.add(p);
     }
     
-    public void addLiteral(int i, ILiteralInstance p) {
+    public void addLiteral(int i, IASystemInferable p) {
         body.add(i,p);
     }
     
-    public void addLiteral(int i, List<ILiteralInstance> p) {
+    public void addLiteral(int i, List<IASystemInferable> p) {
         body.addAll(i,p);
     }
     
-    public void removeLiteral(ILiteralInstance p) {
+    public void removeLiteral(IASystemInferable p) {
         body.remove(p);
     }
     
-    public boolean containsLiteral(ILiteralInstance p) {
+    public boolean containsLiteral(IASystemInferable p) {
         return body.contains(p);
     }
     
-    public ILiteralInstance getLiteral(int i) {
+    public IASystemInferable getLiteral(int i) {
         return body.get(i);
     }
     
-    public ILiteralInstance removeLiteral(int i) {
+    public IASystemInferable removeLiteral(int i) {
         return body.remove(i);
     }
     
-    public ILiteralInstance popLiteral() {
-        ILiteralInstance i = body.get(0);
+    public IASystemInferable popLiteral() {
+        IASystemInferable i = body.get(0);
         body.remove(0);
         return i;
     }
     
-    public ILiteralInstance peekLiteral() {
-        ILiteralInstance i = body.get(0);
+    public IASystemInferable peekLiteral() {
+        IASystemInferable i = body.get(0);
         return i;
     }
     
@@ -88,7 +96,7 @@ public class DenialInstance implements IASystemInferable {
     @Override
     public Object clone() {
         DenialInstance clone = new DenialInstance();
-        for (ILiteralInstance l:body) {
+        for (IASystemInferable l:body) {
             clone.addLiteral(l);
         }
         for (String s:universalVariables.keySet()) {
@@ -99,7 +107,14 @@ public class DenialInstance implements IASystemInferable {
 
     @Override
     public String toString() {
-        String rep = "ic :- ";
+        String rep = "ic";
+        if (!universalVariables.isEmpty()) {
+            rep+="(";
+            for (String s:universalVariables.keySet()) rep+=s+",";
+            rep = rep.substring(0,rep.length()-1);
+            rep+=")";
+        }
+        rep+=" :- ";
         String bodyRep = body.toString();
         bodyRep = bodyRep.substring(1, bodyRep.length()-1);
         rep += bodyRep+".";
@@ -114,7 +129,7 @@ public class DenialInstance implements IASystemInferable {
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rules to "+this);
         DenialInstance thisClone = (DenialInstance) s.getGoals().get(0); 
         if (!thisClone.getBody().isEmpty()) {
-            ILiteralInstance first = body.get(0);
+            IASystemInferable first = body.get(0);
             return first.applyDenialInferenceRule(framework, s);
         }
         else {
@@ -130,16 +145,35 @@ public class DenialInstance implements IASystemInferable {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public List<VariableInstance> getVariables() {
+        LinkedList<VariableInstance> vars = new LinkedList<VariableInstance>();
+        for (IASystemInferable inf:body) {
+            vars.addAll(inf.getVariables());
+        }
+        return vars;
+    }
+
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
+        variablesSoFar.putAll(universalVariables);
         DenialInstance clone = new DenialInstance();
         for (IASystemInferable logic:body) {
-            clone.body.add((ILiteralInstance)logic.clone(variablesSoFar));
+            clone.body.add((IASystemInferable)logic.clone(variablesSoFar));
+        }
+        for (String s:universalVariables.keySet()) {
+            clone.universalVariables.put(s, (VariableInstance) universalVariables.get(s).clone(variablesSoFar));
         }
         return clone;
     }
 
-    public List<ILiteralInstance> getBody() {
+    public List<IASystemInferable> getBody() {
         return body;
     }
+    
+    public boolean isUniversallyQuantified(VariableInstance v) {
+        return universalVariables.containsKey(v.getName()+"<"+v.getUniqueId()+">");
+    }
+    
+    
     
 }

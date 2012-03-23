@@ -31,7 +31,7 @@ public class FalseInstance implements ILogicInstance, IASystemInferable {
     }
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
-        return new TrueInstance();
+        return new FalseInstance();
     }
 
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
@@ -43,6 +43,11 @@ public class FalseInstance implements ILogicInstance, IASystemInferable {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         possibleStates.add(s);
         return possibleStates;
+    }
+
+    @Override
+    public List<VariableInstance> getVariables() {
+        return new LinkedList<VariableInstance>();
     }
 
     @Override

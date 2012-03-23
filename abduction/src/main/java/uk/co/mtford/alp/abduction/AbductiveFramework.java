@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.asystem.DenialInstance;
+import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 import uk.co.mtford.alp.abduction.asystem.RuleInstance;
 import uk.co.mtford.alp.abduction.asystem.RuleUnfoldException;
 import uk.co.mtford.alp.abduction.logic.instance.ILiteralInstance;
@@ -92,8 +93,8 @@ public class AbductiveFramework implements Cloneable {
      * @return
      * @throws RuleUnfoldException 
      */
-    public List<List<ILiteralInstance>> unfoldRule (PredicateInstance head) throws RuleUnfoldException {
-        List<List<ILiteralInstance>> possibleUnfolds = new LinkedList<List<ILiteralInstance>>();
+    public List<List<IASystemInferable>> unfoldRule (PredicateInstance head) throws RuleUnfoldException {
+        List<List<IASystemInferable>> possibleUnfolds = new LinkedList<List<IASystemInferable>>();
         for (RuleInstance r:P) {
             if (r.getHead().equals(head)) {
                 if (LOGGER.isDebugEnabled()) LOGGER.debug("Found a match "+r);

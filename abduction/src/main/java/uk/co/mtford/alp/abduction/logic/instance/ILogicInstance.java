@@ -4,6 +4,7 @@
  */
 package uk.co.mtford.alp.abduction.logic.instance;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,4 +17,6 @@ public interface ILogicInstance extends Cloneable {
     public boolean deepEquals(Object obj);
     public Object clone();
     public Object clone(Map<String, VariableInstance> variablesSoFar);
+    public List<VariableInstance> getVariables();
+
 }

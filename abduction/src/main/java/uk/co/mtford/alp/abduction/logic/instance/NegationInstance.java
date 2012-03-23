@@ -61,7 +61,8 @@ public class NegationInstance implements ILiteralInstance {
         NegationInstance thisClone = (NegationInstance) s.popGoal();
         List<ILiteralInstance> literalList = new LinkedList<ILiteralInstance>();
         literalList.add(subFormula);
-        DenialInstance d = new DenialInstance(literalList); // Terms in subformula are free variables.
+        DenialInstance d = new DenialInstance(); // Terms in subformula are free variables.
+        for (ILiteralInstance literal:literalList) d.addLiteral(literal);
         s.putGoal(d);
         possibleStates.add(s);
         return possibleStates;
@@ -94,7 +95,10 @@ public class NegationInstance implements ILiteralInstance {
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
         return new NegationInstance((ILiteralInstance)subFormula.clone(variablesSoFar));
     }
-    
-    
-    
+
+
+    @Override
+    public List<VariableInstance> getVariables() {
+        return subFormula.getVariables();
+    }
 }

@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import uk.co.mtford.alp.abduction.asystem.DenialInstance;
 import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 import uk.co.mtford.alp.abduction.tools.UniqueIdGenerator;
 
@@ -22,6 +23,10 @@ public class VariableInstance implements ITermInstance {
     
     String name;
     IAtomInstance value;
+
+    public int getUniqueId() {
+        return uniqueId;
+    }
 
     public VariableInstance(String name, IAtomInstance value) {
         this.name = name;
@@ -168,6 +173,13 @@ public class VariableInstance implements ITermInstance {
     }
 
     @Override
+    public List<VariableInstance> getVariables() {
+        List<VariableInstance> vars = new LinkedList<VariableInstance>();
+        vars.add(this);
+        return vars;
+    }
+
+    @Override
     public List<IASystemInferable> positiveEqualitySolve(IAtomInstance other) {
         // TODO Occurs check. If fails occurs check, return false instance.
         LinkedList<IASystemInferable> newInferables = new LinkedList<IASystemInferable>();
@@ -191,8 +203,13 @@ public class VariableInstance implements ITermInstance {
     }
 
     @Override
-    public List<IASystemInferable> negativeEqualitySolve(IAtomInstance other) {
+    public List<IASystemInferable> negativeEqualitySolve(DenialInstance denial, IAtomInstance other) {
         // TODO Occurs check. If fails occurs check, return false instance.
-        return positiveEqualitySolve(other);
+        /*List<IASystemInferable> newInferables = new LinkedList<IASystemInferable>();
+        denial.addLiteral(0,positiveEqualitySolve(other));
+        newInferables.add(denial);
+        return newInferables; */
+        //boolean isUniversallyQuantified =
+        return null;
     }
 }

@@ -87,5 +87,9 @@ public class InequalityInstance implements IEqualityInstance {
     public String toString() {
         return e.getLeft()+"=/="+e.getRight();
     }
-    
+
+    @Override
+    public List<VariableInstance> getVariables() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
+import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 import uk.co.mtford.alp.abduction.asystem.DenialInstance;
 import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
 import uk.co.mtford.alp.abduction.asystem.RuleInstance;

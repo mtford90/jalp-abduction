@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
+import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 import uk.co.mtford.alp.abduction.asystem.DenialInstance;
 import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
 import uk.co.mtford.alp.abduction.asystem.RuleInstance;
@@ -75,7 +76,7 @@ public class ALPParser implements ALPParserConstants {
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
 
     PredicateInstance head;
-    List<ILiteralInstance> body = null;
+    List<IASystemInferable> body = null;
     head = Predicate(variablesSoFar);
     if (jj_2_5(2)) {
       jj_consume_token(DEFINES);
@@ -84,7 +85,7 @@ public class ALPParser implements ALPParserConstants {
       ;
     }
     jj_consume_token(DOT);
-      {if (true) return new RuleInstance(head,body);}
+      {if (true) return new RuleInstance(head,body,variablesSoFar);}
     throw new Error("Missing return statement in function");
   }
 
@@ -92,7 +93,7 @@ public class ALPParser implements ALPParserConstants {
     HashMap<String, VariableInstance> universalVariables = new HashMap<String, VariableInstance>();
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
 
-    List<ILiteralInstance> body;
+    List<IASystemInferable> body;
     List<VariableInstance> variableList;
     jj_consume_token(IC);
     if (jj_2_6(2)) {
@@ -106,7 +107,12 @@ public class ALPParser implements ALPParserConstants {
     jj_consume_token(DEFINES);
     body = Body(variablesSoFar);
     jj_consume_token(DOT);
-    {if (true) return new DenialInstance(body, universalVariables);}
+        DenialInstance d = new DenialInstance();
+        for (IASystemInferable l:body) {
+            d.addLiteral(l);
+        }
+        d.setUniversalVariables(universalVariables);
+        {if (true) return d;}
     throw new Error("Missing return statement in function");
   }
 
@@ -134,9 +140,9 @@ public class ALPParser implements ALPParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public List<ILiteralInstance> Body(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    LinkedList<ILiteralInstance> body = new LinkedList<ILiteralInstance>();
-    ILiteralInstance literal;
+  final public List<IASystemInferable> Body(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+    LinkedList<IASystemInferable> body = new LinkedList<IASystemInferable>();
+    IASystemInferable literal;
     literal = Literal(variablesSoFar);
       body.add(literal);
     label_3:
@@ -437,16 +443,9 @@ public class ALPParser implements ALPParserConstants {
     finally { jj_save(18, xla); }
   }
 
-  private boolean jj_3_13() {
-    if (jj_scan_token(LBRACKET)) return true;
-    if (jj_3R_16()) return true;
-    if (jj_scan_token(RBRACKET)) return true;
-    return false;
-  }
-
-  private boolean jj_3_16() {
+  private boolean jj_3_14() {
     if (jj_scan_token(COMMA)) return true;
-    if (jj_scan_token(UCASENAME)) return true;
+    if (jj_3R_17()) return true;
     return false;
   }
 
@@ -468,39 +467,16 @@ public class ALPParser implements ALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_10() {
-    if (jj_3R_14()) return true;
-    return false;
-  }
-
-  private boolean jj_3_19() {
-    if (jj_3R_11()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_12() {
+  private boolean jj_3R_11() {
+    if (jj_scan_token(LCASENAME)) return true;
     Token xsp;
     xsp = jj_scanpos;
-    if (jj_3_9()) {
-    jj_scanpos = xsp;
-    if (jj_3_10()) return true;
-    }
+    if (jj_3_13()) jj_scanpos = xsp;
     return false;
   }
 
   private boolean jj_3_4() {
     if (jj_3R_8()) return true;
-    return false;
-  }
-
-  private boolean jj_3_8() {
-    if (jj_scan_token(COMMA)) return true;
-    if (jj_3R_12()) return true;
-    return false;
-  }
-
-  private boolean jj_3_9() {
-    if (jj_3R_13()) return true;
     return false;
   }
 
@@ -515,22 +491,18 @@ public class ALPParser implements ALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_18() {
-    if (jj_scan_token(LCASENAME)) return true;
+  private boolean jj_3R_10() {
+    if (jj_scan_token(UCASENAME)) return true;
     return false;
   }
 
-  private boolean jj_3_14() {
-    if (jj_scan_token(COMMA)) return true;
-    if (jj_3R_17()) return true;
+  private boolean jj_3R_9() {
+    if (jj_3R_12()) return true;
     return false;
   }
 
-  private boolean jj_3R_11() {
-    if (jj_scan_token(LCASENAME)) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_13()) jj_scanpos = xsp;
+  private boolean jj_3_17() {
+    if (jj_scan_token(UCASENAME)) return true;
     return false;
   }
 
@@ -543,22 +515,6 @@ public class ALPParser implements ALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_10() {
-    if (jj_scan_token(UCASENAME)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_9() {
-    if (jj_3R_12()) return true;
-    return false;
-  }
-
-  private boolean jj_3_5() {
-    if (jj_scan_token(DEFINES)) return true;
-    if (jj_3R_9()) return true;
-    return false;
-  }
-
   private boolean jj_3_15() {
     if (jj_3R_17()) return true;
     Token xsp;
@@ -566,17 +522,6 @@ public class ALPParser implements ALPParserConstants {
       xsp = jj_scanpos;
       if (jj_3_14()) { jj_scanpos = xsp; break; }
     }
-    return false;
-  }
-
-  private boolean jj_3_17() {
-    if (jj_scan_token(UCASENAME)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_14() {
-    if (jj_scan_token(NOT)) return true;
-    if (jj_3R_13()) return true;
     return false;
   }
 
@@ -593,19 +538,22 @@ public class ALPParser implements ALPParserConstants {
     return false;
   }
 
+  private boolean jj_3R_14() {
+    if (jj_scan_token(NOT)) return true;
+    if (jj_3R_13()) return true;
+    return false;
+  }
+
+  private boolean jj_3_5() {
+    if (jj_scan_token(DEFINES)) return true;
+    if (jj_3R_9()) return true;
+    return false;
+  }
+
   private boolean jj_3R_16() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3_15()) jj_scanpos = xsp;
-    return false;
-  }
-
-  private boolean jj_3R_6() {
-    if (jj_3R_11()) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_5()) jj_scanpos = xsp;
-    if (jj_scan_token(DOT)) return true;
     return false;
   }
 
@@ -617,6 +565,15 @@ public class ALPParser implements ALPParserConstants {
 
   private boolean jj_3_12() {
     if (jj_3R_15()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_6() {
+    if (jj_3R_11()) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_5()) jj_scanpos = xsp;
+    if (jj_scan_token(DOT)) return true;
     return false;
   }
 
@@ -644,6 +601,55 @@ public class ALPParser implements ALPParserConstants {
   private boolean jj_3R_15() {
     if (jj_3R_17()) return true;
     if (jj_scan_token(EQUALS)) return true;
+    return false;
+  }
+
+  private boolean jj_3_16() {
+    if (jj_scan_token(COMMA)) return true;
+    if (jj_scan_token(UCASENAME)) return true;
+    return false;
+  }
+
+  private boolean jj_3_19() {
+    if (jj_3R_11()) return true;
+    return false;
+  }
+
+  private boolean jj_3_13() {
+    if (jj_scan_token(LBRACKET)) return true;
+    if (jj_3R_16()) return true;
+    if (jj_scan_token(RBRACKET)) return true;
+    return false;
+  }
+
+  private boolean jj_3_10() {
+    if (jj_3R_14()) return true;
+    return false;
+  }
+
+  private boolean jj_3_18() {
+    if (jj_scan_token(LCASENAME)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_12() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_9()) {
+    jj_scanpos = xsp;
+    if (jj_3_10()) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3_8() {
+    if (jj_scan_token(COMMA)) return true;
+    if (jj_3R_12()) return true;
+    return false;
+  }
+
+  private boolean jj_3_9() {
+    if (jj_3R_13()) return true;
     return false;
   }
 

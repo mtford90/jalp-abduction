@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
+import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 import uk.co.mtford.alp.abduction.asystem.DenialInstance;
 import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
 import uk.co.mtford.alp.abduction.asystem.RuleInstance;
@@ -139,7 +140,7 @@ RuleInstance Rule():
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
     
     PredicateInstance head;
-    List<ILiteralInstance> body = null;
+    List<IASystemInferable> body = null;
 }
 {
 	head = Predicate(variablesSoFar)
@@ -148,7 +149,7 @@ RuleInstance Rule():
 		body = Body(variablesSoFar)
 	]
 	<DOT>
-    { return new RuleInstance(head,body); }
+    { return new RuleInstance(head,body,variablesSoFar); }
 }
 
 DenialInstance Denial():
@@ -156,7 +157,7 @@ DenialInstance Denial():
     HashMap<String, VariableInstance> universalVariables = new HashMap<String, VariableInstance>();
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
 
-    List<ILiteralInstance> body;
+    List<IASystemInferable> body;
     List<VariableInstance> variableList;
 }
 {
@@ -175,7 +176,14 @@ DenialInstance Denial():
 	<DOT>
     {
 
-    return new DenialInstance(body, universalVariables); }
+        DenialInstance d = new DenialInstance();
+        for (IASystemInferable l:body) {
+            d.addLiteral(l);
+        }
+        d.setUniversalVariables(universalVariables);
+        return d;
+
+    }
 }
 
 List<PredicateInstance> Abducible():
@@ -198,10 +206,10 @@ List<PredicateInstance> Abducible():
     { return predicateList; }
 }
 
-List<ILiteralInstance> Body(HashMap<String, VariableInstance> variablesSoFar):
+List<IASystemInferable> Body(HashMap<String, VariableInstance> variablesSoFar):
 {
-    LinkedList<ILiteralInstance> body = new LinkedList<ILiteralInstance>();
-    ILiteralInstance literal;
+    LinkedList<IASystemInferable> body = new LinkedList<IASystemInferable>();
+    IASystemInferable literal;
 }
 {
 	literal = Literal(variablesSoFar)

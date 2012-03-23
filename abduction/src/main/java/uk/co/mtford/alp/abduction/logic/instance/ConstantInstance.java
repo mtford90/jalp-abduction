@@ -91,6 +91,11 @@ public class ConstantInstance implements ITermInstance {
     }
 
     @Override
+    public List<VariableInstance> getVariables() {
+        return new LinkedList<VariableInstance>();
+    }
+
+    @Override
     public List<IASystemInferable> positiveEqualitySolve(IAtomInstance other) {
         if (!(other instanceof ConstantInstance)) {
             return other.positiveEqualitySolve(this);
@@ -102,8 +107,11 @@ public class ConstantInstance implements ITermInstance {
     }
 
     @Override
-    public List<IASystemInferable> negativeEqualitySolve(IAtomInstance other) {
-        return positiveEqualitySolve(other); // Still returning True or False either way.
+    public List<IASystemInferable> negativeEqualitySolve(DenialInstance denial, IAtomInstance other) {
+        List<IASystemInferable> newInferables = new LinkedList<IASystemInferable>();
+        denial.addLiteral(0,positiveEqualitySolve(other));
+        newInferables.add(denial);
+        return newInferables;
     }
 
 }

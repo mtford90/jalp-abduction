@@ -4,10 +4,8 @@
  */
 package uk.co.mtford.alp.abduction.logic.instance;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.asystem.*;
@@ -220,8 +218,8 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule D1 to "+this);
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         PredicateInstance thisClone = (PredicateInstance) s.popGoal();
-        List<List<ILiteralInstance>> possibleUnfolds = framework.unfoldRule(thisClone);
-        for (List<ILiteralInstance> unfold:possibleUnfolds) {
+        List<List<IASystemInferable>> possibleUnfolds = framework.unfoldRule(thisClone);
+        for (List<IASystemInferable> unfold:possibleUnfolds) {
             s.putGoals(unfold);
             ASystemState clonedState = (ASystemState) s.clone(); // TODO. Breaks here. Cloning is fucked up.
             for (int i=0;i<unfold.size();i++) s.popGoal();
@@ -235,10 +233,20 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         DenialInstance denial = (DenialInstance) s.popGoal();
         PredicateInstance thisClone = (PredicateInstance) denial.removeLiteral(0);
-        List<List<ILiteralInstance>> possibleUnfolds = framework.unfoldRule(thisClone);
-        for (List<ILiteralInstance> unfold:possibleUnfolds) {
-            denial.addLiteral(0, unfold);
-        }   
+        List<List<IASystemInferable>> possibleUnfolds = framework.unfoldRule(thisClone); // TODO change literalinstance to denial instance.
+        for (List<IASystemInferable> unfold:possibleUnfolds) {
+            for (IASystemInferable l:unfold) {
+                denial.addLiteral(l);
+                HashMap<String, VariableInstance> vars = new HashMap<String, VariableInstance>();
+                for (VariableInstance v:l.getVariables()) {
+                    String name =  v.getName()+"<"+v.getUniqueId()+">";
+                    if (!vars.containsKey(name)) vars.put(name,v);
+                }
+                denial.getUniversalVariables().putAll(vars);
+            }
+            
+        }
+        
         s.putGoal(denial);
         possibleStates.add(0,s);
         return possibleStates;
@@ -266,7 +274,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         // Check against existing constraints.
         List<DenialInstance> denials = clonedState.getStore().getDenials();
         for (DenialInstance d:denials) {
-            ILiteralInstance literal = d.peekLiteral();
+            IASystemInferable literal = d.peekLiteral();
             if (literal.equals(clonedThis)) {
                 List<EqualityInstance> equalities = null;
                 equalities = Unifier.unify((IAtomInstance)literal, clonedThis);
@@ -340,7 +348,27 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     }
 
     @Override
-    public List<IASystemInferable> negativeEqualitySolve(IAtomInstance other) {
-        return positiveEqualitySolve(other); // Nothing different. Return false or generate new equalities.
+    public List<IASystemInferable> negativeEqualitySolve(DenialInstance denial, IAtomInstance other) {
+        List<IASystemInferable> newInferables = new LinkedList<IASystemInferable>();
+        denial.addLiteral(0,positiveEqualitySolve(other));
+        newInferables.add(denial);
+        return newInferables;
+    }
+
+    @Override
+    public List<VariableInstance> getVariables() { // TODO: This is probs very inefficient.
+        LinkedList<VariableInstance> variables = new LinkedList<VariableInstance>();
+        for (IAtomInstance atom:parameters) {
+            if (atom instanceof VariableInstance) {
+                atom = (VariableInstance) ((VariableInstance) atom).getDeepValue();
+            }
+            if (atom instanceof VariableInstance) {
+                variables.add((VariableInstance)atom);
+            }
+            if (atom instanceof PredicateInstance) {
+                variables.addAll(((PredicateInstance) atom).getVariables());
+            }
+        }
+        return variables;
     }
 }

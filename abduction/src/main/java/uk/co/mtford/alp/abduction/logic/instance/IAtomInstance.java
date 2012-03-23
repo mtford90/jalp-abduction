@@ -21,5 +21,5 @@ public interface IAtomInstance extends ILogicInstance {
      *         otherwise list of new equalities. Returns null if incompatible i.e. different predicates.
      */
     public List<IASystemInferable> positiveEqualitySolve(IAtomInstance other);
-    public List<IASystemInferable> negativeEqualitySolve(IAtomInstance other);
+    public List<IASystemInferable> negativeEqualitySolve(DenialInstance denial, IAtomInstance other);
 }

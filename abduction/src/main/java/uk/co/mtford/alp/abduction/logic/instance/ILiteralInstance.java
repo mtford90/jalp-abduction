@@ -6,10 +6,11 @@ package uk.co.mtford.alp.abduction.logic.instance;
 
 import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 
+import java.util.List;
+
 /**
  *
  * @author mtford
  */
 public interface ILiteralInstance extends IASystemInferable {
-    
 }

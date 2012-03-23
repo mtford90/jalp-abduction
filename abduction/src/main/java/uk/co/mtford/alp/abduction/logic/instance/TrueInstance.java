@@ -29,11 +29,11 @@ public class TrueInstance implements ILogicInstance, IASystemInferable {
     
     @Override
     public Object clone() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new TrueInstance();
     }
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new TrueInstance();
     }
 
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
@@ -51,6 +51,11 @@ public class TrueInstance implements ILogicInstance, IASystemInferable {
         s.putGoal(d);
         possibleStates.add(s);
         return possibleStates;
+    }
+
+    @Override
+    public List<VariableInstance> getVariables() {
+        return new LinkedList<VariableInstance>();
     }
 
     @Override

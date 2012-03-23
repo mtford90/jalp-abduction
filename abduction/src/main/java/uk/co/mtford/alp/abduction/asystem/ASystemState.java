@@ -61,7 +61,7 @@ public class ASystemState implements Cloneable {
         return representation;
     }
 
-    public void putGoals(List<ILiteralInstance> unfold) {
+    public void putGoals(List<IASystemInferable> unfold) {
         goals.addAll(0, unfold);
     }
 
