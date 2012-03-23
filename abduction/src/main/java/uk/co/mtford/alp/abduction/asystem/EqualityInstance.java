@@ -103,6 +103,12 @@ public class EqualityInstance implements IEqualityInstance  {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule E1 to "+this);
         EqualityInstance clonedThis = (EqualityInstance) s.popGoal();
+        boolean constantAndVar =
+                clonedThis.getLeft() instanceof VariableInstance &&
+                clonedThis.getRight() instanceof ConstantInstance ||
+                clonedThis.getLeft() instanceof ConstantInstance &&
+                clonedThis.getRight() instanceof VariableInstance;
+        if (constantAndVar) s.store.getEqualities().add(clonedThis);
         LinkedList<IASystemInferable> newInferables = 
                 (LinkedList<IASystemInferable>) clonedThis.getLeft().positiveEqualitySolve(clonedThis.getRight());
         for (IASystemInferable inferable:newInferables) s.putGoal(inferable);
@@ -159,6 +165,7 @@ public class EqualityInstance implements IEqualityInstance  {
             if (denialClone.isUniversallyQuantified(variable)) { // Solver
                 if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying equality solver to "+this);
                 denialClone.addLiteral(0,variable.positiveEqualitySolve(constant));
+                clonedState.store.getEqualities().add(new EqualityInstance(variable,constant));
                 clonedState.putGoal(denialClone);
                 possibleStates.add(clonedState);
             }

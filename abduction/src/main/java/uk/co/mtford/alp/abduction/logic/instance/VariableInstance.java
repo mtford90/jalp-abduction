@@ -19,7 +19,7 @@ import uk.co.mtford.alp.abduction.tools.UniqueIdGenerator;
 public class VariableInstance implements ITermInstance {
     
     private static final Logger LOGGER = Logger.getLogger(VariableInstance.class);
-    private final int uniqueId = UniqueIdGenerator.getUniqueId();
+    private int uniqueId = UniqueIdGenerator.getUniqueId();
     
     String name;
     IAtomInstance value;
@@ -68,7 +68,15 @@ public class VariableInstance implements ITermInstance {
     }
 
     public void setValue(IAtomInstance value) {
-        this.value = value;
+        if (value instanceof VariableInstance) { // TODO: Not sure whether this is the right thing to do...
+                                                 // May need to try some kind of parameter class or something.
+                                                 // That way can use it like a pointer to memory.
+            this.name=((VariableInstance) value).getName();
+            this.uniqueId=((VariableInstance) value).uniqueId;
+        }
+        else {
+            this.value = value;
+        }
     }
     
     public boolean isAssigned() {
