@@ -29,13 +29,13 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
      *  store. Returns null if no possible explanation.
      * 
      * @param query
-     * @param abductiveFramework
-     * @return 
+     * @return
      */
     public List<ASystemStore> computeExplanation(List<IASystemInferable> query) {
         List<ASystemStore> possibleExplanations = new LinkedList<ASystemStore>();
-        ASystemState currentState = new ASystemState(query); // Initial state.
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Initial state is:\n"+currentState);     
+        query.addAll(abductiveFramework.getIC());
+        ASystemState currentState = new ASystemState(query); 
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Initial state is:\n"+currentState);
         IASystemInferable chosenGoal = getNextGoal(currentState);
         while ((currentState = stateTransition(chosenGoal,(ASystemState)currentState.clone()))!=null) {
             if (LOGGER.isDebugEnabled()) LOGGER.debug("State transition has occured.\n"+currentState);      
@@ -60,6 +60,8 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
             public ASystemState next() {
                 if (currentState==null) {
                     currentState = new ASystemState(query);
+                    currentState.getStore().getDenials().addAll(abductiveFramework.getIC());// Initial state.
+
                 }
                 else {
                     IASystemInferable chosenGoal = getNextGoal(currentState);

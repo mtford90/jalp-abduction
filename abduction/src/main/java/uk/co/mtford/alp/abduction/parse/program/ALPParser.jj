@@ -5,7 +5,7 @@ LL(2) grammar for ALPS in prolog style.
 ALP -> ((Rule | Denial | Abducible))* EOF
 Rule -> Predicate (DEFINES Body)? DOT
 Abducible -> ABDUCIBLE LBRACKET Predicate (COMMA Predicate)* RBRACKET DOT
-Denial -> IC (LBRACKET VariableList RBRACKET)? DEFINES Body DOT
+Denial -> IC DEFINES Body DOT
 Body -> Literal (COMMA Literal)*
 Literal -> PosLiteral | NegLiteral
 PosLiteral -> Predicate | Equality
@@ -154,35 +154,22 @@ RuleInstance Rule():
 
 DenialInstance Denial():
 {
-    HashMap<String, VariableInstance> universalVariables = new HashMap<String, VariableInstance>();
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
 
     List<IASystemInferable> body;
-    List<VariableInstance> variableList;
+    List<VariableInstance> variableList = new LinkedList<VariableInstance>();
 }
 {
 	<IC>
-	[
-	    <LBRACKET>
-        variableList = VariableList(universalVariables)
-        {
-            variablesSoFar.putAll(universalVariables);
-        }
-	    <RBRACKET>
-
-	]
 	<DEFINES>
 	body = Body(variablesSoFar)
 	<DOT>
     {
-
-        DenialInstance d = new DenialInstance();
-        for (IASystemInferable l:body) {
-            d.addLiteral(l);
+        for (VariableInstance v:variablesSoFar.values()) {
+            variableList.add(v);
         }
-        d.setUniversalVariables(universalVariables);
+        DenialInstance d = new DenialInstance(body,variableList);
         return d;
-
     }
 }
 

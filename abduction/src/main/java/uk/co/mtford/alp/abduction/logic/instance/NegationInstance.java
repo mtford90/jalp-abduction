@@ -62,7 +62,11 @@ public class NegationInstance implements ILiteralInstance {
         List<ILiteralInstance> literalList = new LinkedList<ILiteralInstance>();
         literalList.add(subFormula);
         DenialInstance d = new DenialInstance(); // Terms in subformula are free variables.
-        for (ILiteralInstance literal:literalList) d.addLiteral(literal);
+        for (ILiteralInstance literal:literalList)
+        {
+            d.addLiteral(literal);
+        }
+        
         s.putGoal(d);
         possibleStates.add(s);
         return possibleStates;
@@ -75,6 +79,7 @@ public class NegationInstance implements ILiteralInstance {
      * @return 
      */
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
+
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule N2 to "+this);
         List<ASystemState> possibleStates = new LinkedList<ASystemState>();
         ASystemState clonedState = (ASystemState) s.clone();

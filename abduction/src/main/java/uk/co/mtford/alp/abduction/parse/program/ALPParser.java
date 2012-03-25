@@ -90,28 +90,18 @@ public class ALPParser implements ALPParserConstants {
   }
 
   final public DenialInstance Denial() throws ParseException {
-    HashMap<String, VariableInstance> universalVariables = new HashMap<String, VariableInstance>();
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
 
     List<IASystemInferable> body;
-    List<VariableInstance> variableList;
+    List<VariableInstance> variableList = new LinkedList<VariableInstance>();
     jj_consume_token(IC);
-    if (jj_2_6(2)) {
-      jj_consume_token(LBRACKET);
-      variableList = VariableList(universalVariables);
-            variablesSoFar.putAll(universalVariables);
-      jj_consume_token(RBRACKET);
-    } else {
-      ;
-    }
     jj_consume_token(DEFINES);
     body = Body(variablesSoFar);
     jj_consume_token(DOT);
-        DenialInstance d = new DenialInstance();
-        for (IASystemInferable l:body) {
-            d.addLiteral(l);
+        for (VariableInstance v:variablesSoFar.values()) {
+            variableList.add(v);
         }
-        d.setUniversalVariables(universalVariables);
+        DenialInstance d = new DenialInstance(body,variableList);
         {if (true) return d;}
     throw new Error("Missing return statement in function");
   }
@@ -125,7 +115,7 @@ public class ALPParser implements ALPParserConstants {
       predicateList.add(p);
     label_2:
     while (true) {
-      if (jj_2_7(2)) {
+      if (jj_2_6(2)) {
         ;
       } else {
         break label_2;
@@ -147,7 +137,7 @@ public class ALPParser implements ALPParserConstants {
       body.add(literal);
     label_3:
     while (true) {
-      if (jj_2_8(2)) {
+      if (jj_2_7(2)) {
         ;
       } else {
         break label_3;
@@ -162,10 +152,10 @@ public class ALPParser implements ALPParserConstants {
 
   final public ILiteralInstance Literal(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     ILiteralInstance literal;
-    if (jj_2_9(2)) {
+    if (jj_2_8(2)) {
       literal = PositiveLiteral(variablesSoFar);
       {if (true) return literal;}
-    } else if (jj_2_10(2)) {
+    } else if (jj_2_9(2)) {
       literal = NegativeLiteral(variablesSoFar);
       {if (true) return literal;}
     } else {
@@ -177,10 +167,10 @@ public class ALPParser implements ALPParserConstants {
 
   final public ILiteralInstance PositiveLiteral(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     ILiteralInstance literal;
-    if (jj_2_11(2)) {
+    if (jj_2_10(2)) {
       literal = Predicate(variablesSoFar);
         {if (true) return literal;}
-    } else if (jj_2_12(2)) {
+    } else if (jj_2_11(2)) {
       literal = Equality(variablesSoFar);
       {if (true) return literal;}
     } else {
@@ -204,7 +194,7 @@ public class ALPParser implements ALPParserConstants {
     List<IAtomInstance> parameters = new LinkedList<IAtomInstance>();
     t = jj_consume_token(LCASENAME);
       name = t.image;
-    if (jj_2_13(2)) {
+    if (jj_2_12(2)) {
       jj_consume_token(LBRACKET);
       parameters = ParameterList(variablesSoFar);
       jj_consume_token(RBRACKET);
@@ -228,12 +218,12 @@ public class ALPParser implements ALPParserConstants {
   final public List<IAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     LinkedList<IAtomInstance> params = new LinkedList<IAtomInstance>();
     IAtomInstance param;
-    if (jj_2_15(2)) {
+    if (jj_2_14(2)) {
       param = Parameter(variablesSoFar);
           params.add(param);
       label_4:
       while (true) {
-        if (jj_2_14(2)) {
+        if (jj_2_13(2)) {
           ;
         } else {
           break label_4;
@@ -265,7 +255,7 @@ public class ALPParser implements ALPParserConstants {
         }
     label_5:
     while (true) {
-      if (jj_2_16(2)) {
+      if (jj_2_15(2)) {
         ;
       } else {
         break label_5;
@@ -285,7 +275,7 @@ public class ALPParser implements ALPParserConstants {
     Token t;
     PredicateInstance predicate;
     String name;
-    if (jj_2_17(2)) {
+    if (jj_2_16(2)) {
       t = jj_consume_token(UCASENAME);
             name = t.image;
             if (variablesSoFar.containsKey(name)) {
@@ -296,11 +286,11 @@ public class ALPParser implements ALPParserConstants {
                 variablesSoFar.put(name,variable);
                 {if (true) return variable;}
             }
-    } else if (jj_2_18(2)) {
+    } else if (jj_2_17(2)) {
       t = jj_consume_token(LCASENAME);
             name = t.image;
             {if (true) return new ConstantInstance(name);}
-    } else if (jj_2_19(2)) {
+    } else if (jj_2_18(2)) {
       predicate = Predicate(variablesSoFar);
           {if (true) return predicate;}
     } else {
@@ -436,16 +426,30 @@ public class ALPParser implements ALPParserConstants {
     finally { jj_save(17, xla); }
   }
 
-  private boolean jj_2_19(int xla) {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_19(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(18, xla); }
+  private boolean jj_3R_8() {
+    if (jj_scan_token(ABDUCIBLE)) return true;
+    if (jj_scan_token(LBRACKET)) return true;
+    return false;
   }
 
-  private boolean jj_3_14() {
-    if (jj_scan_token(COMMA)) return true;
-    if (jj_3R_17()) return true;
+  private boolean jj_3R_12() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_10()) {
+    jj_scanpos = xsp;
+    if (jj_3_11()) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3_10() {
+    if (jj_3R_10()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_14() {
+    if (jj_3R_16()) return true;
+    if (jj_scan_token(EQUALS)) return true;
     return false;
   }
 
@@ -467,11 +471,14 @@ public class ALPParser implements ALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_11() {
-    if (jj_scan_token(LCASENAME)) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_13()) jj_scanpos = xsp;
+  private boolean jj_3_15() {
+    if (jj_scan_token(COMMA)) return true;
+    if (jj_scan_token(UCASENAME)) return true;
+    return false;
+  }
+
+  private boolean jj_3_18() {
+    if (jj_3R_10()) return true;
     return false;
   }
 
@@ -480,80 +487,40 @@ public class ALPParser implements ALPParserConstants {
     return false;
   }
 
+  private boolean jj_3_12() {
+    if (jj_scan_token(LBRACKET)) return true;
+    if (jj_3R_15()) return true;
+    if (jj_scan_token(RBRACKET)) return true;
+    return false;
+  }
+
   private boolean jj_3_3() {
     if (jj_3R_7()) return true;
     return false;
   }
 
-  private boolean jj_3_6() {
-    if (jj_scan_token(LBRACKET)) return true;
-    if (jj_3R_10()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_10() {
-    if (jj_scan_token(UCASENAME)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_9() {
-    if (jj_3R_12()) return true;
-    return false;
-  }
-
-  private boolean jj_3_17() {
-    if (jj_scan_token(UCASENAME)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_7() {
-    if (jj_scan_token(IC)) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_6()) jj_scanpos = xsp;
-    if (jj_scan_token(DEFINES)) return true;
-    return false;
-  }
-
-  private boolean jj_3_15() {
-    if (jj_3R_17()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_14()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
-  private boolean jj_3R_17() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_17()) {
-    jj_scanpos = xsp;
-    if (jj_3_18()) {
-    jj_scanpos = xsp;
-    if (jj_3_19()) return true;
-    }
-    }
-    return false;
-  }
-
-  private boolean jj_3R_14() {
-    if (jj_scan_token(NOT)) return true;
+  private boolean jj_3_9() {
     if (jj_3R_13()) return true;
     return false;
   }
 
-  private boolean jj_3_5() {
-    if (jj_scan_token(DEFINES)) return true;
-    if (jj_3R_9()) return true;
+  private boolean jj_3_17() {
+    if (jj_scan_token(LCASENAME)) return true;
     return false;
   }
 
-  private boolean jj_3R_16() {
+  private boolean jj_3R_11() {
     Token xsp;
     xsp = jj_scanpos;
-    if (jj_3_15()) jj_scanpos = xsp;
+    if (jj_3_8()) {
+    jj_scanpos = xsp;
+    if (jj_3_9()) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3_8() {
+    if (jj_3R_12()) return true;
     return false;
   }
 
@@ -563,13 +530,67 @@ public class ALPParser implements ALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_12() {
-    if (jj_3R_15()) return true;
+  private boolean jj_3R_7() {
+    if (jj_scan_token(IC)) return true;
+    if (jj_scan_token(DEFINES)) return true;
+    return false;
+  }
+
+  private boolean jj_3_13() {
+    if (jj_scan_token(COMMA)) return true;
+    if (jj_3R_16()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_10() {
+    if (jj_scan_token(LCASENAME)) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_12()) jj_scanpos = xsp;
+    return false;
+  }
+
+  private boolean jj_3_5() {
+    if (jj_scan_token(DEFINES)) return true;
+    if (jj_3R_9()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_9() {
+    if (jj_3R_11()) return true;
+    return false;
+  }
+
+  private boolean jj_3_16() {
+    if (jj_scan_token(UCASENAME)) return true;
+    return false;
+  }
+
+  private boolean jj_3_14() {
+    if (jj_3R_16()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_13()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_16() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_16()) {
+    jj_scanpos = xsp;
+    if (jj_3_17()) {
+    jj_scanpos = xsp;
+    if (jj_3_18()) return true;
+    }
+    }
     return false;
   }
 
   private boolean jj_3R_6() {
-    if (jj_3R_11()) return true;
+    if (jj_3R_10()) return true;
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3_5()) jj_scanpos = xsp;
@@ -577,79 +598,27 @@ public class ALPParser implements ALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_8() {
-    if (jj_scan_token(ABDUCIBLE)) return true;
-    if (jj_scan_token(LBRACKET)) return true;
-    return false;
-  }
-
   private boolean jj_3R_13() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_11()) {
-    jj_scanpos = xsp;
-    if (jj_3_12()) return true;
-    }
-    return false;
-  }
-
-  private boolean jj_3_11() {
-    if (jj_3R_11()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_15() {
-    if (jj_3R_17()) return true;
-    if (jj_scan_token(EQUALS)) return true;
-    return false;
-  }
-
-  private boolean jj_3_16() {
-    if (jj_scan_token(COMMA)) return true;
-    if (jj_scan_token(UCASENAME)) return true;
-    return false;
-  }
-
-  private boolean jj_3_19() {
-    if (jj_3R_11()) return true;
-    return false;
-  }
-
-  private boolean jj_3_13() {
-    if (jj_scan_token(LBRACKET)) return true;
-    if (jj_3R_16()) return true;
-    if (jj_scan_token(RBRACKET)) return true;
-    return false;
-  }
-
-  private boolean jj_3_10() {
-    if (jj_3R_14()) return true;
-    return false;
-  }
-
-  private boolean jj_3_18() {
-    if (jj_scan_token(LCASENAME)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_12() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_9()) {
-    jj_scanpos = xsp;
-    if (jj_3_10()) return true;
-    }
-    return false;
-  }
-
-  private boolean jj_3_8() {
-    if (jj_scan_token(COMMA)) return true;
+    if (jj_scan_token(NOT)) return true;
     if (jj_3R_12()) return true;
     return false;
   }
 
-  private boolean jj_3_9() {
-    if (jj_3R_13()) return true;
+  private boolean jj_3R_15() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_14()) jj_scanpos = xsp;
+    return false;
+  }
+
+  private boolean jj_3_6() {
+    if (jj_scan_token(COMMA)) return true;
+    if (jj_3R_10()) return true;
+    return false;
+  }
+
+  private boolean jj_3_11() {
+    if (jj_3R_14()) return true;
     return false;
   }
 
@@ -672,7 +641,7 @@ public class ALPParser implements ALPParserConstants {
    private static void jj_la1_init_0() {
       jj_la1_0 = new int[] {};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[19];
+  final private JJCalls[] jj_2_rtns = new JJCalls[18];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -897,7 +866,7 @@ public class ALPParser implements ALPParserConstants {
 
   private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 19; i++) {
+    for (int i = 0; i < 18; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -922,7 +891,6 @@ public class ALPParser implements ALPParserConstants {
             case 15: jj_3_16(); break;
             case 16: jj_3_17(); break;
             case 17: jj_3_18(); break;
-            case 18: jj_3_19(); break;
           }
         }
         p = p.next;

@@ -79,7 +79,7 @@ public class AbductiveFramework implements Cloneable {
      */
     public boolean isAbducible(PredicateInstance predicate) {
         Integer n = null;
-        n = A.get(predicate);
+        n = A.get(predicate.getName());
         if (n!=null) {
             return n.equals(predicate.getNumParams());
         }

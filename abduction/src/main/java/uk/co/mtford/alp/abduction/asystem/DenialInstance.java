@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
+import uk.co.mtford.alp.abduction.logic.instance.FalseInstance;
 import uk.co.mtford.alp.abduction.logic.instance.ILiteralInstance;
 import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
 
@@ -22,31 +23,27 @@ public class DenialInstance implements IASystemInferable {
     private static final Logger LOGGER = Logger.getLogger(DenialInstance.class);
     
     private List<IASystemInferable> body;
-    private Map<String, VariableInstance> universalVariables;
+    private List<VariableInstance> universalVariables;
 
     public DenialInstance(List<IASystemInferable> body,
-                          Map<String, VariableInstance> universalVariables) {
+                          List<VariableInstance> universalVariables) {
         this.body = body;
         this.universalVariables = universalVariables;
     }
 
-    public Map<String, VariableInstance> getUniversalVariables() {
+
+
+    public List<VariableInstance> getUniversalVariables() {
         return universalVariables;
     }
 
-    public void setUniversalVariables(Map<String, VariableInstance> universalVariables) {
+    public void setUniversalVariables(List<VariableInstance> universalVariables) {
         this.universalVariables = universalVariables;
     }
 
-    public DenialInstance(List<IASystemInferable> body) {
-        this.body=body;
-        this.universalVariables=new HashMap<String,VariableInstance>();
-    }
-
-    
     public DenialInstance() {
         body = new LinkedList<IASystemInferable>();
-        universalVariables = new HashMap<String, VariableInstance>();
+        universalVariables=new LinkedList<VariableInstance>();
     }
     
     public void addLiteral(IASystemInferable p) {
@@ -96,12 +93,14 @@ public class DenialInstance implements IASystemInferable {
     @Override
     public Object clone() {
         DenialInstance clone = new DenialInstance();
+        HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
+        for (VariableInstance v:universalVariables) {
+            clone.getUniversalVariables().add((VariableInstance) v.clone(variablesSoFar));
+        }
         for (IASystemInferable l:body) {
-            clone.addLiteral(l);
+            clone.addLiteral((IASystemInferable) l.clone(variablesSoFar));
         }
-        for (String s:universalVariables.keySet()) {
-            clone.universalVariables.put(s, (VariableInstance) universalVariables.get(s).clone());
-        }
+        
         return clone;
     }
 
@@ -110,7 +109,7 @@ public class DenialInstance implements IASystemInferable {
         String rep = "ic";
         if (!universalVariables.isEmpty()) {
             rep+="(";
-            for (String s:universalVariables.keySet()) rep+=s+",";
+            for (VariableInstance v:universalVariables) rep+=v+",";
             rep = rep.substring(0,rep.length()-1);
             rep+=")";
         }
@@ -132,15 +131,15 @@ public class DenialInstance implements IASystemInferable {
             IASystemInferable first = body.get(0);
             return first.applyDenialInferenceRule(framework, s);
         }
-        else {
-            s.popGoal(); 
+        else { // The denial fails. All attempts to make it true have failed.
+            s.putGoal(new FalseInstance());
         }
         List<ASystemState> possibleStates = new LinkedList<ASystemState>();
         possibleStates.add(s);
         return possibleStates;
     }
 
-    // TODO: Support nested denials?
+    // TODO: Don't think actually neccessary?
     public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -155,14 +154,14 @@ public class DenialInstance implements IASystemInferable {
     }
 
     public Object clone(Map<String, VariableInstance> variablesSoFar) {
-        variablesSoFar.putAll(universalVariables);
         DenialInstance clone = new DenialInstance();
+        for (VariableInstance v:universalVariables) {
+            clone.getUniversalVariables().add((VariableInstance) v.clone(variablesSoFar));
+        }
         for (IASystemInferable logic:body) {
             clone.body.add((IASystemInferable)logic.clone(variablesSoFar));
         }
-        for (String s:universalVariables.keySet()) {
-            clone.universalVariables.put(s, (VariableInstance) universalVariables.get(s).clone(variablesSoFar));
-        }
+        
         return clone;
     }
 
@@ -171,7 +170,10 @@ public class DenialInstance implements IASystemInferable {
     }
     
     public boolean isUniversallyQuantified(VariableInstance v) {
-        return universalVariables.containsKey(v.getName()+"<"+v.getUniqueId()+">");
+        for (VariableInstance var:universalVariables) {
+            if ((v.getName()+"<"+v.getUniqueId()+">").equals(var.toString())) return true;
+        }
+        return false;
     }
     
     
