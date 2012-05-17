@@ -83,8 +83,8 @@ public class ConstantInstance implements ITermInstance {
     }
 
 
-    public ILiteralInstance clone(Map<String, VariableInstance> variablesSoFar) {
-        return (ILiteralInstance) new ConstantInstance(value);
+    public ILogicInstance clone(Map<String, VariableInstance> variablesSoFar) {
+        return new ConstantInstance(value);
     }
 
     @Override

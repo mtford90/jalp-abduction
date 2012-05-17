@@ -254,7 +254,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
             }
         }
         // OR
-        // Compare against existing constraints and also check cant be unified with existing abducible.
+        // Compare against existing constraints and also check cant be unified with existing abducibles.
         // And then add to the collected abducibles store.
         ASystemState clonedState = (ASystemState) s.clone();
         PredicateInstance thisClone = (PredicateInstance) clonedState.popGoal();
@@ -273,7 +273,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
             }
         }
         clonedState.getStore().getAbducibles().add(thisClone);
-        possibleStates.add(clonedState);
+        possibleStates.addLast(clonedState);
         return possibleStates;
     }
     

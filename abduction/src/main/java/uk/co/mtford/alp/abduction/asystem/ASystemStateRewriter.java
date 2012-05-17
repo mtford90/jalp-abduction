@@ -51,7 +51,8 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
         }
         return possibleExplanations;
     }
-    
+
+
     public Iterator<ASystemState> getStateIterator(final List<IASystemInferable> query) {
         return new Iterator<ASystemState>() {
             private ASystemState currentState;

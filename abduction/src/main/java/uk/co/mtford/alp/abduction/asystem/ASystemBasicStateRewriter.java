@@ -45,7 +45,7 @@ public class ASystemBasicStateRewriter extends ASystemStateRewriter {
             if (LOGGER.isInfoEnabled()) {
                 LOGGER.info("Generated " + states.size() + " new states.");
             }
-            for (int i=0;i<states.size();i++) stateStack.add(states.get(i));
+            for (int i=0;i<states.size();i++) stateStack.push(states.get(i));
         }
         if (stateStack.isEmpty()) { // No more possible states.
             return null;

@@ -124,7 +124,7 @@ public class Main {
         if (debugMode) {
             Iterator<ASystemState> iterator = system.getStateIterator(goals);
             while (iterator.hasNext()) {
-                printMessage("Current state is "+iterator.next());
+                printMessage("Current state is: \n"+iterator.next());
                 printMessage("Enter c to continue or anything else to quit.");
                 String s = sc.nextLine();
                 if (s.trim().equals("c")) {
@@ -138,7 +138,7 @@ public class Main {
         else {
             if (LOGGER.isInfoEnabled()) LOGGER.info("Beginning processing of query.");
             List<ASystemStore> possibleExplanations = system.computeExplanation(goals);
-            printMessage("Found "+possibleExplanations.size()+" possible explanations.");
+            printMessage("Found "+possibleExplanations.size()+" possible explanations for query "+query+".");
             for (ASystemStore s:possibleExplanations) printMessage(s.toString());
         }
     }

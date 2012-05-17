@@ -117,31 +117,31 @@ public class ASystemStore implements Comparable {
 
     @Override
     public String toString() {
-        String output="{";
-        output+="{";
+        String output="\n{\n";
+        output+="Delta: \n{\n";
         if (!abducibles.isEmpty()) {
             for (PredicateInstance abducible:abducibles) {
-                output+=abducible+", ";
+                output+=abducible+",\n";
             }
             output=output.substring(0, output.length()-2);
         }
-        output+="}, ";
-        output+="{";
+        output+="\n},\n";
+        output+="Delta*:\n{\n";
         if (!denials.isEmpty()) {
             for (DenialInstance denial:denials) {
-                output+=denial+", ";
+                output+=denial+",\n";
             }
             output=output.substring(0, output.length()-2);           
         }
-        output+="}, ";
-        output+="{";
+        output+="\n},\n";
+        output+="E:     \n{\n";
         if (!equalities.isEmpty()) {
             for (IEqualityInstance equality:equalities) {
-                output+=equality+", ";
+                output+=equality+",\n";
             }
             output=output.substring(0, output.length()-2);
         }
-        output+="}}";
+        output+="\n}\n}";
         return output;
         
     }

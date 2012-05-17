@@ -88,7 +88,7 @@ public class NegationInstance implements ILiteralInstance {
         clonedThis = (NegationInstance) clonedDenial.popLiteral();
         clonedState.putGoal(clonedDenial);
         clonedState.putGoal(clonedThis);
-        possibleStates.add(clonedState);
+        possibleStates.add(0,clonedState);
         return possibleStates;
     }
 

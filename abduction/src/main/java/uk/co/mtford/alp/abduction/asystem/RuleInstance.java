@@ -135,7 +135,7 @@ public class RuleInstance {
             return new RuleInstance(new PredicateInstance(head.getName(),newParameters),newBody,variablesSoFar);
         } 
         else { // Is a fact.
-            PredicateInstance headClone = (PredicateInstance) head.clone();
+            PredicateInstance headClone = (PredicateInstance) head.clone(variablesSoFar);
             return new RuleInstance(headClone,new LinkedList<IASystemInferable>(),new HashMap<String, VariableInstance>());
         }
             
