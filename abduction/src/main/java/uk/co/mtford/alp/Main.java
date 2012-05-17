@@ -82,14 +82,16 @@ public class Main {
     }
     
     private static void incorporateNewFramework(AbductiveFramework f) {
-        LOGGER.info("Incorporating results from new framework.");
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("Incorporating results from new framework.");
+        }
         system.getAbductiveFramework().getP().addAll(f.getP());
         system.getAbductiveFramework().getA().putAll(f.getA());
         system.getAbductiveFramework().getIC().addAll(f.getIC());
     }
     
     private static void loadFiles(String nextLine) {
-        LOGGER.info("Loading file called "+nextLine);
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Loading file called "+nextLine);
         String[] fileNames = nextLine.split(" ");
         if (fileNames.length<2) {
             printMessage(INVALID_USAGE);
@@ -274,8 +276,7 @@ public class Main {
            initALPS(f);
            startALPS();
        }
-       
-       
+
     }
     
 }

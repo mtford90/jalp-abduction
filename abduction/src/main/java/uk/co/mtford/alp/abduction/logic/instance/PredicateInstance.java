@@ -258,9 +258,11 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
             ASystemState clonedState = (ASystemState) s.clone();
             PredicateInstance thisClone = (PredicateInstance) clonedState.popGoal();
             PredicateInstance collectedAbducible = clonedState.getStore().getAbducibles().get(i);
-            List<IASystemInferable> newInferables = thisClone.positiveEqualitySolve(collectedAbducible);
-            clonedState.getGoals().addAll(newInferables);
-            possibleStates.add(clonedState);
+            if (collectedAbducible.equals(this)) {
+                List<IASystemInferable> newInferables = thisClone.positiveEqualitySolve(collectedAbducible);
+                clonedState.getGoals().addAll(newInferables);
+                possibleStates.add(clonedState);
+            }
         }
         // OR
         // Compare against existing constraints and also check cant be unified with existing abducible.
@@ -291,11 +293,13 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         DenialInstance denial = (DenialInstance) s.popGoal();
         for (PredicateInstance collectedAbducible:s.getStore().getAbducibles()) {
-            DenialInstance clonedDenial = (DenialInstance) denial.clone();
-            PredicateInstance clonedThis = (PredicateInstance) clonedDenial.popLiteral();
-            List<IASystemInferable> newInferables = clonedThis.positiveEqualitySolve(collectedAbducible);
-            clonedDenial.addLiteral(0,newInferables);
-            s.putGoal(clonedDenial);
+            if (collectedAbducible.equals(this)) { // Predicate with same name and arity.
+                DenialInstance clonedDenial = (DenialInstance) denial.clone();
+                PredicateInstance clonedThis = (PredicateInstance) clonedDenial.popLiteral();
+                List<IASystemInferable> newInferables = clonedThis.positiveEqualitySolve(collectedAbducible);
+                clonedDenial.addLiteral(0,newInferables);
+                s.putGoal(clonedDenial);
+            }
         }
         s.getStore().getDenials().add(denial);
         possibleStates.add(s);

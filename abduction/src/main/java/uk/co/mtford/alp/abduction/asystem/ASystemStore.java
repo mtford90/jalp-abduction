@@ -88,7 +88,7 @@ public class ASystemStore implements Comparable, Cloneable {
         if (t == this) return 0;
         return abducibles.size() - ((ASystemStore)t).numAbducibles();
     }
-    
+
     @Override
     public Object clone() {
         Map<String,VariableInstance> variablesSoFar = new HashMap<String,VariableInstance>();

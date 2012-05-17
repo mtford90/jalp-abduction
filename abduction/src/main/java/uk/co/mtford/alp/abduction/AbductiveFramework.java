@@ -90,7 +90,7 @@ public class AbductiveFramework implements Cloneable {
      *  Otherwise returns an empty list.
      * 
      * @param head
-     * @return
+     * @return List of possible unfolds (multiple if numerous definitions with the same head)
      * @throws RuleUnfoldException 
      */
     public List<List<IASystemInferable>> unfoldRule (PredicateInstance head) throws RuleUnfoldException {

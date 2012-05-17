@@ -25,6 +25,11 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
         this.abductiveFramework=abductiveFramework;
     }
     
+    private ASystemState setUpState(List<IASystemInferable> query) {
+        query.addAll(abductiveFramework.getIC());
+        return new ASystemState(query);
+    }
+    
     /** Computes an abductive explanation in the form of an ASystem
      *  store. Returns null if no possible explanation.
      * 
@@ -33,8 +38,7 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
      */
     public List<ASystemStore> computeExplanation(List<IASystemInferable> query) {
         List<ASystemStore> possibleExplanations = new LinkedList<ASystemStore>();
-        query.addAll(abductiveFramework.getIC());
-        ASystemState currentState = new ASystemState(query); 
+        ASystemState currentState =setUpState(query);
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Initial state is:\n"+currentState);
         IASystemInferable chosenGoal = getNextGoal(currentState);
         while ((currentState = stateTransition(chosenGoal,(ASystemState)currentState.clone()))!=null) {
@@ -59,9 +63,7 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
 
             public ASystemState next() {
                 if (currentState==null) {
-                    currentState = new ASystemState(query);
-                    currentState.getStore().getDenials().addAll(abductiveFramework.getIC());// Initial state.
-
+                    currentState=setUpState(query);
                 }
                 else {
                     IASystemInferable chosenGoal = getNextGoal(currentState);
@@ -78,25 +80,35 @@ public abstract class ASystemStateRewriter implements IAbductiveLogicProgramming
             public ASystemState getCurrentState() {
                 return currentState;
             }
-            
+
         };
     }
-    
-    protected abstract IASystemInferable getNextGoal(ASystemState state);
-    
-    /** Returns the next state. Returns null if not possible to move to next.
-     * 
-     * @param goal
-     * @return 
-     */
-    protected abstract ASystemState stateTransition(IASystemInferable goal, ASystemState state);
-    
-    protected abstract boolean hasMoreStates();
-    
-    public abstract void reset();
 
     public AbductiveFramework getAbductiveFramework() {
         return abductiveFramework;
     }
+
+    /** Implements goal selection strategy.
+     *
+     * @param state
+     * @return
+     */
+    protected abstract IASystemInferable getNextGoal(ASystemState state);
+
+    /** Implements state transition strategy.
+     *
+     * @param goal
+     * @param state
+     * @return
+     */
+    protected abstract ASystemState stateTransition(IASystemInferable goal, ASystemState state);
+
+    /** Returns true if there are still more states to compute.
+     *
+     * @return
+     */
+    protected abstract boolean hasMoreStates();
+    
+    public abstract void reset();
     
 } 
