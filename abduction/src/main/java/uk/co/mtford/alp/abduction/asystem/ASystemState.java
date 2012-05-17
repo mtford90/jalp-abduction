@@ -4,20 +4,18 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
+import org.apache.log4j.Logger;
+import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
+
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import org.apache.log4j.Logger;
-import uk.co.mtford.alp.abduction.AbductiveFramework;
-import uk.co.mtford.alp.abduction.logic.instance.ILiteralInstance;
-import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
 
 /**
  *
  * @author mtford
  */
-public class ASystemState implements Cloneable {
+public class ASystemState {
     
     private static final Logger LOGGER = Logger.getLogger(ASystemState.class);
     
@@ -44,7 +42,7 @@ public class ASystemState implements Cloneable {
     }
     
     @Override
-    public Object clone() {
+    public ASystemState clone() {
         List<IASystemInferable> newGoals = new LinkedList<IASystemInferable>();
         HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
         for (IASystemInferable g:goals) {

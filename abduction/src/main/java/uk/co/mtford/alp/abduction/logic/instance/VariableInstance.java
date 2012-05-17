@@ -4,13 +4,14 @@
  */
 package uk.co.mtford.alp.abduction.logic.instance;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.asystem.DenialInstance;
 import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 import uk.co.mtford.alp.abduction.tools.UniqueIdGenerator;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -99,16 +100,6 @@ public class VariableInstance implements ITermInstance {
         return hash;
     }
 
-    @Override
-    public Object clone() {
-        String clonedName = new String(name);
-        IAtomInstance clonedValue = null;
-        if (value!=null) {
-            clonedValue = (IAtomInstance) value.clone();
-        }
-        return new VariableInstance(clonedName,clonedValue);
-    }
-
     /** Returns true if same name.
      * 
      * @param obj
@@ -168,7 +159,7 @@ public class VariableInstance implements ITermInstance {
         return true;
     }
 
-    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+    public ILogicInstance clone(Map<String, VariableInstance> variablesSoFar) {
         if (variablesSoFar.containsKey(name+"<"+uniqueId+">")) {
             return variablesSoFar.get(name+"<"+uniqueId+">");
         }

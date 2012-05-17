@@ -4,20 +4,20 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
 /** An ASystem store of collectables.
  *
  * @author mtford
  */
-public class ASystemStore implements Comparable, Cloneable {
+public class ASystemStore implements Comparable {
     
     private static final Logger LOGGER = Logger.getLogger(ASystemStore.class);
     
@@ -29,6 +29,18 @@ public class ASystemStore implements Comparable, Cloneable {
         abducibles = new LinkedList<PredicateInstance>();
         denials = new LinkedList<DenialInstance>();
         equalities = new LinkedList<IEqualityInstance>();
+    }
+
+    public List<PredicateInstance> getAbducibles() {
+        return abducibles;
+    }
+
+    public List<DenialInstance> getDenials() {
+        return denials;
+    }
+
+    public List<IEqualityInstance> getEqualities() {
+        return equalities;
     }
     
     public void put(PredicateInstance abducible) {
@@ -89,9 +101,7 @@ public class ASystemStore implements Comparable, Cloneable {
         return abducibles.size() - ((ASystemStore)t).numAbducibles();
     }
 
-    @Override
-    public Object clone() {
-        Map<String,VariableInstance> variablesSoFar = new HashMap<String,VariableInstance>();
+    public ASystemStore clone(Map<String, VariableInstance> variablesSoFar) {
         ASystemStore newStore = new ASystemStore();
         for (PredicateInstance abducible:abducibles) {
             newStore.abducibles.add((PredicateInstance)abducible.clone(variablesSoFar));
@@ -104,34 +114,6 @@ public class ASystemStore implements Comparable, Cloneable {
         }
         return newStore;
     }
-
-    public Object clone(Map<String, VariableInstance> variablesSoFar) {
-        ASystemStore newStore = new ASystemStore();
-        for (PredicateInstance abducible:abducibles) {
-            newStore.abducibles.add((PredicateInstance)abducible.clone(variablesSoFar));
-        }
-        for (DenialInstance denial:denials) {
-            newStore.denials.add((DenialInstance)denial.clone(variablesSoFar));
-        }
-        for (IEqualityInstance equality:equalities) {
-            newStore.equalities.add((IEqualityInstance)equality.clone(variablesSoFar));
-        }
-        return newStore;
-    }
-    
-    public List<PredicateInstance> getAbducibles() {
-        return abducibles;
-    }
-
-    public List<DenialInstance> getDenials() {
-        return denials;
-    }
-
-    public List<IEqualityInstance> getEqualities() {
-        return equalities;
-    }
-    
-    
 
     @Override
     public String toString() {
@@ -163,7 +145,5 @@ public class ASystemStore implements Comparable, Cloneable {
         return output;
         
     }
-    
-    
     
 }

@@ -9,5 +9,5 @@ package uk.co.mtford.alp.abduction.logic.instance;
  * @author mtford
  */
 public interface ITermInstance extends IAtomInstance {
-   public Object clone();
+
 }

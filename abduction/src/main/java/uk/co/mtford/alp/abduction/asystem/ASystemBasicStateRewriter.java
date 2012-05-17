@@ -4,10 +4,11 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
-import java.util.List;
-import java.util.Stack;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
+
+import java.util.List;
+import java.util.Stack;
 
 /** A basic implementation of an ASystem state rewriter.
  *  Uses no heuristics. Simply LIFO on next state and goal selection.

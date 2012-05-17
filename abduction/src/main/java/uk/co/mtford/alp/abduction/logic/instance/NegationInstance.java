@@ -4,13 +4,14 @@
  */
 package uk.co.mtford.alp.abduction.logic.instance;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.asystem.ASystemState;
 import uk.co.mtford.alp.abduction.asystem.DenialInstance;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -33,12 +34,6 @@ public class NegationInstance implements ILiteralInstance {
     public void setSubFormula(ILiteralInstance subFormula) {
         this.subFormula = subFormula;
     }
-    
-    @Override
-    public Object clone() {
-        return new NegationInstance((ILiteralInstance)subFormula.clone());
-    }
-    
 
     public boolean deepEquals(Object obj) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -97,7 +92,7 @@ public class NegationInstance implements ILiteralInstance {
         return possibleStates;
     }
 
-    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+    public ILogicInstance clone(Map<String, VariableInstance> variablesSoFar) {
         return new NegationInstance((ILiteralInstance)subFormula.clone(variablesSoFar));
     }
 

@@ -1,10 +1,5 @@
 package uk.co.mtford.alp;
 
-import java.io.FileNotFoundException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.asystem.ASystemBasicStateRewriter;
@@ -16,6 +11,12 @@ import uk.co.mtford.alp.abduction.parse.program.ALPParser;
 import uk.co.mtford.alp.abduction.parse.program.ParseException;
 import uk.co.mtford.alp.abduction.parse.program.TokenMgrError;
 import uk.co.mtford.alp.abduction.parse.query.ALPQueryParser;
+
+import java.io.FileNotFoundException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
 /** Main entry point. Provides a terminal like interface.
  * 

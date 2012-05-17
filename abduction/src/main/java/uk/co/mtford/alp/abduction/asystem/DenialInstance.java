@@ -4,15 +4,16 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.logic.instance.FalseInstance;
 import uk.co.mtford.alp.abduction.logic.instance.ILiteralInstance;
+import uk.co.mtford.alp.abduction.logic.instance.ILogicInstance;
 import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -89,20 +90,6 @@ public class DenialInstance implements IASystemInferable {
     public void pushLiteral(ILiteralInstance p) {
         body.add(0, p);
     }
-    
-    @Override
-    public Object clone() {
-        DenialInstance clone = new DenialInstance();
-        HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
-        for (VariableInstance v:universalVariables) {
-            clone.getUniversalVariables().add((VariableInstance) v.clone(variablesSoFar));
-        }
-        for (IASystemInferable l:body) {
-            clone.addLiteral((IASystemInferable) l.clone(variablesSoFar));
-        }
-        
-        return clone;
-    }
 
     @Override
     public String toString() {
@@ -153,7 +140,7 @@ public class DenialInstance implements IASystemInferable {
         return vars;
     }
 
-    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+    public ILogicInstance clone(Map<String, VariableInstance> variablesSoFar) {
         DenialInstance clone = new DenialInstance();
         for (VariableInstance v:universalVariables) {
             clone.getUniversalVariables().add((VariableInstance) v.clone(variablesSoFar));

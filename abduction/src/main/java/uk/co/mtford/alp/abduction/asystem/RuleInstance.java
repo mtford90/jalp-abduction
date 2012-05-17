@@ -4,14 +4,15 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.logic.instance.IAtomInstance;
 import uk.co.mtford.alp.abduction.logic.instance.ILiteralInstance;
 import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -97,7 +98,7 @@ public class RuleInstance {
             throw new RuleUnfoldException("Wrong number of parameters when expanding rule: "+this);
         }
         LinkedList<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
-        RuleInstance clonedInstance = (RuleInstance) this.clone();
+        RuleInstance clonedInstance = (RuleInstance) this.clone(new HashMap<String, VariableInstance>());
         for (int i=0;i<params.length;i++) {
             IAtomInstance param = (IAtomInstance) clonedInstance.head.getParameter(i);
             EqualityInstance equality = new EqualityInstance(param,params[i]);
@@ -121,19 +122,17 @@ public class RuleInstance {
         return ruleRep;
     }
     
-    @Override
-    public Object clone() { 
-        if (hasBody()) { 
-            HashMap<String, VariableInstance> variables = new HashMap<String, VariableInstance>();
+    public RuleInstance clone(HashMap<String, VariableInstance> variablesSoFar) {
+        if (hasBody()) {
             VariableInstance[] newParameters = new VariableInstance[head.getNumParams()];
             for (int i=0;i<head.getNumParams();i++) {
-                newParameters[i]=(VariableInstance) head.getParameter(i).clone(variables);
+                newParameters[i]=(VariableInstance) head.getParameter(i).clone(variablesSoFar);
             }
             LinkedList<IASystemInferable> newBody = new LinkedList<IASystemInferable>();
             for (int i=0;i<body.size();i++) {
-                newBody.addLast((IASystemInferable)body.get(i).clone(variables));
+                newBody.addLast((IASystemInferable)body.get(i).clone(variablesSoFar));
             }
-            return new RuleInstance(new PredicateInstance(head.getName(),newParameters),newBody,variables);
+            return new RuleInstance(new PredicateInstance(head.getName(),newParameters),newBody,variablesSoFar);
         } 
         else { // Is a fact.
             PredicateInstance headClone = (PredicateInstance) head.clone();

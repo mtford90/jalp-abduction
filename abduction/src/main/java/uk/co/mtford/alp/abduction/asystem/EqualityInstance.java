@@ -4,13 +4,16 @@
  */
 package uk.co.mtford.alp.abduction.asystem;
 
+import org.apache.log4j.Logger;
+import uk.co.mtford.alp.abduction.AbductiveFramework;
+import uk.co.mtford.alp.abduction.logic.instance.ConstantInstance;
+import uk.co.mtford.alp.abduction.logic.instance.IAtomInstance;
+import uk.co.mtford.alp.abduction.logic.instance.ILogicInstance;
+import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
-import uk.co.mtford.alp.abduction.AbductiveFramework;
-import uk.co.mtford.alp.abduction.logic.instance.*;
-import uk.co.mtford.alp.unification.Unifier;
 
 /**
  *
@@ -44,12 +47,6 @@ public class EqualityInstance implements IEqualityInstance  {
         this.right = right;
     }
 
-    
-    @Override
-    public Object clone() {
-        return new EqualityInstance((IAtomInstance)left.clone(),(IAtomInstance)right.clone());
-    }
-    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -199,7 +196,7 @@ public class EqualityInstance implements IEqualityInstance  {
 
     }
 
-    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+    public ILogicInstance clone(Map<String, VariableInstance> variablesSoFar) {
         return new EqualityInstance((IAtomInstance)left.clone(variablesSoFar),(IAtomInstance)right.clone(variablesSoFar));
     }
 

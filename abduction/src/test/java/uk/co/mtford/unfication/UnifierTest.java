@@ -4,11 +4,7 @@
  */
 package uk.co.mtford.unfication;
 
-import java.util.LinkedList;
-import java.util.List;
 import org.apache.log4j.PropertyConfigurator;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.*;
 import uk.co.mtford.alp.abduction.logic.instance.ConstantInstance;
 import uk.co.mtford.alp.abduction.logic.instance.IAtomInstance;
@@ -16,6 +12,12 @@ import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
 import uk.co.mtford.alp.abduction.tools.NameGenerator;
 import uk.co.mtford.alp.unification.Unifier;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  *

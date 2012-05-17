@@ -4,16 +4,16 @@
  */
 package uk.co.mtford.alp.abduction;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.asystem.DenialInstance;
 import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
 import uk.co.mtford.alp.abduction.asystem.RuleInstance;
 import uk.co.mtford.alp.abduction.asystem.RuleUnfoldException;
-import uk.co.mtford.alp.abduction.logic.instance.ILiteralInstance;
 import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /** Describes an abductive framework <P,A,IC> where:
  *      - P is a logic program.

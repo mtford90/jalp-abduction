@@ -4,12 +4,13 @@
  */
 package uk.co.mtford.alp.abduction.logic.instance;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.asystem.DenialInstance;
 import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -80,14 +81,10 @@ public class ConstantInstance implements ITermInstance {
         hash = 79 * hash + (this.value != null ? this.value.hashCode() : 0);
         return hash;
     }
-    
-    @Override
-    public Object clone(){
-        return new ConstantInstance(value);
-    }
 
-    public Object clone(Map<String, VariableInstance> variablesSoFar) {
-        return clone();
+
+    public ILiteralInstance clone(Map<String, VariableInstance> variablesSoFar) {
+        return (ILiteralInstance) new ConstantInstance(value);
     }
 
     @Override

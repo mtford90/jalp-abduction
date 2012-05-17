@@ -4,12 +4,11 @@
  */
 package uk.co.mtford.alp.abduction.logic.instance;
 
-import java.util.*;
-
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.asystem.*;
-import uk.co.mtford.alp.unification.Unifier;
+
+import java.util.*;
 
 /**
  *
@@ -172,16 +171,6 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         return name + "(" + paramList + ")";
     }
 
-    @Override
-    public Object clone() {
-        String clonedName = new String(name);
-        IAtomInstance[] clonedParams = new IAtomInstance[parameters.length];
-        for (int i=0;i<clonedParams.length;i++) {
-            clonedParams[i]=(IAtomInstance) parameters[i].clone();
-        }
-        return new PredicateInstance(clonedName,clonedParams);
-    }
-
     public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
         if (framework.isAbducible(this)) { 
@@ -271,7 +260,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         PredicateInstance thisClone = (PredicateInstance) clonedState.popGoal();
         for (DenialInstance d:clonedState.getStore().getDenials()) {
             if (thisClone.equals(d.peekLiteral())) {
-               DenialInstance clonedDenial = (DenialInstance) d.clone();
+               DenialInstance clonedDenial = (DenialInstance) d.clone(new HashMap<String, VariableInstance>());
                List<IASystemInferable> newInferables = thisClone.positiveEqualitySolve((IAtomInstance) clonedDenial.peekLiteral());
                clonedDenial.addLiteral(0,newInferables);
                clonedState.putGoal(clonedDenial);
@@ -294,7 +283,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         DenialInstance denial = (DenialInstance) s.popGoal();
         for (PredicateInstance collectedAbducible:s.getStore().getAbducibles()) {
             if (collectedAbducible.equals(this)) { // Predicate with same name and arity.
-                DenialInstance clonedDenial = (DenialInstance) denial.clone();
+                DenialInstance clonedDenial = (DenialInstance) denial.clone(new HashMap<String, VariableInstance>());
                 PredicateInstance clonedThis = (PredicateInstance) clonedDenial.popLiteral();
                 List<IASystemInferable> newInferables = clonedThis.positiveEqualitySolve(collectedAbducible);
                 clonedDenial.addLiteral(0,newInferables);
@@ -306,7 +295,7 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
         return possibleStates;
     }
 
-    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+    public ILogicInstance clone(Map<String, VariableInstance> variablesSoFar) {
         String clonedName = new String(name);
         IAtomInstance[] clonedParams = new IAtomInstance[parameters.length];
         for (int i=0;i<clonedParams.length;i++) {

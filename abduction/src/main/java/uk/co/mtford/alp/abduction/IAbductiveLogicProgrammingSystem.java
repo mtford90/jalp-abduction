@@ -4,9 +4,10 @@
  */
 package uk.co.mtford.alp.abduction;
 
-import java.util.List;
 import uk.co.mtford.alp.abduction.asystem.ASystemStore;
 import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
+
+import java.util.List;
 
 /** Describes methods required by an abductive logic system.
  *  Simply computes an explanation when given a query.

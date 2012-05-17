@@ -4,13 +4,14 @@
  */
 package uk.co.mtford.alp.abduction.logic.instance;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.asystem.ASystemState;
 import uk.co.mtford.alp.abduction.asystem.DenialInstance;
 import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -26,13 +27,8 @@ public class TrueInstance implements ILogicInstance, IASystemInferable {
     public boolean deepEquals(Object obj) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
-    @Override
-    public Object clone() {
-        return new TrueInstance();
-    }
 
-    public Object clone(Map<String, VariableInstance> variablesSoFar) {
+    public ILogicInstance clone(Map<String, VariableInstance> variablesSoFar) {
         return new TrueInstance();
     }
 
