@@ -94,12 +94,12 @@ public class DenialInstance implements IASystemInferable {
     @Override
     public String toString() {
         String rep = "ic";
-        if (!universalVariables.isEmpty()) {
+       /* if (!universalVariables.isEmpty()) {
             rep+="(";
             for (VariableInstance v:universalVariables) rep+=v+",";
             rep = rep.substring(0,rep.length()-1);
             rep+=")";
-        }
+        } */
         rep+=" :- ";
         String bodyRep = body.toString();
         bodyRep = bodyRep.substring(1, bodyRep.length()-1);

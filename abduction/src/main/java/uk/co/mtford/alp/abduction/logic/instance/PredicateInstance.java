@@ -240,41 +240,35 @@ public class PredicateInstance implements ILiteralInstance, IAtomInstance {
     }
     
     public List<ASystemState> applyRuleA1(AbductiveFramework framework, ASystemState s)   {
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule A1 to "+this);
         LinkedList<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        // Unify with an already collected abducible.
-        for (int i=0;i<s.getStore().numAbducibles();i++) {
-            ASystemState clonedState = (ASystemState) s.clone();
-            PredicateInstance thisClone = (PredicateInstance) clonedState.popGoal();
-            PredicateInstance collectedAbducible = clonedState.getStore().getAbducibles().get(i);
-            if (collectedAbducible.equals(this)) {
-                List<IASystemInferable> newInferables = thisClone.positiveEqualitySolve(collectedAbducible);
-                clonedState.getGoals().addAll(newInferables);
-                possibleStates.add(clonedState);
-            }
+        // SELECT an arbitrary matching collected abducible and unify with it.
+        for (PredicateInstance abducible:s.getStore().getAbducibles()) {
+            ASystemState clonedState = s.clone();
+            PredicateInstance clonedThis = (PredicateInstance)s.popGoal();
+            List<IASystemInferable> equationalSolved = clonedThis.positiveEqualitySolve(abducible);
+            s.putGoals(equationalSolved);
+            possibleStates.add(s);
         }
+
         // OR
-        // Compare against existing constraints and also check cant be unified with existing abducibles.
-        // And then add to the collected abducibles store.
-        ASystemState clonedState = (ASystemState) s.clone();
-        PredicateInstance thisClone = (PredicateInstance) clonedState.popGoal();
-        for (DenialInstance d:clonedState.getStore().getDenials()) {
-            if (thisClone.equals(d.peekLiteral())) {
-               DenialInstance clonedDenial = (DenialInstance) d.clone(new HashMap<String, VariableInstance>());
-               List<IASystemInferable> newInferables = thisClone.positiveEqualitySolve((IAtomInstance) clonedDenial.peekLiteral());
-               clonedDenial.addLiteral(0,newInferables);
-               clonedState.putGoal(clonedDenial);
+        // Unify with all constraints that have matching abducible as head and add those constraints to the goals.
+        // Create inequalities for parameters in our abducible and all those collected to ensure that they cant
+        // be unified. Add these to the goals.
+        // Add our abducible to the collected abducibles.
+
+        ASystemState clonedState = s.clone();
+        PredicateInstance clonedThis = (PredicateInstance)s.popGoal();
+        for (DenialInstance denial:s.getStore().getDenials()) {
+            IASystemInferable inferable = denial.peekLiteral();
+            if (clonedThis.equals(inferable)) {
+                denial.popLiteral();
+                List<IASystemInferable> equationalSolved = clonedThis.positiveEqualitySolve((IAtomInstance) inferable);
+
+
+
             }
         }
-        for (PredicateInstance collectedAbducible:clonedState.getStore().getAbducibles()) {
-            if (thisClone.equals(collectedAbducible)) {
-                List<IASystemInferable> newInferables = thisClone.positiveEqualitySolve(collectedAbducible);
-                clonedState.putGoals(newInferables);
-            }
-        }
-        clonedState.getStore().getAbducibles().add(thisClone);
-        possibleStates.addLast(clonedState);
-        return possibleStates;
+
     }
     
     public List<ASystemState> applyRuleA2(AbductiveFramework framework, ASystemState s) {
