@@ -4,8 +4,6 @@
  */
 package uk.co.mtford.alp.abduction.logic.instance;
 
-import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
-
 /**
  *
  * @author mtford

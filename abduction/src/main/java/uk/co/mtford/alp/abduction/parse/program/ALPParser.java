@@ -2,10 +2,6 @@
 package uk.co.mtford.alp.abduction.parse.program;
 
 import uk.co.mtford.alp.abduction.AbductiveFramework;
-import uk.co.mtford.alp.abduction.asystem.DenialInstance;
-import uk.co.mtford.alp.abduction.asystem.EqualityInstance;
-import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
-import uk.co.mtford.alp.abduction.asystem.RuleInstance;
 import uk.co.mtford.alp.abduction.logic.instance.*;
 
 import java.io.ByteArrayInputStream;
@@ -38,11 +34,11 @@ public class ALPParser implements ALPParserConstants {
 
 /* Top level production */
   final public AbductiveFramework AbductiveLogicProgram() throws ParseException {
-        LinkedList<RuleInstance> program = new LinkedList<RuleInstance>();
+        LinkedList<DefinitionInstance> program = new LinkedList<DefinitionInstance>();
     LinkedList<DenialInstance> constraints = new LinkedList<DenialInstance>();
     HashMap<String, Integer> abducibles = new HashMap<String, Integer>();
 
-    RuleInstance r;
+    DefinitionInstance r;
     DenialInstance d;
     List<PredicateInstance> newAbducibles;
     label_1:
@@ -73,7 +69,7 @@ public class ALPParser implements ALPParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public RuleInstance Rule() throws ParseException {
+  final public DefinitionInstance Rule() throws ParseException {
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
 
     PredicateInstance head;
@@ -86,7 +82,7 @@ public class ALPParser implements ALPParserConstants {
       ;
     }
     jj_consume_token(DOT);
-      {if (true) return new RuleInstance(head,body,variablesSoFar);}
+      {if (true) return new DefinitionInstance(head,body,variablesSoFar);}
     throw new Error("Missing return statement in function");
   }
 

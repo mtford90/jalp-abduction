@@ -1,16 +1,15 @@
 package uk.co.mtford.alp;
 
 import org.apache.log4j.Logger;
+import uk.co.mtford.alp.abduction.Store;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
-import uk.co.mtford.alp.abduction.asystem.ASystemBasicStateRewriter;
-import uk.co.mtford.alp.abduction.asystem.ASystemState;
-import uk.co.mtford.alp.abduction.asystem.ASystemStore;
-import uk.co.mtford.alp.abduction.asystem.IASystemInferable;
+import uk.co.mtford.alp.abduction.logic.instance.IASystemInferable;
 import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.alp.abduction.parse.program.ALPParser;
 import uk.co.mtford.alp.abduction.parse.program.ParseException;
 import uk.co.mtford.alp.abduction.parse.program.TokenMgrError;
 import uk.co.mtford.alp.abduction.parse.query.ALPQueryParser;
+import uk.co.mtford.alp.abduction.rules.RuleNode;
 
 import java.io.FileNotFoundException;
 import java.util.Iterator;
@@ -65,32 +64,59 @@ public class Main {
     private static final String INVALID_USAGE
             = "Invalid usage. Use :h help.";
     
-    private static ASystemBasicStateRewriter system;
     private static boolean debugMode = false;
-    
+    private static RuleNode rootNode;
+    private static AbductiveFramework framework;
+
+    /** Prints a message to standard error and then quits with error status.
+     *
+     * @param error
+     */
     private static void fatalError(String error) {
         System.err.println(error);
         System.exit(-1);
     }
-    
+
+    /** Prints a message to standard out.
+     *
+     * @param str
+     */
     private static void printMessage(String str) {
         System.out.println(str);
     }
-    
+
+    /** Prints a message to standard out along with the string representation of some throwable.
+     *
+     * @param str
+     * @param t
+     */
     private static void printMessage(String str, Throwable t) {
         System.out.println(str);
         t.printStackTrace(System.out);
     }
-    
-    private static void incorporateNewFramework(AbductiveFramework f) {
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Incorporating results from new framework.");
-        }
-        system.getAbductiveFramework().getP().addAll(f.getP());
-        system.getAbductiveFramework().getA().putAll(f.getA());
-        system.getAbductiveFramework().getIC().addAll(f.getIC());
+
+    private static void mergeFramework(AbductiveFramework newFramework) {
+         if (framework==null) {
+             framework=newFramework;
+         }
+         else {
+             framework.getP().addAll(newFramework.getP());
+             framework.getIC().addAll(newFramework.getIC());
+             framework.getA().putAll(newFramework.getA());
+         }
     }
-    
+
+    /** Resets the abductive framework.
+     *
+     */
+    private static void reset() {
+        framework = new AbductiveFramework();
+    }
+
+    /** Loads and parses an abductive logic program and constructs the framework object.
+     *
+     * @param nextLine
+     */
     private static void loadFiles(String nextLine) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Loading file called "+nextLine);
         String[] fileNames = nextLine.split(" ");
@@ -112,16 +138,22 @@ public class Main {
                 catch (TokenMgrError ex) {
                     printMessage("Token error\n"+ex.getMessage(),ex);
                 }
-                if (newF!=null) incorporateNewFramework(newF);
+                if (newF!=null) mergeFramework(newF);
             }
         }
     }
-    
+
+    /** Parses and executes a query on the currently held abductive framework. Operates in either debug (step) mode
+     *  or performs all steps and returns the results.
+     * @param query
+     * @throws uk.co.mtford.alp.abduction.parse.query.ParseException
+     */
     private static void processQuery(String query) throws uk.co.mtford.alp.abduction.parse.query.ParseException { 
         List<PredicateInstance> predicates = ALPQueryParser.readFromString(query);
         List<IASystemInferable> goals = new LinkedList<IASystemInferable>();
         goals.addAll(predicates);
         if (debugMode) {
+            /*
             Iterator<ASystemState> iterator = system.getStateIterator(goals);
             while (iterator.hasNext()) {
                 printMessage("Current state is: \n"+iterator.next());
@@ -134,19 +166,14 @@ public class Main {
                     break;
                 }
             }
+            */
         }
         else {
             if (LOGGER.isInfoEnabled()) LOGGER.info("Beginning processing of query.");
-            List<ASystemStore> possibleExplanations = system.computeExplanation(goals);
-            printMessage("Found "+possibleExplanations.size()+" possible explanations for query "+query+".");
-            for (ASystemStore s:possibleExplanations) printMessage(s.toString());
         }
     }
-    
-    private static void initALPS(AbductiveFramework f) {
-        system = new ASystemBasicStateRewriter(f);
-    }
-    
+
+
     private static void startALPS() {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Starting ALPS.");
         while (true) {
@@ -154,7 +181,7 @@ public class Main {
             String nextLine = sc.nextLine();
             char c = ' ';
             if (!nextLine.isEmpty()) c = nextLine.charAt(0);
-            if (c==':') {
+            if (c==':') { // Execute a command.
                 c=nextLine.charAt(1);
                 switch (c) {
                     case FILE_COMMAND: 
@@ -175,14 +202,14 @@ public class Main {
                         }
                         break;
                     case CLEAR_COMMAND: 
-                        system.reset();
+                        reset();
                         System.out.println("All cleared.");
                         break;
                     case HELP_COMMAND: 
                         printMessage(ALPS_HELP);
                         break;
                     case DUMP_COMMAND:
-                        printMessage(system.getAbductiveFramework().toString());
+                        printMessage(framework.toString());
                         break;
                     case DEBUG_COMMAND:
                         debugMode = !debugMode;
@@ -192,10 +219,10 @@ public class Main {
                         printMessage(UNKNOWN_COMMAND);
                 }
             }
-            else if (c==' ') {
+            else if (c==' ') { // Carry on.
                 continue;
             }
-            else { 
+            else { //
                 AbductiveFramework newF = null;
                 try {
                     newF = ALPParser.readFromString(nextLine);
@@ -206,12 +233,16 @@ public class Main {
                 catch (TokenMgrError ex) {
                     printMessage("Invalid syntax\n"+ex.getMessage());
                 }
-                if (newF != null) incorporateNewFramework(newF);
+                if (newF != null) mergeFramework(newF);
             }
         }
     }
-    
-    // Initialise
+
+    /**  Main point of entry. Either starts up the ALPS command line if query not provided via program arguments
+     *   or performs the derivation and returns the result.
+     * @param args
+     * @throws uk.co.mtford.alp.abduction.parse.query.ParseException
+     */
     public static void main(String[] args) throws uk.co.mtford.alp.abduction.parse.query.ParseException {
        boolean console = false;
        boolean file = false;
@@ -269,12 +300,13 @@ public class Main {
             }
           
        }
+
        if (query && file) {
-           initALPS(f);
+           mergeFramework(f);
            processQuery(queryString);
        }
        else if (!query) {
-           initALPS(f);
+           mergeFramework(f);
            startALPS();
        }
 

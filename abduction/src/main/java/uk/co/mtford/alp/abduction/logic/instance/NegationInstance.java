@@ -6,12 +6,11 @@ package uk.co.mtford.alp.abduction.logic.instance;
 
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
-import uk.co.mtford.alp.abduction.asystem.ASystemState;
-import uk.co.mtford.alp.abduction.asystem.DenialInstance;
+import uk.co.mtford.alp.abduction.rules.N1RuleNode;
+import uk.co.mtford.alp.abduction.rules.N2RuleNode;
+import uk.co.mtford.alp.abduction.rules.RuleNode;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -35,70 +34,13 @@ public class NegationInstance implements ILiteralInstance {
         this.subFormula = subFormula;
     }
 
-    public boolean deepEquals(Object obj) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    @Override
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
+        return new N1RuleNode(abductiveFramework,goals);
     }
 
     @Override
-    public String toString() {
-        return "not "+subFormula;
-    }
-
-    /** Implements rule N1
-     * 
-     * @param framework
-     * @param s
-     * @return 
-     */
-    public List<ASystemState> applyInferenceRule(AbductiveFramework framework, ASystemState s) {
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule N1 to "+this);
-        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        NegationInstance thisClone = (NegationInstance) s.popGoal();
-        List<ILiteralInstance> literalList = new LinkedList<ILiteralInstance>();
-        literalList.add(subFormula);
-        DenialInstance d = new DenialInstance(); // Terms in subformula are free variables.
-        for (ILiteralInstance literal:literalList)
-        {
-            d.addLiteral(literal);
-        }
-        
-        s.putGoal(d);
-        possibleStates.add(s);
-        return possibleStates;
-    }
-
-    /** Implements rule N2
-     * 
-     * @param framework
-     * @param s
-     * @return 
-     */
-    public List<ASystemState> applyDenialInferenceRule(AbductiveFramework framework, ASystemState s) {
-
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying inference rule N2 to "+this);
-        List<ASystemState> possibleStates = new LinkedList<ASystemState>();
-        ASystemState clonedState = (ASystemState) s.clone();
-        DenialInstance clonedDenial = (DenialInstance) clonedState.popGoal();
-        NegationInstance clonedThis = (NegationInstance) clonedDenial.popLiteral();
-        clonedState.putGoal(clonedThis.subFormula);
-        possibleStates.add(clonedState);
-        // OR
-        clonedState = (ASystemState) s.clone();
-        clonedDenial = (DenialInstance) clonedState.popGoal();
-        clonedThis = (NegationInstance) clonedDenial.popLiteral();
-        clonedState.putGoal(clonedDenial);
-        clonedState.putGoal(clonedThis);
-        possibleStates.add(0,clonedState);
-        return possibleStates;
-    }
-
-    public ILogicInstance clone(Map<String, VariableInstance> variablesSoFar) {
-        return new NegationInstance((ILiteralInstance)subFormula.clone(variablesSoFar));
-    }
-
-
-    @Override
-    public List<VariableInstance> getVariables() {
-        return subFormula.getVariables();
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
+        return new N2RuleNode(abductiveFramework,goals);
     }
 }
