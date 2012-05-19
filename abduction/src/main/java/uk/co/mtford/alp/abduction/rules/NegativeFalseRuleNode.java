@@ -3,7 +3,7 @@ package uk.co.mtford.alp.abduction.rules;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.Store;
 import uk.co.mtford.alp.abduction.logic.instance.DenialInstance;
-import uk.co.mtford.alp.abduction.logic.instance.IASystemInferable;
+import uk.co.mtford.alp.abduction.logic.instance.IASystemInferableInstance;
 import uk.co.mtford.alp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
 import uk.co.mtford.alp.abduction.rules.visitor.RuleNodeVisitor;
@@ -21,11 +21,11 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class NegativeFalseRuleNode extends NegativeRuleNode {
-    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework, IASystemInferable goal, List<IASystemInferable> restOfGoals, List<DenialInstance> denial) {
+    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals, List<DenialInstance> denial) {
         super(abductiveFramework, goal, restOfGoals, denial);
     }
 
-    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework, IASystemInferable goal, List<IASystemInferable> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
+    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
         super(abductiveFramework, goal, restOfGoals, store, assignments, denial);
     }
 
@@ -40,7 +40,7 @@ public class NegativeFalseRuleNode extends NegativeRuleNode {
         newRuleNode.currentGoal = currentGoal;
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
-        newRuleNode.nextGoals = new LinkedList<IASystemInferable>(nextGoals);
+        newRuleNode.nextGoals = new LinkedList<IASystemInferableInstance>(nextGoals);
         newRuleNode.denials = denials;
         return newRuleNode;
     }

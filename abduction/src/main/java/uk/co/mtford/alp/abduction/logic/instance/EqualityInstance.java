@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * @author mtford
  */
-public class EqualityInstance implements IEqualitySolverResult, ILiteralInstance {
+public class EqualityInstance implements IEqualitySolverResultInstance, ILiteralInstance {
 
     private static Logger LOGGER = Logger.getLogger(EqualityInstance.class);
 
@@ -64,19 +64,28 @@ public class EqualityInstance implements IEqualitySolverResult, ILiteralInstance
 
 
     @Override
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferableInstance> goals) {
         return new E1RuleNode(abductiveFramework, this, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferable> goals) {
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferableInstance> goals) {
         return new E2RuleNode(abductiveFramework, this, goals, nestedDenialList);
     }
 
     @Override
-    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         IAtomInstance newLeft = (IAtomInstance) left.performSubstitutions(substitutions);
         IAtomInstance newRight = (IAtomInstance) right.performSubstitutions(substitutions);
+        left = newLeft;
+        right = newRight;
+        return this;
+    }
+
+    @Override
+    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        IAtomInstance newLeft = (IAtomInstance) left.clone(substitutions);
+        IAtomInstance newRight = (IAtomInstance) right.clone(substitutions);
         return new EqualityInstance(newLeft, newRight);
     }
 

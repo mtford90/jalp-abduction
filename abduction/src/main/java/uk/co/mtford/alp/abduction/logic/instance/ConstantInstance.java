@@ -59,8 +59,8 @@ public class ConstantInstance implements ITermInstance {
      * @return
      */
     @Override
-    public List<IEqualitySolverResult> equalitySolve(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+    public List<IEqualitySolverResultInstance> equalitySolve(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
         if (!assignment.containsKey(other)) { //c=v
             assignment.put(other, this);
             return result;
@@ -70,22 +70,27 @@ public class ConstantInstance implements ITermInstance {
     }
 
     @Override
-    public List<IEqualitySolverResult> equalitySolve(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+    public List<IEqualitySolverResultInstance> equalitySolve(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
         if (this.equals(other)) result.add(new TrueInstance()); // Same constant.
         else result.add(new FalseInstance()); // Different constant.
         return result;
     }
 
     @Override
-    public List<IEqualitySolverResult> equalitySolve(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+    public List<IEqualitySolverResultInstance> equalitySolve(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
         result.add(new FalseInstance()); //
         return result;
     }
 
     @Override
-    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        return this;
+    }
+
+    @Override
+    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         return new ConstantInstance(value);
     }
 

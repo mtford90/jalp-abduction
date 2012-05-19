@@ -73,8 +73,8 @@ public class VariableInstance implements ITermInstance {
     }
 
     @Override
-    public List<IEqualitySolverResult> equalitySolve(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+    public List<IEqualitySolverResultInstance> equalitySolve(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
         if (assignment.containsKey(this)) {
             return assignment.get(this).equalitySolve(other, assignment);
         } else if (assignment.containsKey(other)) {
@@ -86,8 +86,8 @@ public class VariableInstance implements ITermInstance {
     }
 
     @Override
-    public List<IEqualitySolverResult> equalitySolve(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+    public List<IEqualitySolverResultInstance> equalitySolve(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
         if (assignment.containsKey(this)) {
             return assignment.get(this).equalitySolve(other, assignment);
         } else {
@@ -97,8 +97,8 @@ public class VariableInstance implements ITermInstance {
     }
 
     @Override
-    public List<IEqualitySolverResult> equalitySolve(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+    public List<IEqualitySolverResultInstance> equalitySolve(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
         if (assignment.containsKey(this)) {
             return assignment.get(this).equalitySolve(other, assignment);
         } else {
@@ -108,11 +108,22 @@ public class VariableInstance implements ITermInstance {
     }
 
     @Override
-    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         if (substitutions.containsKey(this)) {
             return substitutions.get(this).performSubstitutions(substitutions);
         } else {
-            return new VariableInstance(new String(name));
+            return this;
+        }
+    }
+
+    @Override
+    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        if (substitutions.containsKey(this)) {
+            return substitutions.get(this).performSubstitutions(substitutions);
+        } else {
+            VariableInstance clonedVariable = new VariableInstance(new String(name));
+            substitutions.put(this, clonedVariable);
+            return clonedVariable;
         }
     }
 

@@ -42,7 +42,7 @@ import java.util.List;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.alp.abduction.logic.instance.EqualityInstance;
-import uk.co.mtford.alp.abduction.logic.instance.DefinitionInstance;
+import uk.co.mtford.alp.abduction.Definition;
 import uk.co.mtford.alp.abduction.logic.instance.*;
 
 public class ALPQueryParser {

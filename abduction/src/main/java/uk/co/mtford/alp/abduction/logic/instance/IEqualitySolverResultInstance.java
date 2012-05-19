@@ -7,5 +7,5 @@ package uk.co.mtford.alp.abduction.logic.instance;
  * Time: 10:36
  * To change this template use File | Settings | File Templates.
  */
-public interface IEqualitySolverResult extends IASystemInferable {
+public interface IEqualitySolverResultInstance extends IASystemInferableInstance {
 }

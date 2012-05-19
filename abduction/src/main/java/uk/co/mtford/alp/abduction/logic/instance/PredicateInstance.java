@@ -109,8 +109,8 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     }
 
     @Override
-    public List<IEqualitySolverResult> equalitySolve(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+    public List<IEqualitySolverResultInstance> equalitySolve(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
         if (!assignment.containsKey(other)) {
             assignment.put(other, this);
             return result;
@@ -120,15 +120,15 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     }
 
     @Override
-    public List<IEqualitySolverResult> equalitySolve(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+    public List<IEqualitySolverResultInstance> equalitySolve(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
         result.add(new FalseInstance());
         return result;
     }
 
     @Override
-    public List<IEqualitySolverResult> equalitySolve(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+    public List<IEqualitySolverResultInstance> equalitySolve(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
         if (!this.equals(other)) {  // Same name and arity?
             result.add(new FalseInstance());
         } else { // s_bar = t_bar
@@ -140,23 +140,34 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     }
 
     @Override
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferableInstance> goals) {
         if (abductiveFramework.getA().containsKey(this)) return new A1RuleNode(abductiveFramework, this, goals);
         else return new D1RuleNode(abductiveFramework, this, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferable> goals) {
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferableInstance> goals) {
         if (abductiveFramework.getA().containsKey(this))
             return new A2RuleNode(abductiveFramework, this, goals, nestedDenialList);
         else return new D2RuleNode(abductiveFramework, this, goals, nestedDenialList);
     }
 
     @Override
-    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         LinkedList<IAtomInstance> newParameters = new LinkedList<IAtomInstance>();
         for (IAtomInstance parameter : parameters) {
             IAtomInstance newParameter = (IAtomInstance) parameter.performSubstitutions(substitutions);
+            newParameters.add(newParameter);
+        }
+        parameters = newParameters.toArray(new IAtomInstance[parameters.length]);
+        return this;
+    }
+
+    @Override
+    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        LinkedList<IAtomInstance> newParameters = new LinkedList<IAtomInstance>();
+        for (IAtomInstance parameter : parameters) {
+            IAtomInstance newParameter = (IAtomInstance) clone(substitutions);
             newParameters.add(newParameter);
         }
         return new PredicateInstance(new String(name), newParameters);

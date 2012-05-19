@@ -24,7 +24,7 @@ public abstract class RuleNodeVisitor {
         ruleNode.acceptVisitor(this);
     }
 
-    private RuleNode constructPositiveChildNode(IASystemInferable newGoal, List<IASystemInferable> newRestOfGoals,
+    private RuleNode constructPositiveChildNode(IASystemInferableInstance newGoal, List<IASystemInferableInstance> newRestOfGoals,
                                                 RuleNode previousNode) {
         RuleNode newRuleNode = newGoal.getPositiveRootRuleNode(previousNode.getAbductiveFramework(), newRestOfGoals);
         Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>
@@ -34,9 +34,9 @@ public abstract class RuleNodeVisitor {
         return newRuleNode;
     }
 
-    private RuleNode constructNegativeChildNode(IASystemInferable newGoal, List<DenialInstance> nestedDenialList,
-                                                List<IASystemInferable> newRestOfGoals, RuleNode previousNode) {
-        newRestOfGoals = new LinkedList<IASystemInferable>(newRestOfGoals);
+    private RuleNode constructNegativeChildNode(IASystemInferableInstance newGoal, List<DenialInstance> nestedDenialList,
+                                                List<IASystemInferableInstance> newRestOfGoals, RuleNode previousNode) {
+        newRestOfGoals = new LinkedList<IASystemInferableInstance>(newRestOfGoals);
         RuleNode newRuleNode = newGoal.getNegativeRootRuleNode(previousNode.getAbductiveFramework(), nestedDenialList, newRestOfGoals);
         Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>
                 (previousNode.getAssignments());
@@ -86,8 +86,8 @@ public abstract class RuleNodeVisitor {
      * @param ruleNode
      */
     public void visit(PositiveTrueRuleNode ruleNode) {
-        List<IASystemInferable> newRestOfGoals = new LinkedList<IASystemInferable>(ruleNode.getNextGoals());
-        IASystemInferable newGoal = newRestOfGoals.remove(0);
+        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        IASystemInferableInstance newGoal = newRestOfGoals.remove(0);
         RuleNode newRuleNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
         ruleNode.getChildren().add(newRuleNode);
     }
@@ -98,10 +98,10 @@ public abstract class RuleNodeVisitor {
      * @param ruleNode
      */
     public void visit(NegativeTrueRuleNode ruleNode) {
-        List<IASystemInferable> newRestOfGoals = new LinkedList<IASystemInferable>(ruleNode.getNextGoals());
+        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
         List<DenialInstance> newNestedDenialList = new LinkedList<DenialInstance>(ruleNode.getDenials());
         DenialInstance currentDenialInstance = newNestedDenialList.get(0);
-        IASystemInferable newGoal;
+        IASystemInferableInstance newGoal;
         if (!currentDenialInstance.getBody().isEmpty()) {
             newGoal = currentDenialInstance.getBody().remove(0);
         } else {
@@ -127,16 +127,16 @@ public abstract class RuleNodeVisitor {
      * @param ruleNode
      */
     public void visit(NegativeFalseRuleNode ruleNode) {
-        List<IASystemInferable> newRestOfGoals = new LinkedList<IASystemInferable>(ruleNode.getNextGoals());
+        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
         List<DenialInstance> newNestedDenialList = new LinkedList<DenialInstance>(ruleNode.getDenials());
         RuleNode newChildNode;
         newNestedDenialList.remove(0);
         if (newNestedDenialList.isEmpty()) {
-            IASystemInferable newGoal = newRestOfGoals.remove(0);
+            IASystemInferableInstance newGoal = newRestOfGoals.remove(0);
             newChildNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
         } else {
             DenialInstance newDenial = newNestedDenialList.remove(0).shallowClone();
-            IASystemInferable newGoal = newDenial.getBody().remove(0);
+            IASystemInferableInstance newGoal = newDenial.getBody().remove(0);
             newChildNode = constructNegativeChildNode(newGoal, newNestedDenialList, newRestOfGoals, ruleNode);
         }
         ruleNode.getChildren().add(ruleNode);

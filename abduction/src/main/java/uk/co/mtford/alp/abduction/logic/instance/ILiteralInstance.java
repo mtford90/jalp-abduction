@@ -5,9 +5,8 @@
 package uk.co.mtford.alp.abduction.logic.instance;
 
 /**
- *
  * @author mtford
  */
-public interface ILiteralInstance extends IASystemInferable {
+public interface ILiteralInstance extends IASystemInferableInstance {
 
 }

@@ -3,7 +3,7 @@ package uk.co.mtford.alp.abduction.rules;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.Store;
 import uk.co.mtford.alp.abduction.logic.instance.DenialInstance;
-import uk.co.mtford.alp.abduction.logic.instance.IASystemInferable;
+import uk.co.mtford.alp.abduction.logic.instance.IASystemInferableInstance;
 import uk.co.mtford.alp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
 
@@ -20,12 +20,12 @@ import java.util.Map;
 public abstract class NegativeRuleNode extends RuleNode {
     protected List<DenialInstance> denials;
 
-    public NegativeRuleNode(AbductiveFramework abductiveFramework, IASystemInferable goal, List<IASystemInferable> restOfGoals, List<DenialInstance> denial) {
+    public NegativeRuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals, List<DenialInstance> denial) {
         super(abductiveFramework, goal, restOfGoals);
         this.denials = denial;
     }
 
-    public NegativeRuleNode(AbductiveFramework abductiveFramework, IASystemInferable goal, List<IASystemInferable> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
+    public NegativeRuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
         super(abductiveFramework, goal, restOfGoals, store, assignments);
         this.denials = denial;
     }

@@ -10,7 +10,7 @@ import java.util.Set;
  * Time: 12:45
  * To change this template use File | Settings | File Templates.
  */
-public interface IFirstOrderLogic {
+public interface IFirstOrderLogicInstance {
 
     /**
      * Returns a clone of the formula, performing all substitutions specified by the mapping.
@@ -18,7 +18,16 @@ public interface IFirstOrderLogic {
      * @param substitutions
      * @return
      */
-    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions);
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions);
+
+    /**
+     * Returns a clone of the formula, performing all substitutions specified by the mapping, as well as creating
+     * new instances of all variables. As such, new variable substitutions are added to the passed parameter.
+     *
+     * @param substitutions
+     * @return
+     */
+    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions);
 
     /**
      * Returns a list of all variables nested in this first order logic formula.

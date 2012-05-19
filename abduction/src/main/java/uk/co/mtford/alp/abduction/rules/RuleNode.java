@@ -2,7 +2,7 @@ package uk.co.mtford.alp.abduction.rules;
 
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.Store;
-import uk.co.mtford.alp.abduction.logic.instance.IASystemInferable;
+import uk.co.mtford.alp.abduction.logic.instance.IASystemInferableInstance;
 import uk.co.mtford.alp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
 import uk.co.mtford.alp.abduction.rules.visitor.RuleNodeVisitor;
@@ -35,10 +35,10 @@ public abstract class RuleNode {
     protected Map<VariableInstance, IUnifiableAtomInstance> assignments;  // Theta
     protected AbductiveFramework abductiveFramework; // (P,A,IC)
     protected Store store; // ST
-    protected List<IASystemInferable> nextGoals; // G - {currentGoal}
-    protected IASystemInferable currentGoal;
+    protected List<IASystemInferableInstance> nextGoals; // G - {currentGoal}
+    protected IASystemInferableInstance currentGoal;
 
-    public RuleNode(AbductiveFramework abductiveFramework, IASystemInferable goal, List<IASystemInferable> restOfGoals) {
+    public RuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals) {
         children = new LinkedList<RuleNode>();
         assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         nodeMark = nodeMark.UNEXPLORED_MARK;
@@ -48,7 +48,7 @@ public abstract class RuleNode {
         store = new Store();
     }
 
-    public RuleNode(AbductiveFramework abductiveFramework, IASystemInferable goal, List<IASystemInferable> restOfGoals,
+    public RuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals,
                     Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         children = new LinkedList<RuleNode>();
         this.assignments = assignments;
@@ -101,19 +101,19 @@ public abstract class RuleNode {
         this.store = store;
     }
 
-    public List<IASystemInferable> getNextGoals() {
+    public List<IASystemInferableInstance> getNextGoals() {
         return nextGoals;
     }
 
-    public void setNextGoals(List<IASystemInferable> nextGoals) {
+    public void setNextGoals(List<IASystemInferableInstance> nextGoals) {
         this.nextGoals = nextGoals;
     }
 
-    public IASystemInferable getCurrentGoal() {
+    public IASystemInferableInstance getCurrentGoal() {
         return currentGoal;
     }
 
-    public void setCurrentGoal(IASystemInferable currentGoal) {
+    public void setCurrentGoal(IASystemInferableInstance currentGoal) {
         this.currentGoal = currentGoal;
     }
 

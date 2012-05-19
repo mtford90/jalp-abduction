@@ -36,18 +36,24 @@ public class NegationInstance implements ILiteralInstance {
     }
 
     @Override
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferableInstance> goals) {
         return new N1RuleNode(abductiveFramework, this, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferable> goals) {
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferableInstance> goals) {
         return new N2RuleNode(abductiveFramework, this, goals, nestedDenialList);
     }
 
     @Override
-    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new NegationInstance((ILiteralInstance) subFormula.performSubstitutions(substitutions));
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        subFormula = (ILiteralInstance) subFormula.performSubstitutions(substitutions);
+        return this;
+    }
+
+    @Override
+    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        return new NegationInstance((ILiteralInstance) subFormula.clone(substitutions));
     }
 
     @Override

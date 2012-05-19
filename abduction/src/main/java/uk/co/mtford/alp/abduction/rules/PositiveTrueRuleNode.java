@@ -2,7 +2,7 @@ package uk.co.mtford.alp.abduction.rules;
 
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.Store;
-import uk.co.mtford.alp.abduction.logic.instance.IASystemInferable;
+import uk.co.mtford.alp.abduction.logic.instance.IASystemInferableInstance;
 import uk.co.mtford.alp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
 import uk.co.mtford.alp.abduction.rules.visitor.RuleNodeVisitor;
@@ -20,11 +20,11 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class PositiveTrueRuleNode extends PositiveRuleNode {
-    public PositiveTrueRuleNode(AbductiveFramework abductiveFramework, IASystemInferable goal, List<IASystemInferable> restOfGoals) {
+    public PositiveTrueRuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals) {
         super(abductiveFramework, goal, restOfGoals);
     }
 
-    public PositiveTrueRuleNode(AbductiveFramework abductiveFramework, IASystemInferable goal, List<IASystemInferable> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public PositiveTrueRuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         super(abductiveFramework, goal, restOfGoals, store, assignments);
     }
 
@@ -39,7 +39,7 @@ public class PositiveTrueRuleNode extends PositiveRuleNode {
         newRuleNode.currentGoal = currentGoal;
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
-        newRuleNode.nextGoals = new LinkedList<IASystemInferable>(nextGoals);
+        newRuleNode.nextGoals = new LinkedList<IASystemInferableInstance>(nextGoals);
         return newRuleNode;
     }
 
