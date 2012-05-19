@@ -12,10 +12,9 @@ import uk.co.mtford.alp.abduction.rules.RuleNode;
 import java.util.List;
 
 /**
- *
  * @author mtford
  */
-public class FalseInstance implements IASystemInferable {
+public class FalseInstance implements IEqualitySolverResult, IAtomInstance {
 
     @Override
     public String toString() {
@@ -24,11 +23,11 @@ public class FalseInstance implements IASystemInferable {
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
-        return new PositiveFalseRuleNode(abductiveFramework,goals);
+        return new PositiveFalseRuleNode(abductiveFramework, this, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
-        return new NegativeFalseRuleNode(abductiveFramework,goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferable> goals) {
+        return new NegativeFalseRuleNode(abductiveFramework, this, goals, nestedDenialList);
     }
 }

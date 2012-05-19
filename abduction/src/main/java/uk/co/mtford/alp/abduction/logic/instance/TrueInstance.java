@@ -12,23 +12,23 @@ import uk.co.mtford.alp.abduction.rules.RuleNode;
 import java.util.List;
 
 /**
- *
  * @author mtford
  */
-public class TrueInstance implements IASystemInferable {
+public class TrueInstance implements IEqualitySolverResult, IAtomInstance {
 
     @Override
     public String toString() {
         return "TRUE";
     }
 
+
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
-        return new PositiveTrueRuleNode(abductiveFramework,goals);
+        return new PositiveTrueRuleNode(abductiveFramework, this, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
-        return new NegativeTrueRuleNode(abductiveFramework,goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferable> goals) {
+        return new NegativeTrueRuleNode(abductiveFramework, this, goals, nestedDenialList);
     }
 }

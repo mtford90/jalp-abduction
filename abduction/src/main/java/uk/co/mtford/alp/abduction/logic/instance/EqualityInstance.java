@@ -13,19 +13,18 @@ import uk.co.mtford.alp.abduction.rules.RuleNode;
 import java.util.List;
 
 /**
- *
  * @author mtford
  */
-public class EqualityInstance implements IEqualityInstance  {
-    
+public class EqualityInstance implements IEqualitySolverResult, ILiteralInstance {
+
     private static Logger LOGGER = Logger.getLogger(EqualityInstance.class);
 
     private IAtomInstance left;
     private IAtomInstance right;
 
     public EqualityInstance(IAtomInstance left, IAtomInstance right) {
-        this.left=left;
-        this.right=right;
+        this.left = left;
+        this.right = right;
     }
 
     public IAtomInstance getLeft() {
@@ -56,17 +55,18 @@ public class EqualityInstance implements IEqualityInstance  {
     public String toString() {
         String leftString = left.toString();
         String rightString = right.toString();
-        
+
         return leftString + "==" + rightString;
     }
 
+
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
-        return new E1RuleNode(abductiveFramework,goals);
+        return new E1RuleNode(abductiveFramework, this, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
-        return new E2RuleNode(abductiveFramework,goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferable> goals) {
+        return new E2RuleNode(abductiveFramework, this, goals, nestedDenialList);
     }
 }

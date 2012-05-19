@@ -12,13 +12,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
  * @author mtford
  */
 public class DenialInstance implements IASystemInferable {
-    
+
     private static final Logger LOGGER = Logger.getLogger(DenialInstance.class);
-    
+
     private List<IASystemInferable> body;
     private List<VariableInstance> universalVariables;
 
@@ -30,7 +29,7 @@ public class DenialInstance implements IASystemInferable {
 
     public DenialInstance() {
         body = new LinkedList<IASystemInferable>();
-        universalVariables=new LinkedList<VariableInstance>();
+        universalVariables = new LinkedList<VariableInstance>();
     }
 
     public List<IASystemInferable> getBody() {
@@ -44,26 +43,33 @@ public class DenialInstance implements IASystemInferable {
     @Override
     public String toString() {
         String rep = "ic";
-       /* if (!universalVariables.isEmpty()) {
-            rep+="(";
-            for (VariableInstance v:universalVariables) rep+=v+",";
-            rep = rep.substring(0,rep.length()-1);
-            rep+=")";
-        } */
-        rep+=" :- ";
+        /* if (!universalVariables.isEmpty()) {
+           rep+="(";
+           for (VariableInstance v:universalVariables) rep+=v+",";
+           rep = rep.substring(0,rep.length()-1);
+           rep+=")";
+       } */
+        rep += " :- ";
         String bodyRep = body.toString();
-        bodyRep = bodyRep.substring(1, bodyRep.length()-1);
-        rep += bodyRep+".";
+        bodyRep = bodyRep.substring(1, bodyRep.length() - 1);
+        rep += bodyRep + ".";
         return rep;
+    }
+
+    public DenialInstance shallowClone() {
+        return new DenialInstance(new LinkedList<IASystemInferable>(body), new LinkedList<VariableInstance>(universalVariables));
     }
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
-        return body.get(0).getNegativeRootRuleNode(abductiveFramework,goals);
+        LinkedList<DenialInstance> nestedDenialList = new LinkedList<DenialInstance>();
+        nestedDenialList.add(this);
+        return body.remove(0).getNegativeRootRuleNode(abductiveFramework, nestedDenialList, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
-        return body.get(0).getNegativeRootRuleNode(abductiveFramework,goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferable> goals) {
+        nestedDenialList.add(0, this);
+        return body.remove(0).getNegativeRootRuleNode(abductiveFramework, nestedDenialList, goals);
     }
 }

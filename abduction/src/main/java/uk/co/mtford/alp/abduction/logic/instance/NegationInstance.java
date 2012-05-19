@@ -13,13 +13,12 @@ import uk.co.mtford.alp.abduction.rules.RuleNode;
 import java.util.List;
 
 /**
- *
  * @author mtford
  */
 public class NegationInstance implements ILiteralInstance {
-    
+
     private static final Logger LOGGER = Logger.getLogger(NegationInstance.class);
-    
+
     private ILiteralInstance subFormula;
 
     public NegationInstance(ILiteralInstance subFormula) {
@@ -36,11 +35,11 @@ public class NegationInstance implements ILiteralInstance {
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
-        return new N1RuleNode(abductiveFramework,goals);
+        return new N1RuleNode(abductiveFramework, this, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
-        return new N2RuleNode(abductiveFramework,goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferable> goals) {
+        return new N2RuleNode(abductiveFramework, this, goals, nestedDenialList);
     }
 }

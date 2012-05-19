@@ -7,15 +7,18 @@ package uk.co.mtford.alp.abduction.logic.instance;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.tools.UniqueIdGenerator;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 /**
- *
  * @author mtford
  */
 public class VariableInstance implements ITermInstance {
-    
+
     private static final Logger LOGGER = Logger.getLogger(VariableInstance.class);
     private int uniqueId = UniqueIdGenerator.getUniqueId();
-    
+
     String name;
 
     public int getUniqueId() {
@@ -33,14 +36,16 @@ public class VariableInstance implements ITermInstance {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     @Override
     public String toString() {
-        return name+"<"+uniqueId+">";
+        return name + "<" + uniqueId + ">";
     }
 
-    /** Returns true if variable names at the same. Not concerned with value. */
-    
+    /**
+     * Returns true if variable names at the same. Not concerned with value.
+     */
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -48,10 +53,11 @@ public class VariableInstance implements ITermInstance {
         return hash;
     }
 
-    /** Returns true if same name.
-     * 
+    /**
+     * Returns true if same name.
+     *
      * @param obj
-     * @return 
+     * @return
      */
     @Override
     public boolean equals(Object obj) {
@@ -68,4 +74,38 @@ public class VariableInstance implements ITermInstance {
         return true;
     }
 
+    @Override
+    public List<IEqualitySolverResult> equalitySolve(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+        if (assignment.containsKey(this)) {
+            return assignment.get(this).equalitySolve(other, assignment);
+        } else if (assignment.containsKey(other)) {
+            return assignment.get(other).equalitySolve(this, assignment);
+        } else {
+            assignment.put(this, other);
+            return result;
+        }
+    }
+
+    @Override
+    public List<IEqualitySolverResult> equalitySolve(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+        if (assignment.containsKey(this)) {
+            return assignment.get(this).equalitySolve(other, assignment);
+        } else {
+            assignment.put(this, other);
+            return result;
+        }
+    }
+
+    @Override
+    public List<IEqualitySolverResult> equalitySolve(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        LinkedList<IEqualitySolverResult> result = new LinkedList<IEqualitySolverResult>();
+        if (assignment.containsKey(this)) {
+            return assignment.get(this).equalitySolve(other, assignment);
+        } else {
+            assignment.put(this, other);
+            return result;
+        }
+    }
 }

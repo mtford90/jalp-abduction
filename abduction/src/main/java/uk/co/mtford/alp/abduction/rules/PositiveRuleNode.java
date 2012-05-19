@@ -1,9 +1,13 @@
 package uk.co.mtford.alp.abduction.rules;
 
 import uk.co.mtford.alp.abduction.AbductiveFramework;
+import uk.co.mtford.alp.abduction.Store;
 import uk.co.mtford.alp.abduction.logic.instance.IASystemInferable;
+import uk.co.mtford.alp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +18,15 @@ import java.util.List;
  */
 public abstract class PositiveRuleNode extends RuleNode {
 
-    public PositiveRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferable> goals) {
-        super(abductiveFramework, goals);
+    public PositiveRuleNode(AbductiveFramework abductiveFramework, IASystemInferable goal, List<IASystemInferable> restOfGoals) {
+        super(abductiveFramework, goal, restOfGoals);
     }
+
+    public PositiveRuleNode(AbductiveFramework abductiveFramework, IASystemInferable goal, List<IASystemInferable> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, goal, restOfGoals, store, assignments);
+    }
+
+    protected PositiveRuleNode() {
+    }
+
 }

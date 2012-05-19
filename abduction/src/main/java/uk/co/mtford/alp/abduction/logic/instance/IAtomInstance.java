@@ -4,10 +4,10 @@
  */
 package uk.co.mtford.alp.abduction.logic.instance;
 
-/** Implementation of equality solver.
+/**
+ * Implementation of equality solver.
  *
  * @author mtford
  */
 public interface IAtomInstance {
-
 }
