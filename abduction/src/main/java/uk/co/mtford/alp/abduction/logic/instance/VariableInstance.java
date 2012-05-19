@@ -7,9 +7,7 @@ package uk.co.mtford.alp.abduction.logic.instance;
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.tools.UniqueIdGenerator;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author mtford
@@ -107,5 +105,21 @@ public class VariableInstance implements ITermInstance {
             assignment.put(this, other);
             return result;
         }
+    }
+
+    @Override
+    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        if (substitutions.containsKey(this)) {
+            return substitutions.get(this).performSubstitutions(substitutions);
+        } else {
+            return new VariableInstance(new String(name));
+        }
+    }
+
+    @Override
+    public Set<VariableInstance> getVariables() {
+        HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
+        variables.add(this);
+        return variables;
     }
 }

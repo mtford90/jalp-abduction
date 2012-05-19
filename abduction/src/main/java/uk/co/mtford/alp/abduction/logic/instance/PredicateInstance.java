@@ -8,10 +8,7 @@ import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.rules.*;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author mtford
@@ -153,5 +150,24 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
         if (abductiveFramework.getA().containsKey(this))
             return new A2RuleNode(abductiveFramework, this, goals, nestedDenialList);
         else return new D2RuleNode(abductiveFramework, this, goals, nestedDenialList);
+    }
+
+    @Override
+    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        LinkedList<IAtomInstance> newParameters = new LinkedList<IAtomInstance>();
+        for (IAtomInstance parameter : parameters) {
+            IAtomInstance newParameter = (IAtomInstance) parameter.performSubstitutions(substitutions);
+            newParameters.add(newParameter);
+        }
+        return new PredicateInstance(new String(name), newParameters);
+    }
+
+    @Override
+    public Set<VariableInstance> getVariables() {
+        HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
+        for (IAtomInstance parameter : parameters) {
+            variables.addAll(parameter.getVariables());
+        }
+        return variables;
     }
 }

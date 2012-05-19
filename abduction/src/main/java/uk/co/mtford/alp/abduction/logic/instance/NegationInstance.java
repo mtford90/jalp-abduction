@@ -11,6 +11,8 @@ import uk.co.mtford.alp.abduction.rules.N2RuleNode;
 import uk.co.mtford.alp.abduction.rules.RuleNode;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author mtford
@@ -41,5 +43,15 @@ public class NegationInstance implements ILiteralInstance {
     @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferable> goals) {
         return new N2RuleNode(abductiveFramework, this, goals, nestedDenialList);
+    }
+
+    @Override
+    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        return new NegationInstance((ILiteralInstance) subFormula.performSubstitutions(substitutions));
+    }
+
+    @Override
+    public Set<VariableInstance> getVariables() {
+        return subFormula.getVariables();
     }
 }

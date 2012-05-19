@@ -10,7 +10,10 @@ import uk.co.mtford.alp.abduction.rules.E1RuleNode;
 import uk.co.mtford.alp.abduction.rules.E2RuleNode;
 import uk.co.mtford.alp.abduction.rules.RuleNode;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author mtford
@@ -68,5 +71,20 @@ public class EqualityInstance implements IEqualitySolverResult, ILiteralInstance
     @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferable> goals) {
         return new E2RuleNode(abductiveFramework, this, goals, nestedDenialList);
+    }
+
+    @Override
+    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        IAtomInstance newLeft = (IAtomInstance) left.performSubstitutions(substitutions);
+        IAtomInstance newRight = (IAtomInstance) right.performSubstitutions(substitutions);
+        return new EqualityInstance(newLeft, newRight);
+    }
+
+    @Override
+    public Set<VariableInstance> getVariables() {
+        HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
+        variables.addAll(left.getVariables());
+        variables.addAll(right.getVariables());
+        return variables;
     }
 }

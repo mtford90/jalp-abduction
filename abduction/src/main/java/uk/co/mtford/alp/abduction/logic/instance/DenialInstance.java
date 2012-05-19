@@ -8,8 +8,7 @@ import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.rules.RuleNode;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author mtford
@@ -57,7 +56,8 @@ public class DenialInstance implements IASystemInferable {
     }
 
     public DenialInstance shallowClone() {
-        return new DenialInstance(new LinkedList<IASystemInferable>(body), new LinkedList<VariableInstance>(universalVariables));
+        return new DenialInstance(new LinkedList<IASystemInferable>(body),
+                new LinkedList<VariableInstance>(universalVariables));
     }
 
     @Override
@@ -71,5 +71,28 @@ public class DenialInstance implements IASystemInferable {
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferable> goals) {
         nestedDenialList.add(0, this);
         return body.remove(0).getNegativeRootRuleNode(abductiveFramework, nestedDenialList, goals);
+    }
+
+    @Override
+    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        // Substitute universal variables.
+        LinkedList<IASystemInferable> newBody = new LinkedList<IASystemInferable>();
+        LinkedList<VariableInstance> newUniversalVariables = new LinkedList<VariableInstance>();
+        for (VariableInstance v : universalVariables) {
+            newUniversalVariables.add((VariableInstance) v.performSubstitutions(substitutions));
+        }
+        for (IASystemInferable inferable : body) {
+            newBody.add((IASystemInferable) inferable.performSubstitutions(substitutions));
+        }
+        return new DenialInstance(newBody, newUniversalVariables);
+    }
+
+    @Override
+    public Set<VariableInstance> getVariables() {
+        HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
+        for (IASystemInferable inferable : body) {
+            variables.addAll(inferable.getVariables());
+        }
+        return variables;
     }
 }

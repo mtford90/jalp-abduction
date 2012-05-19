@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author mtford
  */
-public interface IASystemInferable {
+public interface IASystemInferable extends IFirstOrderLogic {
     /**
      * Takes an abductive framework and a list of goals that doesn't include this inferable and produces
      * a root rule node for use in producing an ASystem derivation in a positive mode of reasoning.

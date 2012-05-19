@@ -10,28 +10,26 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- *
  * @author mtford
  */
 public class DefinitionInstance {
-    
+
     private static final Logger LOGGER = Logger.getLogger(DefinitionInstance.class);
-    
+
     private PredicateInstance head;
     private List<IASystemInferable> body;
-    private HashMap<String, VariableInstance> variablesSoFar;
+    private HashMap<String, VariableInstance> variables;
 
     public DefinitionInstance(PredicateInstance head, List<IASystemInferable> body,
-                              HashMap<String, VariableInstance> variablesSoFar)
- {
+                              HashMap<String, VariableInstance> variables) {
         this.body = body;
         this.head = head;
-        this.variablesSoFar=variablesSoFar;
+        this.variables = variables;
     }
-    
+
     public boolean isFact() {
-        if (body==null) return false;
-        if (body.size()==0) return false;
+        if (body == null) return false;
+        if (body.size() == 0) return false;
         return true;
     }
 
@@ -39,17 +37,13 @@ public class DefinitionInstance {
     public String toString() {
         String ruleRep = "";
         ruleRep += head;
-        if (body!=null) {
+        if (body != null) {
             String bodyRep = body.toString();
-            bodyRep = bodyRep.substring(1, bodyRep.length()-1);
-            ruleRep += " :- "+bodyRep;
+            bodyRep = bodyRep.substring(1, bodyRep.length() - 1);
+            ruleRep += " :- " + bodyRep;
         }
         ruleRep += ".";
         return ruleRep;
-    }
-
-    public HashMap<String, VariableInstance> getVariablesSoFar() {
-        return variablesSoFar;
     }
 
 }

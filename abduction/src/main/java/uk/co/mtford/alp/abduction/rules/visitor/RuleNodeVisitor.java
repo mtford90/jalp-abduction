@@ -46,6 +46,9 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(A1RuleNode ruleNode) {
+        // Generate child nodes where we attempt to unify with all matching abducibles.
+        // Generate a single node where we check against constraints, check no possible unifiable already collected
+        // abducibles and then collect the abducible.
 
     }
 

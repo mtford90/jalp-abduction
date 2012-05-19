@@ -6,9 +6,7 @@ package uk.co.mtford.alp.abduction.logic.instance;
 
 import org.apache.log4j.Logger;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author mtford
@@ -85,4 +83,16 @@ public class ConstantInstance implements ITermInstance {
         result.add(new FalseInstance()); //
         return result;
     }
+
+    @Override
+    public IFirstOrderLogic performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        return new ConstantInstance(value);
+    }
+
+    @Override
+    public Set<VariableInstance> getVariables() {
+        return new HashSet<VariableInstance>();
+    }
+
+
 }
