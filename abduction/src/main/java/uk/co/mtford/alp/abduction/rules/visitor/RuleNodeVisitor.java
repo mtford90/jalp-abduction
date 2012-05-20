@@ -152,7 +152,11 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(N1RuleNode ruleNode) {
-
+        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        NegationInstance goal = (NegationInstance) ruleNode.getCurrentGoal();
+        DenialInstance denial = new DenialInstance(goal.getSubFormula());
+        RuleNode childNode = constructPositiveChildNode(denial, newRestOfGoals, ruleNode);
+        ruleNode.getChildren().add(childNode);
     }
 
     public void visit(N2RuleNode ruleNode) {
