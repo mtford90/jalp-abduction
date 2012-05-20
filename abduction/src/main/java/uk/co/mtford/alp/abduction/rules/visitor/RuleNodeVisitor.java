@@ -160,7 +160,33 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(N2RuleNode ruleNode) {
+        RuleNode childNode;
+        LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
+        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        NegationInstance goal = (NegationInstance) ruleNode.getCurrentGoal();
+        List<DenialInstance> newNestedDenialList = new LinkedList<DenialInstance>(ruleNode.getDenials());
+        DenialInstance currentDenial = newNestedDenialList.remove(0).shallowClone();
+        if (newNestedDenialList.isEmpty()) {
+            childNode = constructPositiveChildNode(goal.getSubFormula(), newRestOfGoals, ruleNode);
 
+        } else {
+            childNode = constructNegativeChildNode(goal.getSubFormula(), newNestedDenialList, newRestOfGoals, ruleNode);
+        }
+        childNodes.add(childNode);
+        // OR
+        newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        if (newNestedDenialList.isEmpty()) {
+            newRestOfGoals.add(0, currentDenial);
+            childNode = constructPositiveChildNode(goal, newRestOfGoals, ruleNode);
+        } else {
+            DenialInstance nestedDenial = newNestedDenialList.remove(0).shallowClone();
+            nestedDenial.getBody().add(0, currentDenial);
+            nestedDenial.getBody().add(0, goal);
+            newNestedDenialList.add(0, nestedDenial);
+            childNode = constructNegativeChildNode(goal, newNestedDenialList, newRestOfGoals, ruleNode);
+        }
+        childNodes.add(childNode);
+        ruleNode.getChildren().addAll(childNodes);
     }
 
     /**
