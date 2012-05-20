@@ -21,17 +21,17 @@ public class NegationInstance implements ILiteralInstance {
 
     private static final Logger LOGGER = Logger.getLogger(NegationInstance.class);
 
-    private ILiteralInstance subFormula;
+    private IASystemInferableInstance subFormula;
 
-    public NegationInstance(ILiteralInstance subFormula) {
+    public NegationInstance(IASystemInferableInstance subFormula) {
         this.subFormula = subFormula;
     }
 
-    public ILiteralInstance getSubFormula() {
+    public IASystemInferableInstance getSubFormula() {
         return subFormula;
     }
 
-    public void setSubFormula(ILiteralInstance subFormula) {
+    public void setSubFormula(IASystemInferableInstance subFormula) {
         this.subFormula = subFormula;
     }
 
@@ -53,7 +53,7 @@ public class NegationInstance implements ILiteralInstance {
 
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new NegationInstance((ILiteralInstance) subFormula.deepClone(substitutions));
+        return new NegationInstance((IASystemInferableInstance) subFormula.deepClone(substitutions));
     }
 
     @Override

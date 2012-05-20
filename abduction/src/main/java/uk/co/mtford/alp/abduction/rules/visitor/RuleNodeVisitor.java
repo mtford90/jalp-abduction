@@ -1,5 +1,6 @@
 package uk.co.mtford.alp.abduction.rules.visitor;
 
+import uk.co.mtford.alp.abduction.Store;
 import uk.co.mtford.alp.abduction.logic.instance.*;
 import uk.co.mtford.alp.abduction.rules.*;
 
@@ -46,9 +47,51 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(A1RuleNode ruleNode) {
+
         // Generate child nodes where we attempt to unify with all matching abducibles.
+        RuleNode childNode;
+        LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
+        Store store = ruleNode.getStore();
+        PredicateInstance goalAbducible = (PredicateInstance) ruleNode.getCurrentGoal();
+        for (PredicateInstance storeAbducible : store.abducibles) {
+            if (goalAbducible.isSameFunction(storeAbducible)) {
+                List<IASystemInferableInstance> equalitySolved
+                        = new LinkedList<IASystemInferableInstance>
+                        (storeAbducible.equalitySolve(goalAbducible, ruleNode.getAssignments()));
+                List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+                IASystemInferableInstance newGoal = equalitySolved.remove(0);
+                newRestOfGoals.addAll(equalitySolved);
+                childNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
+                childNodes.add(childNode);
+            }
+        }
         // Generate a single node where we check against constraints, check no possible unifiable already collected
         // abducibles and then collect the abducible.
+        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        for (DenialInstance collectedDenial : store.denials) {
+            PredicateInstance collectedDenialHead = (PredicateInstance) collectedDenial.getBody().get(0);
+            if (collectedDenialHead.isSameFunction(goalAbducible)) {
+                DenialInstance newDenial = (DenialInstance)
+                        collectedDenial.deepClone(new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments()));
+                collectedDenialHead = (PredicateInstance) newDenial.getBody().remove(0);
+                newDenial.getBody().addAll(goalAbducible.equalitySolve(collectedDenialHead, ruleNode.getAssignments()));
+                newRestOfGoals.add(0, newDenial);
+            }
+        }
+        for (PredicateInstance storeAbducible : store.abducibles) {
+            if (goalAbducible.isSameFunction(storeAbducible)) {
+                List<IEqualitySolverResultInstance> equalitySolved = goalAbducible.equalitySolve(storeAbducible, ruleNode.getAssignments());
+                for (IEqualitySolverResultInstance result : equalitySolved) {
+                    newRestOfGoals.add(new NegationInstance(result));
+                }
+            }
+        }
+
+        childNode = constructPositiveChildNode(newRestOfGoals.remove(0), newRestOfGoals, ruleNode);
+        childNode.getStore().abducibles.add(goalAbducible);
+        childNodes.add(childNode);
+
+        ruleNode.getChildren().addAll(childNodes);
 
     }
 
