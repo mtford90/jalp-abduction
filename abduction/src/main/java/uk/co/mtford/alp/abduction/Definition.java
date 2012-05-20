@@ -19,7 +19,7 @@ public class Definition {
 
     private static final Logger LOGGER = Logger.getLogger(Definition.class);
 
-    private PredicateInstance head;
+    private PredicateInstance head; // TODO: Make a predicate class rather than predicate instance? Would make more sense.
     private List<IASystemInferableInstance> body;
     private HashMap<String, VariableInstance> variables;
 
@@ -34,6 +34,22 @@ public class Definition {
         if (body == null) return false;
         if (body.size() == 0) return false;
         return true;
+    }
+
+    public PredicateInstance getHead() {
+        return head;
+    }
+
+    public void setHead(PredicateInstance head) {
+        this.head = head;
+    }
+
+    public List<IASystemInferableInstance> getBody() {
+        return body;
+    }
+
+    public void setBody(List<IASystemInferableInstance> body) {
+        this.body = body;
     }
 
     @Override
@@ -53,11 +69,16 @@ public class Definition {
         return head.getVariables();
     }
 
-    public List<IASystemInferableInstance> unfoldDefinition(Map<VariableInstance, IUnifiableAtomInstance> substitution) throws DefinitionException {
-        LinkedList<IASystemInferableInstance> unfoldedBody = new LinkedList<IASystemInferableInstance>();
+    public List<IASystemInferableInstance> unfoldDefinition(IUnifiableAtomInstance... newParameters) throws DefinitionException {
         Set<VariableInstance> variables = getHeadVariables();
-        if (substitution.size() != variables.size())
+        if (newParameters.length != variables.size())
             throw new DefinitionException("Incorrect number of parameters when unfolding " + this);
+        Map<VariableInstance, IUnifiableAtomInstance> substitution = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        for (int i = 0; i < newParameters.length; i++) {
+            substitution.put((VariableInstance) head.getParameter(i), newParameters[i]);
+        }
+        LinkedList<IASystemInferableInstance> unfoldedBody = new LinkedList<IASystemInferableInstance>();
+
         for (VariableInstance v : variables) {
             if (!substitution.containsKey(v))
                 throw new DefinitionException("Missing substitution for " + v + " when unfolding " + this);

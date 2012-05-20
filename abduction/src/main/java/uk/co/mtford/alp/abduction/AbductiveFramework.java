@@ -6,6 +6,7 @@ package uk.co.mtford.alp.abduction;
 
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.logic.instance.DenialInstance;
+import uk.co.mtford.alp.abduction.logic.instance.IASystemInferableInstance;
 import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
 
 import java.util.HashMap;
@@ -83,6 +84,20 @@ public class AbductiveFramework implements Cloneable {
             return n.equals(predicate.getNumParams());
         }
         return false;
+    }
+
+    public List<List<IASystemInferableInstance>> unfoldDefinitions(PredicateInstance definedPredicate) throws DefinitionException {
+        if (isAbducible(definedPredicate))
+            throw new DefinitionException("Attempted to unfold an abducible predicate " + definedPredicate);
+        LinkedList<List<IASystemInferableInstance>> possibleUnfolds = new LinkedList<List<IASystemInferableInstance>>();
+        for (Definition definition : P) {
+            if (definition.getHead().isSameFunction(definedPredicate)) {
+                possibleUnfolds.add(definition.unfoldDefinition(definedPredicate.getParameters()));
+            }
+        }
+        if (possibleUnfolds.isEmpty())
+            throw new DefinitionException("Attempted to unfold a definition with head " + definedPredicate + " that doesn't exist.");
+        return possibleUnfolds;
     }
 
     @Override
