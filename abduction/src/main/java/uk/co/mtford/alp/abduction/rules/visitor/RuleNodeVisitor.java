@@ -150,8 +150,37 @@ public abstract class RuleNodeVisitor {
         ruleNode.getChildren().addAll(childNodes);
     }
 
-    public void visit(D2RuleNode ruleNode) {
-
+    public void visit(D2RuleNode ruleNode) throws DefinitionException {
+        PredicateInstance definedPredicate = (PredicateInstance) ruleNode.getCurrentGoal();
+        List<List<IASystemInferableInstance>> possibleUnfolds = ruleNode.getAbductiveFramework().unfoldDefinitions(definedPredicate);
+        LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
+        List<IASystemInferableInstance> currentRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        PredicateInstance currentGoal = (PredicateInstance) ruleNode.getCurrentGoal();
+        List<DenialInstance> nestedDenialInstances = new LinkedList<DenialInstance>(ruleNode.getDenials());
+        DenialInstance currentDenial = nestedDenialInstances.remove(0);
+        List<IASystemInferableInstance> newGoals = new LinkedList<IASystemInferableInstance>();
+        for (List<IASystemInferableInstance> possibleUnfold : possibleUnfolds) {
+            for (IASystemInferableInstance inferable:possibleUnfold) {
+                currentDenial.getBody().add(0, inferable);
+            }
+            DenialInstance newDenial = (DenialInstance) currentDenial.deepClone(new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments()));
+            newGoals.add(newDenial);
+            for (int i=0;i<possibleUnfold.size();i++) {
+                currentDenial.getBody().remove(0);
+            }
+        }
+        RuleNode childNode;
+        if (nestedDenialInstances.isEmpty()) {
+            currentRestOfGoals.addAll(newGoals);
+            IASystemInferableInstance newGoal = currentRestOfGoals.remove(0);
+            childNode = constructPositiveChildNode(newGoal,currentRestOfGoals,ruleNode);
+        }
+        else {
+            IASystemInferableInstance newGoal = newGoals.remove(0);
+            nestedDenialInstances.get(0).getBody().addAll(newGoals);
+            childNode = constructNegativeChildNode(newGoal,nestedDenialInstances,currentRestOfGoals,ruleNode);
+        }
+        ruleNode.getChildren().add(childNode);
     }
 
     public void visit(E1RuleNode ruleNode) {
@@ -167,7 +196,7 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(E2RuleNode ruleNode) {
-
+        throw new UnsupportedOperationException();
     }
 
     public void visit(N1RuleNode ruleNode) {
