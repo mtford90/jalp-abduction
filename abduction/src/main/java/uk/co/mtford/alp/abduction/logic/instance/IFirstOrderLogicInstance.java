@@ -13,7 +13,7 @@ import java.util.Set;
 public interface IFirstOrderLogicInstance {
 
     /**
-     * Returns a clone of the formula, performing all substitutions specified by the mapping.
+     * Returns a deepClone of the formula, performing all substitutions specified by the mapping.
      *
      * @param substitutions
      * @return
@@ -21,13 +21,15 @@ public interface IFirstOrderLogicInstance {
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions);
 
     /**
-     * Returns a clone of the formula, performing all substitutions specified by the mapping, as well as creating
+     * Returns a deepClone of the formula, performing all substitutions specified by the mapping, as well as creating
      * new instances of all variables. As such, new variable substitutions are added to the passed parameter.
      *
      * @param substitutions
      * @return
      */
-    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions);
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions);
+
+    public IFirstOrderLogicInstance shallowClone();
 
     /**
      * Returns a list of all variables nested in this first order logic formula.

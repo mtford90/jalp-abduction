@@ -40,12 +40,23 @@ public class FalseInstance implements IEqualitySolverResultInstance, IAtomInstan
     }
 
     @Override
-    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        return new FalseInstance();
+    }
+
+    @Override
+    public IFirstOrderLogicInstance shallowClone() {
         return new FalseInstance();
     }
 
     @Override
     public Set<VariableInstance> getVariables() {
         return new HashSet<VariableInstance>();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof FalseInstance) return true;
+        return false;
     }
 }

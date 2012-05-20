@@ -160,7 +160,7 @@ public class Main {
                 printMessage("Current state is: \n"+iterator.next());
                 printMessage("Enter c to continue or anything else to quit.");
                 String s = sc.nextLine();
-                if (s.trim().equals("c")) {
+                if (s.trim().isSameFunction("c")) {
                     continue;
                 }
                 else {

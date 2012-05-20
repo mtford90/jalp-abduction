@@ -52,8 +52,13 @@ public class NegationInstance implements ILiteralInstance {
     }
 
     @Override
-    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new NegationInstance((ILiteralInstance) subFormula.clone(substitutions));
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        return new NegationInstance((ILiteralInstance) subFormula.deepClone(substitutions));
+    }
+
+    @Override
+    public IFirstOrderLogicInstance shallowClone() {
+        return new NegationInstance(subFormula);
     }
 
     @Override

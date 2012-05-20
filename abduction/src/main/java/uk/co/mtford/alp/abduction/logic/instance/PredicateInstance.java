@@ -66,48 +66,6 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
         return parameters[i];
     }
 
-    /**
-     * Returns true if same name and same num parameters.
-     *
-     * @param obj
-     * @return
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final PredicateInstance other = (PredicateInstance) obj;
-        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
-            return false;
-        }
-        if (this.parameters.length != other.parameters.length) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 43 * hash + (this.name != null ? this.name.hashCode() : 0);
-        hash = 43 * hash + Arrays.deepHashCode(this.parameters);
-        return hash;
-    }
-
-    @Override
-    public String toString() {
-        String paramList = "";
-        for (IAtomInstance v : parameters) {
-            paramList += v + ",";
-        }
-        paramList = paramList.substring(0, paramList.length() - 1);
-        return name + "(" + paramList + ")";
-    }
-
     @Override
     public List<IEqualitySolverResultInstance> equalitySolve(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
         LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
@@ -129,11 +87,11 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     @Override
     public List<IEqualitySolverResultInstance> equalitySolve(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
         LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
-        if (!this.equals(other)) {  // Same name and arity?
+        if (!this.isSameFunction(other)) {  // Same name and arity?
             result.add(new FalseInstance());
         } else { // s_bar = t_bar
             for (int i = 0; i < parameters.length; i++) {
-                result.add(new EqualityInstance(parameters[i], other.getParameter(0)));
+                result.add(new EqualityInstance(parameters[i], other.getParameter(i)));
             }
         }
         return result;
@@ -164,11 +122,20 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     }
 
     @Override
-    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         LinkedList<IAtomInstance> newParameters = new LinkedList<IAtomInstance>();
         for (IAtomInstance parameter : parameters) {
-            IAtomInstance newParameter = (IAtomInstance) clone(substitutions);
+            IAtomInstance newParameter = (IAtomInstance) parameter.deepClone(substitutions);
             newParameters.add(newParameter);
+        }
+        return new PredicateInstance(new String(name), newParameters);
+    }
+
+    @Override
+    public IFirstOrderLogicInstance shallowClone() {
+        IAtomInstance[] newParameters = new IAtomInstance[parameters.length];
+        for (int i = 0; i < parameters.length; i++) {
+            newParameters[i] = parameters[i];
         }
         return new PredicateInstance(new String(name), newParameters);
     }
@@ -181,4 +148,58 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
         }
         return variables;
     }
+
+    /**
+     * Returns true if same name and same num parameters.
+     *
+     * @param obj
+     * @return
+     */
+    public boolean isSameFunction(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PredicateInstance other = (PredicateInstance) obj;
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if (this.parameters.length != other.parameters.length) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PredicateInstance)) return false;
+
+        PredicateInstance that = (PredicateInstance) o;
+
+        if (!name.equals(that.name)) return false;
+        if (!Arrays.equals(parameters, that.parameters)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + Arrays.hashCode(parameters);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        String paramList = "";
+        for (IAtomInstance v : parameters) {
+            paramList += v + ",";
+        }
+        paramList = paramList.substring(0, paramList.length() - 1);
+        return name + "(" + paramList + ")";
+    }
+
 }

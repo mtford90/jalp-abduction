@@ -29,28 +29,6 @@ public class ConstantInstance implements ITermInstance {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ConstantInstance)) return false;
-
-        ConstantInstance that = (ConstantInstance) o;
-
-        if (!value.equals(that.value)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
     /**
      * Equality solve c=v or deal with variable already being assigned.
      *
@@ -90,13 +68,41 @@ public class ConstantInstance implements ITermInstance {
     }
 
     @Override
-    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        return new ConstantInstance(value);
+    }
+
+    @Override
+    public IFirstOrderLogicInstance shallowClone() {
         return new ConstantInstance(value);
     }
 
     @Override
     public Set<VariableInstance> getVariables() {
         return new HashSet<VariableInstance>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ConstantInstance)) return false;
+
+        ConstantInstance that = (ConstantInstance) o;
+
+        if (!value.equals(that.value)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+
+    @Override
+    public String toString() {
+        return value;
     }
 
 

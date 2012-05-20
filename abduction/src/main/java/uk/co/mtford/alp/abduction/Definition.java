@@ -54,8 +54,4 @@ public class Definition {
         return head.getVariables();
     }
 
-    public List<IASystemInferableInstance> expandDefinition(PredicateInstance definedPredicate) throws DefinitionException {
-        // TODO
-    }
-
 }

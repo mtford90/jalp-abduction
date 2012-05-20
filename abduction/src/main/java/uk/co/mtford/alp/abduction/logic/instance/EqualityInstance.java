@@ -83,10 +83,15 @@ public class EqualityInstance implements IEqualitySolverResultInstance, ILiteral
     }
 
     @Override
-    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        IAtomInstance newLeft = (IAtomInstance) left.clone(substitutions);
-        IAtomInstance newRight = (IAtomInstance) right.clone(substitutions);
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        IAtomInstance newLeft = (IAtomInstance) left.deepClone(substitutions);
+        IAtomInstance newRight = (IAtomInstance) right.deepClone(substitutions);
         return new EqualityInstance(newLeft, newRight);
+    }
+
+    @Override
+    public IFirstOrderLogicInstance shallowClone() {
+        return new EqualityInstance(left, right);
     }
 
     @Override
@@ -95,5 +100,18 @@ public class EqualityInstance implements IEqualitySolverResultInstance, ILiteral
         variables.addAll(left.getVariables());
         variables.addAll(right.getVariables());
         return variables;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EqualityInstance)) return false;
+
+        EqualityInstance that = (EqualityInstance) o;
+
+        if (!left.equals(that.left)) return false;
+        if (!right.equals(that.right)) return false;
+
+        return true;
     }
 }

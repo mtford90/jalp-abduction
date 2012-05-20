@@ -51,24 +51,16 @@ public class VariableInstance implements ITermInstance {
         return hash;
     }
 
-    /**
-     * Returns true if same name.
-     *
-     * @param obj
-     * @return
-     */
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final VariableInstance other = (VariableInstance) obj;
-        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VariableInstance)) return false;
+
+        VariableInstance that = (VariableInstance) o;
+
+        if (uniqueId != that.uniqueId) return false;
+        if (!name.equals(that.name)) return false;
+
         return true;
     }
 
@@ -117,7 +109,7 @@ public class VariableInstance implements ITermInstance {
     }
 
     @Override
-    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         if (substitutions.containsKey(this)) {
             return substitutions.get(this).performSubstitutions(substitutions);
         } else {
@@ -125,6 +117,11 @@ public class VariableInstance implements ITermInstance {
             substitutions.put(this, clonedVariable);
             return clonedVariable;
         }
+    }
+
+    @Override
+    public IFirstOrderLogicInstance shallowClone() {
+        return new VariableInstance(name);
     }
 
     @Override

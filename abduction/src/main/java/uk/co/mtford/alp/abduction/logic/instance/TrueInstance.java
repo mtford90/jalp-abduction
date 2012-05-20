@@ -24,7 +24,6 @@ public class TrueInstance implements IEqualitySolverResultInstance, IAtomInstanc
         return "TRUE";
     }
 
-
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferableInstance> goals) {
         return new PositiveTrueRuleNode(abductiveFramework, this, goals);
@@ -41,12 +40,23 @@ public class TrueInstance implements IEqualitySolverResultInstance, IAtomInstanc
     }
 
     @Override
-    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        return new TrueInstance();
+    }
+
+    @Override
+    public IFirstOrderLogicInstance shallowClone() {
         return new TrueInstance();
     }
 
     @Override
     public Set<VariableInstance> getVariables() {
         return new HashSet<VariableInstance>();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof TrueInstance) return true;
+        return false;
     }
 }

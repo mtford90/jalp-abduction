@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * @author mtford
  */
-public class DenialInstance implements IASystemInferableInstance {
+public class DenialInstance implements ILiteralInstance {
 
     private static final Logger LOGGER = Logger.getLogger(DenialInstance.class);
 
@@ -24,6 +24,22 @@ public class DenialInstance implements IASystemInferableInstance {
                           List<VariableInstance> universalVariables) {
         this.body = body;
         this.universalVariables = universalVariables;
+    }
+
+    public DenialInstance(List<IASystemInferableInstance> body
+    ) {
+        this.body = body;
+        this.universalVariables = new LinkedList<VariableInstance>();
+    }
+
+    public DenialInstance(List<VariableInstance> universalVariables, IASystemInferableInstance... body) {
+        this.universalVariables = universalVariables;
+        this.body = Arrays.asList(body);
+    }
+
+    public DenialInstance(IASystemInferableInstance... body) {
+        universalVariables = new LinkedList<VariableInstance>();
+        this.body = Arrays.asList(body);
     }
 
     public DenialInstance() {
@@ -90,18 +106,19 @@ public class DenialInstance implements IASystemInferableInstance {
     }
 
     @Override
-    public IFirstOrderLogicInstance clone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         // Substitute universal variables.
         LinkedList<IASystemInferableInstance> newBody = new LinkedList<IASystemInferableInstance>();
         LinkedList<VariableInstance> newUniversalVariables = new LinkedList<VariableInstance>();
         for (VariableInstance v : universalVariables) {
-            newUniversalVariables.add((VariableInstance) v.clone(substitutions));
+            newUniversalVariables.add((VariableInstance) v.deepClone(substitutions));
         }
         for (IASystemInferableInstance inferable : body) {
-            newBody.add((IASystemInferableInstance) inferable.clone(substitutions));
+            newBody.add((IASystemInferableInstance) inferable.deepClone(substitutions));
         }
         return new DenialInstance(newBody, newUniversalVariables);
     }
+
 
     @Override
     public Set<VariableInstance> getVariables() {
