@@ -1,5 +1,6 @@
 package uk.co.mtford.alp.abduction.rules.visitor;
 
+import uk.co.mtford.alp.abduction.DefinitionException;
 import uk.co.mtford.alp.abduction.Store;
 import uk.co.mtford.alp.abduction.logic.instance.*;
 import uk.co.mtford.alp.abduction.rules.*;
@@ -135,8 +136,18 @@ public abstract class RuleNodeVisitor {
         ruleNode.getChildren().add(childNode);
     }
 
-    public void visit(D1RuleNode ruleNode) {
-
+    public void visit(D1RuleNode ruleNode) throws DefinitionException {
+        PredicateInstance definedPredicate = (PredicateInstance) ruleNode.getCurrentGoal();
+        List<List<IASystemInferableInstance>> possibleUnfolds = ruleNode.getAbductiveFramework().unfoldDefinitions(definedPredicate);
+        LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
+        for (List<IASystemInferableInstance> possibleUnfold : possibleUnfolds) {
+            List<IASystemInferableInstance> restOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+            restOfGoals.addAll(possibleUnfold);
+            IASystemInferableInstance newGoal = restOfGoals.remove(0);
+            RuleNode childNode = constructPositiveChildNode(newGoal, restOfGoals, ruleNode);
+            childNodes.add(childNode);
+        }
+        ruleNode.getChildren().addAll(childNodes);
     }
 
     public void visit(D2RuleNode ruleNode) {
