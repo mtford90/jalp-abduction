@@ -28,8 +28,7 @@ public abstract class RuleNodeVisitor {
     private RuleNode constructPositiveChildNode(IASystemInferableInstance newGoal, List<IASystemInferableInstance> newRestOfGoals,
                                                 RuleNode previousNode) {
         RuleNode newRuleNode = newGoal.getPositiveRootRuleNode(previousNode.getAbductiveFramework(), newRestOfGoals);
-        Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>
-                (previousNode.getAssignments());
+        Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
         newRuleNode.setAssignments(assignments);
         newRuleNode.setStore(previousNode.getStore().shallowClone());
         return newRuleNode;
@@ -39,8 +38,7 @@ public abstract class RuleNodeVisitor {
                                                 List<IASystemInferableInstance> newRestOfGoals, RuleNode previousNode) {
         newRestOfGoals = new LinkedList<IASystemInferableInstance>(newRestOfGoals);
         RuleNode newRuleNode = newGoal.getNegativeRootRuleNode(previousNode.getAbductiveFramework(), nestedDenialList, newRestOfGoals);
-        Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>
-                (previousNode.getAssignments());
+        Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
         newRuleNode.setAssignments(assignments);
         newRuleNode.setStore(previousNode.getStore().shallowClone());
         return newRuleNode;
@@ -48,31 +46,43 @@ public abstract class RuleNodeVisitor {
 
     public void visit(A1RuleNode ruleNode) {
 
-        // Generate child nodes where we attempt to unify with all matching abducibles.
-        RuleNode childNode;
+        // First branch.
         LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
         Store store = ruleNode.getStore();
         PredicateInstance goalAbducible = (PredicateInstance) ruleNode.getCurrentGoal();
+        LinkedList<RuleNode> firstBranchChildNodes = getA1FirstBranch(ruleNode, store, goalAbducible);
+        childNodes.addAll(firstBranchChildNodes);
+
+        // Second branch.
+        RuleNode secondBranchChildNode = getA1SecondBranch(ruleNode, store, goalAbducible);
+        secondBranchChildNode.getStore().abducibles.add(goalAbducible);
+        childNodes.add(secondBranchChildNode);
+        ruleNode.getChildren().addAll(childNodes);
+
+    }
+
+    private LinkedList<RuleNode> getA1FirstBranch(A1RuleNode ruleNode, Store store, PredicateInstance goalAbducible) {
+        LinkedList<RuleNode> childNodes2 = new LinkedList<RuleNode>();
         for (PredicateInstance storeAbducible : store.abducibles) {
             if (goalAbducible.isSameFunction(storeAbducible)) {
-                List<IASystemInferableInstance> equalitySolved
-                        = new LinkedList<IASystemInferableInstance>
-                        (storeAbducible.equalitySolve(goalAbducible, ruleNode.getAssignments()));
+                List<IASystemInferableInstance> equalitySolved = new LinkedList<IASystemInferableInstance>(storeAbducible.equalitySolve(goalAbducible, ruleNode.getAssignments()));
                 List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
                 IASystemInferableInstance newGoal = equalitySolved.remove(0);
                 newRestOfGoals.addAll(equalitySolved);
-                childNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
-                childNodes.add(childNode);
+                RuleNode childNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
+                childNodes2.add(childNode);
             }
         }
-        // Generate a single node where we check against constraints, check no possible unifiable already collected
-        // abducibles and then collect the abducible.
+        return childNodes2;
+    }
+
+    private RuleNode getA1SecondBranch(A1RuleNode ruleNode, Store store, PredicateInstance goalAbducible) {
+        RuleNode childNode;
         List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
         for (DenialInstance collectedDenial : store.denials) {
             PredicateInstance collectedDenialHead = (PredicateInstance) collectedDenial.getBody().get(0);
             if (collectedDenialHead.isSameFunction(goalAbducible)) {
-                DenialInstance newDenial = (DenialInstance)
-                        collectedDenial.deepClone(new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments()));
+                DenialInstance newDenial = (DenialInstance) collectedDenial.deepClone(new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments()));
                 collectedDenialHead = (PredicateInstance) newDenial.getBody().remove(0);
                 newDenial.getBody().addAll(goalAbducible.equalitySolve(collectedDenialHead, ruleNode.getAssignments()));
                 newRestOfGoals.add(0, newDenial);
@@ -88,15 +98,41 @@ public abstract class RuleNodeVisitor {
         }
 
         childNode = constructPositiveChildNode(newRestOfGoals.remove(0), newRestOfGoals, ruleNode);
-        childNode.getStore().abducibles.add(goalAbducible);
-        childNodes.add(childNode);
-
-        ruleNode.getChildren().addAll(childNodes);
-
+        return childNode;
     }
 
     public void visit(A2RuleNode ruleNode) {
-
+        List<IASystemInferableInstance> restOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        List<DenialInstance> nestedDenialList = new LinkedList<DenialInstance>(ruleNode.getDenials());
+        DenialInstance currentDenial = nestedDenialList.remove(0);
+        PredicateInstance goalAbducible = (PredicateInstance) ruleNode.getCurrentGoal();
+        currentDenial.getBody().add(0, goalAbducible);
+        Store store = ruleNode.getStore();
+        for (PredicateInstance storeAbducible : store.abducibles) {
+            if (storeAbducible.isSameFunction(goalAbducible)) {
+                DenialInstance newDenial = (DenialInstance) currentDenial.deepClone(new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments()));
+                PredicateInstance newDenialHead = (PredicateInstance) newDenial.getBody().remove(0);
+                List<IEqualitySolverResultInstance> equalitySolved = newDenialHead.equalitySolve(storeAbducible, ruleNode.getAssignments());
+                newDenial.getBody().addAll(equalitySolved);
+                if (nestedDenialList.isEmpty()) {
+                    restOfGoals.add(0, newDenial);
+                } else {
+                    nestedDenialList.get(0).getBody().add(0, newDenial);
+                }
+            }
+        }
+        RuleNode childNode;
+        if (nestedDenialList.isEmpty()) {
+            IASystemInferableInstance newGoal = restOfGoals.remove(0);
+            childNode = constructPositiveChildNode(newGoal, restOfGoals, ruleNode);
+        } else {
+            IASystemInferableInstance newGoal = nestedDenialList.get(0).getBody().remove(0);
+            childNode = constructNegativeChildNode(newGoal, nestedDenialList, restOfGoals, ruleNode);
+        }
+        currentDenial = currentDenial.shallowClone();
+        currentDenial.getBody().add(0, goalAbducible);
+        childNode.getStore().denials.add(currentDenial);
+        ruleNode.getChildren().add(childNode);
     }
 
     public void visit(D1RuleNode ruleNode) {
