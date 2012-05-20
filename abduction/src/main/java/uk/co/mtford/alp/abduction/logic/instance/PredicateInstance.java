@@ -18,21 +18,21 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     private static final Logger LOGGER = Logger.getLogger(PredicateInstance.class);
 
     protected String name;
-    protected IAtomInstance[] parameters;
+    protected IUnifiableAtomInstance[] parameters;
 
-    public PredicateInstance(String name, IAtomInstance... parameters) {
+    public PredicateInstance(String name, IUnifiableAtomInstance... parameters) {
         this.name = name;
         this.parameters = parameters;
     }
 
-    public PredicateInstance(String name, List<IAtomInstance> parameters) {
+    public PredicateInstance(String name, List<IUnifiableAtomInstance> parameters) {
         this.name = name;
-        this.parameters = parameters.toArray(new IAtomInstance[1]);
+        this.parameters = parameters.toArray(new IUnifiableAtomInstance[1]);
     }
 
     public PredicateInstance(String name, String varName) {
         this.name = name;
-        this.parameters = new IAtomInstance[1];
+        this.parameters = new IUnifiableAtomInstance[1];
         parameters[0] = new VariableInstance(varName);
     }
 
@@ -49,11 +49,11 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
         this.name = name;
     }
 
-    public IAtomInstance[] getParameters() {
+    public IUnifiableAtomInstance[] getParameters() {
         return parameters;
     }
 
-    public void setParameters(IAtomInstance[] parameters) {
+    public void setParameters(IUnifiableAtomInstance[] parameters) {
         this.parameters = parameters;
     }
 
@@ -61,7 +61,7 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
         return parameters.length;
     }
 
-    public IAtomInstance getParameter(int i) {
+    public IUnifiableAtomInstance getParameter(int i) {
         if (i > parameters.length || i < 0) return null;
         return parameters[i];
     }
@@ -98,6 +98,11 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     }
 
     @Override
+    public List<IEqualitySolverResultInstance> equalitySolve(IUnifiableAtomInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        return other.equalitySolve(this, assignment);
+    }
+
+    @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferableInstance> goals) {
         if (abductiveFramework.getA().containsKey(this)) return new A1RuleNode(abductiveFramework, this, goals);
         else return new D1RuleNode(abductiveFramework, this, goals);
@@ -117,15 +122,15 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
             IAtomInstance newParameter = (IAtomInstance) parameter.performSubstitutions(substitutions);
             newParameters.add(newParameter);
         }
-        parameters = newParameters.toArray(new IAtomInstance[parameters.length]);
+        parameters = newParameters.toArray(new IUnifiableAtomInstance[parameters.length]);
         return this;
     }
 
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        LinkedList<IAtomInstance> newParameters = new LinkedList<IAtomInstance>();
-        for (IAtomInstance parameter : parameters) {
-            IAtomInstance newParameter = (IAtomInstance) parameter.deepClone(substitutions);
+        LinkedList<IUnifiableAtomInstance> newParameters = new LinkedList<IUnifiableAtomInstance>();
+        for (IUnifiableAtomInstance parameter : parameters) {
+            IUnifiableAtomInstance newParameter = (IUnifiableAtomInstance) parameter.deepClone(substitutions);
             newParameters.add(newParameter);
         }
         return new PredicateInstance(new String(name), newParameters);
@@ -133,7 +138,7 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        IAtomInstance[] newParameters = new IAtomInstance[parameters.length];
+        IUnifiableAtomInstance[] newParameters = new IUnifiableAtomInstance[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
             newParameters[i] = parameters[i];
         }

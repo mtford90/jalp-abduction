@@ -144,7 +144,15 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(E1RuleNode ruleNode) {
-
+        List<IASystemInferableInstance> restOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
+        EqualityInstance currentGoal = (EqualityInstance) ruleNode.getCurrentGoal();
+        List<IEqualitySolverResultInstance> equalitySolved = currentGoal.getLeft().equalitySolve(currentGoal.getRight(), newAssignments);
+        restOfGoals.addAll(equalitySolved);
+        IASystemInferableInstance newGoalNode = restOfGoals.remove(0);
+        RuleNode childNode = constructPositiveChildNode(newGoalNode, restOfGoals, ruleNode);
+        childNode.setAssignments(newAssignments);
+        ruleNode.getChildren().add(childNode);
     }
 
     public void visit(E2RuleNode ruleNode) {

@@ -22,27 +22,27 @@ public class EqualityInstance implements IEqualitySolverResultInstance, ILiteral
 
     private static Logger LOGGER = Logger.getLogger(EqualityInstance.class);
 
-    private IAtomInstance left;
-    private IAtomInstance right;
+    private IUnifiableAtomInstance left;
+    private IUnifiableAtomInstance right;
 
-    public EqualityInstance(IAtomInstance left, IAtomInstance right) {
+    public EqualityInstance(IUnifiableAtomInstance left, IUnifiableAtomInstance right) {
         this.left = left;
         this.right = right;
     }
 
-    public IAtomInstance getLeft() {
+    public IUnifiableAtomInstance getLeft() {
         return left;
     }
 
-    public void setLeft(IAtomInstance left) {
+    public void setLeft(IUnifiableAtomInstance left) {
         this.left = left;
     }
 
-    public IAtomInstance getRight() {
+    public IUnifiableAtomInstance getRight() {
         return right;
     }
 
-    public void setRight(IAtomInstance right) {
+    public void setRight(IUnifiableAtomInstance right) {
         this.right = right;
     }
 
@@ -75,8 +75,8 @@ public class EqualityInstance implements IEqualitySolverResultInstance, ILiteral
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        IAtomInstance newLeft = (IAtomInstance) left.performSubstitutions(substitutions);
-        IAtomInstance newRight = (IAtomInstance) right.performSubstitutions(substitutions);
+        IUnifiableAtomInstance newLeft = (IUnifiableAtomInstance) left.performSubstitutions(substitutions);
+        IUnifiableAtomInstance newRight = (IUnifiableAtomInstance) right.performSubstitutions(substitutions);
         left = newLeft;
         right = newRight;
         return this;
@@ -84,8 +84,8 @@ public class EqualityInstance implements IEqualitySolverResultInstance, ILiteral
 
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        IAtomInstance newLeft = (IAtomInstance) left.deepClone(substitutions);
-        IAtomInstance newRight = (IAtomInstance) right.deepClone(substitutions);
+        IUnifiableAtomInstance newLeft = (IUnifiableAtomInstance) left.deepClone(substitutions);
+        IUnifiableAtomInstance newRight = (IUnifiableAtomInstance) right.deepClone(substitutions);
         return new EqualityInstance(newLeft, newRight);
     }
 

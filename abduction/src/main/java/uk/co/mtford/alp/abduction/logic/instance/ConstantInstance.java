@@ -63,6 +63,11 @@ public class ConstantInstance implements ITermInstance {
     }
 
     @Override
+    public List<IEqualitySolverResultInstance> equalitySolve(IUnifiableAtomInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        return other.equalitySolve(this, assignment);
+    }
+
+    @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         return this;
     }
