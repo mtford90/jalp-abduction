@@ -6,12 +6,11 @@ package uk.co.mtford.alp.abduction;
 
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.logic.instance.IASystemInferableInstance;
+import uk.co.mtford.alp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author mtford
@@ -52,6 +51,21 @@ public class Definition {
 
     public Set<VariableInstance> getHeadVariables() {
         return head.getVariables();
+    }
+
+    public List<IASystemInferableInstance> unfoldDefinition(Map<VariableInstance, IUnifiableAtomInstance> substitution) throws DefinitionException {
+        LinkedList<IASystemInferableInstance> unfoldedBody = new LinkedList<IASystemInferableInstance>();
+        Set<VariableInstance> variables = getHeadVariables();
+        if (substitution.size() != variables.size())
+            throw new DefinitionException("Incorrect number of parameters when unfolding " + this);
+        for (VariableInstance v : variables) {
+            if (!substitution.containsKey(v))
+                throw new DefinitionException("Missing substitution for " + v + " when unfolding " + this);
+        }
+        for (IASystemInferableInstance inferable : body) {
+            unfoldedBody.add((IASystemInferableInstance) inferable.deepClone(substitution));
+        }
+        return unfoldedBody;
     }
 
 }
