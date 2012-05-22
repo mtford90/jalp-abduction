@@ -23,4 +23,5 @@ public interface IUnifiableAtomInstance extends IAtomInstance {
 
     public abstract List<IEqualitySolverResultInstance> equalitySolve(PredicateInstance other,
                                                                       Map<VariableInstance, IUnifiableAtomInstance> assignment);
+
 }

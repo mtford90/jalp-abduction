@@ -1,0 +1,97 @@
+/*--General---------------------------------*/
+
+body {
+	font-family: "HelveticaNeue-Light", "HelveticaNeue", Helvetica, Arial, sans-serif; /* Sans-serif is a generic font. */
+}
+
+ul {
+	list-style-position: inside;
+}
+
+.data {
+	font-family: monaco;
+	font-size: 0.7em;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+td,th {
+	padding: 10px;
+	border-style:solid;
+	border-width: 1px;
+	text-align: left;
+}
+
+
+/*--Header----------------------------------*/
+
+#heading {
+	margin: 0 auto;
+	padding: 4px;
+	text-align: center;
+}
+
+.header-border {
+	margin: 0 auto;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: rgb(210,210,210);
+}
+
+/*--Content---------------------------------*/
+
+#content {
+	text-align: center;
+	width: 960px;
+	margin: 0 auto;
+}
+
+#content #selected-nodes {
+	overflow:hidden;
+	margin: 0 auto;
+	width: 960px;
+}
+
+#content #previous-node-div {
+	float:left;
+	margin: 4px;
+}
+
+#content #current-node-div {
+	float:left;
+	margin: 4px;
+}
+
+#content .nodeTable {
+	margin:0 auto;
+}
+
+#content #children {
+	overflow: hidden;
+	margin:0 auto;
+}
+
+#content .child-div {
+	float:left;
+	margin: 4px;
+}
+
+#content #controls {
+	margin: 0 auto;	
+}
+
+#content #controls .control-button {
+	padding: 100px;
+}
+
+
+#controls .control:hover {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;	
+}
+
+
+

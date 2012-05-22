@@ -37,7 +37,7 @@ public class VariableInstance implements ITermInstance {
 
     @Override
     public String toString() {
-        return name + "<" + uniqueId + ">";
+        return name + uniqueId;
     }
 
     /**
@@ -94,7 +94,7 @@ public class VariableInstance implements ITermInstance {
         if (assignment.containsKey(this)) {
             return assignment.get(this).equalitySolve(other, assignment);
         } else {
-            assignment.put(this, other);
+            assignment.put(this, other); // TODO Doing this incorrect? Want equational solved formed instead really?
             return result;
         }
     }

@@ -95,8 +95,6 @@ public class AbductiveFramework implements Cloneable {
                 possibleUnfolds.add(definition.unfoldDefinition(definedPredicate.getParameters()));
             }
         }
-        if (possibleUnfolds.isEmpty())
-            throw new DefinitionException("Attempted to unfold a definition with head " + definedPredicate + " that doesn't exist.");
         return possibleUnfolds;
     }
 

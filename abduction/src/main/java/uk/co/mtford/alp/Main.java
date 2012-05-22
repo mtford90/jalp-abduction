@@ -2,18 +2,22 @@ package uk.co.mtford.alp;
 
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
-import uk.co.mtford.alp.abduction.logic.instance.IASystemInferableInstance;
-import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
+import uk.co.mtford.alp.abduction.DefinitionException;
+import uk.co.mtford.alp.abduction.logic.instance.*;
 import uk.co.mtford.alp.abduction.parse.program.ALPParser;
 import uk.co.mtford.alp.abduction.parse.program.ParseException;
 import uk.co.mtford.alp.abduction.parse.program.TokenMgrError;
 import uk.co.mtford.alp.abduction.parse.query.ALPQueryParser;
 import uk.co.mtford.alp.abduction.rules.RuleNode;
+import uk.co.mtford.alp.abduction.rules.SuccessNode;
+import uk.co.mtford.alp.abduction.rules.visitor.FifoRuleNodeVisitor;
+import uk.co.mtford.alp.abduction.rules.visitor.RuleNodeVisitor;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Main entry point. Provides a terminal like interface.
@@ -25,11 +29,16 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class);
     private static final Scanner sc = new Scanner(System.in);
 
+    private static final int MAX_EXPANSIONS = 100;
+
     // Command line options.
     private static final String FILE_OPTION = "-f";
     private static final String HELP_OPTION = "-h";
     private static final String QUERY_OPTION = "-q";
     private static final String DEBUG_OPTION = "-d";
+    private static final String XML_OPTION = "-x";
+    private static final String JSON_OPTION = "-j";
+    private static final String TREE_OPTION = "-t";
 
     // ALPS commands.
     private static final char FILE_COMMAND = 'l';
@@ -64,6 +73,11 @@ public class Main {
             = "Invalid usage. Use :h help.";
 
     private static boolean debugMode = false;
+    private static boolean xmlMode = false;
+    private static boolean treeMode = false;
+    private static boolean jsonMode = false;
+    private static String xmlFileName = "../visualizer/output.xml";
+    private static String jsFileName = "../visualizer/output.js";
     private static RuleNode rootNode;
     private static AbductiveFramework framework;
 
@@ -149,30 +163,147 @@ public class Main {
      * @throws uk.co.mtford.alp.abduction.parse.query.ParseException
      *
      */
-    private static void processQuery(String query) throws uk.co.mtford.alp.abduction.parse.query.ParseException {
+    private static void processQuery(String query) throws uk.co.mtford.alp.abduction.parse.query.ParseException, DefinitionException, IOException {
         List<PredicateInstance> predicates = ALPQueryParser.readFromString(query);
         List<IASystemInferableInstance> goals = new LinkedList<IASystemInferableInstance>();
+        Set<VariableInstance> queryVariables = new HashSet<VariableInstance>();
         goals.addAll(predicates);
+        for (IASystemInferableInstance inferable:goals) {
+            queryVariables.addAll(inferable.getVariables());
+        }
+        IASystemInferableInstance firstGoal = goals.remove(0);
+        RuleNode currentNode = firstGoal.getPositiveRootRuleNode(framework,goals);
+        RuleNode rootNode = currentNode;
+        currentNode.getNextGoals().addAll(framework.getIC());
+        RuleNodeVisitor visitor = new FifoRuleNodeVisitor(currentNode);
         if (debugMode) {
-            /*
-            Iterator<ASystemState> iterator = system.getStateIterator(goals);
-            while (iterator.hasNext()) {
-                printMessage("Current state is: \n"+iterator.next());
+            printMessage("Framework is as follows:\n\n"+framework+"\n");
+            printMessage("Query is as follows:\n\n"+predicates+"\n");
+            printMessage("Initializing derivation tree...");
+
+            do {
+                printMessage("\nCurrent state for query " + predicates + " is");
+                printMessage("==============================================================");
+                printMessage(currentNode.toString());
+                printMessage("==============================================================");
                 printMessage("Enter c to continue or anything else to quit.");
                 String s = sc.nextLine();
-                if (s.trim().isSameFunction("c")) {
+                if (s.trim().equals("c")||s.trim().equals("cc")||s.trim().equals("ccc")) {
+                    currentNode=visitor.stateRewrite();
                     continue;
                 }
                 else {
                     break;
                 }
+            } while (currentNode!=null);
+        }
+        else if (xmlMode) {
+            try {
+                int n = 0;
+                if (LOGGER.isInfoEnabled()) LOGGER.info("Beginning processing of query.");
+                do {
+                    if (n>=MAX_EXPANSIONS) {
+                        LOGGER.error("Hit max expansions. Generating XML file for what we have so far.");
+                    }
+                    currentNode=visitor.stateRewrite();
+                } while (currentNode!=null);
+            } catch (Exception e) {
+                LOGGER.fatal("Error in tree generation whilst making XML file. Saving tree so far to "+xmlFileName,e);
             }
-            */
-        } else {
+            printXML(xmlFileName,rootNode);
+        }
+        else if (jsonMode) {
+            try {
+                int n = 0;
+                if (LOGGER.isInfoEnabled()) LOGGER.info("Beginning processing of query.");
+                do {
+                    if (n>=MAX_EXPANSIONS) {
+                        LOGGER.error("Hit max expansions. Generating JSON file for what we have so far.");
+                    }
+                    currentNode=visitor.stateRewrite();
+                } while (currentNode!=null);
+            } catch (Exception e) {
+                LOGGER.fatal("Error in tree generation whilst making JSON file. Saving tree so far to "+jsFileName,e);
+            }
+            printJSON(jsFileName,rootNode);
+        }
+        else {
             if (LOGGER.isInfoEnabled()) LOGGER.info("Beginning processing of query.");
+            do {
+                currentNode=visitor.stateRewrite();
+
+            } while (currentNode!=null);
+            printMessage("Found " + visitor.getSuccessNodes().size() + " explanations for query "+predicates);
+            List<SuccessNode> successNodes = visitor.getSuccessNodes();
+            printResults(queryVariables, successNodes);
+        }
+        printMessage("Exiting...");
+
+
+    }
+
+    private static void printResults(Set<VariableInstance> queryVariables, List<SuccessNode> successNodes) {
+        for (int i=0;i<successNodes.size();i++) {
+            printMessage("Enter c to see next explanation or anything else to quit.");
+            String s = sc.nextLine();
+            if (s.trim().equals("c")||s.trim().equals("cc")||s.trim().equals("ccc")) {
+                Set<VariableInstance> variables = new HashSet<VariableInstance>(queryVariables);
+                List<PredicateInstance> abducibles = successNodes.get(i).getStore().abducibles;
+                List<DenialInstance> denials = successNodes.get(i).getStore().denials;
+                for (PredicateInstance predicate:abducibles) {
+                    variables.addAll(predicate.getVariables());
+                }
+                for (DenialInstance denial:denials) {
+                    variables.addAll(denial.getVariables());
+                }
+                printMessage("==============================================================");
+                printMessage("Abducibles: "+abducibles);
+                Map<VariableInstance,IUnifiableAtomInstance> assignments = successNodes.get(i).getAssignments();
+                Map<VariableInstance,IUnifiableAtomInstance> relevantAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+                for (VariableInstance key:assignments.keySet()) { // TODO: Pretty gross.
+                    if (variables.contains(key)) {
+                        if (assignments.get(key) instanceof VariableInstance) {
+                            variables.add((VariableInstance)assignments.get(key));
+                        }
+
+                    }
+                }
+                for (VariableInstance key:assignments.keySet()) {
+                    if (variables.contains(key)) {
+                        relevantAssignments.put(key,assignments.get(key));
+                    }
+                }
+                printMessage("Assignments: "+relevantAssignments);
+                printMessage("Constraints: "+denials);
+                printMessage("==============================================================");
+                printMessage("There are "+(successNodes.size()-1-i)+" explanations remaining.");
+                continue;
+            }
+            else {
+                break;
+            }
         }
     }
 
+    private static void printXML(String fileName, RuleNode root) throws IOException {
+        FileWriter fstream = new FileWriter(fileName);
+        BufferedWriter out = new BufferedWriter(fstream);
+        String xml="<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n";
+        //xml+="<?xml-stylesheet type=\"text/css\" href=\"css/style.css\"?>\n";
+        xml+="<tree>\n";
+        xml+=root.toXML();
+        xml+="</tree>";
+        out.write(xml);
+        out.close();
+    }
+
+    private static void printJSON(String fileName, RuleNode root) throws IOException {
+        FileWriter fstream = new FileWriter(fileName);
+        BufferedWriter out = new BufferedWriter(fstream);
+        String js = "var data=\""+root.toJSON()+"\"";
+        out.write(js);
+        out.close();
+    }
 
     private static void startALPS() {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Starting ALPS.");
@@ -239,7 +370,7 @@ public class Main {
      * @throws uk.co.mtford.alp.abduction.parse.query.ParseException
      *
      */
-    public static void main(String[] args) throws uk.co.mtford.alp.abduction.parse.query.ParseException {
+    public static void main(String[] args) throws uk.co.mtford.alp.abduction.parse.query.ParseException, DefinitionException, IOException {
         boolean console = false;
         boolean file = false;
         boolean query = false;
@@ -268,7 +399,14 @@ public class Main {
                 queryString = args[i];
             } else if (arg.equals(DEBUG_OPTION)) {
                 debugMode = true;
-            } else {
+
+            } else if (arg.equals(XML_OPTION)) {
+
+                xmlMode = true;
+            } else if (arg.equals(JSON_OPTION)) {
+                jsonMode = true;
+            }
+            else {
                 printMessage(EXEC_ARG_ERROR);
             }
         }

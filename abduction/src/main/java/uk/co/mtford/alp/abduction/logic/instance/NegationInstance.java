@@ -65,4 +65,11 @@ public class NegationInstance implements ILiteralInstance {
     public Set<VariableInstance> getVariables() {
         return subFormula.getVariables();
     }
+
+    @Override
+    public String toString() {
+        return "not(" +
+                 subFormula +
+                ')';
+    }
 }

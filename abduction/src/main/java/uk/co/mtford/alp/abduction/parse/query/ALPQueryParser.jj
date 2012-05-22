@@ -41,7 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.logic.instance.DenialInstance;
-import uk.co.mtford.alp.abduction.logic.instance.EqualityInstance;
+import uk.co.mtford.alp.abduction.logic.instance.equality.EqualityInstance;
 import uk.co.mtford.alp.abduction.Definition;
 import uk.co.mtford.alp.abduction.logic.instance.*;
 
@@ -97,7 +97,7 @@ PredicateInstance Predicate(HashMap<String, VariableInstance> variablesSoFar):
 {
     Token t;
     String name;
-    List<IAtomInstance> parameters = new LinkedList<IAtomInstance>();
+    List<IUnifiableAtomInstance> parameters = new LinkedList<IUnifiableAtomInstance>();
 }
 {
 	t = <LCASENAME>
@@ -110,10 +110,10 @@ PredicateInstance Predicate(HashMap<String, VariableInstance> variablesSoFar):
     { return new PredicateInstance(name,parameters); }
 }
 
-List<IAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar):
+List<IUnifiableAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar):
 {
-    LinkedList<IAtomInstance> params = new LinkedList<IAtomInstance>();
-    IAtomInstance param;
+    LinkedList<IUnifiableAtomInstance> params = new LinkedList<IUnifiableAtomInstance>();
+    IUnifiableAtomInstance param;
 }
 {
 	[
@@ -128,7 +128,7 @@ List<IAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoF
     { return params; }
 }
 
-IAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar):
+IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar):
 {
     Token t;
     PredicateInstance predicate;

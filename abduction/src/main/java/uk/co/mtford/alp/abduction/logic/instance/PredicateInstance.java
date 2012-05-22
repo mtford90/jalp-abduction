@@ -6,6 +6,7 @@ package uk.co.mtford.alp.abduction.logic.instance;
 
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
+import uk.co.mtford.alp.abduction.logic.instance.equality.EqualityInstance;
 import uk.co.mtford.alp.abduction.rules.*;
 
 import java.util.*;
@@ -104,13 +105,13 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferableInstance> goals) {
-        if (abductiveFramework.getA().containsKey(this)) return new A1RuleNode(abductiveFramework, this, goals);
+        if (abductiveFramework.isAbducible(this)) return new A1RuleNode(abductiveFramework, this, goals);
         else return new D1RuleNode(abductiveFramework, this, goals);
     }
 
     @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferableInstance> goals) {
-        if (abductiveFramework.getA().containsKey(this))
+        if (abductiveFramework.isAbducible(this))
             return new A2RuleNode(abductiveFramework, this, goals, nestedDenialList);
         else return new D2RuleNode(abductiveFramework, this, goals, nestedDenialList);
     }

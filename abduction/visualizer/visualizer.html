@@ -1,0 +1,64 @@
+<!-- Specify document type definition file for HTML. DTD specifies SGML varieties -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <!-- Avoid IE8 compatibility view -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Output Visualizer</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="output.js"></script>
+    <script type="text/javascript" src="tables.js"></script>
+    <script type="text/javascript" src="init.js"></script>
+	<script type="text/javascript" src="visualizer.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+	<div id="heading">
+		<h1>Output Visualizer</h1>
+		<div class="header-border"></div>
+	</div>
+	<div id="content">
+		<h2>Controls</h2>
+		<div id="controls">
+			<input type="button" class="control-button" value="Back" onclick="back()">
+		</div>
+		<div id="selected-nodes">
+			<div id="previous-node-div">
+				<h2>Parent Node</h2>
+				<table id="previousNode" class="nodeTable">
+					<tr><td>Type</td><td class="data" id="type"></td></tr>
+					<tr><td>Current Goal</td><td  class="data" id="current-goal"></td></tr>		
+					<tr><td>Next Goals</td><td  class="data" id="next-goals"></td></tr>
+					<tr><td>Assignments</td><td  class="data" id="assignments"></td></tr>
+					<tr><td>Abducibles</td><td  class="data" id="abducibles"></td></tr>
+					<tr><td>Denials</td><td  class="data" id="Denials"></td></tr>
+					<tr><td>Equalities</td><td  class="data" id="equalities"></td></tr>
+					<tr><td>Mark</td><td  class="data" id="mark"></td></tr>
+				</table>
+			</div>
+			<div id="current-node-div">
+				<h2>Current Node</h2>
+				<table id="currentNode" class="nodeTable">
+					<tr><td>Type</td><td class="data" id="type"></td></tr>
+					<tr><td>Current Goal</td><td  class="data" id="current-goal"></td></tr>		
+					<tr><td>Next Goals</td><td  class="data" id="next-goals"></td></tr>
+					<tr><td>Assignments</td><td  class="data" id="assignments"></td></tr>
+					<tr><td>Abducibles</td><td  class="data" id="abducibles"></td></tr>
+					<tr><td>Denials</td><td  class="data" id="Denials"></td></tr>
+					<tr><td>Equalities</td><td  class="data" id="equalities"></td></tr>
+					<tr><td>Mark</td><td  class="data" id="mark"></td></tr>
+				</table>
+			</div>
+		</div>
+		
+		<h2>Children</h2>
+		<div id="children">
+		
+		</div>
+	</div>
+</body>
+
+</html>

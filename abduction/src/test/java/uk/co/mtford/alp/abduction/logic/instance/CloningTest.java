@@ -3,6 +3,7 @@ package uk.co.mtford.alp.abduction.logic.instance;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import uk.co.mtford.alp.abduction.logic.instance.equality.EqualityInstance;
 
 import java.util.HashMap;
 

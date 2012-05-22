@@ -34,12 +34,12 @@ public class DenialInstance implements ILiteralInstance {
 
     public DenialInstance(List<VariableInstance> universalVariables, IASystemInferableInstance... body) {
         this.universalVariables = universalVariables;
-        this.body = Arrays.asList(body);
+        this.body = new LinkedList<IASystemInferableInstance>(Arrays.asList(body));
     }
 
     public DenialInstance(IASystemInferableInstance... body) {
         universalVariables = new LinkedList<VariableInstance>();
-        this.body = Arrays.asList(body);
+        this.body = new LinkedList<IASystemInferableInstance>(Arrays.asList(body));
     }
 
     public DenialInstance() {

@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.alp.abduction.logic.instance;
+package uk.co.mtford.alp.abduction.logic.instance.equality;
 
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
+import uk.co.mtford.alp.abduction.logic.instance.*;
 import uk.co.mtford.alp.abduction.rules.E1RuleNode;
 import uk.co.mtford.alp.abduction.rules.E2RuleNode;
 import uk.co.mtford.alp.abduction.rules.RuleNode;
@@ -18,12 +19,12 @@ import java.util.Set;
 /**
  * @author mtford
  */
-public class EqualityInstance implements IEqualitySolverResultInstance, ILiteralInstance {
+public class EqualityInstance implements IEqualityInstance {
 
     private static Logger LOGGER = Logger.getLogger(EqualityInstance.class);
 
-    private IUnifiableAtomInstance left;
-    private IUnifiableAtomInstance right;
+    protected IUnifiableAtomInstance left;
+    protected IUnifiableAtomInstance right;
 
     public EqualityInstance(IUnifiableAtomInstance left, IUnifiableAtomInstance right) {
         this.left = left;
@@ -114,4 +115,5 @@ public class EqualityInstance implements IEqualitySolverResultInstance, ILiteral
 
         return true;
     }
+
 }

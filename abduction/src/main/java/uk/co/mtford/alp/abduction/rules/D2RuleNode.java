@@ -1,6 +1,7 @@
 package uk.co.mtford.alp.abduction.rules;
 
 import uk.co.mtford.alp.abduction.AbductiveFramework;
+import uk.co.mtford.alp.abduction.DefinitionException;
 import uk.co.mtford.alp.abduction.Store;
 import uk.co.mtford.alp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.alp.abduction.logic.instance.IASystemInferableInstance;
@@ -46,7 +47,7 @@ public class D2RuleNode extends NegativeRuleNode {
     }
 
     @Override
-    public void acceptVisitor(RuleNodeVisitor v) {
+    public void acceptVisitor(RuleNodeVisitor v) throws DefinitionException {
         v.visit(this);
     }
 }

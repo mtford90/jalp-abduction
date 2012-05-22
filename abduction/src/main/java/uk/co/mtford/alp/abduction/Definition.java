@@ -5,10 +5,8 @@
 package uk.co.mtford.alp.abduction;
 
 import org.apache.log4j.Logger;
-import uk.co.mtford.alp.abduction.logic.instance.IASystemInferableInstance;
-import uk.co.mtford.alp.abduction.logic.instance.IUnifiableAtomInstance;
-import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
-import uk.co.mtford.alp.abduction.logic.instance.VariableInstance;
+import uk.co.mtford.alp.abduction.logic.instance.*;
+import uk.co.mtford.alp.abduction.logic.instance.equality.EqualityInstance;
 
 import java.util.*;
 
@@ -19,7 +17,7 @@ public class Definition {
 
     private static final Logger LOGGER = Logger.getLogger(Definition.class);
 
-    private PredicateInstance head; // TODO: Make a predicate class rather than predicate instance? Would make more sense.
+    private PredicateInstance head;
     private List<IASystemInferableInstance> body;
     private HashMap<String, VariableInstance> variables;
 
@@ -31,9 +29,9 @@ public class Definition {
     }
 
     public boolean isFact() {
-        if (body == null) return false;
-        if (body.size() == 0) return false;
-        return true;
+        if (body == null) return true;
+        if (body.size() == 0) return true;
+        return false;
     }
 
     public PredicateInstance getHead() {
@@ -70,23 +68,25 @@ public class Definition {
     }
 
     public List<IASystemInferableInstance> unfoldDefinition(IUnifiableAtomInstance... newParameters) throws DefinitionException {
-        Set<VariableInstance> variables = getHeadVariables();
-        if (newParameters.length != variables.size())
-            throw new DefinitionException("Incorrect number of parameters when unfolding " + this);
-        Map<VariableInstance, IUnifiableAtomInstance> substitution = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        for (int i = 0; i < newParameters.length; i++) {
-            substitution.put((VariableInstance) head.getParameter(i), newParameters[i]);
+        if (newParameters.length!=head.getNumParams()) throw new DefinitionException("Incorrect number of parameters expanding "+this);
+        List<IASystemInferableInstance> unfold = new LinkedList<IASystemInferableInstance>();
+        Map<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        if (!isFact()) {
+            PredicateInstance clonedHead = (PredicateInstance) head.deepClone(subst);
+            for (IASystemInferableInstance inferable:body) {
+                unfold.add((IASystemInferableInstance) inferable.deepClone(subst));
+            }
+            for (int i=0;i<newParameters.length;i++){
+                unfold.add(0,new EqualityInstance(clonedHead.getParameter(i),newParameters[i]));
+            }
         }
-        LinkedList<IASystemInferableInstance> unfoldedBody = new LinkedList<IASystemInferableInstance>();
+        else {
+            for (int i=0;i<newParameters.length;i++){
+                unfold.add(0,new EqualityInstance(head.getParameter(i),newParameters[i]));
+            }
+        }
 
-        for (VariableInstance v : variables) {
-            if (!substitution.containsKey(v))
-                throw new DefinitionException("Missing substitution for " + v + " when unfolding " + this);
-        }
-        for (IASystemInferableInstance inferable : body) {
-            unfoldedBody.add((IASystemInferableInstance) inferable.deepClone(substitution));
-        }
-        return unfoldedBody;
+        return unfold;
     }
 
 }

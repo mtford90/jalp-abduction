@@ -6,7 +6,8 @@ package uk.co.mtford.alp.abduction;
 
 import org.apache.log4j.Logger;
 import uk.co.mtford.alp.abduction.logic.instance.DenialInstance;
-import uk.co.mtford.alp.abduction.logic.instance.EqualityInstance;
+import uk.co.mtford.alp.abduction.logic.instance.IEqualityInstance;
+import uk.co.mtford.alp.abduction.logic.instance.equality.EqualityInstance;
 import uk.co.mtford.alp.abduction.logic.instance.PredicateInstance;
 
 import java.util.LinkedList;
@@ -24,12 +25,12 @@ public class Store implements Cloneable {
 
     public List<PredicateInstance> abducibles;
     public List<DenialInstance> denials;
-    public List<EqualityInstance> equalities;
+    public List<IEqualityInstance> equalities;
 
     public Store() {
         abducibles = new LinkedList<PredicateInstance>();
         denials = new LinkedList<DenialInstance>();
-        equalities = new LinkedList<EqualityInstance>();
+        equalities = new LinkedList<IEqualityInstance>();
     }
 
     public Store shallowClone() {

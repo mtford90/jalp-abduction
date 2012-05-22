@@ -51,7 +51,7 @@ import java.util.List;
 import uk.co.mtford.alp.abduction.AbductiveFramework;
 import uk.co.mtford.alp.abduction.logic.instance.IASystemInferableInstance;
 import uk.co.mtford.alp.abduction.logic.instance.DenialInstance;
-import uk.co.mtford.alp.abduction.logic.instance.EqualityInstance;
+import uk.co.mtford.alp.abduction.logic.instance.equality.EqualityInstance;
 import uk.co.mtford.alp.abduction.Definition;
 import uk.co.mtford.alp.abduction.logic.instance.*;
 
@@ -106,11 +106,11 @@ TOKEN :
 /* Top level production */
 AbductiveFramework AbductiveLogicProgram():
 {
-	LinkedList<RuleInstance> program = new LinkedList<RuleInstance>();
+	LinkedList<Definition> program = new LinkedList<Definition>();
     LinkedList<DenialInstance> constraints = new LinkedList<DenialInstance>();
     HashMap<String, Integer> abducibles = new HashMap<String, Integer>();
 
-    RuleInstance r;
+    Definition r;
     DenialInstance d;
     List<PredicateInstance> newAbducibles;
 }
@@ -135,12 +135,12 @@ AbductiveFramework AbductiveLogicProgram():
     }
 }
 
-RuleInstance Rule():
+Definition Rule():
 {
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
     
     PredicateInstance head;
-    List<IASystemInferable> body = null;
+    List<IASystemInferableInstance> body = null;
 }
 {
 	head = Predicate(variablesSoFar)
@@ -149,14 +149,14 @@ RuleInstance Rule():
 		body = Body(variablesSoFar)
 	]
 	<DOT>
-    { return new RuleInstance(head,body,variablesSoFar); }
+    { return new Definition(head,body,variablesSoFar); }
 }
 
 DenialInstance Denial():
 {
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
 
-    List<IASystemInferable> body;
+    List<IASystemInferableInstance> body;
     List<VariableInstance> variableList = new LinkedList<VariableInstance>();
 }
 {
@@ -193,10 +193,10 @@ List<PredicateInstance> Abducible():
     { return predicateList; }
 }
 
-List<IASystemInferable> Body(HashMap<String, VariableInstance> variablesSoFar):
+List<IASystemInferableInstance> Body(HashMap<String, VariableInstance> variablesSoFar):
 {
-    LinkedList<IASystemInferable> body = new LinkedList<IASystemInferable>();
-    IASystemInferable literal;
+    LinkedList<IASystemInferableInstance> body = new LinkedList<IASystemInferableInstance>();
+    IASystemInferableInstance literal;
 }
 {
 	literal = Literal(variablesSoFar)
@@ -248,7 +248,7 @@ PredicateInstance Predicate(HashMap<String, VariableInstance> variablesSoFar):
 {
     Token t;
     String name;
-    List<IAtomInstance> parameters = new LinkedList<IAtomInstance>();
+    List<IUnifiableAtomInstance> parameters = new LinkedList<IUnifiableAtomInstance>();
 }
 {
 	t = <LCASENAME>
@@ -263,8 +263,8 @@ PredicateInstance Predicate(HashMap<String, VariableInstance> variablesSoFar):
 
 EqualityInstance Equality(HashMap<String, VariableInstance> variablesSoFar):
 {
-    IAtomInstance left;
-    IAtomInstance right;
+    IUnifiableAtomInstance left;
+    IUnifiableAtomInstance right;
 }
 {
 	left = Parameter(variablesSoFar)
@@ -273,10 +273,10 @@ EqualityInstance Equality(HashMap<String, VariableInstance> variablesSoFar):
     { return new EqualityInstance(left,right); }
 }
 
-List<IAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar):
+List<IUnifiableAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar):
 {
-    LinkedList<IAtomInstance> params = new LinkedList<IAtomInstance>();
-    IAtomInstance param;
+    LinkedList<IUnifiableAtomInstance> params = new LinkedList<IUnifiableAtomInstance>();
+    IUnifiableAtomInstance param;
 }
 {
 	[
@@ -324,7 +324,7 @@ List<VariableInstance> VariableList(HashMap<String, VariableInstance> variablesS
     { return variableList; }
 }
 
-IAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar):
+IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar):
 {
     Token t;
     PredicateInstance predicate;
