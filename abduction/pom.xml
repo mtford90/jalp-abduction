@@ -39,7 +39,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>uk.co.mtford.alp.Main</mainClass>
+							<mainClass>uk.co.mtford.jalp.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

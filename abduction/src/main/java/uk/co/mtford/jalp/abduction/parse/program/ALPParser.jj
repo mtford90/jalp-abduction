@@ -1,0 +1,356 @@
+/*
+
+LL(2) grammar for ALPS in prolog style.
+
+ALP -> ((Rule | Denial | Abducible))* EOF
+Rule -> Predicate (DEFINES Body)? DOT
+Abducible -> ABDUCIBLE LBRACKET Predicate (COMMA Predicate)* RBRACKET DOT
+Denial -> IC DEFINES Body DOT
+Body -> Literal (COMMA Literal)*
+Literal -> PosLiteral | NegLiteral
+PosLiteral -> Predicate | Equality
+NegLiteral -> NOT PosLiteral
+Predicate -> LCASENAME (LBRACKET ParameterList RBRACKET)?
+Equality -> Parameter EQUALS Parameter
+ParameterList -> (Parameter (COMMA Parameter)*)?
+VariableList -> (UCASENAME (COMMA UCASENAME)*)?
+Parameter -> (UCASENAME | LCASENAME | Predicate)
+
+*/
+
+options {
+  LOOKAHEAD = 2;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = false;
+  DEBUG_PARSER = false;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = false;
+}
+
+PARSER_BEGIN(ALPParser)
+
+package uk.co.mtford.jalp.abduction.parse.program;
+
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import uk.co.mtford.jalp.abduction.AbductiveFramework;
+import uk.co.mtford.jalp.abduction.logic.instance.IASystemInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equality.EqualityInstance;
+import uk.co.mtford.jalp.abduction.Definition;
+import uk.co.mtford.jalp.abduction.logic.instance.*;
+
+public class ALPParser {
+
+    public static AbductiveFramework readFromConsole() throws ParseException {
+        ALPParser parser = new ALPParser(System.in);
+        return parser.AbductiveLogicProgram();
+    }
+
+    public static AbductiveFramework readFromFile(String fileName) throws FileNotFoundException, ParseException {
+        FileInputStream fstream = new FileInputStream(fileName);
+        ALPParser parser = new ALPParser(fstream);
+        return parser.AbductiveLogicProgram();
+    }
+
+      public static AbductiveFramework readFromString(String string) throws ParseException {
+        ByteArrayInputStream inputStream = null;
+        byte[] buf = string.getBytes();
+        inputStream = new ByteArrayInputStream(buf);
+        ALPParser parser = new ALPParser(inputStream);
+        return parser.AbductiveLogicProgram();
+      }
+
+}
+
+PARSER_END(ALPParser)
+
+SKIP :
+{
+  " " |
+  "\t" |
+  "\n" |
+  "\r"  
+}
+
+TOKEN :
+{
+  <LBRACKET: "("> |
+  <RBRACKET: ")"> |
+  <DEFINES: ":-"> |
+  <COMMA: ","> |
+  <DOT: "."> |
+  <EQUALS: "="> |
+  <NOT: "not"> |
+  <IC: "ic"> |
+  <ABDUCIBLE: "abducible"> |
+  <LCASENAME: ["a"-"z","0"-"9"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
+  <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> 
+}
+
+/* Top level production */
+AbductiveFramework AbductiveLogicProgram():
+{
+	LinkedList<Definition> program = new LinkedList<Definition>();
+    LinkedList<DenialInstance> constraints = new LinkedList<DenialInstance>();
+    HashMap<String, Integer> abducibles = new HashMap<String, Integer>();
+
+    Definition r;
+    DenialInstance d;
+    List<PredicateInstance> newAbducibles;
+}
+{
+	(
+		r = Rule()
+        { 
+            program.add(r);
+        } |
+        d = Denial()
+        { constraints.add(d); } |
+        newAbducibles = Abducible()
+        {
+            for (PredicateInstance p:newAbducibles) {
+                abducibles.put(p.getName(),p.getNumParams());
+            }
+        }
+	)*
+	<EOF>
+	{ 
+        return new AbductiveFramework(program,abducibles,constraints);
+    }
+}
+
+Definition Rule():
+{
+    HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
+    
+    PredicateInstance head;
+    List<IASystemInferableInstance> body = null;
+}
+{
+	head = Predicate(variablesSoFar)
+	[
+		<DEFINES>
+		body = Body(variablesSoFar)
+	]
+	<DOT>
+    { return new Definition(head,body,variablesSoFar); }
+}
+
+DenialInstance Denial():
+{
+    HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
+
+    List<IASystemInferableInstance> body;
+    List<VariableInstance> variableList = new LinkedList<VariableInstance>();
+}
+{
+	<IC>
+	<DEFINES>
+	body = Body(variablesSoFar)
+	<DOT>
+    {
+        for (VariableInstance v:variablesSoFar.values()) {
+            variableList.add(v);
+        }
+        DenialInstance d = new DenialInstance(body,variableList);
+        return d;
+    }
+}
+
+List<PredicateInstance> Abducible():
+{
+    LinkedList<PredicateInstance> predicateList = new LinkedList<PredicateInstance>();
+    PredicateInstance p;
+}
+{
+    <ABDUCIBLE>
+    <LBRACKET>
+    p = Predicate(new HashMap<String, VariableInstance>())
+    { predicateList.add(p); }
+    (
+        <COMMA>
+        p = Predicate(new HashMap<String, VariableInstance>())
+        { predicateList.add(p); }
+    )*
+    <RBRACKET>
+    <DOT>
+    { return predicateList; }
+}
+
+List<IASystemInferableInstance> Body(HashMap<String, VariableInstance> variablesSoFar):
+{
+    LinkedList<IASystemInferableInstance> body = new LinkedList<IASystemInferableInstance>();
+    IASystemInferableInstance literal;
+}
+{
+	literal = Literal(variablesSoFar)
+    { body.add(literal); }
+	(
+		<COMMA>
+		literal = Literal(variablesSoFar)
+        { body.add(literal); }
+	)*
+    { return body; }
+}
+
+ILiteralInstance Literal(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ILiteralInstance literal;
+}
+{
+    literal = PositiveLiteral(variablesSoFar)
+    { return literal; } |
+    literal = NegativeLiteral(variablesSoFar)
+    { return literal; } 
+}
+
+ILiteralInstance PositiveLiteral(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ILiteralInstance literal;
+}
+{
+    literal = Predicate(variablesSoFar) 
+    {
+        return literal;
+    } |
+    literal = Equality(variablesSoFar)
+    { return literal; }
+}
+
+NegationInstance NegativeLiteral(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ILiteralInstance subformula;
+}
+{
+    <NOT>
+    subformula = PositiveLiteral(variablesSoFar)
+    { return new NegationInstance(subformula); }
+}
+
+
+PredicateInstance Predicate(HashMap<String, VariableInstance> variablesSoFar):
+{
+    Token t;
+    String name;
+    List<IUnifiableAtomInstance> parameters = new LinkedList<IUnifiableAtomInstance>();
+}
+{
+	t = <LCASENAME>
+    { name = t.image; }
+	[	
+		<LBRACKET>
+		parameters = ParameterList(variablesSoFar)
+		<RBRACKET>
+	]
+    { return new PredicateInstance(name,parameters); }
+}
+
+EqualityInstance Equality(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IUnifiableAtomInstance left;
+    IUnifiableAtomInstance right;
+}
+{
+	left = Parameter(variablesSoFar)
+	<EQUALS>
+	right = Parameter(variablesSoFar)
+    { return new EqualityInstance(left,right); }
+}
+
+List<IUnifiableAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar):
+{
+    LinkedList<IUnifiableAtomInstance> params = new LinkedList<IUnifiableAtomInstance>();
+    IUnifiableAtomInstance param;
+}
+{
+	[
+		param = Parameter(variablesSoFar)
+        { params.add(param); }
+		(
+			<COMMA>
+			param = Parameter(variablesSoFar)
+            { params.add(param); }
+		)*
+ 	]
+    { return params; }
+}
+
+List<VariableInstance> VariableList(HashMap<String, VariableInstance> variablesSoFar):
+{
+    Token t;
+    LinkedList<VariableInstance> variableList = new LinkedList<VariableInstance>();
+    String name;
+}
+{
+    t = <UCASENAME>
+    {
+        name = t.image;
+        if (!variablesSoFar.containsKey(name)) {
+            VariableInstance v = new VariableInstance(name);
+            variablesSoFar.put(name,v);
+            variableList.add(v);
+        }
+        else {
+            variableList.add(variablesSoFar.get(name));
+        }
+    }
+    (
+        <COMMA>
+        t = <UCASENAME>
+        {
+            name = t.image;
+            if (!variablesSoFar.containsKey(name)) {
+                variableList.add(new VariableInstance(name));
+            }
+        }
+    )*
+
+    { return variableList; }
+}
+
+IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar):
+{
+    Token t;
+    PredicateInstance predicate;
+    String name;
+}
+{
+	(
+		t = <UCASENAME> 
+        { 
+            name = t.image;
+            if (variablesSoFar.containsKey(name)) {
+                return variablesSoFar.get(name);
+            }
+            else {
+                VariableInstance variable = new VariableInstance(name);
+                variablesSoFar.put(name,variable);
+                return variable;
+            }
+        } | 
+		t = <LCASENAME> 
+        { 
+            name = t.image;
+            return new ConstantInstance(name);
+        } | 
+		predicate = Predicate(variablesSoFar)
+        { return predicate; }
+	)
+
+}
