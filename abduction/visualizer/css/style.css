@@ -24,53 +24,50 @@ td,th {
 	text-align: left;
 }
 
+#body-wrapper {
+	margin:0 auto;
+}
+
 
 /*--Header----------------------------------*/
 
 #heading {
-	margin: 0 auto;
 	padding: 4px;
-	text-align: center;
 }
 
 .header-border {
 	margin: 0 auto;
+	padding-top: 4px;
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 	border-bottom-color: rgb(210,210,210);
 }
 
+/*--Controls--------------------------------*/
+
+
+
 /*--Content---------------------------------*/
 
-#content {
-	text-align: center;
-	width: 1080px;
-	margin: 0 auto;
-}
 
 #content #selected-nodes {
 	overflow:hidden;
-	margin: 0 auto;
-	width: 1080px;
 }
 
 #content #previous-node-div {
-	float:left;
 	margin: 4px;
 }
 
 #content #current-node-div {
-	float:left;
 	margin: 4px;
 }
 
 #content .nodeTable {
-	margin:0 auto;
 }
 
 #content #children {
 	overflow: hidden;
-	margin:0 auto;
+
 }
 
 #content .child-div {
@@ -78,20 +75,6 @@ td,th {
 	margin: 4px;
 }
 
-#content #controls {
-	margin: 0 auto;	
-}
-
-#content #controls .control-button {
-	padding: 100px;
-}
-
-
-#controls .control:hover {
-	color: blue;
-	text-decoration: underline;
-	cursor: pointer;	
-}
 
 
 

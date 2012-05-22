@@ -16,51 +16,53 @@
 </head>
 
 <body>
-	<div id="heading">
-		<h1>Output Visualizer</h1>
-		<div class="header-border"></div>
-	</div>
-	<div id="content">
-		<h2>Controls</h2>
+	<div id="body-wrapper">
+		<div id="heading">
+			<h1>JALP Visual Debugger</h1>
+			<div class="header-border"></div>
+		</div>
 		<div id="controls">
+		<h2>Controls</h2>
 			<input type="button" class="control-button" value="Back" onclick="back()">
 		</div>
-		<div id="selected-nodes">
-			<div id="previous-node-div">
-				<h2>Parent Node</h2>
-				<table id="previousNode" class="nodeTable">
-					<tr><td>Type</td><td class="data" id="type"></td></tr>
-					<tr><td>Current Goal</td><td  class="data" id="current-goal"></td></tr>	
-					<tr><td>Nested Denials</td><td  class="data" id="nested-denials"></td></tr>	
-					<tr><td>Next Goals</td><td  class="data" id="next-goals"></td></tr>
-					<tr><td>Assignments</td><td  class="data" id="assignments"></td></tr>
-					<tr><td>Abducibles</td><td  class="data" id="abducibles"></td></tr>
-					<tr><td>Denials</td><td  class="data" id="Denials"></td></tr>
-					<tr><td>Equalities</td><td  class="data" id="equalities"></td></tr>
-					<tr><td>Mark</td><td  class="data" id="mark"></td></tr>
-				</table>
+
+		<div id="content">
+			<div id="selected-nodes">
+			
+				<div id="previous-node-div">
+					<h2>Parent Node</h2>
+					<table id="previousNode" class="nodeTable">
+						<tr><td>Type</td><td class="data" id="type"></td></tr>
+						<tr><td>Current Goal</td><td  class="data" id="current-goal"></td></tr>	
+						<tr><td>Nested Denials</td><td  class="data" id="nested-denials"></td></tr>	
+						<tr><td>Next Goals</td><td  class="data" id="next-goals"></td></tr>
+						<tr><td>Assignments</td><td  class="data" id="assignments"></td></tr>
+						<tr><td>Abducibles</td><td  class="data" id="abducibles"></td></tr>
+						<tr><td>Denials</td><td  class="data" id="Denials"></td></tr>
+						<tr><td>Equalities</td><td  class="data" id="equalities"></td></tr>
+						<tr><td>Mark</td><td  class="data" id="mark"></td></tr>
+					</table>
+				</div>
+				<div id="current-node-div">
+					<h2>Current Node</h2>
+					<table id="currentNode" class="nodeTable">
+						<tr><td>Type</td><td class="data" id="type"></td></tr>
+						<tr><td>Current Goal</td><td  class="data" id="current-goal"></td></tr>	
+						<tr><td>Nested Denials</td><td  class="data" id="nested-denials"></td></tr>		
+						<tr><td>Next Goals</td><td  class="data" id="next-goals"></td></tr>
+						<tr><td>Assignments</td><td  class="data" id="assignments"></td></tr>
+						<tr><td>Abducibles</td><td  class="data" id="abducibles"></td></tr>
+						<tr><td>Denials</td><td  class="data" id="Denials"></td></tr>
+						<tr><td>Equalities</td><td  class="data" id="equalities"></td></tr>
+						<tr><td>Mark</td><td  class="data" id="mark"></td></tr>
+					</table>
+				</div>
 			</div>
-			<div id="current-node-div">
-				<h2>Current Node</h2>
-				<table id="currentNode" class="nodeTable">
-					<tr><td>Type</td><td class="data" id="type"></td></tr>
-					<tr><td>Current Goal</td><td  class="data" id="current-goal"></td></tr>	
-					<tr><td>Nested Denials</td><td  class="data" id="nested-denials"></td></tr>		
-					<tr><td>Next Goals</td><td  class="data" id="next-goals"></td></tr>
-					<tr><td>Assignments</td><td  class="data" id="assignments"></td></tr>
-					<tr><td>Abducibles</td><td  class="data" id="abducibles"></td></tr>
-					<tr><td>Denials</td><td  class="data" id="Denials"></td></tr>
-					<tr><td>Equalities</td><td  class="data" id="equalities"></td></tr>
-					<tr><td>Mark</td><td  class="data" id="mark"></td></tr>
-				</table>
+			
+			<div id="children">
+						<h2>Children</h2>
 			</div>
-		</div>
-		
-		<h2>Children</h2>
-		<div id="children">
-		
 		</div>
 	</div>
 </body>
-
 </html>
