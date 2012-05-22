@@ -44,14 +44,14 @@ td,th {
 
 #content {
 	text-align: center;
-	width: 960px;
+	width: 1080px;
 	margin: 0 auto;
 }
 
 #content #selected-nodes {
 	overflow:hidden;
 	margin: 0 auto;
-	width: 960px;
+	width: 1080px;
 }
 
 #content #previous-node-div {

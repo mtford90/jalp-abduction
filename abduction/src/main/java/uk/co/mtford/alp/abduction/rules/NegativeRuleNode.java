@@ -97,4 +97,89 @@ public abstract class NegativeRuleNode extends RuleNode {
         xml+="</children>\n</node>\n";
         return xml;
     }
+
+    @Override
+    public String toJSON()  {
+        String type[] = this.getClass().toString().split("\\.");
+
+        String json="{";
+
+        json+="\\\"type\\\":"+"\\\""+type[type.length-1]+"\\\"";
+
+        json+=",";
+
+        json+="\\\"currentGoal\\\":"+"\\\""+currentGoal+"\\\"";
+
+        json+=",";
+
+        json+="\\\"nextGoals\\\""+":[ ";
+        for (IASystemInferableInstance inferable:nextGoals) {
+            json+="\\\""+inferable+"\\\",";
+        }
+        json=json.substring(0,json.length()-1);
+        json+="]";
+
+        json+=",";
+
+        json+="\\\"nestedDenials\\\""+":[ ";
+        for (DenialInstance denialInstance:denials) {
+            json+="\\\""+denialInstance+"\\\",";
+        }
+        json=json.substring(0,json.length()-1);
+        json+="]";
+
+        json+=",";
+
+
+        json+="\\\"assignments\\\""+":{ ";
+        for (VariableInstance v:assignments.keySet()) {
+            json+="\\\""+v+"\\\""+":"+"\\\""+assignments.get(v)+"\\\""+",";
+        }
+        json=json.substring(0,json.length()-1);
+        json+="}";
+
+        json+=",";
+
+        json+="\\\"abducibles\\\""+":[ ";
+        for (PredicateInstance abducible:store.abducibles) {
+            json+="\\\""+abducible+"\\\",";
+        }
+        json=json.substring(0,json.length()-1);
+        json+="]";
+
+        json+=",";
+
+        json+="\\\"denials\\\""+":[ ";
+        for (DenialInstance denial:store.denials) {
+            json+="\\\""+denial+"\\\",";
+        }
+        json=json.substring(0,json.length()-1);
+        json+="]";
+
+        json+=",";
+
+        json+="\\\"equalities\\\""+":[ ";
+        for (IEqualityInstance equalities:store.equalities) {
+            json+="\\\""+equalities+"\\\",";
+        }
+        json=json.substring(0,json.length()-1);
+        json+="]";
+
+        json+=",";
+
+        json+="\\\"mark\\\":"+"\\\""+nodeMark+"\\\"";
+
+        json+=",";
+
+        json+="\\\"children\\\""+":[ ";
+        for (RuleNode child:children) {
+            json+=child.toJSON()+",";
+        }
+        json=json.substring(0,json.length()-1);
+        json+="]";
+
+        json+="}";
+
+        return json;
+    }
 }
