@@ -118,9 +118,9 @@ public class DenialInstance implements ILiteralInstance {
         // Substitute universal variables.
         LinkedList<IASystemInferableInstance> newBody = new LinkedList<IASystemInferableInstance>();
         LinkedList<VariableInstance> newUniversalVariables = new LinkedList<VariableInstance>();
-        for (VariableInstance v : universalVariables) {
+        /*for (VariableInstance v : universalVariables) {
             newUniversalVariables.add((VariableInstance) v.deepClone(substitutions));
-        }
+        }      */ // TODO
         for (IASystemInferableInstance inferable : body) {
             newBody.add((IASystemInferableInstance) inferable.deepClone(substitutions));
         }
