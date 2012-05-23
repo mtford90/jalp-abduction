@@ -4,8 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.co.mtford.jalp.abduction.logic.instance.equality.EqualityInstance;
-
 import java.util.HashMap;
 import java.util.List;
 

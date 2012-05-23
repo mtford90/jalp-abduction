@@ -6,7 +6,7 @@ package uk.co.mtford.jalp.abduction;
 
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.logic.instance.equality.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.EqualityInstance;
 
 import java.util.*;
 
@@ -81,6 +81,7 @@ public class Definition {
             }
         }
         else {
+
             for (int i=0;i<newParameters.length;i++){
                 unfold.add(0,new EqualityInstance(newParameters[i],head.getParameter(i)));
             }

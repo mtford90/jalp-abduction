@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.logic.instance.equality.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.EqualityInstance;
 import uk.co.mtford.jalp.abduction.rules.*;
 
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public abstract class RuleNodeVisitor {
 
     public RuleNodeVisitor(RuleNode ruleNode) throws DefinitionException {
         currentRuleNode = ruleNode;
-        successNodes = new LinkedList<SuccessNode>();;
+        successNodes = new LinkedList<SuccessNode>();
     }
 
     public LinkedList<SuccessNode> getSuccessNodes() {
@@ -163,8 +163,9 @@ public abstract class RuleNodeVisitor {
             childNode = constructNegativeChildNode(newGoal,newNestedDenialList,newRestOfGoals,ruleNode);
         }
 
+        childNode.getStore().denials.add(newCurrentDenial);
+
         ruleNode.getChildren().add(childNode);
-        ruleNode.getStore().denials.add(newCurrentDenial);
         ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
     }
 

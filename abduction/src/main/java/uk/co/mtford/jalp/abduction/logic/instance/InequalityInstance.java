@@ -1,7 +1,6 @@
 package uk.co.mtford.jalp.abduction.logic.instance;
 
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
-import uk.co.mtford.jalp.abduction.logic.instance.equality.EqualityInstance;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public class InequalityInstance implements IEqualityInstance {
 
     @Override
     public String toString() {
-        return "not "+equalityInstance;
+        return equalityInstance.getLeft()+"=\\="+equalityInstance.getRight();
     }
 
     @Override

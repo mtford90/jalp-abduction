@@ -51,7 +51,7 @@ import java.util.List;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.IASystemInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equality.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.EqualityInstance;
 import uk.co.mtford.jalp.abduction.Definition;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 

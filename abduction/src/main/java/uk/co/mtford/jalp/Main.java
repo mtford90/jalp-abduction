@@ -214,6 +214,7 @@ public class Main {
                 int n = 0;
                 if (LOGGER.isInfoEnabled()) LOGGER.info("Beginning processing of query.");
                 do {
+                    n++;
                     if (n>=MAX_EXPANSIONS) {
                         LOGGER.error("Hit max expansions. Generating JSON file for what we have so far.");
                     }
@@ -245,8 +246,10 @@ public class Main {
             String s = sc.nextLine();
             if (s.trim().equals("c")||s.trim().equals("cc")||s.trim().equals("ccc")) {
                 Set<VariableInstance> variables = new HashSet<VariableInstance>(queryVariables);
+                Map<VariableInstance,IUnifiableAtomInstance> assignments = successNodes.get(i).getAssignments();
                 List<PredicateInstance> abducibles = successNodes.get(i).getStore().abducibles;
                 List<DenialInstance> denials = successNodes.get(i).getStore().denials;
+                List<IEqualityInstance> equalities = successNodes.get(i).getStore().equalities;
                 for (PredicateInstance predicate:abducibles) {
                     variables.addAll(predicate.getVariables());
                 }
@@ -255,23 +258,9 @@ public class Main {
                 }
                 printMessage("==============================================================");
                 printMessage("Abducibles: "+abducibles);
-                Map<VariableInstance,IUnifiableAtomInstance> assignments = successNodes.get(i).getAssignments();
-                Map<VariableInstance,IUnifiableAtomInstance> relevantAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-                for (VariableInstance key:assignments.keySet()) { // TODO: Pretty gross.
-                    if (variables.contains(key)) {
-                        if (assignments.get(key) instanceof VariableInstance) {
-                            variables.add((VariableInstance)assignments.get(key));
-                        }
-
-                    }
-                }
-                for (VariableInstance key:assignments.keySet()) {
-                    if (variables.contains(key)) {
-                        relevantAssignments.put(key,assignments.get(key));
-                    }
-                }
-                printMessage("Assignments: "+relevantAssignments);
+                printMessage("Assignments: "+assignments);
                 printMessage("Constraints: "+denials);
+                printMessage("Equalities: "+equalities);
                 printMessage("==============================================================");
                 printMessage("There are "+(successNodes.size()-1-i)+" explanations remaining.");
                 continue;
