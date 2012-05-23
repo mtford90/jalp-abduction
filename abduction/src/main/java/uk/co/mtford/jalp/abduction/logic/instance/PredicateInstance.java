@@ -4,6 +4,7 @@
  */
 package uk.co.mtford.jalp.abduction.logic.instance;
 
+import com.sun.org.apache.bcel.internal.classfile.LineNumber;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.equality.EqualityInstance;
@@ -68,39 +69,67 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> equalitySolve(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
-        if (!assignment.containsKey(other)) {
-            assignment.put(other, this);
-            return result;
-        } else {
-            return assignment.get(other).equalitySolve(this, assignment);
-        }
+    public List<IEqualitySolverResultInstance> reduce(VariableInstance other) {
+        return new LinkedList<IEqualitySolverResultInstance>();
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> equalitySolve(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
-        result.add(new FalseInstance());
-        return result;
+    public List<IEqualitySolverResultInstance> reduce(ConstantInstance other) {
+        return new LinkedList<IEqualitySolverResultInstance>();
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> equalitySolve(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
-        if (!this.isSameFunction(other)) {  // Same name and arity?
-            result.add(new FalseInstance());
-        } else { // s_bar = t_bar
-            for (int i = 0; i < parameters.length; i++) {
-                result.add(new EqualityInstance(parameters[i], other.getParameter(i)));
+    public List<IEqualitySolverResultInstance> reduce(PredicateInstance other) {
+        LinkedList<IEqualitySolverResultInstance> newEqualities = new LinkedList<IEqualitySolverResultInstance>();
+        if (this.isSameFunction(other)) {
+            for (int i = 0;i<parameters.length;i++) {
+                newEqualities.add(new EqualityInstance(parameters[i],other.getParameter(i)));
             }
         }
-        return result;
+        return newEqualities;
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> equalitySolve(IUnifiableAtomInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        return other.equalitySolve(this, assignment);
+    public List<IEqualitySolverResultInstance> reduce(IUnifiableAtomInstance other) {
+        return other.acceptReduceVisitor(this);
+    }
+
+    @Override
+    public List<IEqualitySolverResultInstance> acceptReduceVisitor(IUnifiableAtomInstance unifiableAtom) {
+        return unifiableAtom.reduce(this);
+    }
+
+    @Override
+    public boolean unify(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        return other.unify(this,assignment);
+    }
+
+    @Override
+    public boolean unify(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        return false;
+    }
+
+    @Override
+    public boolean unify(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        if (this.isSameFunction(other)) {
+            for (int i = 0;i<parameters.length;i++) {
+                if (!parameters[i].unify(other.getParameter(i),assignment)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean unify(IUnifiableAtomInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        return other.acceptUnifyVisitor(this,assignment);
+    }
+
+    @Override
+    public boolean acceptUnifyVisitor(IUnifiableAtomInstance unifiableAtom, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        return unifiableAtom.unify(this,assignment);
     }
 
     @Override

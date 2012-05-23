@@ -52,9 +52,9 @@ public class GetVariablesTest {
 
     @Test
     public void predicateTest1() {
-        VariableInstance x = new VariableInstance("x");
-        VariableInstance y = new VariableInstance("y");
-        VariableInstance z = new VariableInstance("z");
+        VariableInstance x = new VariableInstance("X");
+        VariableInstance y = new VariableInstance("Y");
+        VariableInstance z = new VariableInstance("Z");
         PredicateInstance p = new PredicateInstance("p", x, y, z);
         Set<VariableInstance> variables = p.getVariables();
         assertTrue(variables.contains(x));
@@ -65,9 +65,9 @@ public class GetVariablesTest {
 
     @Test
     public void denialTest1() {
-        VariableInstance x = new VariableInstance("x");
-        VariableInstance y = new VariableInstance("y");
-        VariableInstance z = new VariableInstance("z");
+        VariableInstance x = new VariableInstance("X");
+        VariableInstance y = new VariableInstance("Y");
+        VariableInstance z = new VariableInstance("Z");
         PredicateInstance p = new PredicateInstance("p", x, y);
         PredicateInstance q = new PredicateInstance("q", z);
         DenialInstance d = new DenialInstance(p, q);
@@ -80,9 +80,9 @@ public class GetVariablesTest {
 
     @Test
     public void equalityTest1() {
-        VariableInstance x = new VariableInstance("x");
-        VariableInstance y = new VariableInstance("y");
-        VariableInstance z = new VariableInstance("z");
+        VariableInstance x = new VariableInstance("X");
+        VariableInstance y = new VariableInstance("Y");
+        VariableInstance z = new VariableInstance("Z");
         VariableInstance m = new VariableInstance("m");
         PredicateInstance p = new PredicateInstance("p", x, y);
         PredicateInstance q = new PredicateInstance("q", z, m);
@@ -97,9 +97,9 @@ public class GetVariablesTest {
 
     @Test
     public void negationTest1() {
-        VariableInstance x = new VariableInstance("x");
-        VariableInstance y = new VariableInstance("y");
-        VariableInstance z = new VariableInstance("z");
+        VariableInstance x = new VariableInstance("X");
+        VariableInstance y = new VariableInstance("Y");
+        VariableInstance z = new VariableInstance("Z");
         PredicateInstance p = new PredicateInstance("p", x, y);
         PredicateInstance q = new PredicateInstance("q", z);
         DenialInstance d = new DenialInstance(p, q);

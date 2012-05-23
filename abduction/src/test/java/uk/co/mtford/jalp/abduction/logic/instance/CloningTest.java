@@ -24,9 +24,9 @@ public class CloningTest {
     @Before
     public void noSetup() {
         HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        x = new VariableInstance("x");
-        y = new VariableInstance("y");
-        z = new VariableInstance("z");
+        x = new VariableInstance("X");
+        y = new VariableInstance("Y");
+        z = new VariableInstance("Z");
         q = new VariableInstance("q");
         r = new VariableInstance("r");
         s = new VariableInstance("s");

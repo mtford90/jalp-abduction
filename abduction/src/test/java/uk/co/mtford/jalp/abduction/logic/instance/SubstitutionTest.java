@@ -24,9 +24,9 @@ public class SubstitutionTest {
     @Before
     public void noSetup() {
         HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        x = new VariableInstance("x");
-        y = new VariableInstance("y");
-        z = new VariableInstance("z");
+        x = new VariableInstance("X");
+        y = new VariableInstance("Y");
+        z = new VariableInstance("Z");
         q = new VariableInstance("q");
         r = new VariableInstance("r");
         s = new VariableInstance("s");
@@ -82,9 +82,9 @@ public class SubstitutionTest {
         assertTrue(denial.getBody().size() == 2);
         assertTrue(denial.getBody().get(0) == p);
         assertTrue(denial.getBody().get(1) == q);
-        assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(0) == d);  // p(d,y)
-        assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(1) == y);  // p(d,y)
-        assertTrue(((PredicateInstance) denial.getBody().get(1)).getParameter(0) == z);  // p(z)
+        assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(0) == d);  // p(d,Y)
+        assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(1) == y);  // p(d,Y)
+        assertTrue(((PredicateInstance) denial.getBody().get(1)).getParameter(0) == z);  // p(Z)
     }
 
     @Test
@@ -100,9 +100,9 @@ public class SubstitutionTest {
         assertTrue(denial.getBody().size() == 2);
         assertTrue(denial.getBody().get(0) == p);
         assertTrue(denial.getBody().get(1) == q);
-        assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(0) == d);  // p(d,y)
-        assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(1) == y);  // p(d,y)
-        assertTrue(((PredicateInstance) denial.getBody().get(1)).getParameter(0) == z);  // p(z)
+        assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(0) == d);  // p(d,Y)
+        assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(1) == y);  // p(d,Y)
+        assertTrue(((PredicateInstance) denial.getBody().get(1)).getParameter(0) == z);  // p(Z)
 
     }
 
@@ -114,9 +114,9 @@ public class SubstitutionTest {
         subst.put(x, d);
         EqualityInstance e = new EqualityInstance(p, q);
         assert (e.performSubstitutions(subst) == e);
-        assertTrue(((PredicateInstance) e.getLeft()).getParameter(0) == d);  // p(d,y)
-        assertTrue(((PredicateInstance) e.getLeft()).getParameter(1) == y);  // p(d,y)
-        assertTrue(((PredicateInstance) e.getRight()).getParameter(0) == z);  // p(z)
+        assertTrue(((PredicateInstance) e.getLeft()).getParameter(0) == d);  // p(d,Y)
+        assertTrue(((PredicateInstance) e.getLeft()).getParameter(1) == y);  // p(d,Y)
+        assertTrue(((PredicateInstance) e.getRight()).getParameter(0) == z);  // p(Z)
 
     }
 

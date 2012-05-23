@@ -12,16 +12,31 @@ import java.util.Map;
  */
 public interface IUnifiableAtomInstance extends IAtomInstance {
 
-    public abstract List<IEqualitySolverResultInstance> equalitySolve(IUnifiableAtomInstance other,
-                                                                      Map<VariableInstance, IUnifiableAtomInstance> assignment);
+    public List<IEqualitySolverResultInstance> reduce(VariableInstance other);
 
-    public abstract List<IEqualitySolverResultInstance> equalitySolve(VariableInstance other,
-                                                                      Map<VariableInstance, IUnifiableAtomInstance> assignment);
+    public List<IEqualitySolverResultInstance> reduce(ConstantInstance other);
 
-    public abstract List<IEqualitySolverResultInstance> equalitySolve(ConstantInstance other,
-                                                                      Map<VariableInstance, IUnifiableAtomInstance> assignment);
+    public List<IEqualitySolverResultInstance> reduce(PredicateInstance other);
 
-    public abstract List<IEqualitySolverResultInstance> equalitySolve(PredicateInstance other,
-                                                                      Map<VariableInstance, IUnifiableAtomInstance> assignment);
+    public List<IEqualitySolverResultInstance> reduce(IUnifiableAtomInstance other);
+
+    public List<IEqualitySolverResultInstance> acceptReduceVisitor (IUnifiableAtomInstance unifiableAtom);
+
+
+    public boolean unify(VariableInstance other,
+                                  Map<VariableInstance, IUnifiableAtomInstance> assignment);
+
+    public boolean unify(ConstantInstance other,
+                                  Map<VariableInstance, IUnifiableAtomInstance> assignment);
+
+    public boolean  unify(PredicateInstance other,
+                                   Map<VariableInstance, IUnifiableAtomInstance> assignment);
+
+    public boolean  unify(IUnifiableAtomInstance other,
+                          Map<VariableInstance, IUnifiableAtomInstance> assignment);
+
+    public boolean  acceptUnifyVisitor(IUnifiableAtomInstance unifiableAtom,
+                                       Map<VariableInstance, IUnifiableAtomInstance> assignment);
+
 
 }

@@ -29,43 +29,8 @@ public class ConstantInstance implements ITermInstance {
         this.value = value;
     }
 
-    /**
-     * Equality solve c=v or deal with variable already being assigned.
-     *
-     * @param other
-     * @param assignment
-     * @return
-     */
-    @Override
-    public List<IEqualitySolverResultInstance> equalitySolve(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
-        if (!assignment.containsKey(other)) { //c=v
-            assignment.put(other, this);
-            return result;
-        } else { // Find current assignment.
-            return assignment.get(other).equalitySolve(this, assignment);
-        }
-    }
 
-    @Override
-    public List<IEqualitySolverResultInstance> equalitySolve(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
-        if (this.equals(other)) result.add(new TrueInstance()); // Same constant.
-        else result.add(new FalseInstance()); // Different constant.
-        return result;
-    }
 
-    @Override
-    public List<IEqualitySolverResultInstance> equalitySolve(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        LinkedList<IEqualitySolverResultInstance> result = new LinkedList<IEqualitySolverResultInstance>();
-        result.add(new FalseInstance()); //
-        return result;
-    }
-
-    @Override
-    public List<IEqualitySolverResultInstance> equalitySolve(IUnifiableAtomInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        return other.equalitySolve(this, assignment);
-    }
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
@@ -108,6 +73,57 @@ public class ConstantInstance implements ITermInstance {
     @Override
     public String toString() {
         return value;
+    }
+
+
+    @Override
+    public List<IEqualitySolverResultInstance> reduce(VariableInstance other) {
+        return new LinkedList<IEqualitySolverResultInstance>();
+    }
+
+    @Override
+    public List<IEqualitySolverResultInstance> reduce(ConstantInstance other) {
+        return new LinkedList<IEqualitySolverResultInstance>();
+    }
+
+    @Override
+    public List<IEqualitySolverResultInstance> reduce(PredicateInstance other) {
+        return new LinkedList<IEqualitySolverResultInstance>();
+    }
+
+    @Override
+    public List<IEqualitySolverResultInstance> reduce(IUnifiableAtomInstance other) {
+        return new LinkedList<IEqualitySolverResultInstance>();
+    }
+
+    @Override
+    public List<IEqualitySolverResultInstance> acceptReduceVisitor(IUnifiableAtomInstance unifiableAtom) {
+        return unifiableAtom.reduce(this);
+    }
+
+    @Override
+    public boolean unify(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        return other.unify(this,assignment);
+    }
+
+    @Override
+    public boolean unify(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        return this.equals(other);
+    }
+
+    @Override
+    public boolean unify(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        return false;
+    }
+
+    @Override
+    public boolean unify(IUnifiableAtomInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        return other.acceptUnifyVisitor(this,assignment);
+    }
+
+    @Override
+    public boolean acceptUnifyVisitor(IUnifiableAtomInstance unifiableAtom, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+        return unifiableAtom.unify(this,assignment);
     }
 
 
