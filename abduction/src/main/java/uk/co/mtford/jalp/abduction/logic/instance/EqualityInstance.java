@@ -115,7 +115,7 @@ public class EqualityInstance implements IEqualityInstance {
         return true;
     }
 
-    public List<IReductionResultInstance> reduceLeftRight() {
+    public List<EqualityInstance> reduceLeftRight() {
         return left.reduce(right);
     }
 
@@ -123,7 +123,7 @@ public class EqualityInstance implements IEqualityInstance {
         return left.unify(right,assignments);
     }
 
-    public List<IReductionResultInstance> reduceRightLeft() {
+    public List<EqualityInstance> reduceRightLeft() {
         return right.reduce(left);
     }
 

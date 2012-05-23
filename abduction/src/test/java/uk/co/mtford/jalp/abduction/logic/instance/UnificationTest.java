@@ -52,49 +52,49 @@ public class UnificationTest { // TODO
 
     @Test
     public void reduceTest1() {
-        List<IReductionResultInstance> results = c.reduce(c);
+        List<EqualityInstance> results = c.reduce(c);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest2() {
-        List<IReductionResultInstance> results = c.reduce(d);
+        List<EqualityInstance> results = c.reduce(d);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest3() {
-        List<IReductionResultInstance> results = c.reduce(X);
+        List<EqualityInstance> results = c.reduce(X);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest4() {
-        List<IReductionResultInstance> results = c.reduce(p);
+        List<EqualityInstance> results = c.reduce(p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest5() {
-        List<IReductionResultInstance> results = p.reduce(q);
+        List<EqualityInstance> results = p.reduce(q);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest6() {
-        List<IReductionResultInstance> results = p1.reduce(p);
+        List<EqualityInstance> results = p1.reduce(p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest7() {
-        List<IReductionResultInstance> results = X.reduce(p);
+        List<EqualityInstance> results = X.reduce(p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest8() {
-        List<IReductionResultInstance> results = p1.reduce(p2);
+        List<EqualityInstance> results = p1.reduce(p2);
         assertTrue(!results.isEmpty());
         assertTrue(results.contains(new EqualityInstance(X, Y)));
         assertTrue(results.contains(new EqualityInstance(Z,e)));
@@ -102,49 +102,49 @@ public class UnificationTest { // TODO
 
     @Test
     public void reduceTest1a() {
-        List<IReductionResultInstance> results = c.reduce((IUnifiableAtomInstance)c);
+        List<EqualityInstance> results = c.reduce((IUnifiableAtomInstance)c);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest2a() {
-        List<IReductionResultInstance> results = c.reduce((IUnifiableAtomInstance)d);
+        List<EqualityInstance> results = c.reduce((IUnifiableAtomInstance)d);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest3a() {
-        List<IReductionResultInstance> results = c.reduce((IUnifiableAtomInstance) X);
+        List<EqualityInstance> results = c.reduce((IUnifiableAtomInstance) X);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest4a() {
-        List<IReductionResultInstance> results = c.reduce((IUnifiableAtomInstance)p);
+        List<EqualityInstance> results = c.reduce((IUnifiableAtomInstance)p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest5a() {
-        List<IReductionResultInstance> results = p.reduce((IUnifiableAtomInstance)q);
+        List<EqualityInstance> results = p.reduce((IUnifiableAtomInstance)q);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest6a() {
-        List<IReductionResultInstance> results = p1.reduce((IUnifiableAtomInstance)p);
+        List<EqualityInstance> results = p1.reduce((IUnifiableAtomInstance)p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest7a() {
-        List<IReductionResultInstance> results = X.reduce((IUnifiableAtomInstance)p);
+        List<EqualityInstance> results = X.reduce((IUnifiableAtomInstance)p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest8a() {
-        List<IReductionResultInstance> results = p1.reduce((IUnifiableAtomInstance)p2);
+        List<EqualityInstance> results = p1.reduce((IUnifiableAtomInstance)p2);
         assertTrue(!results.isEmpty());
         assertTrue(results.contains(new EqualityInstance(X, Y)));
         assertTrue(results.contains(new EqualityInstance(Z,e)));

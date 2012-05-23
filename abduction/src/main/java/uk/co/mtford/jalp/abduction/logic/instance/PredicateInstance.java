@@ -67,18 +67,18 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     }
 
     @Override
-    public List<IReductionResultInstance> reduce(VariableInstance other) {
-        return new LinkedList<IReductionResultInstance>();
+    public List<EqualityInstance> reduce(VariableInstance other) {
+        return new LinkedList<EqualityInstance>();
     }
 
     @Override
-    public List<IReductionResultInstance> reduce(ConstantInstance other) {
-        return new LinkedList<IReductionResultInstance>();
+    public List<EqualityInstance> reduce(ConstantInstance other) {
+        return new LinkedList<EqualityInstance>();
     }
 
     @Override
-    public List<IReductionResultInstance> reduce(PredicateInstance other) {
-        LinkedList<IReductionResultInstance> newEqualities = new LinkedList<IReductionResultInstance>();
+    public List<EqualityInstance> reduce(PredicateInstance other) {
+        LinkedList<EqualityInstance> newEqualities = new LinkedList<EqualityInstance>();
         if (this.isSameFunction(other)) {
             for (int i = 0;i<parameters.length;i++) {
                 newEqualities.add(new EqualityInstance(parameters[i],other.getParameter(i)));
@@ -88,12 +88,12 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     }
 
     @Override
-    public List<IReductionResultInstance> reduce(IUnifiableAtomInstance other) {
+    public List<EqualityInstance> reduce(IUnifiableAtomInstance other) {
         return other.acceptReduceVisitor(this);
     }
 
     @Override
-    public List<IReductionResultInstance> acceptReduceVisitor(IUnifiableAtomInstance unifiableAtom) {
+    public List<EqualityInstance> acceptReduceVisitor(IUnifiableAtomInstance unifiableAtom) {
         return unifiableAtom.reduce(this);
     }
 

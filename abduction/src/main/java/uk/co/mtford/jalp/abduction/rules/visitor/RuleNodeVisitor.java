@@ -112,8 +112,8 @@ public abstract class RuleNodeVisitor {
         // Check our new collected abducible won't unifyLeftRight with any already collected abducibles.
         for (PredicateInstance storeAbducible : store.abducibles) {
             if (goalAbducible.isSameFunction(storeAbducible)) {
-                List<IReductionResultInstance> equalitySolved = goalAbducible.reduce(storeAbducible);
-                for (IReductionResultInstance result : equalitySolved) {
+                List<EqualityInstance> equalitySolved = goalAbducible.reduce(storeAbducible);
+                for (EqualityInstance result : equalitySolved) {
                     newRestOfGoals.add(0,new NegationInstance(result));
                 }
             }
@@ -146,7 +146,7 @@ public abstract class RuleNodeVisitor {
             if (storeAbducible.isSameFunction(currentGoal)) {
                 DenialInstance newDenial = (DenialInstance) newCurrentDenial.deepClone(new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments()));
                 PredicateInstance newDenialHead = (PredicateInstance) newDenial.getBody().remove(0);
-                List<IReductionResultInstance> equalitySolved = newDenialHead.reduce(storeAbducible);
+                List<EqualityInstance> equalitySolved = newDenialHead.reduce(storeAbducible);
                 newDenial.getBody().addAll(0,equalitySolved);
                 if (!newNestedDenialList.isEmpty()) newNestedDenialList.get(0).getBody().add(0,newDenial);
                 else newRestOfGoals.add(0,newDenial);
@@ -252,7 +252,7 @@ public abstract class RuleNodeVisitor {
         RuleNode childNode;
         List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
 
-        List<IReductionResultInstance> reductionResult = currentGoal.reduceLeftRight();
+        List<EqualityInstance> reductionResult = currentGoal.reduceLeftRight();
 
         if (!reductionResult.isEmpty()) {  // E2
             if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2 general case to node.");

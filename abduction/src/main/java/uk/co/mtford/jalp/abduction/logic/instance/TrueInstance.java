@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * @author mtford
  */
-public class TrueInstance implements IReductionResultInstance, IAtomInstance {
+public class TrueInstance implements IAtomInstance, IASystemInferableInstance {
 
     @Override
     public String toString() {
