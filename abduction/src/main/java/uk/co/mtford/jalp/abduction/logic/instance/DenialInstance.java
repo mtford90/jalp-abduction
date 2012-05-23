@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * @author mtford
  */
-public class DenialInstance implements ILiteralInstance {
+public class DenialInstance implements ILiteralInstance, IASystemInferableInstance {
 
     private static final Logger LOGGER = Logger.getLogger(DenialInstance.class);
 

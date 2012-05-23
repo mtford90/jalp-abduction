@@ -7,5 +7,5 @@ package uk.co.mtford.jalp.abduction.logic.instance;
  * Time: 13:00
  * To change this template use File | Settings | File Templates.
  */
-public interface IEqualityInstance extends ILiteralInstance, IASystemInferableInstance {
+public interface IEqualityInstance extends IASystemInferableInstance {
 }

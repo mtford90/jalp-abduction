@@ -13,30 +13,21 @@ import java.util.Map;
 public interface IUnifiableAtomInstance extends IAtomInstance {
 
     public List<EqualityInstance> reduce(VariableInstance other);
-
     public List<EqualityInstance> reduce(ConstantInstance other);
-
     public List<EqualityInstance> reduce(PredicateInstance other);
-
     public List<EqualityInstance> reduce(IUnifiableAtomInstance other);
-
     public List<EqualityInstance> acceptReduceVisitor (IUnifiableAtomInstance unifiableAtom);
 
 
     public boolean unify(VariableInstance other,
                                   Map<VariableInstance, IUnifiableAtomInstance> assignment);
-
     public boolean unify(ConstantInstance other,
                                   Map<VariableInstance, IUnifiableAtomInstance> assignment);
-
     public boolean  unify(PredicateInstance other,
                                    Map<VariableInstance, IUnifiableAtomInstance> assignment);
-
     public boolean  unify(IUnifiableAtomInstance other,
                           Map<VariableInstance, IUnifiableAtomInstance> assignment);
-
     public boolean  acceptUnifyVisitor(IUnifiableAtomInstance unifiableAtom,
                                        Map<VariableInstance, IUnifiableAtomInstance> assignment);
-
 
 }

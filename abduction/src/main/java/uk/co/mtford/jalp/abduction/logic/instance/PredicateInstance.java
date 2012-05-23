@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * @author mtford
  */
-public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstance {
+public class PredicateInstance implements IUnifiableAtomInstance, IASystemInferableInstance {
 
     private static final Logger LOGGER = Logger.getLogger(PredicateInstance.class);
 

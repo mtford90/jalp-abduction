@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * @author mtford
  */
-public class VariableInstance implements ITermInstance {
+public class VariableInstance implements IUnifiableAtomInstance {
 
     private static final Logger LOGGER = Logger.getLogger(VariableInstance.class);
     private int uniqueId = UniqueIdGenerator.getUniqueId();

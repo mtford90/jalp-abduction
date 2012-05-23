@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * @author mtford
  */
-public class NegationInstance implements ILiteralInstance {
+public class NegationInstance implements ILiteralInstance, IASystemInferableInstance {
 
     private static final Logger LOGGER = Logger.getLogger(NegationInstance.class);
 
@@ -47,7 +47,7 @@ public class NegationInstance implements ILiteralInstance {
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        subFormula = (ILiteralInstance) subFormula.performSubstitutions(substitutions);
+        subFormula = (IASystemInferableInstance) subFormula.performSubstitutions(substitutions);
         return this;
     }
 

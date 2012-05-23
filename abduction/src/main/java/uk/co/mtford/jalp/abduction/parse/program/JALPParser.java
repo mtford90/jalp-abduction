@@ -150,8 +150,8 @@ public class JALPParser implements ALPParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public ILiteralInstance Literal(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    ILiteralInstance literal;
+  final public IASystemInferableInstance Literal(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+      IASystemInferableInstance literal;
     if (jj_2_8(2)) {
       literal = PositiveLiteral(variablesSoFar);
       {if (true) return literal;}
@@ -165,8 +165,8 @@ public class JALPParser implements ALPParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public ILiteralInstance PositiveLiteral(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    ILiteralInstance literal;
+  final public IASystemInferableInstance PositiveLiteral(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+      IASystemInferableInstance literal;
     if (jj_2_10(2)) {
       literal = Predicate(variablesSoFar);
         {if (true) return literal;}
@@ -181,7 +181,7 @@ public class JALPParser implements ALPParserConstants {
   }
 
   final public NegationInstance NegativeLiteral(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    ILiteralInstance subformula;
+    IASystemInferableInstance subformula;
     jj_consume_token(NOT);
     subformula = PositiveLiteral(variablesSoFar);
       {if (true) return new NegationInstance(subformula);}
