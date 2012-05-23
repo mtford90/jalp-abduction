@@ -116,4 +116,21 @@ public class EqualityInstance implements IEqualityInstance {
         return true;
     }
 
+    public List<IReductionResultInstance> reduceLeftRight() {
+        return left.reduce(right);
+    }
+
+    public boolean unifyLeftRight(Map<VariableInstance, IUnifiableAtomInstance> assignments)  {
+        return left.unify(right,assignments);
+    }
+
+    public List<IReductionResultInstance> reduceRightLeft() {
+        return right.reduce(left);
+    }
+
+    public boolean unifyRightLeft(Map<VariableInstance, IUnifiableAtomInstance> assignments)  {
+        return right.unify(left,assignments);
+    }
+
+
 }

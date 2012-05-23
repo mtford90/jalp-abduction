@@ -4,7 +4,6 @@
  */
 package uk.co.mtford.jalp.abduction.logic.instance;
 
-import com.sun.org.apache.bcel.internal.classfile.LineNumber;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.equality.EqualityInstance;
@@ -69,18 +68,18 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> reduce(VariableInstance other) {
-        return new LinkedList<IEqualitySolverResultInstance>();
+    public List<IReductionResultInstance> reduce(VariableInstance other) {
+        return new LinkedList<IReductionResultInstance>();
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> reduce(ConstantInstance other) {
-        return new LinkedList<IEqualitySolverResultInstance>();
+    public List<IReductionResultInstance> reduce(ConstantInstance other) {
+        return new LinkedList<IReductionResultInstance>();
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> reduce(PredicateInstance other) {
-        LinkedList<IEqualitySolverResultInstance> newEqualities = new LinkedList<IEqualitySolverResultInstance>();
+    public List<IReductionResultInstance> reduce(PredicateInstance other) {
+        LinkedList<IReductionResultInstance> newEqualities = new LinkedList<IReductionResultInstance>();
         if (this.isSameFunction(other)) {
             for (int i = 0;i<parameters.length;i++) {
                 newEqualities.add(new EqualityInstance(parameters[i],other.getParameter(i)));
@@ -90,12 +89,12 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> reduce(IUnifiableAtomInstance other) {
+    public List<IReductionResultInstance> reduce(IUnifiableAtomInstance other) {
         return other.acceptReduceVisitor(this);
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> acceptReduceVisitor(IUnifiableAtomInstance unifiableAtom) {
+    public List<IReductionResultInstance> acceptReduceVisitor(IUnifiableAtomInstance unifiableAtom) {
         return unifiableAtom.reduce(this);
     }
 
@@ -147,13 +146,14 @@ public class PredicateInstance implements ILiteralInstance, IUnifiableAtomInstan
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        PredicateInstance clonedThis = (PredicateInstance)this.shallowClone();
         LinkedList<IAtomInstance> newParameters = new LinkedList<IAtomInstance>();
         for (IAtomInstance parameter : parameters) {
             IAtomInstance newParameter = (IAtomInstance) parameter.performSubstitutions(substitutions);
             newParameters.add(newParameter);
         }
-        parameters = newParameters.toArray(new IUnifiableAtomInstance[parameters.length]);
-        return this;
+        clonedThis.parameters = newParameters.toArray(new IUnifiableAtomInstance[parameters.length]);
+        return clonedThis;
     }
 
     @Override

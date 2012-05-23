@@ -77,27 +77,27 @@ public class ConstantInstance implements ITermInstance {
 
 
     @Override
-    public List<IEqualitySolverResultInstance> reduce(VariableInstance other) {
-        return new LinkedList<IEqualitySolverResultInstance>();
+    public List<IReductionResultInstance> reduce(VariableInstance other) {
+        return new LinkedList<IReductionResultInstance>();
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> reduce(ConstantInstance other) {
-        return new LinkedList<IEqualitySolverResultInstance>();
+    public List<IReductionResultInstance> reduce(ConstantInstance other) {
+        return new LinkedList<IReductionResultInstance>();
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> reduce(PredicateInstance other) {
-        return new LinkedList<IEqualitySolverResultInstance>();
+    public List<IReductionResultInstance> reduce(PredicateInstance other) {
+        return new LinkedList<IReductionResultInstance>();
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> reduce(IUnifiableAtomInstance other) {
-        return new LinkedList<IEqualitySolverResultInstance>();
+    public List<IReductionResultInstance> reduce(IUnifiableAtomInstance other) {
+        return new LinkedList<IReductionResultInstance>();
     }
 
     @Override
-    public List<IEqualitySolverResultInstance> acceptReduceVisitor(IUnifiableAtomInstance unifiableAtom) {
+    public List<IReductionResultInstance> acceptReduceVisitor(IUnifiableAtomInstance unifiableAtom) {
         return unifiableAtom.reduce(this);
     }
 

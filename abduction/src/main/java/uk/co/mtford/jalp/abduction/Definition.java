@@ -77,12 +77,12 @@ public class Definition {
                 unfold.add((IASystemInferableInstance) inferable.deepClone(subst));
             }
             for (int i=0;i<newParameters.length;i++){
-                unfold.add(0,new EqualityInstance(clonedHead.getParameter(i),newParameters[i]));
+                unfold.add(0,new EqualityInstance(newParameters[i],clonedHead.getParameter(i)));
             }
         }
         else {
             for (int i=0;i<newParameters.length;i++){
-                unfold.add(0,new EqualityInstance(head.getParameter(i),newParameters[i]));
+                unfold.add(0,new EqualityInstance(newParameters[i],head.getParameter(i)));
             }
         }
 

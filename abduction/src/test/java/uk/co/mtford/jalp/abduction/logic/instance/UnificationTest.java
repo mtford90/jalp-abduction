@@ -54,49 +54,49 @@ public class UnificationTest { // TODO
 
     @Test
     public void reduceTest1() {
-        List<IEqualitySolverResultInstance> results = c.reduce(c);
+        List<IReductionResultInstance> results = c.reduce(c);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest2() {
-        List<IEqualitySolverResultInstance> results = c.reduce(d);
+        List<IReductionResultInstance> results = c.reduce(d);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest3() {
-        List<IEqualitySolverResultInstance> results = c.reduce(X);
+        List<IReductionResultInstance> results = c.reduce(X);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest4() {
-        List<IEqualitySolverResultInstance> results = c.reduce(p);
+        List<IReductionResultInstance> results = c.reduce(p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest5() {
-        List<IEqualitySolverResultInstance> results = p.reduce(q);
+        List<IReductionResultInstance> results = p.reduce(q);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest6() {
-        List<IEqualitySolverResultInstance> results = p1.reduce(p);
+        List<IReductionResultInstance> results = p1.reduce(p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest7() {
-        List<IEqualitySolverResultInstance> results = X.reduce(p);
+        List<IReductionResultInstance> results = X.reduce(p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest8() {
-        List<IEqualitySolverResultInstance> results = p1.reduce(p2);
+        List<IReductionResultInstance> results = p1.reduce(p2);
         assertTrue(!results.isEmpty());
         assertTrue(results.contains(new EqualityInstance(X, Y)));
         assertTrue(results.contains(new EqualityInstance(Z,e)));
@@ -104,49 +104,49 @@ public class UnificationTest { // TODO
 
     @Test
     public void reduceTest1a() {
-        List<IEqualitySolverResultInstance> results = c.reduce((IUnifiableAtomInstance)c);
+        List<IReductionResultInstance> results = c.reduce((IUnifiableAtomInstance)c);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest2a() {
-        List<IEqualitySolverResultInstance> results = c.reduce((IUnifiableAtomInstance)d);
+        List<IReductionResultInstance> results = c.reduce((IUnifiableAtomInstance)d);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest3a() {
-        List<IEqualitySolverResultInstance> results = c.reduce((IUnifiableAtomInstance) X);
+        List<IReductionResultInstance> results = c.reduce((IUnifiableAtomInstance) X);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest4a() {
-        List<IEqualitySolverResultInstance> results = c.reduce((IUnifiableAtomInstance)p);
+        List<IReductionResultInstance> results = c.reduce((IUnifiableAtomInstance)p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest5a() {
-        List<IEqualitySolverResultInstance> results = p.reduce((IUnifiableAtomInstance)q);
+        List<IReductionResultInstance> results = p.reduce((IUnifiableAtomInstance)q);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest6a() {
-        List<IEqualitySolverResultInstance> results = p1.reduce((IUnifiableAtomInstance)p);
+        List<IReductionResultInstance> results = p1.reduce((IUnifiableAtomInstance)p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest7a() {
-        List<IEqualitySolverResultInstance> results = X.reduce((IUnifiableAtomInstance)p);
+        List<IReductionResultInstance> results = X.reduce((IUnifiableAtomInstance)p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest8a() {
-        List<IEqualitySolverResultInstance> results = p1.reduce((IUnifiableAtomInstance)p2);
+        List<IReductionResultInstance> results = p1.reduce((IUnifiableAtomInstance)p2);
         assertTrue(!results.isEmpty());
         assertTrue(results.contains(new EqualityInstance(X, Y)));
         assertTrue(results.contains(new EqualityInstance(Z,e)));

@@ -12,15 +12,15 @@ import java.util.Map;
  */
 public interface IUnifiableAtomInstance extends IAtomInstance {
 
-    public List<IEqualitySolverResultInstance> reduce(VariableInstance other);
+    public List<IReductionResultInstance> reduce(VariableInstance other);
 
-    public List<IEqualitySolverResultInstance> reduce(ConstantInstance other);
+    public List<IReductionResultInstance> reduce(ConstantInstance other);
 
-    public List<IEqualitySolverResultInstance> reduce(PredicateInstance other);
+    public List<IReductionResultInstance> reduce(PredicateInstance other);
 
-    public List<IEqualitySolverResultInstance> reduce(IUnifiableAtomInstance other);
+    public List<IReductionResultInstance> reduce(IUnifiableAtomInstance other);
 
-    public List<IEqualitySolverResultInstance> acceptReduceVisitor (IUnifiableAtomInstance unifiableAtom);
+    public List<IReductionResultInstance> acceptReduceVisitor (IUnifiableAtomInstance unifiableAtom);
 
 
     public boolean unify(VariableInstance other,

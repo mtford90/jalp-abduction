@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * @author mtford
  */
-public class FalseInstance implements IEqualitySolverResultInstance, IAtomInstance {
+public class FalseInstance implements IReductionResultInstance, IAtomInstance {
 
     @Override
     public String toString() {
