@@ -1,9 +1,11 @@
 package uk.co.mtford.jalp.abduction.rules.visitor;
 
+import com.sun.tools.corba.se.idl.constExpr.Equal;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.equality.EqualityInstance;
 import uk.co.mtford.jalp.abduction.rules.*;
 
 import java.util.HashMap;
@@ -96,8 +98,6 @@ public abstract class RuleNodeVisitor {
         // Set up new child node and it's data structures.
         RuleNode childNode;
         List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
-
-
 
         // Check our new collected abducible doesn't violate any collected constraints.
         for (DenialInstance collectedDenial : store.denials) {
@@ -222,11 +222,19 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(E1RuleNode ruleNode) {
-        // TODO
+        RuleNode childNode;
+        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        EqualityInstance currentGoal = (EqualityInstance) ruleNode.getCurrentGoal();
+        IASystemInferableInstance newGoal = null;
+        if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
+        childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+        ruleNode.getChildren().add(childNode);
+        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
     }
 
-    public void visit(E2RuleNode ruleNode) { // TODO instanceof's are gross...
+    public void visit(E2RuleNode ruleNode) {
         // TODO
+
     }
 
     public void visit(N1RuleNode ruleNode) {
