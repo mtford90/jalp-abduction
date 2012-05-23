@@ -20,11 +20,9 @@ import java.util.Map;
  */
 public class SuccessNode extends RuleNode {
 
-    public SuccessNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals) {
-        super(abductiveFramework, goal, restOfGoals);
-    }
-
-    public SuccessNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public SuccessNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal,
+                       List<IASystemInferableInstance> restOfGoals, Store store, Map<VariableInstance,
+                       IUnifiableAtomInstance> assignments) {
         super(abductiveFramework, goal, restOfGoals, store, assignments);
     }
 
@@ -33,6 +31,10 @@ public class SuccessNode extends RuleNode {
 
     @Override
     public RuleNode shallowClone() {
+        throw new UnsupportedOperationException(); // TODO
+    }
+
+    public boolean equalitySolve()  {
         throw new UnsupportedOperationException(); // TODO
     }
 

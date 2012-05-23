@@ -42,12 +42,10 @@ public abstract class RuleNodeVisitor {
             newRuleNode = newGoal.getPositiveRootRuleNode(previousNode.getAbductiveFramework(), newRestOfGoals);
         }
         else {
-            newRuleNode = new SuccessNode(previousNode.getAbductiveFramework(),newGoal,newRestOfGoals);
+            Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
+            newRuleNode = new SuccessNode(previousNode.getAbductiveFramework(),newGoal,newRestOfGoals,previousNode.getStore().shallowClone(),assignments);
         }
 
-        Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
-        newRuleNode.setAssignments(assignments);
-        newRuleNode.setStore(previousNode.getStore().shallowClone());
         return newRuleNode;
     }
 
@@ -444,8 +442,14 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(SuccessNode ruleNode) {
-        successNodes.add(ruleNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
+        boolean equalitySolveSuccess = ruleNode.equalitySolve();
+        if (equalitySolveSuccess) {
+            ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
+            successNodes.add(ruleNode);
+        }
+        else {
+            ruleNode.setNodeMark(RuleNode.NodeMark.FAILED);
+        }
     }
 
     public RuleNode stateRewrite() throws DefinitionException {

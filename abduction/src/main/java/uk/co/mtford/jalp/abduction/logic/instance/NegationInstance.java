@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * @author mtford
  */
-public class NegationInstance implements ILiteralInstance, IASystemInferableInstance {
+public class NegationInstance implements IASystemInferableInstance, IFirstOrderLogicInstance {
 
     private static final Logger LOGGER = Logger.getLogger(NegationInstance.class);
 

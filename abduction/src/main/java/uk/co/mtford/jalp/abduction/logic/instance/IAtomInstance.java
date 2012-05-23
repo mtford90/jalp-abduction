@@ -9,5 +9,5 @@ package uk.co.mtford.jalp.abduction.logic.instance;
  *
  * @author mtford
  */
-public interface IAtomInstance extends ILiteralInstance {
+public interface IAtomInstance extends IFirstOrderLogicInstance {
 }
