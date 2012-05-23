@@ -40,6 +40,8 @@ public abstract class RuleNodeVisitor {
         RuleNode newRuleNode;
         if (!(newGoal==null)) {
             newRuleNode = newGoal.getPositiveRootRuleNode(previousNode.getAbductiveFramework(), newRestOfGoals);
+            newRuleNode.setStore(previousNode.getStore().shallowClone());
+            newRuleNode.setAssignments(new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
         }
         else {
             Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
@@ -179,6 +181,7 @@ public abstract class RuleNodeVisitor {
             RuleNode childNode = constructPositiveChildNode(newGoal, restOfGoals, ruleNode);
             childNodes.add(childNode);
         }
+
         ruleNode.getChildren().addAll(0,childNodes);
         if (LOGGER.isInfoEnabled()) LOGGER.info("D1 generated "+childNodes.size()+" new states.");
         ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
@@ -287,7 +290,7 @@ public abstract class RuleNodeVisitor {
             else { //E2b
                 if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2b to node.");
                 // Branch 1
-                InequalityInstance inEqualityInstance = new InequalityInstance(currentGoal);
+                InEqualityInstance inEqualityInstance = new InEqualityInstance(currentGoal);
                 newGoal = new TrueInstance(); // TODO: Is this correct?
                 if (newNestedDenials.isEmpty()) {
                     childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);

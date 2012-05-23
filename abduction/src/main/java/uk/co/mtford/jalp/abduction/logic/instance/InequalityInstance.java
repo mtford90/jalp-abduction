@@ -14,11 +14,11 @@ import java.util.Set;
  * Time: 13:00
  * To change this template use File | Settings | File Templates.
  */
-public class InequalityInstance implements IEqualityInstance {
+public class InEqualityInstance implements IEqualityInstance {
 
     private EqualityInstance equalityInstance;
 
-    public InequalityInstance(EqualityInstance equalityInstance) {
+    public InEqualityInstance(EqualityInstance equalityInstance) {
         this.equalityInstance = equalityInstance;
     }
 
