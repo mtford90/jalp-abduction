@@ -3,6 +3,7 @@ package uk.co.mtford.jalp.abduction.logic.instance;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,5 +56,10 @@ public class InEqualityInstance implements IEqualityInstance {
     @Override
     public Set<VariableInstance> getVariables() {
         throw new UnsupportedOperationException(); // TODO
+    }
+
+    @Override
+    public boolean equalitySolve(Map<VariableInstance, IUnifiableAtomInstance> equalitySolverAssignments) {
+        return !equalityInstance.equalitySolve(new HashMap<VariableInstance, IUnifiableAtomInstance>(equalitySolverAssignments));
     }
 }

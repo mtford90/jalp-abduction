@@ -1,15 +1,15 @@
 /*
 
-LL(2) grammar for ALPS in prolog style.
+LL(2) grammar for JALP in prolog style.
 
 ALP -> ((Rule | Denial | Abducible))* EOF
 Rule -> Predicate (DEFINES Body)? DOT
 Abducible -> ABDUCIBLE LBRACKET Predicate (COMMA Predicate)* RBRACKET DOT
 Denial -> IC DEFINES Body DOT
-Body -> Literal (COMMA Literal)*
-Literal -> PosLiteral | NegLiteral
-PosLiteral -> Predicate | Equality
-NegLiteral -> NOT PosLiteral
+Body -> Inferable (COMMA Inferable)*
+Inferable -> PosInferable | NegInferable
+PosInferable -> Predicate | Equality
+NegInferable -> NOT PosInferable
 Predicate -> LCASENAME (LBRACKET ParameterList RBRACKET)?
 Equality -> Parameter EQUALS Parameter
 ParameterList -> (Parameter (COMMA Parameter)*)?
@@ -38,7 +38,7 @@ options {
   FORCE_LA_CHECK = false;
 }
 
-PARSER_BEGIN(ALPParser)
+PARSER_BEGIN(JALPParser)
 
 package uk.co.mtford.jalp.abduction.parse.program;
 
@@ -55,16 +55,16 @@ import uk.co.mtford.jalp.abduction.logic.instance.EqualityInstance;
 import uk.co.mtford.jalp.abduction.Definition;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 
-public class ALPParser {
+public class JALPParser {
 
     public static AbductiveFramework readFromConsole() throws ParseException {
-        ALPParser parser = new ALPParser(System.in);
+        JALPParser parser = new JALPParser(System.in);
         return parser.AbductiveLogicProgram();
     }
 
     public static AbductiveFramework readFromFile(String fileName) throws FileNotFoundException, ParseException {
         FileInputStream fstream = new FileInputStream(fileName);
-        ALPParser parser = new ALPParser(fstream);
+        JALPParser parser = new JALPParser(fstream);
         return parser.AbductiveLogicProgram();
     }
 
@@ -72,13 +72,13 @@ public class ALPParser {
         ByteArrayInputStream inputStream = null;
         byte[] buf = string.getBytes();
         inputStream = new ByteArrayInputStream(buf);
-        ALPParser parser = new ALPParser(inputStream);
+        JALPParser parser = new JALPParser(inputStream);
         return parser.AbductiveLogicProgram();
       }
 
 }
 
-PARSER_END(ALPParser)
+PARSER_END(JALPParser)
 
 SKIP :
 {
@@ -196,50 +196,50 @@ List<PredicateInstance> Abducible():
 List<IASystemInferableInstance> Body(HashMap<String, VariableInstance> variablesSoFar):
 {
     LinkedList<IASystemInferableInstance> body = new LinkedList<IASystemInferableInstance>();
-    IASystemInferableInstance literal;
+    IASystemInferableInstance inferable;
 }
 {
-	literal = Literal(variablesSoFar)
-    { body.add(literal); }
+	inferable = Inferable(variablesSoFar)
+    { body.add(inferable); }
 	(
 		<COMMA>
-		literal = Literal(variablesSoFar)
-        { body.add(literal); }
+		inferable = Inferable(variablesSoFar)
+        { body.add(inferable); }
 	)*
     { return body; }
 }
 
-ILiteralInstance Literal(HashMap<String, VariableInstance> variablesSoFar):
+IASystemInferableInstance Inferable(HashMap<String, VariableInstance> variablesSoFar):
 {
-    ILiteralInstance literal;
+    IASystemInferableInstance inferable;
 }
 {
-    literal = PositiveLiteral(variablesSoFar)
-    { return literal; } |
-    literal = NegativeLiteral(variablesSoFar)
-    { return literal; } 
+    inferable = PositiveInferable(variablesSoFar)
+    { return inferable; } |
+    inferable = NegativeInferable(variablesSoFar)
+    { return inferable; } 
 }
 
-ILiteralInstance PositiveLiteral(HashMap<String, VariableInstance> variablesSoFar):
+IASystemInferableInstance PositiveInferable(HashMap<String, VariableInstance> variablesSoFar):
 {
-    ILiteralInstance literal;
+    IASystemInferableInstance inferable;
 }
 {
-    literal = Predicate(variablesSoFar) 
+    inferable = Predicate(variablesSoFar) 
     {
-        return literal;
+        return inferable;
     } |
-    literal = Equality(variablesSoFar)
-    { return literal; }
+    inferable = Equality(variablesSoFar)
+    { return inferable; }
 }
 
-NegationInstance NegativeLiteral(HashMap<String, VariableInstance> variablesSoFar):
+NegationInstance NegativeInferable(HashMap<String, VariableInstance> variablesSoFar):
 {
-    ILiteralInstance subformula;
+    IASystemInferableInstance subformula;
 }
 {
     <NOT>
-    subformula = PositiveLiteral(variablesSoFar)
+    subformula = PositiveInferable(variablesSoFar)
     { return new NegationInstance(subformula); }
 }
 
