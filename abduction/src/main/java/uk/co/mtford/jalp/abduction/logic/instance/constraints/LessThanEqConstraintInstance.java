@@ -34,4 +34,9 @@ public class LessThanEqConstraintInstance extends ConstraintInstance {
     public IFirstOrderLogicInstance shallowClone() {
         return new LessThanEqConstraintInstance((ITermInstance)left,(ITermInstance)right);
     }
+
+    @Override
+    public String toString () {
+        return left + "<="+ right;
+    }
 }

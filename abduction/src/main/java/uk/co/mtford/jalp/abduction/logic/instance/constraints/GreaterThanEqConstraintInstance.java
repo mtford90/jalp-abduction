@@ -34,4 +34,9 @@ public class GreaterThanEqConstraintInstance extends ConstraintInstance {
     public IFirstOrderLogicInstance shallowClone() {
         return new GreaterThanEqConstraintInstance((ITermInstance)left,(ITermInstance)right);
     }
+
+    @Override
+    public String toString () {
+        return left + ">="+ right;
+    }
 }

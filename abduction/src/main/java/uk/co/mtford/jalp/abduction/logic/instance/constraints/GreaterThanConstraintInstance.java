@@ -35,4 +35,9 @@ public class GreaterThanConstraintInstance extends ConstraintInstance {
         return new GreaterThanConstraintInstance((ITermInstance)left,(ITermInstance)right);
     }
 
+    @Override
+    public String toString () {
+        return left + ">"+ right;
+    }
+
 }

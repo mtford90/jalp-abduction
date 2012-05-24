@@ -3,6 +3,7 @@ package uk.co.mtford.jalp.abduction.rules;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
 
 import java.util.List;
@@ -150,7 +151,7 @@ public abstract class NegativeRuleNode extends RuleNode {
 
         json+=",";
 
-        json+="\\\"nestedDenialsList\\\""+":[ ";
+        json+="\\\"denials\\\""+":[ ";
         for (DenialInstance denial:store.denials) {
             json+="\\\""+denial+"\\\",";
         }
@@ -162,6 +163,15 @@ public abstract class NegativeRuleNode extends RuleNode {
         json+="\\\"equalities\\\""+":[ ";
         for (IEqualityInstance equalities:store.equalities) {
             json+="\\\""+equalities+"\\\",";
+        }
+        json=json.substring(0,json.length()-1);
+        json+="]";
+
+        json+=",";
+
+        json+="\\\"constraints\\\""+":[ ";
+        for (IConstraintInstance constraint:store.constraints) {
+            json+="\\\""+constraint+"\\\",";
         }
         json=json.substring(0,json.length()-1);
         json+="]";

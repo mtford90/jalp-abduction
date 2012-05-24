@@ -59,4 +59,9 @@ public class ListInstance<E extends ITermInstance> implements ITermInstance {
         }
         return variables;
     }
+
+    @Override
+    public String toString () {
+        return list.toString();
+    }
 }

@@ -51,4 +51,9 @@ public class NegativeConstraintInstance implements IConstraintInstance {
     public Set<VariableInstance> getVariables() {
         return constraintInstance.getVariables();
     }
+
+    @Override
+    public String toString () {
+        return "not " + constraintInstance;
+    }
 }

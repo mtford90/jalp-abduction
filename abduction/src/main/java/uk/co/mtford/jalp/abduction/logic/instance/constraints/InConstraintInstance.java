@@ -35,5 +35,10 @@ public class InConstraintInstance extends ConstraintInstance {
         return new InConstraintInstance((ITermInstance)left,(ITermInstance)right);
     }
 
+    @Override
+    public String toString () {
+        return left + " in "+ right;
+    }
+
 
 }
