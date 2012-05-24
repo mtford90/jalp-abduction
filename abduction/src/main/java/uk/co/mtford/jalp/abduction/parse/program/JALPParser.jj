@@ -115,18 +115,19 @@ TOKEN :
   <COMMA: ","> |
   <DOT: "."> |
   <EQUALS: "="> |
-  <NOT: "not"> |
-  <IC: "ic"> |
-  <ABDUCIBLE: "abducible"> |
-  <LCASENAME: ["a"-"z","0"-"9"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
-  <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
   <LESSTHAN: "<"> |
   <LESSTHANEQ: "<="> |
   <GREATERTHAN: ">"> |
   <GREATERTHANEQ: ">="> |
-  <IN: "in"> |
   <LSQBRACKET: "["> |
-  <RSQBRACKET: "]">
+  <RSQBRACKET: "]"> |
+  <NOT: "not"> |
+  <IC: "ic"> |
+  <IN: "in"> |
+  <ABDUCIBLE: "abducible"> |
+  <LCASENAME: ["a"-"z","0"-"9"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
+  <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*>
+
 }
 
 /* Top level production */
@@ -252,11 +253,9 @@ IInferableInstance PositiveInferable(HashMap<String, VariableInstance> variables
 }
 {
     inferable = Predicate(variablesSoFar) 
-    {
-        return inferable;
-    } |
+    { return inferable; } |
     inferable = Equality(variablesSoFar)
-    { return inferable; }  |
+    { return inferable; } |
     inferable = Constraint(variablesSoFar)
     { return inferable; }
 }
@@ -435,13 +434,12 @@ ListInstance List(HashMap<String, VariableInstance> variablesSoFar):
 {
     <LSQBRACKET>
     [
-        listInstance = VariableList(variablesSoFar)
-        { return listInstance; } |
-        listInstance = ConstantList(variablesSoFar)
-        { return listInstance; } |
+        listInstance = VariableList(variablesSoFar) |
+        listInstance = ConstantList(variablesSoFar) |
         listInstance = NestedList(variablesSoFar)
     ]
     <RSQBRACKET>
+    { return listInstance; }
 }
 
 ListInstance<VariableInstance> VariableList(HashMap<String, VariableInstance> variablesSoFar):

@@ -23,29 +23,29 @@ public interface JALPParserConstants {
   /** RegularExpression Id. */
   int EQUALS = 10;
   /** RegularExpression Id. */
-  int NOT = 11;
+  int LESSTHAN = 11;
   /** RegularExpression Id. */
-  int IC = 12;
+  int LESSTHANEQ = 12;
   /** RegularExpression Id. */
-  int ABDUCIBLE = 13;
+  int GREATERTHAN = 13;
   /** RegularExpression Id. */
-  int LCASENAME = 14;
+  int GREATERTHANEQ = 14;
   /** RegularExpression Id. */
-  int UCASENAME = 15;
+  int LSQBRACKET = 15;
   /** RegularExpression Id. */
-  int LESSTHAN = 16;
+  int RSQBRACKET = 16;
   /** RegularExpression Id. */
-  int LESSTHANEQ = 17;
+  int NOT = 17;
   /** RegularExpression Id. */
-  int GREATERTHAN = 18;
+  int IC = 18;
   /** RegularExpression Id. */
-  int GREATERTHANEQ = 19;
+  int IN = 19;
   /** RegularExpression Id. */
-  int IN = 20;
+  int ABDUCIBLE = 20;
   /** RegularExpression Id. */
-  int LSQBRACKET = 21;
+  int LCASENAME = 21;
   /** RegularExpression Id. */
-  int RSQBRACKET = 22;
+  int UCASENAME = 22;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -63,18 +63,18 @@ public interface JALPParserConstants {
     "\",\"",
     "\".\"",
     "\"=\"",
-    "\"not\"",
-    "\"ic\"",
-    "\"abducible\"",
-    "<LCASENAME>",
-    "<UCASENAME>",
     "\"<\"",
     "\"<=\"",
     "\">\"",
     "\">=\"",
-    "\"in\"",
     "\"[\"",
     "\"]\"",
+    "\"not\"",
+    "\"ic\"",
+    "\"in\"",
+    "\"abducible\"",
+    "<LCASENAME>",
+    "<UCASENAME>",
   };
 
 }
