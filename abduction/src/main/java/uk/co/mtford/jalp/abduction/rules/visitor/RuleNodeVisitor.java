@@ -24,15 +24,15 @@ public abstract class RuleNodeVisitor {
     private static final Logger LOGGER = Logger.getLogger(RuleNodeVisitor.class);
 
     protected RuleNode currentRuleNode;
-    protected LinkedList<SuccessNode> successNodes;
+    protected LinkedList<LeafNode> leafNodes;
 
     public RuleNodeVisitor(RuleNode ruleNode) throws DefinitionException {
         currentRuleNode = ruleNode;
-        successNodes = new LinkedList<SuccessNode>();
+        leafNodes = new LinkedList<LeafNode>();
     }
 
-    public LinkedList<SuccessNode> getSuccessNodes() {
-        return successNodes;
+    public LinkedList<LeafNode> getLeafNodes() {
+        return leafNodes;
     }
 
     private RuleNode constructPositiveChildNode(IASystemInferableInstance newGoal, List<IASystemInferableInstance> newRestOfGoals,
@@ -45,7 +45,7 @@ public abstract class RuleNodeVisitor {
         }
         else {
             Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
-            newRuleNode = new SuccessNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),assignments);
+            newRuleNode = new LeafNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),assignments);
         }
 
         return newRuleNode;
@@ -444,8 +444,8 @@ public abstract class RuleNodeVisitor {
         ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
     }
 
-    public void visit(SuccessNode ruleNode) {
-        if (LOGGER.isInfoEnabled()) LOGGER.info("Executing equality solver on success node:\n"+
+    public void visit(LeafNode ruleNode) {
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Executing equality solver on leaf node:\n"+
                 "--------------------------------------\n"+
                 ruleNode+"\n"+
                 "--------------------------------------\n");
@@ -453,7 +453,7 @@ public abstract class RuleNodeVisitor {
         if (equalitySolveSuccess!=null) {
             if (LOGGER.isInfoEnabled()) LOGGER.info("Equality solver succeeded.");
             ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
-            successNodes.add(ruleNode);
+            leafNodes.add(ruleNode);
         }
         else {
             if (LOGGER.isInfoEnabled()) LOGGER.info("Equality solver failed.");

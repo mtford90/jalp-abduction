@@ -19,16 +19,16 @@ import java.util.Map;
  * Time: 17:14
  * To change this template use File | Settings | File Templates.
  */
-public class SuccessNode extends RuleNode {
+public class LeafNode extends RuleNode {
 
-    private static Logger LOGGER = Logger.getLogger(SuccessNode.class);
+    private static Logger LOGGER = Logger.getLogger(LeafNode.class);
 
-    public SuccessNode(AbductiveFramework framework, Store store, Map<VariableInstance,
-                       IUnifiableAtomInstance> assignments) {
+    public LeafNode(AbductiveFramework framework, Store store, Map<VariableInstance,
+            IUnifiableAtomInstance> assignments) {
         super(framework, null, new LinkedList<IASystemInferableInstance>(), store, assignments);
     }
 
-    protected SuccessNode() {
+    protected LeafNode() {
     }
 
     @Override
