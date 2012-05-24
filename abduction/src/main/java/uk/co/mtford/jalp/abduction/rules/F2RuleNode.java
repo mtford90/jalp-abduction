@@ -1,6 +1,9 @@
 package uk.co.mtford.jalp.abduction.rules;
 
+import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.DefinitionException;
+import uk.co.mtford.jalp.abduction.Store;
+import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.VariableInstance;
@@ -8,6 +11,8 @@ import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,6 +22,18 @@ import java.util.LinkedList;
  * To change this template use File | Settings | File Templates.
  */
 public class F2RuleNode extends NegativeRuleNode {
+
+    public F2RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, List<DenialInstance> denial) {
+        super(abductiveFramework, goal, restOfGoals, denial);
+    }
+
+    public F2RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
+        super(abductiveFramework, goal, restOfGoals, store, assignments, denial);
+    }
+
+    protected F2RuleNode() {
+    }
+
     @Override
     public RuleNode shallowClone() {
         A2RuleNode newRuleNode = new A2RuleNode();

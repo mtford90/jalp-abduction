@@ -1,6 +1,12 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
+import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.ITermInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.VariableInstance;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,5 +18,20 @@ import uk.co.mtford.jalp.abduction.logic.instance.ITermInstance;
 public class LessThanConstraintInstance extends ConstraintInstance {
     public LessThanConstraintInstance(ITermInstance left, ITermInstance right) {
         super(left, right);
+    }
+
+    @Override
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        return new LessThanConstraintInstance((ITermInstance)left.performSubstitutions(substitutions), (ITermInstance) right.performSubstitutions(substitutions));
+    }
+
+    @Override
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+        return new LessThanConstraintInstance((ITermInstance)left.deepClone(substitutions),(ITermInstance)right.deepClone(substitutions));
+    }
+
+    @Override
+    public IFirstOrderLogicInstance shallowClone() {
+        return new LessThanConstraintInstance((ITermInstance)left,(ITermInstance)right);
     }
 }

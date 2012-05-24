@@ -2,8 +2,11 @@ package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.rules.F1RuleNode;
+import uk.co.mtford.jalp.abduction.rules.F2RuleNode;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,9 +18,9 @@ import java.util.Set;
  * Time: 12:37
  * To change this template use File | Settings | File Templates.
  */
-public class ConstraintInstance implements IConstraintInstance {
-    private ITermInstance left;
-    private ITermInstance right;
+public abstract class ConstraintInstance implements IConstraintInstance {
+    protected ITermInstance left;
+    protected ITermInstance right;
 
     public ConstraintInstance(ITermInstance left, ITermInstance right) {
         this.left = left;
@@ -42,31 +45,19 @@ public class ConstraintInstance implements IConstraintInstance {
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        throw new UnsupportedOperationException(); // TODO
+        return new F1RuleNode(abductiveFramework,this,goals);
     }
 
     @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
-        throw new UnsupportedOperationException(); // TODO
-    }
-
-    @Override
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        throw new UnsupportedOperationException(); // TODO
-    }
-
-    @Override
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        throw new UnsupportedOperationException(); // TODO
-    }
-
-    @Override
-    public IFirstOrderLogicInstance shallowClone() {
-        throw new UnsupportedOperationException(); // TODO
+        return new F2RuleNode(abductiveFramework,this,goals,nestedDenials);
     }
 
     @Override
     public Set<VariableInstance> getVariables() {
-        throw new UnsupportedOperationException(); // TODO
+        HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
+        variables.addAll(left.getVariables());
+        variables.addAll(right.getVariables());
+        return variables;
     }
 }
