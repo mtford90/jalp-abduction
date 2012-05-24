@@ -4,17 +4,29 @@ LL(2) grammar for JALP in prolog style.
 
 ALP -> ((Rule | Denial | Abducible))* EOF
 Rule -> Predicate (DEFINES Body)? DOT
-Abducible -> ABDUCIBLE LBRACKET Predicate (COMMA Predicate)* RBRACKET DOT
 Denial -> IC DEFINES Body DOT
 Body -> Inferable (COMMA Inferable)*
+Abducible -> ABDUCIBLE LBRACKET Predicate (COMMA Predicate)* RBRACKET DOT
+
 Inferable -> PosInferable | NegInferable
-PosInferable -> Predicate | Equality
+PosInferable -> Predicate | Equality | Constraint
 NegInferable -> NOT PosInferable
+
 Predicate -> LCASENAME (LBRACKET ParameterList RBRACKET)?
 Equality -> Parameter EQUALS Parameter
+Constraint -> ConstraintParameter ConstraintOp ConstraintParameter
+
+ConstraintParameter -> Variable | Constant | List
+ConstraintOp -> LESSTHAN | LESSTHANEQ | GREATERTHAN | GREATERTHANEQ | IN
+
 ParameterList -> (Parameter (COMMA Parameter)*)?
-VariableList -> (UCASENAME (COMMA UCASENAME)*)?
-Parameter -> (UCASENAME | LCASENAME | Predicate)
+VariableList -> (Variable (COMMA Constant)*)?
+List -> LSQBRACKET (Constant (COMMA Constant)*)? RSQBRACKET
+
+Parameter -> (Variable | Constant | Predicate)
+
+Variable -> UCASENAME
+Constant -> LCASENAME
 
 */
 
@@ -100,7 +112,14 @@ TOKEN :
   <IC: "ic"> |
   <ABDUCIBLE: "abducible"> |
   <LCASENAME: ["a"-"z","0"-"9"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
-  <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> 
+  <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
+  <LESSTHAN: "<"> |
+  <LESSTHANEQ: "<="> |
+  <GREATERTHAN: ">"> |
+  <GREATERTHANEQ: ">="> |
+  <IN: "in"> |
+  <LSQBRACKET: "["> |
+  <RSQBRACKET: "]">
 }
 
 /* Top level production */
