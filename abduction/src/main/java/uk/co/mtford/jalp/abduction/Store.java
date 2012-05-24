@@ -42,6 +42,7 @@ public class Store implements Cloneable {
         store.abducibles.addAll(abducibles);
         store.denials.addAll(denials);
         store.equalities.addAll(equalities);
+        store.constraints.addAll(constraints);
         return store;
     }
 

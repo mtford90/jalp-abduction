@@ -31,7 +31,7 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class);
     private static final Scanner sc = new Scanner(System.in);
 
-    private static final int MAX_EXPANSIONS = 100;
+    private static final int MAX_EXPANSIONS = 10000;
 
     // Command line options.
     private static final String FILE_OPTION = "-f";
