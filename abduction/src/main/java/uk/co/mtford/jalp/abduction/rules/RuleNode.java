@@ -241,7 +241,7 @@ public abstract class RuleNode {
 
         json+=",";
 
-        json+="\\\"denials\\\""+":[ ";
+        json+="\\\"nestedDenialsList\\\""+":[ ";
         for (DenialInstance denial:store.denials) {
             json+="\\\""+denial+"\\\",";
         }

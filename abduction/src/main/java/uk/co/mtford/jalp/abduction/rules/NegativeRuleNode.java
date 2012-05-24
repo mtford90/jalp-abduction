@@ -15,24 +15,24 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class NegativeRuleNode extends RuleNode {
-    protected List<DenialInstance> denials;
+    protected List<DenialInstance> nestedDenialsList;
 
     public NegativeRuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, List<DenialInstance> denial) {
         super(abductiveFramework, goal, restOfGoals);
-        this.denials = denial;
+        this.nestedDenialsList = denial;
     }
 
     public NegativeRuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
         super(abductiveFramework, goal, restOfGoals, store, assignments);
-        this.denials = denial;
+        this.nestedDenialsList = denial;
     }
 
-    public List<DenialInstance> getDenials() {
-        return denials;
+    public List<DenialInstance> getNestedDenialsList() {
+        return nestedDenialsList;
     }
 
-    public void setDenials(List<DenialInstance> denials) {
-        this.denials = denials;
+    public void setNestedDenialsList(List<DenialInstance> nestedDenialsList) {
+        this.nestedDenialsList = nestedDenialsList;
     }
 
     protected NegativeRuleNode() {
@@ -43,7 +43,7 @@ public abstract class NegativeRuleNode extends RuleNode {
         String message=
                 "currentGoal = " + currentGoal + "\n" +
                 "nextGoals = " + nextGoals + "\n" +
-                "nestedDenialList = " + denials + "\n" +
+                "nestedDenialList = " + nestedDenialsList + "\n" +
                 "assignments = " + assignments + "\n\n" +
                 "delta = " + store.abducibles + "\n" +
                 "delta* = " + store.denials + "\n" +
@@ -122,7 +122,7 @@ public abstract class NegativeRuleNode extends RuleNode {
         json+=",";
 
         json+="\\\"nestedDenials\\\""+":[ ";
-        for (DenialInstance denialInstance:denials) {
+        for (DenialInstance denialInstance: nestedDenialsList) {
             json+="\\\""+denialInstance+"\\\",";
         }
         json=json.substring(0,json.length()-1);
@@ -149,7 +149,7 @@ public abstract class NegativeRuleNode extends RuleNode {
 
         json+=",";
 
-        json+="\\\"denials\\\""+":[ ";
+        json+="\\\"nestedDenialsList\\\""+":[ ";
         for (DenialInstance denial:store.denials) {
             json+="\\\""+denial+"\\\",";
         }

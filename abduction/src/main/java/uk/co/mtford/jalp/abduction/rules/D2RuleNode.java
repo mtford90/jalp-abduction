@@ -42,7 +42,7 @@ public class D2RuleNode extends NegativeRuleNode {
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
         newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
-        newRuleNode.denials = denials;
+        newRuleNode.nestedDenialsList = nestedDenialsList;
         return newRuleNode;
     }
 
