@@ -14,16 +14,22 @@ NegInferable -> NOT PosInferable
 
 Predicate -> LCASENAME (LBRACKET ParameterList RBRACKET)?
 Equality -> Parameter EQUALS Parameter
-Constraint -> ConstraintParameter ConstraintOp ConstraintParameter
+Constraint -> LessThanConstraint | LessThanEqConstraint | GreaterThanConstraint | GreaterThanEqConstraint | InConstraint
+LessThanConstraint -> Term LESSTHAN Term
+LessThanEqConstraint -> Term LESSTHANEQ Term
+GreaterThanConstraint -> Term GREATERTHAN Term
+GreaterThanEqConstraint -> Term GREATERTHANEQ Term
+InConstraint -> Term IN Term
 
-ConstraintParameter -> Variable | Constant | List
-ConstraintOp -> LESSTHAN | LESSTHANEQ | GREATERTHAN | GREATERTHANEQ | IN
+ParameterList -> Parameter (COMMA Parameter)*
 
-ParameterList -> (Parameter (COMMA Parameter)*)?
-VariableList -> (Variable (COMMA Constant)*)?
-List -> LSQBRACKET (Constant (COMMA Constant)*)? RSQBRACKET
-
+Term -> (Variable | Constant | List)
 Parameter -> (Variable | Constant | Predicate)
+
+List -> LSQBRACKET (VariableList | ConstantList | NestedList)? RSQBRACKET
+VariableList -> Variable (COMMA Variable)*
+ConstantList -> Constant (COMMA Constant)*
+NestedList -> Variable (COMMA Constant)*
 
 Variable -> UCASENAME
 Constant -> LCASENAME
@@ -63,6 +69,7 @@ import java.util.List;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.Definition;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
@@ -159,7 +166,7 @@ Definition Rule():
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
     
     PredicateInstance head;
-    List<IASystemInferableInstance> body = null;
+    List<IInferableInstance> body = null;
 }
 {
 	head = Predicate(variablesSoFar)
@@ -175,7 +182,7 @@ DenialInstance Denial():
 {
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
 
-    List<IASystemInferableInstance> body;
+    List<IInferableInstance> body;
     List<VariableInstance> variableList = new LinkedList<VariableInstance>();
 }
 {
@@ -190,6 +197,22 @@ DenialInstance Denial():
         DenialInstance d = new DenialInstance(body,variableList);
         return d;
     }
+}
+
+List<IInferableInstance> Body(HashMap<String, VariableInstance> variablesSoFar):
+{
+    LinkedList<IInferableInstance> body = new LinkedList<IInferableInstance>();
+    IInferableInstance inferable;
+}
+{
+	inferable = Inferable(variablesSoFar)
+    { body.add(inferable); }
+	(
+		<COMMA>
+		inferable = Inferable(variablesSoFar)
+        { body.add(inferable); }
+	)*
+    { return body; }
 }
 
 List<PredicateInstance> Abducible():
@@ -212,25 +235,9 @@ List<PredicateInstance> Abducible():
     { return predicateList; }
 }
 
-List<IASystemInferableInstance> Body(HashMap<String, VariableInstance> variablesSoFar):
+IInferableInstance Inferable(HashMap<String, VariableInstance> variablesSoFar):
 {
-    LinkedList<IASystemInferableInstance> body = new LinkedList<IASystemInferableInstance>();
-    IASystemInferableInstance inferable;
-}
-{
-	inferable = Inferable(variablesSoFar)
-    { body.add(inferable); }
-	(
-		<COMMA>
-		inferable = Inferable(variablesSoFar)
-        { body.add(inferable); }
-	)*
-    { return body; }
-}
-
-IASystemInferableInstance Inferable(HashMap<String, VariableInstance> variablesSoFar):
-{
-    IASystemInferableInstance inferable;
+    IInferableInstance inferable;
 }
 {
     inferable = PositiveInferable(variablesSoFar)
@@ -239,9 +246,9 @@ IASystemInferableInstance Inferable(HashMap<String, VariableInstance> variablesS
     { return inferable; } 
 }
 
-IASystemInferableInstance PositiveInferable(HashMap<String, VariableInstance> variablesSoFar):
+IInferableInstance PositiveInferable(HashMap<String, VariableInstance> variablesSoFar):
 {
-    IASystemInferableInstance inferable;
+    IInferableInstance inferable;
 }
 {
     inferable = Predicate(variablesSoFar) 
@@ -249,12 +256,14 @@ IASystemInferableInstance PositiveInferable(HashMap<String, VariableInstance> va
         return inferable;
     } |
     inferable = Equality(variablesSoFar)
+    { return inferable; }  |
+    inferable = Constraint(variablesSoFar)
     { return inferable; }
 }
 
 NegationInstance NegativeInferable(HashMap<String, VariableInstance> variablesSoFar):
 {
-    IASystemInferableInstance subformula;
+    IInferableInstance subformula;
 }
 {
     <NOT>
@@ -292,6 +301,99 @@ EqualityInstance Equality(HashMap<String, VariableInstance> variablesSoFar):
     { return new EqualityInstance(left,right); }
 }
 
+IConstraintInstance Constraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IConstraintInstance instance;
+}
+{
+    instance = LessThanConstraint(variablesSoFar)
+    { return instance; } |
+    instance = LessThanEqConstraint(variablesSoFar)
+    { return instance; } |
+    instance = GreaterThanConstraint(variablesSoFar)
+    { return instance; } |
+    instance = GreaterThanEqConstraint(variablesSoFar)
+    { return instance; } |
+    instance = InConstraint(variablesSoFar)
+    { return instance; }
+}
+
+LessThanConstraintInstance LessThanConstraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance left;
+    ITermInstance right;
+}
+{
+    left = Term(variablesSoFar)
+    <LESSTHAN>
+    right = Term(variablesSoFar)
+    { return new LessThanConstraintInstance(left,right); }
+}
+
+
+LessThanEqConstraintInstance LessThanEqConstraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance left;
+    ITermInstance right;
+}
+{
+    left = Term(variablesSoFar)
+    <LESSTHANEQ>
+    right = Term(variablesSoFar)
+    { return new LessThanEqConstraintInstance(left,right); }
+}
+
+
+GreaterThanConstraintInstance GreaterThanConstraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance left;
+    ITermInstance right;
+}
+{
+    left = Term(variablesSoFar)
+    <GREATERTHAN>
+    right = Term(variablesSoFar)
+    { return new GreaterThanConstraintInstance(left,right); }
+}
+
+GreaterThanEqConstraintInstance GreaterThanEqConstraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance left;
+    ITermInstance right;
+}
+{
+    left = Term(variablesSoFar)
+    <GREATERTHANEQ>
+    right = Term(variablesSoFar)
+    { return new GreaterThanEqConstraintInstance(left,right); }
+}
+
+
+InConstraintInstance InConstraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance left;
+    ITermInstance right;
+}
+{
+    left = Term(variablesSoFar)
+    <IN>
+    right = Term(variablesSoFar)
+    { return new InConstraintInstance(left,right); }
+}
+
+ITermInstance Term(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance term;
+}
+{
+    term = Variable(variablesSoFar)
+    { return term; } |
+    term = Constant()
+    { return term; } |
+    term = List(variablesSoFar)
+    { return term; }
+}
+
 List<IUnifiableAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar):
 {
     LinkedList<IUnifiableAtomInstance> params = new LinkedList<IUnifiableAtomInstance>();
@@ -310,66 +412,124 @@ List<IUnifiableAtomInstance> ParameterList(HashMap<String, VariableInstance> var
     { return params; }
 }
 
-List<VariableInstance> VariableList(HashMap<String, VariableInstance> variablesSoFar):
+IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IUnifiableAtomInstance unifiable;
+}
+{
+	(
+		unifiable = Variable(variablesSoFar)
+        { return unifiable; } |
+		unifiable = Constant()
+        { return unifiable; } |
+		unifiable = Predicate(variablesSoFar)
+        { return unifiable; }
+	)
+
+}
+
+ListInstance List(HashMap<String, VariableInstance> variablesSoFar):
+{
+   ListInstance listInstance = new ListInstance();
+}
+{
+    <LSQBRACKET>
+    [
+        listInstance = VariableList(variablesSoFar)
+        { return listInstance; } |
+        listInstance = ConstantList(variablesSoFar)
+        { return listInstance; } |
+        listInstance = NestedList(variablesSoFar)
+    ]
+    <RSQBRACKET>
+}
+
+ListInstance<VariableInstance> VariableList(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ListInstance<VariableInstance> listInstance = new ListInstance<VariableInstance>();
+    VariableInstance variableInstance;
+}
+{
+    variableInstance = Variable(variablesSoFar)
+    {
+        listInstance.getList().add(variableInstance);
+    }
+    (
+       <COMMA>
+       variableInstance = Variable(variablesSoFar)
+       {
+           listInstance.getList().add(variableInstance);
+       }
+    )*
+    { return listInstance; }
+}
+
+ListInstance<ConstantInstance> ConstantList(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ListInstance<ConstantInstance> listInstance = new ListInstance<ConstantInstance>();
+    ConstantInstance constantInstance;
+}
+{
+    constantInstance = Constant()
+    {
+        listInstance.getList().add(constantInstance);
+    }
+    (
+       <COMMA>
+       constantInstance = Constant()
+       {
+           listInstance.getList().add(constantInstance);
+       }
+    )*
+    { return listInstance; }
+}
+
+ListInstance<ListInstance> NestedList(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ListInstance<ListInstance> listInstance = new ListInstance<ListInstance>();
+    ListInstance nestedListInstance;
+}
+{
+    nestedListInstance = List(variablesSoFar)
+    {
+        listInstance.getList().add(nestedListInstance);
+    }
+    (
+       <COMMA>
+       nestedListInstance = List(variablesSoFar)
+    )*
+    { return listInstance; }
+}
+
+VariableInstance Variable(HashMap<String, VariableInstance> variablesSoFar):
 {
     Token t;
-    LinkedList<VariableInstance> variableList = new LinkedList<VariableInstance>();
     String name;
 }
 {
     t = <UCASENAME>
     {
         name = t.image;
-        if (!variablesSoFar.containsKey(name)) {
-            VariableInstance v = new VariableInstance(name);
-            variablesSoFar.put(name,v);
-            variableList.add(v);
+        if (variablesSoFar.containsKey(name)) {
+            return variablesSoFar.get(name);
         }
         else {
-            variableList.add(variablesSoFar.get(name));
+            VariableInstance variable = new VariableInstance(name);
+            variablesSoFar.put(name,variable);
+            return variable;
         }
     }
-    (
-        <COMMA>
-        t = <UCASENAME>
-        {
-            name = t.image;
-            if (!variablesSoFar.containsKey(name)) {
-                variableList.add(new VariableInstance(name));
-            }
-        }
-    )*
-
-    { return variableList; }
 }
 
-IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar):
+ConstantInstance Constant():
 {
     Token t;
-    PredicateInstance predicate;
     String name;
 }
 {
-	(
-		t = <UCASENAME> 
-        { 
-            name = t.image;
-            if (variablesSoFar.containsKey(name)) {
-                return variablesSoFar.get(name);
-            }
-            else {
-                VariableInstance variable = new VariableInstance(name);
-                variablesSoFar.put(name,variable);
-                return variable;
-            }
-        } | 
-		t = <LCASENAME> 
-        { 
-            name = t.image;
-            return new ConstantInstance(name);
-        } | 
-		predicate = Predicate(variablesSoFar)
-        { return predicate; }
-	)
-
+    t = <LCASENAME>
+    {
+        name = t.image;
+        return new ConstantInstance(name);
+    }
 }

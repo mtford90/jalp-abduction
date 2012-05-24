@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * @author mtford
  */
-public class ConstantInstance implements ITermInstance {
+public class ConstantInstance implements ITermInstance, IUnifiableAtomInstance {
 
     private static final Logger LOGGER = Logger.getLogger(ConstantInstance.class);
 

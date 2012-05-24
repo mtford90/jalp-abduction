@@ -7,5 +7,5 @@ package uk.co.mtford.jalp.abduction.logic.instance;
  * Time: 18:17
  * To change this template use File | Settings | File Templates.
  */
-public interface ITermInstance extends IUnifiableAtomInstance {
+public interface ITermInstance extends IAtomInstance {
 }

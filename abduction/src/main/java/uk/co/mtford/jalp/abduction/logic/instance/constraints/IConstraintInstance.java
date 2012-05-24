@@ -1,5 +1,8 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.ITermInstance;
+
 /**
  * Created with IntelliJ IDEA.
  * User: mtford
@@ -7,5 +10,7 @@ package uk.co.mtford.jalp.abduction.logic.instance.constraints;
  * Time: 11:45
  * To change this template use File | Settings | File Templates.
  */
-public interface IConstraintInstance {
+public interface IConstraintInstance extends IInferableInstance {
+
+
 }
