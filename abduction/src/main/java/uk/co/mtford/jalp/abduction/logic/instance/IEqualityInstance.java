@@ -1,5 +1,7 @@
 package uk.co.mtford.jalp.abduction.logic.instance;
 
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: mtford
@@ -8,4 +10,5 @@ package uk.co.mtford.jalp.abduction.logic.instance;
  * To change this template use File | Settings | File Templates.
  */
 public interface IEqualityInstance extends IASystemInferableInstance {
+    public boolean equalitySolve(Map<VariableInstance,IUnifiableAtomInstance> assignments);
 }

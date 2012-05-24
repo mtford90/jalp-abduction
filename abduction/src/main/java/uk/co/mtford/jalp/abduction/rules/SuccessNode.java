@@ -1,5 +1,6 @@
 package uk.co.mtford.jalp.abduction.rules;
 
+import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
@@ -20,12 +21,11 @@ import java.util.Map;
  */
 public class SuccessNode extends RuleNode {
 
+    private static Logger LOGGER = Logger.getLogger(SuccessNode.class);
 
-
-    public SuccessNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal,
-                       List<IASystemInferableInstance> restOfGoals, Store store, Map<VariableInstance,
+    public SuccessNode(AbductiveFramework framework, Store store, Map<VariableInstance,
                        IUnifiableAtomInstance> assignments) {
-        super(abductiveFramework, goal, restOfGoals, store, assignments);
+        super(framework, null, new LinkedList<IASystemInferableInstance>(), store, assignments);
     }
 
     protected SuccessNode() {
@@ -36,25 +36,36 @@ public class SuccessNode extends RuleNode {
         throw new UnsupportedOperationException(); // TODO
     }
 
-    public boolean equalitySolve()  {
-
+    public Map<VariableInstance, IUnifiableAtomInstance> equalitySolve()  {
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments
                 = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
 
         List<IEqualityInstance> equalities = new LinkedList<IEqualityInstance>(this.getStore().equalities);
 
+        for (IEqualityInstance equality:equalities) {
+            if (equality.equalitySolve(newAssignments)) continue;
+            return null;  // TODO null... really?
+        }
 
-
-
-
-
-          return false;
-
-
+        return newAssignments;
     }
 
     @Override
     public void acceptVisitor(RuleNodeVisitor v) throws DefinitionException {
         v.visit(this);
     }
+
+    @Override
+    public String toString(int space) {
+        String spaces = "";
+        for (int i=0;i<space;i++) spaces+=" ";
+        String message =
+                        spaces+"delta = " + store.abducibles + "\n" +
+                        spaces+"delta* = " + store.denials + "\n" +
+                        spaces+"epsilon = " + store.equalities + "\n\n" +
+                        spaces+"nodeType = " + this.getClass() + "\n" +
+                        spaces+"nodeMark = " + this.getNodeMark() + "\n";
+        return message;
+    }
+
 }

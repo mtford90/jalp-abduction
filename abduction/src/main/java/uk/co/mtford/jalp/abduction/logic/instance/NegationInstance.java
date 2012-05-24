@@ -58,7 +58,7 @@ public class NegationInstance implements IASystemInferableInstance, IFirstOrderL
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new NegationInstance(subFormula);
+        return new NegationInstance((IASystemInferableInstance) subFormula.shallowClone());
     }
 
     @Override

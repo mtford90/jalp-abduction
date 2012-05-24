@@ -10,10 +10,7 @@ import uk.co.mtford.jalp.abduction.rules.E1RuleNode;
 import uk.co.mtford.jalp.abduction.rules.E2RuleNode;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author mtford
@@ -132,4 +129,33 @@ public class EqualityInstance implements IEqualityInstance {
     }
 
 
+    @Override
+    public boolean equalitySolve(Map<VariableInstance, IUnifiableAtomInstance> equalitySolverAssignments) {
+
+        Map<VariableInstance, IUnifiableAtomInstance> unificationResult = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        boolean unificationSuccess = left.unify(right,unificationResult);
+
+        if (!unificationSuccess) return false;
+
+        for (VariableInstance key:unificationResult.keySet()) {
+            IUnifiableAtomInstance value = unificationResult.get(key);
+            // Check to see if value has been assigned, in which case assign the variable onto that value.
+            while (equalitySolverAssignments.keySet().contains(unificationResult.get(key))) {
+                value = equalitySolverAssignments.get(unificationResult.get(key));
+                unificationResult.put(key,value);
+
+            }
+            // Check to see if variable already assigned, in which case unify the values.
+            IUnifiableAtomInstance equalitySolverValue = key;
+            while (equalitySolverAssignments.keySet().contains(equalitySolverValue)) {
+                equalitySolverValue = equalitySolverAssignments.get(equalitySolverValue);
+                if (!value.unify(equalitySolverValue,unificationResult)) return false;
+
+            }
+
+        }
+
+        equalitySolverAssignments.putAll(unificationResult);
+        return true;
+    }
 }

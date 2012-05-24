@@ -45,7 +45,7 @@ public abstract class RuleNodeVisitor {
         }
         else {
             Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
-            newRuleNode = new SuccessNode(previousNode.getAbductiveFramework(),newGoal,newRestOfGoals,previousNode.getStore().shallowClone(),assignments);
+            newRuleNode = new SuccessNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),assignments);
         }
 
         return newRuleNode;
@@ -445,12 +445,18 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(SuccessNode ruleNode) {
-        boolean equalitySolveSuccess = ruleNode.equalitySolve();
-        if (equalitySolveSuccess) {
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Executing equality solver on success node:\n"+
+                "--------------------------------------\n"+
+                ruleNode+"\n"+
+                "--------------------------------------\n");
+        Map<VariableInstance, IUnifiableAtomInstance> equalitySolveSuccess = ruleNode.equalitySolve();
+        if (equalitySolveSuccess!=null) {
+            if (LOGGER.isInfoEnabled()) LOGGER.info("Equality solver succeeded.");
             ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
             successNodes.add(ruleNode);
         }
         else {
+            if (LOGGER.isInfoEnabled()) LOGGER.info("Equality solver failed.");
             ruleNode.setNodeMark(RuleNode.NodeMark.FAILED);
         }
     }
