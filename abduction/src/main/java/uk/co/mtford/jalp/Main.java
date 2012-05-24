@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
 import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
@@ -251,6 +252,7 @@ public class Main {
                 List<PredicateInstance> abducibles = leafRuleNodes.get(i).getStore().abducibles;
                 List<DenialInstance> denials = leafRuleNodes.get(i).getStore().denials;
                 List<IEqualityInstance> equalities = leafRuleNodes.get(i).getStore().equalities;
+                List<IConstraintInstance> constraints = leafRuleNodes.get(i).getStore().constraints;
                 for (PredicateInstance predicate:abducibles) {
                     variables.addAll(predicate.getVariables());
                 }
@@ -260,8 +262,9 @@ public class Main {
                 printMessage("==============================================================");
                 printMessage("Abducibles: "+abducibles);
                 printMessage("Assignments: "+assignments);
-                printMessage("constraints: "+denials);
+                printMessage("Denials: "+denials);
                 printMessage("Equalities: "+equalities);
+                printMessage("Finite-Domain Constraints: "+constraints);
                 printMessage("==============================================================");
                 printMessage("There are "+(leafRuleNodes.size()-1-i)+" explanations remaining.");
                 continue;

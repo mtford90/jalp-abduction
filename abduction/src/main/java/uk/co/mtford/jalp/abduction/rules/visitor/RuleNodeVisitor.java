@@ -4,6 +4,9 @@ import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.ConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.NegativeConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.rules.*;
@@ -375,12 +378,65 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(F1RuleNode ruleNode) {
-        throw new UnsupportedOperationException(); // TODO
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Applying F1 to node.");
+        RuleNode childNode;
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
+        ConstraintInstance currentGoal = (ConstraintInstance) ruleNode.getCurrentGoal();
+        IInferableInstance newGoal = null;
+
+        if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
+        childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+        childNode.getStore().constraints.add(currentGoal);
+        ruleNode.getChildren().add(childNode);
+        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
     }
 
     public void visit(F2RuleNode ruleNode) {
-        throw new UnsupportedOperationException(); // TODO
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Applying F2 to node.");
+        ConstraintInstance currentGoal = (ConstraintInstance) ruleNode.getCurrentGoal();
+
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
+        List<DenialInstance> newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
+        DenialInstance newCurrentDenial = newNestedDenials.remove(0).shallowClone();
+        IInferableInstance newGoal = null;
+
+        RuleNode childNode;
+        List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
+        // Branch 1
+        NegativeConstraintInstance negativeConstraintInstance = new NegativeConstraintInstance(currentGoal);
+        newGoal = new TrueInstance(); // TODO: Is this correct?
+        if (newNestedDenials.isEmpty()) {
+            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+        }
+        else {
+            childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+        }
+        childNode.getStore().constraints.add(negativeConstraintInstance);
+        newChildNodes.add(childNode);
+        // Branch 2
+        newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
+        newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
+        newCurrentDenial = newNestedDenials.remove(0).shallowClone();
+        if (newCurrentDenial.getBody().isEmpty()) {
+            newGoal = new FalseInstance();
+            if (newNestedDenials.isEmpty()) {
+                childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+            }
+            else {
+                childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+            }
+        }
+        else {
+            newGoal = newCurrentDenial.getBody().remove(0);
+            newNestedDenials.add(newCurrentDenial);
+            childNode = constructNegativeChildNode(newGoal, newNestedDenials,newRestOfGoals,ruleNode);
+        }
+
+        childNode.getStore().constraints.add(currentGoal);
+        newChildNodes.add(childNode);
+
     }
+
 
         /**
         * Produces one child node where the true instance is removed from the goal stack.
