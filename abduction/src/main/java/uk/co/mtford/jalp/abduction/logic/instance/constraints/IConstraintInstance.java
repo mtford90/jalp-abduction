@@ -13,4 +13,5 @@ import uk.co.mtford.jalp.abduction.logic.instance.ITermInstance;
 public interface IConstraintInstance extends IInferableInstance {
 
 
+
 }

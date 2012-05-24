@@ -130,7 +130,8 @@ public abstract class RuleNode {
                 "assignments = " + assignments + "\n\n" +
                 "delta = " + store.abducibles + "\n" +
                 "delta* = " + store.denials + "\n" +
-                "epsilon = " + store.equalities + "\n\n" +
+                "epsilon = " + store.equalities + "\n" +
+                "fd = " + store.constraints + "\n\n" +
                 "nodeType = " + this.getClass() + "\n" +
                 "nodeMark = " + this.getNodeMark() + "\n" +
                 "numChildren = " + this.getChildren().size();
@@ -153,7 +154,8 @@ public abstract class RuleNode {
                         spaces+"assignments = " + assignments + "\n\n" +
                         spaces+"delta = " + store.abducibles + "\n" +
                         spaces+"delta* = " + store.denials + "\n" +
-                        spaces+"epsilon = " + store.equalities + "\n\n" +
+                        spaces+"epsilon = " + store.equalities + "\n" +
+                        spaces+"fd = " + store.constraints + "\n\n" +
                         spaces+"nodeType = " + this.getClass() + "\n" +
                         spaces+"nodeMark = " + this.getNodeMark() + "\n" +
                         spaces+"numChildren = " + this.getChildren().size();

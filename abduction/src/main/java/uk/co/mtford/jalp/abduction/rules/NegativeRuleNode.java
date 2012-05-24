@@ -49,7 +49,9 @@ public abstract class NegativeRuleNode extends RuleNode {
                 "assignments = " + assignments + "\n\n" +
                 "delta = " + store.abducibles + "\n" +
                 "delta* = " + store.denials + "\n" +
-                "epsilon = " + store.equalities + "\n\n" +
+                        "epsilon = " + store.equalities + "\n" +
+                        "fd = " + store.constraints + "\n\n" +
+
                 "nodeType = " + this.getClass() + "\n" +
                 "nodeMark = " + this.getNodeMark() + "\n" +
                         "numChildren = " + this.getChildren().size();
