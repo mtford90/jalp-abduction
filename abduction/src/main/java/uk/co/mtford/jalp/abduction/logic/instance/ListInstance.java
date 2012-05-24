@@ -1,5 +1,6 @@
 package uk.co.mtford.jalp.abduction.logic.instance;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -25,21 +26,37 @@ public class ListInstance<E extends ITermInstance> implements ITermInstance {
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        throw new UnsupportedOperationException(); // TODO
+        ListInstance<E> newListInstance = new ListInstance<E>();
+        for (E term:list) {
+            newListInstance.getList().add((E) term.performSubstitutions(substitutions));
+        }
+        return newListInstance;
     }
 
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        throw new UnsupportedOperationException(); // TODO
+        ListInstance<E> newListInstance = new ListInstance<E>();
+        for (E term:list) {
+            newListInstance.getList().add((E) term.deepClone(substitutions));
+        }
+        return newListInstance;
     }
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        throw new UnsupportedOperationException(); // TODO
+        ListInstance<E> newListInstance = new ListInstance<E>();
+        for (E term:list) {
+            newListInstance.getList().add((E) term);
+        }
+        return newListInstance;
     }
 
     @Override
     public Set<VariableInstance> getVariables() {
-        throw new UnsupportedOperationException(); // TODO
+        HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
+        for (E term:list) {
+            variables.addAll(term.getVariables());
+        }
+        return variables;
     }
 }

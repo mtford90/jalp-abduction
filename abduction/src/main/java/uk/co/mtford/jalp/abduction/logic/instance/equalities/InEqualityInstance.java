@@ -31,32 +31,34 @@ public class InEqualityInstance implements IEqualityInstance {
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        throw new UnsupportedOperationException(); // TODO
+        throw new UnsupportedOperationException(); // TODO I think a rule for inequalities is mentioned in the ASystem paper in order to increase efficiency.
+        // TODO i.e. create a rule rather than use an equality solver.
     }
 
     @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
-        throw new UnsupportedOperationException(); // TODO
+        throw new UnsupportedOperationException(); // TODO I think a rule for inequalities is mentioned in the ASystem paper in order to increase efficiency.
+        // TODO i.e. create a rule rather than use an equality solver.
     }
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        throw new UnsupportedOperationException(); // TODO
+        return new InEqualityInstance((EqualityInstance) equalityInstance.performSubstitutions(substitutions));
     }
 
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        throw new UnsupportedOperationException(); // TODO
+        return new InEqualityInstance((EqualityInstance) equalityInstance.deepClone(substitutions));
     }
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        throw new UnsupportedOperationException(); // TODO
+        return new InEqualityInstance((EqualityInstance) equalityInstance.shallowClone());
     }
 
     @Override
     public Set<VariableInstance> getVariables() {
-        throw new UnsupportedOperationException(); // TODO
+        return equalityInstance.getVariables();
     }
 
     @Override

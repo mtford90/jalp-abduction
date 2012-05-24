@@ -120,7 +120,7 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
         LinkedList<VariableInstance> newUniversalVariables = new LinkedList<VariableInstance>();
         /*for (VariableInstance v : universalVariables) {
             newUniversalVariables.add((VariableInstance) v.deepClone(substitutions));
-        }      */ // TODO
+        }      */ // TODO Either keep track of universal variables or get rid of this completely. (Doesn't seem to be neccessary... although could use it for exception throwing).
         for (IInferableInstance inferable : body) {
             newBody.add((IInferableInstance) inferable.deepClone(substitutions));
         }
