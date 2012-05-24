@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.jalp.abduction.logic.instance;
+package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
+import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.rules.E1RuleNode;
 import uk.co.mtford.jalp.abduction.rules.E2RuleNode;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;

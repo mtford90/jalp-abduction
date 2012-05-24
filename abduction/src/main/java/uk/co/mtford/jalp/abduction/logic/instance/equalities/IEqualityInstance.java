@@ -1,4 +1,8 @@
-package uk.co.mtford.jalp.abduction.logic.instance;
+package uk.co.mtford.jalp.abduction.logic.instance.equalities;
+
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.VariableInstance;
 
 import java.util.Map;
 

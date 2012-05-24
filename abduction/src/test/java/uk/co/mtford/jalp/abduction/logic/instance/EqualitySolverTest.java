@@ -5,7 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Store;
-import uk.co.mtford.jalp.abduction.rules.LeafNode;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
+import uk.co.mtford.jalp.abduction.rules.LeafRuleNode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +57,7 @@ public class EqualitySolverTest {
         assignments.put(Y,bob);
         Store store = new Store();
         store.equalities.add(E2);
-        LeafNode node = new LeafNode(new AbductiveFramework(),store,assignments);
+        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments);
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
         assertTrue(newAssignments!=null);
         assertTrue(newAssignments.size()==2);
@@ -70,7 +72,7 @@ public class EqualitySolverTest {
         assignments.put(Y,bob);
         Store store = new Store();
         store.equalities.add(new EqualityInstance(Y,bob));
-        LeafNode node = new LeafNode(new AbductiveFramework(),store,assignments);
+        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments);
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
         assertTrue(newAssignments!=null);
         assertTrue(newAssignments.size()==1);
@@ -85,7 +87,7 @@ public class EqualitySolverTest {
         Store store = new Store();
         store.equalities.add(E1);
         store.equalities.add(E2);
-        LeafNode node = new LeafNode(new AbductiveFramework(),store,assignments);
+        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments);
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
         assertTrue(newAssignments!=null);
         assertTrue(newAssignments.get(Y)==bob);
@@ -102,7 +104,7 @@ public class EqualitySolverTest {
         store.equalities.add(E1);
         store.equalities.add(E2);
         store.equalities.add(E3);
-        LeafNode node = new LeafNode(new AbductiveFramework(),store,assignments);
+        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments);
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
         assertTrue(newAssignments==null);
     }
@@ -114,7 +116,7 @@ public class EqualitySolverTest {
         assignments.put(Y,bob);
         Store store = new Store();
         store.equalities.add(new InEqualityInstance(new EqualityInstance(Y, bob)));
-        LeafNode node = new LeafNode(new AbductiveFramework(),store,assignments);
+        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments);
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
         assertTrue(newAssignments==null);
     }
@@ -127,7 +129,7 @@ public class EqualitySolverTest {
         Store store = new Store();
         store.equalities.add(new EqualityInstance(B, Y));
         store.equalities.add(new InEqualityInstance(new EqualityInstance(B, bob)));
-        LeafNode node = new LeafNode(new AbductiveFramework(),store,assignments);
+        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments);
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
         assertTrue(newAssignments==null);
     }
@@ -140,7 +142,7 @@ public class EqualitySolverTest {
         Store store = new Store();
         store.equalities.add(new EqualityInstance(B,Y));
         store.equalities.add(new InEqualityInstance(new EqualityInstance(B, bob)));
-        LeafNode node = new LeafNode(new AbductiveFramework(),store,assignments);
+        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments);
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
         assertTrue(newAssignments!=null);
         assertTrue(newAssignments.size()==2);
@@ -171,7 +173,7 @@ public class EqualitySolverTest {
         store.equalities.add(E3);
         store.equalities.add(IE);
 
-        LeafNode node = new LeafNode(new AbductiveFramework(),store,assignments);
+        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments);
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
 
         assertTrue(newAssignments!=null);

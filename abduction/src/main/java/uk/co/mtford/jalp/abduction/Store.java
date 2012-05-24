@@ -6,7 +6,7 @@ package uk.co.mtford.jalp.abduction;
 
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 
 import java.util.LinkedList;

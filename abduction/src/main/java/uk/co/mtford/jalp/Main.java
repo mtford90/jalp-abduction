@@ -4,11 +4,12 @@ import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
 import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.parse.program.TokenMgrError;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
-import uk.co.mtford.jalp.abduction.rules.LeafNode;
+import uk.co.mtford.jalp.abduction.rules.LeafRuleNode;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 import uk.co.mtford.jalp.abduction.rules.visitor.FifoRuleNodeVisitor;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
@@ -231,8 +232,8 @@ public class Main {
                 currentNode=visitor.stateRewrite();
 
             } while (currentNode!=null);
-            printMessage("Found " + visitor.getLeafNodes().size() + " explanations for query "+predicates);
-            List<LeafNode> successNodes = visitor.getLeafNodes();
+            printMessage("Found " + visitor.getLeafRuleNodes().size() + " explanations for query "+predicates);
+            List<LeafRuleNode> successNodes = visitor.getLeafRuleNodes();
             printResults(queryVariables, successNodes);
         }
         printMessage("Exiting...");
@@ -240,16 +241,16 @@ public class Main {
 
     }
 
-    private static void printResults(Set<VariableInstance> queryVariables, List<LeafNode> leafNodes) {
-        for (int i=0;i< leafNodes.size();i++) {
+    private static void printResults(Set<VariableInstance> queryVariables, List<LeafRuleNode> leafRuleNodes) {
+        for (int i=0;i< leafRuleNodes.size();i++) {
             printMessage("Enter c to see next explanation or anything else to quit.");
             String s = sc.nextLine();
             if (s.trim().equals("c")||s.trim().equals("cc")||s.trim().equals("ccc")) {
                 Set<VariableInstance> variables = new HashSet<VariableInstance>(queryVariables);
-                Map<VariableInstance,IUnifiableAtomInstance> assignments = leafNodes.get(i).getAssignments();
-                List<PredicateInstance> abducibles = leafNodes.get(i).getStore().abducibles;
-                List<DenialInstance> denials = leafNodes.get(i).getStore().denials;
-                List<IEqualityInstance> equalities = leafNodes.get(i).getStore().equalities;
+                Map<VariableInstance,IUnifiableAtomInstance> assignments = leafRuleNodes.get(i).getAssignments();
+                List<PredicateInstance> abducibles = leafRuleNodes.get(i).getStore().abducibles;
+                List<DenialInstance> denials = leafRuleNodes.get(i).getStore().denials;
+                List<IEqualityInstance> equalities = leafRuleNodes.get(i).getStore().equalities;
                 for (PredicateInstance predicate:abducibles) {
                     variables.addAll(predicate.getVariables());
                 }
@@ -259,10 +260,10 @@ public class Main {
                 printMessage("==============================================================");
                 printMessage("Abducibles: "+abducibles);
                 printMessage("Assignments: "+assignments);
-                printMessage("Constraints: "+denials);
+                printMessage("constraints: "+denials);
                 printMessage("Equalities: "+equalities);
                 printMessage("==============================================================");
-                printMessage("There are "+(leafNodes.size()-1-i)+" explanations remaining.");
+                printMessage("There are "+(leafRuleNodes.size()-1-i)+" explanations remaining.");
                 continue;
             }
             else {

@@ -3,6 +3,7 @@ package uk.co.mtford.jalp.abduction.logic.instance;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 
 import java.util.Set;
 

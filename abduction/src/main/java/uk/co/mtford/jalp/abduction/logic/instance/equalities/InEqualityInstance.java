@@ -1,6 +1,7 @@
-package uk.co.mtford.jalp.abduction.logic.instance;
+package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
+import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
 import java.util.HashMap;

@@ -4,7 +4,8 @@ import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.logic.instance.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.rules.*;
 
 import java.util.HashMap;
@@ -24,15 +25,15 @@ public abstract class RuleNodeVisitor {
     private static final Logger LOGGER = Logger.getLogger(RuleNodeVisitor.class);
 
     protected RuleNode currentRuleNode;
-    protected LinkedList<LeafNode> leafNodes;
+    protected LinkedList<LeafRuleNode> leafRuleNodes;
 
     public RuleNodeVisitor(RuleNode ruleNode) throws DefinitionException {
         currentRuleNode = ruleNode;
-        leafNodes = new LinkedList<LeafNode>();
+        leafRuleNodes = new LinkedList<LeafRuleNode>();
     }
 
-    public LinkedList<LeafNode> getLeafNodes() {
-        return leafNodes;
+    public LinkedList<LeafRuleNode> getLeafRuleNodes() {
+        return leafRuleNodes;
     }
 
     private RuleNode constructPositiveChildNode(IInferableInstance newGoal, List<IInferableInstance> newRestOfGoals,
@@ -45,7 +46,7 @@ public abstract class RuleNodeVisitor {
         }
         else {
             Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
-            newRuleNode = new LeafNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),assignments);
+            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),assignments);
         }
 
         return newRuleNode;
@@ -373,11 +374,19 @@ public abstract class RuleNodeVisitor {
         ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
     }
 
-    /**
-     * Produces one child node where the true instance is removed from the goal stack.
-     *
-     * @param ruleNode
-     */
+    public void visit(F1RuleNode ruleNode) {
+        throw new UnsupportedOperationException(); // TODO
+    }
+
+    public void visit(F2RuleNode ruleNode) {
+        throw new UnsupportedOperationException(); // TODO
+    }
+
+        /**
+        * Produces one child node where the true instance is removed from the goal stack.
+        *
+        * @param ruleNode
+        */
     public void visit(PositiveTrueRuleNode ruleNode)
     {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying truth conjunction rule to node.");
@@ -444,7 +453,7 @@ public abstract class RuleNodeVisitor {
         ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
     }
 
-    public void visit(LeafNode ruleNode) {
+    public void visit(LeafRuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Executing equality solver on leaf node:\n"+
                 "--------------------------------------\n"+
                 ruleNode+"\n"+
@@ -453,7 +462,7 @@ public abstract class RuleNodeVisitor {
         if (equalitySolveSuccess!=null) {
             if (LOGGER.isInfoEnabled()) LOGGER.info("Equality solver succeeded.");
             ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
-            leafNodes.add(ruleNode);
+            leafRuleNodes.add(ruleNode);
         }
         else {
             if (LOGGER.isInfoEnabled()) LOGGER.info("Equality solver failed.");
