@@ -133,7 +133,7 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(A2RuleNode ruleNode) {
-        if (LOGGER.isInfoEnabled()) LOGGER.info("Applying A2 to node:\n"+ruleNode);
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Applying A2 to node.");
 
         // Set up new child nodes data structures.
         RuleNode childNode;
@@ -434,6 +434,8 @@ public abstract class RuleNodeVisitor {
 
         childNode.getStore().constraints.add(currentGoal);
         newChildNodes.add(childNode);
+        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        ruleNode.getChildren().addAll(newChildNodes);
 
     }
 
