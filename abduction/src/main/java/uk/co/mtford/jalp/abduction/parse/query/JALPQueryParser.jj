@@ -29,7 +29,7 @@ options {
   FORCE_LA_CHECK = false;
 }
 
-PARSER_BEGIN(ALPQueryParser)
+PARSER_BEGIN(JALPQueryParser)
 
 package uk.co.mtford.jalp.abduction.parse.query;
 
@@ -45,19 +45,19 @@ import uk.co.mtford.jalp.abduction.logic.instance.EqualityInstance;
 import uk.co.mtford.jalp.abduction.Definition;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 
-public class ALPQueryParser {
+public class JALPQueryParser {
  
     public static List<PredicateInstance> readFromString(String string) throws ParseException {
         ByteArrayInputStream inputStream = null;
         byte[] buf = string.getBytes();
         inputStream = new ByteArrayInputStream(buf);
-        ALPQueryParser parser = new ALPQueryParser(inputStream);
+        JALPQueryParser parser = new JALPQueryParser(inputStream);
         return parser.AbductiveLogicQuery();
     }
 
 }
 
-PARSER_END(ALPQueryParser)
+PARSER_END(JALPQueryParser)
 
 SKIP :
 {
