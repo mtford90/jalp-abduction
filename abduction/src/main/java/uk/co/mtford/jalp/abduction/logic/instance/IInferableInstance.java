@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author mtford
  */
-public interface IASystemInferableInstance extends IFirstOrderLogicInstance {
+public interface IInferableInstance extends IFirstOrderLogicInstance {
     /**
      * Takes an abductive framework and a list of goals that doesn't include this inferable and produces
      * a root rule node for use in producing an ASystem derivation in a positive mode of reasoning.
@@ -20,7 +20,7 @@ public interface IASystemInferableInstance extends IFirstOrderLogicInstance {
      * @param abductiveFramework,goals
      * @return A root rule node
      */
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferableInstance> goals);
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals);
 
     /**
      * Takes an abductive framework and a list of goals that includes this inferable and the denials that this
@@ -31,5 +31,5 @@ public interface IASystemInferableInstance extends IFirstOrderLogicInstance {
      *
      * @return A root rule node.
      */
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IASystemInferableInstance> goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals);
 }

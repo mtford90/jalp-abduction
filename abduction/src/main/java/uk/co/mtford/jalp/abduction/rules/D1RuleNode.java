@@ -3,7 +3,7 @@ package uk.co.mtford.jalp.abduction.rules;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
-import uk.co.mtford.jalp.abduction.logic.instance.IASystemInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
@@ -21,11 +21,11 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class D1RuleNode extends PositiveRuleNode {
-    public D1RuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals) {
+    public D1RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals) {
         super(abductiveFramework, goal, restOfGoals);
     }
 
-    public D1RuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public D1RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         super(abductiveFramework, goal, restOfGoals, store, assignments);
     }
 
@@ -40,7 +40,7 @@ public class D1RuleNode extends PositiveRuleNode {
         newRuleNode.currentGoal = currentGoal;
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
-        newRuleNode.nextGoals = new LinkedList<IASystemInferableInstance>(nextGoals);
+        newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
         return newRuleNode;
     }
 

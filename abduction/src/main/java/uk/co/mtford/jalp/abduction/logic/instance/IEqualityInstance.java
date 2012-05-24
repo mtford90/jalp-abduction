@@ -9,6 +9,6 @@ import java.util.Map;
  * Time: 13:00
  * To change this template use File | Settings | File Templates.
  */
-public interface IEqualityInstance extends IASystemInferableInstance {
+public interface IEqualityInstance extends IInferableInstance {
     public boolean equalitySolve(Map<VariableInstance,IUnifiableAtomInstance> assignments);
 }

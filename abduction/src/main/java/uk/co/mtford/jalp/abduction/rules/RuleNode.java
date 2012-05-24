@@ -27,15 +27,15 @@ public abstract class RuleNode {
         EXPANDED
     };
 
-    protected IASystemInferableInstance currentGoal;
-    protected List<IASystemInferableInstance> nextGoals; // G - {currentGoal}
+    protected IInferableInstance currentGoal;
+    protected List<IInferableInstance> nextGoals; // G - {currentGoal}
     protected Store store; // ST
     protected Map<VariableInstance, IUnifiableAtomInstance> assignments;  // Theta
     protected AbductiveFramework abductiveFramework; // (P,A,IC)
     protected NodeMark nodeMark; // Defines whether or not leaf node or search node.
     protected List<RuleNode> children; // Next states.
 
-    public RuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals) {
+    public RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals) {
         children = new LinkedList<RuleNode>();
         assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         nodeMark = nodeMark.UNEXPANDED;
@@ -45,7 +45,7 @@ public abstract class RuleNode {
         store = new Store();
     }
 
-    public RuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals,
+    public RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals,
                     Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         children = new LinkedList<RuleNode>();
         this.assignments = assignments;
@@ -99,19 +99,19 @@ public abstract class RuleNode {
         this.store = store;
     }
 
-    public List<IASystemInferableInstance> getNextGoals() {
+    public List<IInferableInstance> getNextGoals() {
         return nextGoals;
     }
 
-    public void setNextGoals(List<IASystemInferableInstance> nextGoals) {
+    public void setNextGoals(List<IInferableInstance> nextGoals) {
         this.nextGoals = nextGoals;
     }
 
-    public IASystemInferableInstance getCurrentGoal() {
+    public IInferableInstance getCurrentGoal() {
         return currentGoal;
     }
 
-    public void setCurrentGoal(IASystemInferableInstance currentGoal) {
+    public void setCurrentGoal(IInferableInstance currentGoal) {
         this.currentGoal = currentGoal;
     }
 
@@ -171,7 +171,7 @@ public abstract class RuleNode {
                    "<type>"+type[type.length-1]+"</type>\n"+
                    "<current-goal>"+currentGoal+"</current-goal>\n"+
                    "<next-goals>\n";
-        for (IASystemInferableInstance inferable:nextGoals) {
+        for (IInferableInstance inferable:nextGoals) {
             xml+="<goal>"+inferable+"</goal>\n";
         }
         xml+="</next-goals>\n<substitutions>\n";
@@ -214,7 +214,7 @@ public abstract class RuleNode {
         json+=",";
 
         json+="\\\"nextGoals\\\""+":[ ";
-        for (IASystemInferableInstance inferable:nextGoals) {
+        for (IInferableInstance inferable:nextGoals) {
             json+="\\\""+inferable+"\\\",";
         }
         json=json.substring(0,json.length()-1);

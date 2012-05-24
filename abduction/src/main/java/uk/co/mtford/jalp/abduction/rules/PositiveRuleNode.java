@@ -2,7 +2,7 @@ package uk.co.mtford.jalp.abduction.rules;
 
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Store;
-import uk.co.mtford.jalp.abduction.logic.instance.IASystemInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.VariableInstance;
 
@@ -18,11 +18,11 @@ import java.util.Map;
  */
 public abstract class PositiveRuleNode extends RuleNode {
 
-    public PositiveRuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals) {
+    public PositiveRuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals) {
         super(abductiveFramework, goal, restOfGoals);
     }
 
-    public PositiveRuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public PositiveRuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         super(abductiveFramework, goal, restOfGoals, store, assignments);
     }
 

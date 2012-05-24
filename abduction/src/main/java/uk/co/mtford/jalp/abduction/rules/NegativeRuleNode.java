@@ -17,12 +17,12 @@ import java.util.Map;
 public abstract class NegativeRuleNode extends RuleNode {
     protected List<DenialInstance> denials;
 
-    public NegativeRuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals, List<DenialInstance> denial) {
+    public NegativeRuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, List<DenialInstance> denial) {
         super(abductiveFramework, goal, restOfGoals);
         this.denials = denial;
     }
 
-    public NegativeRuleNode(AbductiveFramework abductiveFramework, IASystemInferableInstance goal, List<IASystemInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
+    public NegativeRuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
         super(abductiveFramework, goal, restOfGoals, store, assignments);
         this.denials = denial;
     }
@@ -69,7 +69,7 @@ public abstract class NegativeRuleNode extends RuleNode {
                 "<type>"+type[type.length-1]+"</type>\n"+
                 "<current-goal>"+currentGoal+"</current-goal>\n"+
                 "<next-goals>\n";
-        for (IASystemInferableInstance inferable:nextGoals) {
+        for (IInferableInstance inferable:nextGoals) {
             xml+="<goal>"+inferable+"</goal>\n";
         }
         xml+="</next-goals>\n<substitutions>\n";
@@ -113,7 +113,7 @@ public abstract class NegativeRuleNode extends RuleNode {
         json+=",";
 
         json+="\\\"nextGoals\\\""+":[ ";
-        for (IASystemInferableInstance inferable:nextGoals) {
+        for (IInferableInstance inferable:nextGoals) {
             json+="\\\""+inferable+"\\\",";
         }
         json=json.substring(0,json.length()-1);

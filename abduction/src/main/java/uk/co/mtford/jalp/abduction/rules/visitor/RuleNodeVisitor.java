@@ -35,7 +35,7 @@ public abstract class RuleNodeVisitor {
         return leafNodes;
     }
 
-    private RuleNode constructPositiveChildNode(IASystemInferableInstance newGoal, List<IASystemInferableInstance> newRestOfGoals,
+    private RuleNode constructPositiveChildNode(IInferableInstance newGoal, List<IInferableInstance> newRestOfGoals,
                                                 RuleNode previousNode) {
         RuleNode newRuleNode;
         if (!(newGoal==null)) {
@@ -51,9 +51,9 @@ public abstract class RuleNodeVisitor {
         return newRuleNode;
     }
 
-    private RuleNode constructNegativeChildNode(IASystemInferableInstance newGoal, List<DenialInstance> nestedDenialList,
-                                                List<IASystemInferableInstance> newRestOfGoals, RuleNode previousNode) {
-        newRestOfGoals = new LinkedList<IASystemInferableInstance>(newRestOfGoals);
+    private RuleNode constructNegativeChildNode(IInferableInstance newGoal, List<DenialInstance> nestedDenialList,
+                                                List<IInferableInstance> newRestOfGoals, RuleNode previousNode) {
+        newRestOfGoals = new LinkedList<IInferableInstance>(newRestOfGoals);
         RuleNode newRuleNode = newGoal.getNegativeRootRuleNode(previousNode.getAbductiveFramework(), nestedDenialList, newRestOfGoals);
         Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
         newRuleNode.setAssignments(assignments);
@@ -82,9 +82,9 @@ public abstract class RuleNodeVisitor {
         LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
         for (PredicateInstance storeAbducible : store.abducibles) {
             if (goalAbducible.isSameFunction(storeAbducible)) {
-                List<IASystemInferableInstance> equalitySolved = new LinkedList<IASystemInferableInstance>(storeAbducible.reduce(goalAbducible));
-                List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
-                IASystemInferableInstance newGoal = equalitySolved.remove(0);
+                List<IInferableInstance> equalitySolved = new LinkedList<IInferableInstance>(storeAbducible.reduce(goalAbducible));
+                List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
+                IInferableInstance newGoal = equalitySolved.remove(0);
                 newRestOfGoals.addAll(0,equalitySolved);
                 RuleNode childNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
                 childNodes.add(childNode);
@@ -96,7 +96,7 @@ public abstract class RuleNodeVisitor {
     private RuleNode getA1SecondBranch(A1RuleNode ruleNode, Store store, PredicateInstance goalAbducible) {
         // Set up new child node and it's data structures.
         RuleNode childNode;
-        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
 
         // Check our new collected abducible doesn't violate any collected constraints.
         for (DenialInstance collectedDenial : store.denials) {
@@ -119,7 +119,7 @@ public abstract class RuleNodeVisitor {
             }
         }
 
-        IASystemInferableInstance newGoal = null;
+        IInferableInstance newGoal = null;
         if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
 
         childNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
@@ -133,7 +133,7 @@ public abstract class RuleNodeVisitor {
 
         // Set up new child nodes data structures.
         RuleNode childNode;
-        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         List<DenialInstance> newNestedDenialList = new LinkedList<DenialInstance>(ruleNode.getDenials());
         DenialInstance newCurrentDenial = newNestedDenialList.remove(0).shallowClone();
 
@@ -154,12 +154,12 @@ public abstract class RuleNodeVisitor {
         }
 
         if (newNestedDenialList.isEmpty()) {
-            IASystemInferableInstance newGoal = null;
+            IInferableInstance newGoal = null;
             if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
             childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
         }
         else {
-            IASystemInferableInstance newGoal = newNestedDenialList.get(0).getBody().remove(0);
+            IInferableInstance newGoal = newNestedDenialList.get(0).getBody().remove(0);
             childNode = constructNegativeChildNode(newGoal,newNestedDenialList,newRestOfGoals,ruleNode);
         }
 
@@ -172,12 +172,12 @@ public abstract class RuleNodeVisitor {
     public void visit(D1RuleNode ruleNode) throws DefinitionException {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying D1 to node.");
         PredicateInstance definedPredicate = (PredicateInstance) ruleNode.getCurrentGoal();
-        List<List<IASystemInferableInstance>> possibleUnfolds = ruleNode.getAbductiveFramework().unfoldDefinitions(definedPredicate);
+        List<List<IInferableInstance>> possibleUnfolds = ruleNode.getAbductiveFramework().unfoldDefinitions(definedPredicate);
         LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
-        for (List<IASystemInferableInstance> possibleUnfold : possibleUnfolds) {
-            List<IASystemInferableInstance> restOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        for (List<IInferableInstance> possibleUnfold : possibleUnfolds) {
+            List<IInferableInstance> restOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
             restOfGoals.addAll(0,possibleUnfold);
-            IASystemInferableInstance newGoal = restOfGoals.remove(0);
+            IInferableInstance newGoal = restOfGoals.remove(0);
             RuleNode childNode = constructPositiveChildNode(newGoal, restOfGoals, ruleNode);
             childNodes.add(childNode);
         }
@@ -192,17 +192,17 @@ public abstract class RuleNodeVisitor {
 
         PredicateInstance currentGoal = (PredicateInstance) ruleNode.getCurrentGoal();
 
-        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         List<DenialInstance> newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getDenials());
         DenialInstance newCurrentDenial = newNestedDenials.remove(0).shallowClone();
-        IASystemInferableInstance newGoal = null;
+        IInferableInstance newGoal = null;
 
         RuleNode childNode;
 
-        List<List<IASystemInferableInstance>> possibleUnfolds = ruleNode.getAbductiveFramework().unfoldDefinitions(currentGoal);
+        List<List<IInferableInstance>> possibleUnfolds = ruleNode.getAbductiveFramework().unfoldDefinitions(currentGoal);
 
         List<DenialInstance> newUnfoldedDenials = new LinkedList<DenialInstance>();
-        for (List<IASystemInferableInstance> possibleUnfold:possibleUnfolds) {
+        for (List<IInferableInstance> possibleUnfold:possibleUnfolds) {
             DenialInstance newUnfoldedDenial = newCurrentDenial.shallowClone();
             newUnfoldedDenial.getBody().addAll(possibleUnfold);
            // newUnfoldedDenial = (DenialInstance) newUnfoldedDenial.deepClone(new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments()));
@@ -231,9 +231,9 @@ public abstract class RuleNodeVisitor {
     public void visit(E1RuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E1 to node.");
         RuleNode childNode;
-        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         EqualityInstance currentGoal = (EqualityInstance) ruleNode.getCurrentGoal();
-        IASystemInferableInstance newGoal = null;
+        IInferableInstance newGoal = null;
 
         if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
         childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
@@ -245,10 +245,10 @@ public abstract class RuleNodeVisitor {
     public void visit(E2RuleNode ruleNode) {
         EqualityInstance currentGoal = (EqualityInstance) ruleNode.getCurrentGoal();
 
-        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         List<DenialInstance> newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getDenials());
         DenialInstance newCurrentDenial = newNestedDenials.remove(0).shallowClone();
-        IASystemInferableInstance newGoal = null;
+        IInferableInstance newGoal = null;
 
         RuleNode childNode;
         List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
@@ -301,7 +301,7 @@ public abstract class RuleNodeVisitor {
                 childNode.getStore().equalities.add(inEqualityInstance);
                  newChildNodes.add(childNode);
                 // Branch 2
-                newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+                newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
                 newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getDenials());
                 newCurrentDenial = newNestedDenials.remove(0).shallowClone();
                 HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
@@ -333,7 +333,7 @@ public abstract class RuleNodeVisitor {
 
     public void visit(N1RuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying N1 to node.");
-        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         NegationInstance goal = (NegationInstance) ruleNode.getCurrentGoal();
         DenialInstance denial = new DenialInstance(goal.getSubFormula());
         RuleNode childNode = constructPositiveChildNode(denial, newRestOfGoals, ruleNode);
@@ -345,7 +345,7 @@ public abstract class RuleNodeVisitor {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying N2 to node.");
         RuleNode childNode;
         LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
-        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         NegationInstance goal = (NegationInstance) ruleNode.getCurrentGoal();
         List<DenialInstance> newNestedDenialList = new LinkedList<DenialInstance>(ruleNode.getDenials());
         DenialInstance currentDenial = newNestedDenialList.remove(0).shallowClone();
@@ -357,7 +357,7 @@ public abstract class RuleNodeVisitor {
         }
         childNodes.add(childNode);
         // OR
-        newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         if (newNestedDenialList.isEmpty()) {
             newRestOfGoals.add(0, currentDenial);
             childNode = constructPositiveChildNode(goal, newRestOfGoals, ruleNode);
@@ -381,8 +381,8 @@ public abstract class RuleNodeVisitor {
     public void visit(PositiveTrueRuleNode ruleNode)
     {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying truth conjunction rule to node.");
-        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
-        IASystemInferableInstance newGoal = null;
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
+        IInferableInstance newGoal = null;
         if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
         RuleNode newRuleNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
         ruleNode.getChildren().add(newRuleNode);
@@ -396,10 +396,10 @@ public abstract class RuleNodeVisitor {
      */
     public void visit(NegativeTrueRuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying truth denial conjunction rule to node.");
-        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         List<DenialInstance> newNestedDenialList = new LinkedList<DenialInstance>(ruleNode.getDenials());
         DenialInstance currentDenialInstance = newNestedDenialList.get(0);
-        IASystemInferableInstance newGoal;
+        IInferableInstance newGoal;
         if (!currentDenialInstance.getBody().isEmpty()) {
             newGoal = currentDenialInstance.getBody().remove(0);
         } else {
@@ -428,16 +428,16 @@ public abstract class RuleNodeVisitor {
      */
     public void visit(NegativeFalseRuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying false denial conjunction rule to node.");
-        List<IASystemInferableInstance> newRestOfGoals = new LinkedList<IASystemInferableInstance>(ruleNode.getNextGoals());
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         List<DenialInstance> newNestedDenialList = new LinkedList<DenialInstance>(ruleNode.getDenials());
         RuleNode newChildNode;
         newNestedDenialList.remove(0);
         if (newNestedDenialList.isEmpty()) {
-            IASystemInferableInstance newGoal = new TrueInstance();
+            IInferableInstance newGoal = new TrueInstance();
             newChildNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
         } else {
             DenialInstance newDenial = newNestedDenialList.remove(0).shallowClone();
-            IASystemInferableInstance newGoal = newDenial.getBody().remove(0);
+            IInferableInstance newGoal = newDenial.getBody().remove(0);
             newChildNode = constructNegativeChildNode(newGoal, newNestedDenialList, newRestOfGoals, ruleNode);
         }
         ruleNode.getChildren().add(newChildNode);

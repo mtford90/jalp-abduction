@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * @author mtford
  */
-public class FalseInstance implements IAtomInstance, IASystemInferableInstance {
+public class FalseInstance implements IAtomInstance, IInferableInstance {
 
     @Override
     public String toString() {
@@ -25,12 +25,12 @@ public class FalseInstance implements IAtomInstance, IASystemInferableInstance {
     }
 
     @Override
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferableInstance> goals) {
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
         return new PositiveFalseRuleNode(abductiveFramework, this, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferableInstance> goals) {
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IInferableInstance> goals) {
         return new NegativeFalseRuleNode(abductiveFramework, this, goals, nestedDenialList);
     }
 

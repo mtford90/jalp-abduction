@@ -13,45 +13,45 @@ import java.util.*;
 /**
  * @author mtford
  */
-public class DenialInstance implements IASystemInferableInstance, IFirstOrderLogicInstance {
+public class DenialInstance implements IInferableInstance, IFirstOrderLogicInstance {
 
     private static final Logger LOGGER = Logger.getLogger(DenialInstance.class);
 
-    private List<IASystemInferableInstance> body;
+    private List<IInferableInstance> body;
     private List<VariableInstance> universalVariables;
 
-    public DenialInstance(List<IASystemInferableInstance> body,
+    public DenialInstance(List<IInferableInstance> body,
                           List<VariableInstance> universalVariables) {
         this.body = body;
         this.universalVariables = universalVariables;
     }
 
-    public DenialInstance(List<IASystemInferableInstance> body
+    public DenialInstance(List<IInferableInstance> body
     ) {
         this.body = body;
         this.universalVariables = new LinkedList<VariableInstance>();
     }
 
-    public DenialInstance(List<VariableInstance> universalVariables, IASystemInferableInstance... body) {
+    public DenialInstance(List<VariableInstance> universalVariables, IInferableInstance... body) {
         this.universalVariables = universalVariables;
-        this.body = new LinkedList<IASystemInferableInstance>(Arrays.asList(body));
+        this.body = new LinkedList<IInferableInstance>(Arrays.asList(body));
     }
 
-    public DenialInstance(IASystemInferableInstance... body) {
+    public DenialInstance(IInferableInstance... body) {
         universalVariables = new LinkedList<VariableInstance>();
-        this.body = new LinkedList<IASystemInferableInstance>(Arrays.asList(body));
+        this.body = new LinkedList<IInferableInstance>(Arrays.asList(body));
     }
 
     public DenialInstance() {
-        body = new LinkedList<IASystemInferableInstance>();
+        body = new LinkedList<IInferableInstance>();
         universalVariables = new LinkedList<VariableInstance>();
     }
 
-    public List<IASystemInferableInstance> getBody() {
+    public List<IInferableInstance> getBody() {
         return body;
     }
 
-    public void setBody(List<IASystemInferableInstance> body) {
+    public void setBody(List<IInferableInstance> body) {
         this.body = body;
     }
 
@@ -72,12 +72,12 @@ public class DenialInstance implements IASystemInferableInstance, IFirstOrderLog
     }
 
     public DenialInstance shallowClone() {
-        return new DenialInstance(new LinkedList<IASystemInferableInstance>(body),
+        return new DenialInstance(new LinkedList<IInferableInstance>(body),
                 new LinkedList<VariableInstance>(universalVariables));
     }
 
     @Override
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferableInstance> goals) {
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
         LinkedList<DenialInstance> nestedDenialList = new LinkedList<DenialInstance>();
         if (this.getBody().size()==0) {
             return new FalseInstance().getPositiveRootRuleNode(abductiveFramework,goals);
@@ -88,7 +88,7 @@ public class DenialInstance implements IASystemInferableInstance, IFirstOrderLog
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferableInstance> goals) {
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IInferableInstance> goals) {
         if (this.getBody().size()==0) {
             return new FalseInstance().getNegativeRootRuleNode(abductiveFramework,nestedDenialList,goals);
         }
@@ -100,13 +100,13 @@ public class DenialInstance implements IASystemInferableInstance, IFirstOrderLog
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         // Substitute universal variables.
-        LinkedList<IASystemInferableInstance> newBody = new LinkedList<IASystemInferableInstance>();
+        LinkedList<IInferableInstance> newBody = new LinkedList<IInferableInstance>();
         LinkedList<VariableInstance> newUniversalVariables = new LinkedList<VariableInstance>();
         for (VariableInstance v : universalVariables) {
             newUniversalVariables.add((VariableInstance) v.performSubstitutions(substitutions));
         }
-        for (IASystemInferableInstance inferable : body) {
-            newBody.add((IASystemInferableInstance) inferable.performSubstitutions(substitutions));
+        for (IInferableInstance inferable : body) {
+            newBody.add((IInferableInstance) inferable.performSubstitutions(substitutions));
         }
         body = newBody;
         universalVariables = newUniversalVariables;
@@ -116,13 +116,13 @@ public class DenialInstance implements IASystemInferableInstance, IFirstOrderLog
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         // Substitute universal variables.
-        LinkedList<IASystemInferableInstance> newBody = new LinkedList<IASystemInferableInstance>();
+        LinkedList<IInferableInstance> newBody = new LinkedList<IInferableInstance>();
         LinkedList<VariableInstance> newUniversalVariables = new LinkedList<VariableInstance>();
         /*for (VariableInstance v : universalVariables) {
             newUniversalVariables.add((VariableInstance) v.deepClone(substitutions));
         }      */ // TODO
-        for (IASystemInferableInstance inferable : body) {
-            newBody.add((IASystemInferableInstance) inferable.deepClone(substitutions));
+        for (IInferableInstance inferable : body) {
+            newBody.add((IInferableInstance) inferable.deepClone(substitutions));
         }
         return new DenialInstance(newBody, newUniversalVariables);
     }
@@ -131,7 +131,7 @@ public class DenialInstance implements IASystemInferableInstance, IFirstOrderLog
     @Override
     public Set<VariableInstance> getVariables() {
         HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
-        for (IASystemInferableInstance inferable : body) {
+        for (IInferableInstance inferable : body) {
             variables.addAll(inferable.getVariables());
         }
         return variables;

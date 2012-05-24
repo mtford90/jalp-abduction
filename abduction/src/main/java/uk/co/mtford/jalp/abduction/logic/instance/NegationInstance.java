@@ -17,48 +17,48 @@ import java.util.Set;
 /**
  * @author mtford
  */
-public class NegationInstance implements IASystemInferableInstance, IFirstOrderLogicInstance {
+public class NegationInstance implements IInferableInstance, IFirstOrderLogicInstance {
 
     private static final Logger LOGGER = Logger.getLogger(NegationInstance.class);
 
-    private IASystemInferableInstance subFormula;
+    private IInferableInstance subFormula;
 
-    public NegationInstance(IASystemInferableInstance subFormula) {
+    public NegationInstance(IInferableInstance subFormula) {
         this.subFormula = subFormula;
     }
 
-    public IASystemInferableInstance getSubFormula() {
+    public IInferableInstance getSubFormula() {
         return subFormula;
     }
 
-    public void setSubFormula(IASystemInferableInstance subFormula) {
+    public void setSubFormula(IInferableInstance subFormula) {
         this.subFormula = subFormula;
     }
 
     @Override
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferableInstance> goals) {
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
         return new N1RuleNode(abductiveFramework, this, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferableInstance> goals) {
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IInferableInstance> goals) {
         return new N2RuleNode(abductiveFramework, this, goals, nestedDenialList);
     }
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        subFormula = (IASystemInferableInstance) subFormula.performSubstitutions(substitutions);
+        subFormula = (IInferableInstance) subFormula.performSubstitutions(substitutions);
         return this;
     }
 
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new NegationInstance((IASystemInferableInstance) subFormula.deepClone(substitutions));
+        return new NegationInstance((IInferableInstance) subFormula.deepClone(substitutions));
     }
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new NegationInstance((IASystemInferableInstance) subFormula.shallowClone());
+        return new NegationInstance((IInferableInstance) subFormula.shallowClone());
     }
 
     @Override

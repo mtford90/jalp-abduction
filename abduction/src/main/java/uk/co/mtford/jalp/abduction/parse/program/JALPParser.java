@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
-import uk.co.mtford.jalp.abduction.logic.instance.IASystemInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.EqualityInstance;
 import uk.co.mtford.jalp.abduction.Definition;
@@ -76,7 +76,7 @@ public class JALPParser implements JALPParserConstants {
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
 
     PredicateInstance head;
-    List<IASystemInferableInstance> body = null;
+    List<IInferableInstance> body = null;
     head = Predicate(variablesSoFar);
     if (jj_2_5(2)) {
       jj_consume_token(DEFINES);
@@ -92,7 +92,7 @@ public class JALPParser implements JALPParserConstants {
   final public DenialInstance Denial() throws ParseException {
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
 
-    List<IASystemInferableInstance> body;
+    List<IInferableInstance> body;
     List<VariableInstance> variableList = new LinkedList<VariableInstance>();
     jj_consume_token(IC);
     jj_consume_token(DEFINES);
@@ -130,9 +130,9 @@ public class JALPParser implements JALPParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public List<IASystemInferableInstance> Body(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    LinkedList<IASystemInferableInstance> body = new LinkedList<IASystemInferableInstance>();
-    IASystemInferableInstance inferable;
+  final public List<IInferableInstance> Body(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+    LinkedList<IInferableInstance> body = new LinkedList<IInferableInstance>();
+    IInferableInstance inferable;
     inferable = Inferable(variablesSoFar);
       body.add(inferable);
     label_3:
@@ -150,8 +150,8 @@ public class JALPParser implements JALPParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public IASystemInferableInstance Inferable(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IASystemInferableInstance inferable;
+  final public IInferableInstance Inferable(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+    IInferableInstance inferable;
     if (jj_2_8(2)) {
       inferable = PositiveInferable(variablesSoFar);
       {if (true) return inferable;}
@@ -165,8 +165,8 @@ public class JALPParser implements JALPParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public IASystemInferableInstance PositiveInferable(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IASystemInferableInstance inferable;
+  final public IInferableInstance PositiveInferable(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+    IInferableInstance inferable;
     if (jj_2_10(2)) {
       inferable = Predicate(variablesSoFar);
         {if (true) return inferable;}
@@ -181,7 +181,7 @@ public class JALPParser implements JALPParserConstants {
   }
 
   final public NegationInstance NegativeInferable(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IASystemInferableInstance subformula;
+    IInferableInstance subformula;
     jj_consume_token(NOT);
     subformula = PositiveInferable(variablesSoFar);
       {if (true) return new NegationInstance(subformula);}

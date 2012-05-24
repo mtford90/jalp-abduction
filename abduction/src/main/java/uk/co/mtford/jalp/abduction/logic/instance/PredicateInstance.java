@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * @author mtford
  */
-public class PredicateInstance implements IUnifiableAtomInstance, IASystemInferableInstance {
+public class PredicateInstance implements IUnifiableAtomInstance, IInferableInstance {
 
     private static final Logger LOGGER = Logger.getLogger(PredicateInstance.class);
 
@@ -131,13 +131,13 @@ public class PredicateInstance implements IUnifiableAtomInstance, IASystemInfera
     }
 
     @Override
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IASystemInferableInstance> goals) {
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
         if (abductiveFramework.isAbducible(this)) return new A1RuleNode(abductiveFramework, this, goals);
         else return new D1RuleNode(abductiveFramework, this, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IASystemInferableInstance> goals) {
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IInferableInstance> goals) {
         if (abductiveFramework.isAbducible(this))
             return new A2RuleNode(abductiveFramework, this, goals, nestedDenialList);
         else return new D2RuleNode(abductiveFramework, this, goals, nestedDenialList);

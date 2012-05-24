@@ -25,7 +25,7 @@ public class LeafNode extends RuleNode {
 
     public LeafNode(AbductiveFramework framework, Store store, Map<VariableInstance,
             IUnifiableAtomInstance> assignments) {
-        super(framework, null, new LinkedList<IASystemInferableInstance>(), store, assignments);
+        super(framework, null, new LinkedList<IInferableInstance>(), store, assignments);
     }
 
     protected LeafNode() {

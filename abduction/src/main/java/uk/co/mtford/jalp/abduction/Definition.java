@@ -18,10 +18,10 @@ public class Definition {
     private static final Logger LOGGER = Logger.getLogger(Definition.class);
 
     private PredicateInstance head;
-    private List<IASystemInferableInstance> body;
+    private List<IInferableInstance> body;
     private HashMap<String, VariableInstance> variables;
 
-    public Definition(PredicateInstance head, List<IASystemInferableInstance> body,
+    public Definition(PredicateInstance head, List<IInferableInstance> body,
                       HashMap<String, VariableInstance> variables) {
         this.body = body;
         this.head = head;
@@ -42,11 +42,11 @@ public class Definition {
         this.head = head;
     }
 
-    public List<IASystemInferableInstance> getBody() {
+    public List<IInferableInstance> getBody() {
         return body;
     }
 
-    public void setBody(List<IASystemInferableInstance> body) {
+    public void setBody(List<IInferableInstance> body) {
         this.body = body;
     }
 
@@ -67,14 +67,14 @@ public class Definition {
         return head.getVariables();
     }
 
-    public List<IASystemInferableInstance> unfoldDefinition(IUnifiableAtomInstance... newParameters) throws DefinitionException {
+    public List<IInferableInstance> unfoldDefinition(IUnifiableAtomInstance... newParameters) throws DefinitionException {
         if (newParameters.length!=head.getNumParams()) throw new DefinitionException("Incorrect number of parameters expanding "+this);
-        List<IASystemInferableInstance> unfold = new LinkedList<IASystemInferableInstance>();
+        List<IInferableInstance> unfold = new LinkedList<IInferableInstance>();
         Map<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         if (!isFact()) {
             PredicateInstance clonedHead = (PredicateInstance) head.deepClone(subst);
-            for (IASystemInferableInstance inferable:body) {
-                unfold.add((IASystemInferableInstance) inferable.deepClone(subst));
+            for (IInferableInstance inferable:body) {
+                unfold.add((IInferableInstance) inferable.deepClone(subst));
             }
             for (int i=0;i<newParameters.length;i++){
                 unfold.add(0,new EqualityInstance(newParameters[i],clonedHead.getParameter(i)));

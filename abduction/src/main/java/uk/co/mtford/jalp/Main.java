@@ -162,13 +162,13 @@ public class Main {
      */
     private static void processQuery(String query) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, DefinitionException, IOException {
         List<PredicateInstance> predicates = JALPQueryParser.readFromString(query);
-        List<IASystemInferableInstance> goals = new LinkedList<IASystemInferableInstance>();
+        List<IInferableInstance> goals = new LinkedList<IInferableInstance>();
         Set<VariableInstance> queryVariables = new HashSet<VariableInstance>();
         goals.addAll(predicates);
-        for (IASystemInferableInstance inferable:goals) {
+        for (IInferableInstance inferable:goals) {
             queryVariables.addAll(inferable.getVariables());
         }
-        IASystemInferableInstance firstGoal = goals.remove(0);
+        IInferableInstance firstGoal = goals.remove(0);
         RuleNode currentNode = firstGoal.getPositiveRootRuleNode(framework,goals);
         RuleNode rootNode = currentNode;
         currentNode.getNextGoals().addAll(framework.getIC());
