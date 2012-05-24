@@ -1,0 +1,15 @@
+edge(v1,v2).
+edge(v1,v3).
+edge(v1,v0).
+edge(v0,v2).
+edge(v3,v2).
+
+edge(X,Y) :- edge(Y,X).
+
+colour(X) :- X in [red,blue,green].
+
+ic :- has_color(V1,C), has_color(V2,C).
+
+abducible(has_colour(V,C)).
+
+
