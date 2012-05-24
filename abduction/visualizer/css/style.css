@@ -24,18 +24,13 @@ td,th {
 	text-align: left;
 }
 
-#body-wrapper {
-	margin:0 auto;
-}
-
-
 /*--Header----------------------------------*/
 
 #heading {
 	padding: 4px;
 }
 
-.header-border {
+#heading .header-border {
 	margin: 0 auto;
 	padding-top: 4px;
 	border-bottom-style: solid;
@@ -43,16 +38,8 @@ td,th {
 	border-bottom-color: rgb(210,210,210);
 }
 
-/*--Controls--------------------------------*/
-
-
-
 /*--Content---------------------------------*/
 
-
-#content #selected-nodes {
-	overflow:hidden;
-}
 
 #content #previous-node-div {
 	margin: 4px;
@@ -61,20 +48,6 @@ td,th {
 #content #current-node-div {
 	margin: 4px;
 }
-
-#content .nodeTable {
-}
-
-#content #children {
-	overflow: hidden;
-
-}
-
-#content .child-div {
-	float:left;
-	margin: 4px;
-}
-
 
 
 
