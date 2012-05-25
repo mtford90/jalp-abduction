@@ -40,6 +40,7 @@ public class Main {
     private static final String DEBUG_OPTION = "-d";
     private static final String XML_OPTION = "-x";
     private static final String JSON_OPTION = "-j";
+    private static final String REDUCE_OPTION = "-r";
 
     // ALPS commands.
     private static final char FILE_COMMAND = 'l';
@@ -76,6 +77,7 @@ public class Main {
     private static boolean debugMode = false;
     private static boolean xmlMode = false;
     private static boolean jsonMode = false;
+    private static boolean reduceMode = false;
     private static String xmlFileName = "../visualizer/output.xml";
     private static String jsFileName = "../visualizer/output.js";
     private static AbductiveFramework framework;
@@ -250,18 +252,58 @@ public class Main {
             printMessage("Enter c to see next explanation or anything else to quit.");
             String s = sc.nextLine();
             if (s.trim().equals("c")||s.trim().equals("cc")||s.trim().equals("ccc")) {
-                Set<VariableInstance> variables = new HashSet<VariableInstance>(queryVariables);
                 Map<VariableInstance,IUnifiableAtomInstance> assignments = leafRuleNodes.get(i).getAssignments();
                 List<PredicateInstance> abducibles = leafRuleNodes.get(i).getStore().abducibles;
                 List<DenialInstance> denials = leafRuleNodes.get(i).getStore().denials;
                 List<IEqualityInstance> equalities = leafRuleNodes.get(i).getStore().equalities;
                 List<IConstraintInstance> constraints = leafRuleNodes.get(i).getStore().constraints;
-                for (PredicateInstance predicate:abducibles) {
-                    variables.addAll(predicate.getVariables());
+
+                if (reduceMode) {
+                    List<PredicateInstance> substAbducibles = new LinkedList<PredicateInstance>();
+                    List<DenialInstance> substDenials = new LinkedList<DenialInstance>();
+                    List<IEqualityInstance> substEqualities = new LinkedList<IEqualityInstance>();
+                    List<IConstraintInstance> substConstraints = new LinkedList<IConstraintInstance>();
+
+                    Set<VariableInstance> relevantVariables = new HashSet<VariableInstance>(queryVariables);
+                    HashMap<VariableInstance,IUnifiableAtomInstance> relevantAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+
+
+                    for (PredicateInstance a:abducibles) {
+                        substAbducibles.add((PredicateInstance)a.performSubstitutions(assignments));
+                    }
+
+                    for (DenialInstance d:denials) {
+                        substDenials.add((DenialInstance) d.performSubstitutions(assignments));
+                    }
+
+                    for (IEqualityInstance e:equalities) {
+                        substEqualities.add((IEqualityInstance) e.performSubstitutions(assignments));
+                    }
+
+                    for (IConstraintInstance c:constraints) {
+                        substConstraints.add((IConstraintInstance)c.performSubstitutions(assignments));
+                    }
+
+                    Set<IUnifiableAtomInstance> keySet = new HashSet<IUnifiableAtomInstance>(assignments.keySet());
+
+                    for (IUnifiableAtomInstance key:keySet) {
+
+
+                        if (queryVariables.contains(key)) {
+                            IUnifiableAtomInstance value = assignments.get(key);
+
+                            while (keySet.contains(value)) value = assignments.get(value);
+                            relevantAssignments.put((VariableInstance) key,value);
+                        }
+                    }
+
+                    assignments=relevantAssignments;
+                    abducibles=substAbducibles;
+                    denials = substDenials;
+                    equalities=substEqualities;
+                    constraints=substConstraints;
                 }
-                for (DenialInstance denial:denials) {
-                    variables.addAll(denial.getVariables());
-                }
+
                 printMessage("==============================================================");
                 printMessage("Abducibles: "+abducibles);
                 printMessage("Assignments: "+assignments);
@@ -415,6 +457,9 @@ public class Main {
                     fatalError("JSON mode not available during debug.");
                 }
                 jsonMode = true;
+            }
+            else if (arg.equals(REDUCE_OPTION)) {
+                reduceMode = true;
             }
             else {
                 printMessage(EXEC_ARG_ERROR);
