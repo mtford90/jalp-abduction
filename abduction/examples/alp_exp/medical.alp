@@ -1,0 +1,15 @@
+headache(X) :- jaundice(X).
+headache(X) :- migraine(X).
+yellowEyes(X) :- jaundice(X).
+dizziness(X) :- migraine(X).
+
+sickness(X) :- stomachBug(X).
+
+ic :- migraine(X), jaundice(X).
+ic :- migraine(X), young(X).
+ic :- jaundice(X), not yellowEyes(X).
+ic :- jaundice(X), not sickness(X).
+
+abducible(jaundice(X)).
+abducible(migraine(X)).
+abducible(stomachBug(X)).

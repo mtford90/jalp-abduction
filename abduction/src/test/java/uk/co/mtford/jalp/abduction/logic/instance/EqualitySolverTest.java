@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
  * To change this template use File | Settings | File Templates.
  */
 public class EqualitySolverTest {
-    VariableInstance X5, B, Y;
+    VariableInstance X, B, Y;
     ConstantInstance john, bob;
     EqualityInstance E1, E2, E3;
     InEqualityInstance IE1;
@@ -34,14 +34,14 @@ public class EqualitySolverTest {
     @Before
     public void noSetup() {
         HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        X5 = new VariableInstance("X5");
+        X = new VariableInstance("X");
         Y = new VariableInstance("Y");
         B = new VariableInstance("B");
         john = new ConstantInstance("john");
         bob = new ConstantInstance("bob");
-        E1 = new EqualityInstance(john,X5);
+        E1 = new EqualityInstance(john, X);
         E2 = new EqualityInstance(B,Y);
-        E3 = new EqualityInstance(X5,B);
+        E3 = new EqualityInstance(X,B);
 
     }
 
@@ -79,6 +79,7 @@ public class EqualitySolverTest {
         assertTrue(newAssignments.get(Y)==bob);
     }
 
+    // theta = {Y/bob}, equalities = {john=X, B=Y}
     @Test
     public void simpleEqualityTest3() {
         HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
@@ -91,10 +92,11 @@ public class EqualitySolverTest {
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
         assertTrue(newAssignments!=null);
         assertTrue(newAssignments.get(Y)==bob);
-        assertTrue(newAssignments.get(X5)==john);
+        assertTrue(newAssignments.get(X)==john);
         assertTrue(newAssignments.get(B)==bob);
     }
 
+    // theta = {Y/bob}, equalities = {john=X, B=Y, X=B}
     @Test
     public void simpleEqualityTest4() {
         HashMap<VariableInstance,IUnifiableAtomInstance> assignments;

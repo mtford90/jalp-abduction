@@ -118,6 +118,20 @@ public abstract class RuleNode {
         this.currentGoal = currentGoal;
     }
 
+    public Map<VariableInstance, IUnifiableAtomInstance> equalitySolve()  {
+        Map<VariableInstance, IUnifiableAtomInstance> newAssignments
+                = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
+
+        List<IEqualityInstance> equalities = new LinkedList<IEqualityInstance>(this.getStore().equalities);
+
+        for (IEqualityInstance equality:equalities) {
+            if (equality.equalitySolve(newAssignments)) continue;
+            return null;  // TODO null... really?
+        }
+
+        return newAssignments;
+    }
+
     public abstract RuleNode shallowClone(); // TODO: Use reflection instead?
 
     public abstract void acceptVisitor(RuleNodeVisitor v) throws DefinitionException;

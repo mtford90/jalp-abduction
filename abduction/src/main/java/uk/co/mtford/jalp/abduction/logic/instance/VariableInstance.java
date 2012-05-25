@@ -16,7 +16,7 @@ import java.util.*;
 public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
 
     private static final Logger LOGGER = Logger.getLogger(VariableInstance.class);
-    private int uniqueId = UniqueIdGenerator.getUniqueId();
+    private int uniqueId;
 
     String name;
 
@@ -26,6 +26,7 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
 
     public VariableInstance(String name) {
         this.name = name;
+        uniqueId = UniqueIdGenerator.getUniqueId(name);
     }
 
     public String getName() {
@@ -38,7 +39,13 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
 
     @Override
     public String toString() {
-        return name + uniqueId;
+        if (uniqueId==1) {
+            return name;
+        }
+        else {
+            return name + uniqueId;
+        }
+
     }
 
     /**
@@ -124,7 +131,19 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
 
     @Override
     public boolean unify(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        if (!this.equals(other)) {
+        List<IUnifiableAtomInstance> keySet = new LinkedList<IUnifiableAtomInstance>(assignment.keySet());
+        IUnifiableAtomInstance left = this;
+        IUnifiableAtomInstance right = other;
+        if (this.equals(other)) return true;
+        if (keySet.contains(left)) {
+            while (keySet.contains(left)) left = assignment.get(left);
+            return left.unify(right,assignment);
+        }
+        else if (keySet.contains(right)) {
+            while (keySet.contains(right)) right = assignment.get(right);
+            return left.unify(right,assignment);
+        }
+        else {
             assignment.put(this,other);
         }
         return true;
@@ -132,13 +151,29 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
 
     @Override
     public boolean unify(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        assignment.put(this,other);
+        List<IUnifiableAtomInstance> keySet = new LinkedList<IUnifiableAtomInstance>(assignment.keySet());
+        IUnifiableAtomInstance left = this;
+        if (keySet.contains(left)) {
+            while (keySet.contains(left)) left = assignment.get(left);
+            return left.unify(other,assignment);
+        }
+        else {
+            assignment.put(this,other);
+        }
         return true;
     }
 
     @Override
     public boolean unify(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        assignment.put(this,other);
+        List<IUnifiableAtomInstance> keySet = new LinkedList<IUnifiableAtomInstance>(assignment.keySet());
+        IUnifiableAtomInstance left = this;
+        if (keySet.contains(left)) {
+            while (keySet.contains(left)) left = assignment.get(left);
+            return left.unify(other,assignment);
+        }
+        else {
+            assignment.put(this,other);
+        }
         return true;
     }
 

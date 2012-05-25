@@ -37,19 +37,7 @@ public class LeafRuleNode extends RuleNode {
         throw new UnsupportedOperationException(); // TODO
     }
 
-    public Map<VariableInstance, IUnifiableAtomInstance> equalitySolve()  {
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments
-                = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
 
-        List<IEqualityInstance> equalities = new LinkedList<IEqualityInstance>(this.getStore().equalities);
-
-        for (IEqualityInstance equality:equalities) {
-            if (equality.equalitySolve(newAssignments)) continue;
-            return null;  // TODO null... really?
-        }
-
-        return newAssignments;
-    }
 
     public List<Map<VariableInstance, IUnifiableAtomInstance>> constraintSolve() {
         throw new UnsupportedOperationException(); // TODO

@@ -31,7 +31,7 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class);
     private static final Scanner sc = new Scanner(System.in);
 
-    private static final int MAX_EXPANSIONS = 10000;
+    private static final int MAX_EXPANSIONS = 100;
 
     // Command line options.
     private static final String FILE_OPTION = "-f";
@@ -201,8 +201,10 @@ public class Main {
                 int n = 0;
                 if (LOGGER.isInfoEnabled()) LOGGER.info("Beginning processing of query.");
                 do {
+                    n++;
                     if (n>=MAX_EXPANSIONS) {
                         LOGGER.error("Hit max expansions. Generating XML file for what we have so far.");
+                        break;
                     }
                     currentNode=visitor.stateRewrite();
                 } while (currentNode!=null);
@@ -219,6 +221,7 @@ public class Main {
                     n++;
                     if (n>=MAX_EXPANSIONS) {
                         LOGGER.error("Hit max expansions. Generating JSON file for what we have so far.");
+                        break;
                     }
                     currentNode=visitor.stateRewrite();
                 } while (currentNode!=null);
@@ -390,7 +393,9 @@ public class Main {
             } else if (arg.equals(QUERY_OPTION)) {
                 query = true;
                 i++;
-                queryString = args[i];
+                queryString = "";
+                if (args.length>i)
+                    queryString = args[i];
             } else if (arg.equals(DEBUG_OPTION)) {
                 debugMode = true;
 
