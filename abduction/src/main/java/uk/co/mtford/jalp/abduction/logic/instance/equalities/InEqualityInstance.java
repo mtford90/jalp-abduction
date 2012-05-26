@@ -63,6 +63,9 @@ public class InEqualityInstance implements IEqualityInstance {
 
     @Override
     public boolean equalitySolve(Map<VariableInstance, IUnifiableAtomInstance> equalitySolverAssignments) {
-        return !equalityInstance.equalitySolve(new HashMap<VariableInstance, IUnifiableAtomInstance>(equalitySolverAssignments));
+        boolean equalitySolve
+                = equalityInstance.equalitySolve(new HashMap<VariableInstance, IUnifiableAtomInstance>(equalitySolverAssignments));
+
+        return !equalitySolve;
     }
 }

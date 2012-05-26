@@ -129,7 +129,6 @@ public class EqualityInstance implements IEqualityInstance {
         return right.unify(left,assignments);
     }
 
-
     @Override
     public boolean equalitySolve(Map<VariableInstance, IUnifiableAtomInstance> equalitySolverAssignments) {
         return left.unify(right,equalitySolverAssignments);

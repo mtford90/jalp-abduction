@@ -153,6 +153,20 @@ public class EqualitySolverTest {
     }
 
     @Test
+    public void simpleInEqualityTest4() {
+        HashMap<VariableInstance,IUnifiableAtomInstance> assignments
+                = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        Store store = new Store();
+        VariableInstance X = new VariableInstance("X");
+        ConstantInstance one = new ConstantInstance("1");
+        store.equalities.add(new InEqualityInstance(new EqualityInstance(X, one)));
+        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments);
+        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
+        assertTrue(newAssignments!=null);
+        assertTrue(newAssignments.isEmpty());
+    }
+
+    @Test
     public void complexTest1() {
         ConstantInstance sam = new ConstantInstance("sam");
         ConstantInstance tweety = new ConstantInstance("tweety");
