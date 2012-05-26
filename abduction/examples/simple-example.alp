@@ -8,4 +8,4 @@ girl(maria).
 insane(maria).
 
 likes(X,Y) :- boy(X), girl(Y), not insane(Y).
-likes(X,Y) :- girl(X), boy(Y).
+likes(X,Y) :- girl(X), bochy(Y).

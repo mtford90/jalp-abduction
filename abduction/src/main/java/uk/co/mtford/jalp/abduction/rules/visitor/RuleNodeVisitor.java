@@ -601,11 +601,14 @@ public abstract class RuleNodeVisitor {
             return null;
         }
         else {
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying equality solver to "+currentRuleNode);
             Map<VariableInstance,IUnifiableAtomInstance> assignments = currentRuleNode.equalitySolve();
             if (assignments == null) {
+                if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality solver failed.");
                 currentRuleNode.setNodeMark(RuleNode.NodeMark.FAILED);
             }
             else {
+                if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality succeeeded");
                 currentRuleNode.setAssignments(assignments);
                 currentRuleNode.acceptVisitor(this);
             }

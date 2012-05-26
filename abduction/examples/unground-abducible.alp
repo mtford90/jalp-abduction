@@ -1,0 +1,4 @@
+p(X) :- a(X), not q(X).
+q(1).
+
+abducible(a(X)).

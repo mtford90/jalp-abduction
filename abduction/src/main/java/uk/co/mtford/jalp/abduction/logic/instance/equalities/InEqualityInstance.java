@@ -26,7 +26,7 @@ public class InEqualityInstance implements IEqualityInstance {
 
     @Override
     public String toString() {
-        return equalityInstance.getLeft()+"=\\="+equalityInstance.getRight();
+        return equalityInstance.getLeft()+"!="+equalityInstance.getRight();
     }
 
     @Override
