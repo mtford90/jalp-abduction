@@ -616,11 +616,11 @@ public abstract class RuleNodeVisitor {
 
     public RuleNode stateRewrite() throws DefinitionException {
 
+        currentRuleNode = chooseNextNode();
+
         if (currentRuleNode == null) {  // Finished.
             return null;
         }
-
-        currentRuleNode = chooseNextNode();
 
         if (!(currentRuleNode==null)) {
             Map<VariableInstance,IUnifiableAtomInstance> assignments = currentRuleNode.equalitySolve();
@@ -633,6 +633,7 @@ public abstract class RuleNodeVisitor {
             }
 
         }
+
         return currentRuleNode;
 
     }

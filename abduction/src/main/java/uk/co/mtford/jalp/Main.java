@@ -91,14 +91,9 @@ public class Main {
     private static void debugMode(List<IInferableInstance> predicates) throws JALPException {
         printMessage("Framework is as follows:\n\n"+system.getFramework()+"\n");
         printMessage("Query is as follows:\n\n"+predicates+"\n");
-        printMessage("Initializing derivation tree with root node:\n");
         JALPSystem.RuleNodeIterator iterator = system.getRuleNodeIterator(new LinkedList<IInferableInstance>(predicates), JALPSystem.Heuristic.NONE);
-        printMessage("==============================================================");
-        printMessage(iterator.getCurrentNode().toString());
-        printMessage("==============================================================");
         while (iterator.hasNext()) {
             RuleNode currentNode = iterator.next();
-            if (currentNode==null) continue; // todo fix iterator hasnext
             printMessage("\nCurrent state for query " + predicates + " is");
             printMessage("==============================================================");
             printMessage(currentNode.toString());

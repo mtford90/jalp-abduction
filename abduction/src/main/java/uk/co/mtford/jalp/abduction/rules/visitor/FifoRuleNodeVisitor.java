@@ -38,7 +38,7 @@ public class FifoRuleNodeVisitor extends RuleNodeVisitor {
 
     @Override
     public boolean hasNextNode() {
-        return !(currentRuleNode==null) || !nodeStack.isEmpty();
+        return !currentRuleNode.getChildren().isEmpty() || !nodeStack.isEmpty();
     }
 
 

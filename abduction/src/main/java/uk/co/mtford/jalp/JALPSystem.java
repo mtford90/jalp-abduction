@@ -93,6 +93,11 @@ public class JALPSystem {
             currentNode = iterator.next();
         }
 
+        if (currentNode.getNodeMark()==RuleNode.NodeMark.SUCCEEDED) {
+            Result result = new Result(currentNode.getStore(),currentNode.getAssignments());
+            resultList.add(result);
+        }
+
         return resultList;
     }
 
@@ -132,7 +137,7 @@ public class JALPSystem {
 
         @Override
         public boolean hasNext() {
-            return nodeVisitor.hasNextNode() || currentNode != null;
+            return nodeVisitor.hasNextNode();
         }
 
         @Override
