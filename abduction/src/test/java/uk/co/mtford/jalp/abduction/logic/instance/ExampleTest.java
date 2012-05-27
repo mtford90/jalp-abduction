@@ -50,6 +50,7 @@ public class ExampleTest {
         List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
         assertTrue(result.size()==1);
         Result onlyResult = result.remove(0);
+        JALPSystem.reduceResult(onlyResult);
         assertTrue(onlyResult.getAssignments().get(Y).equals(new ConstantInstance("jane")));
         assertTrue(onlyResult.getAssignments().get(X).equals(new ConstantInstance("john")));
     }

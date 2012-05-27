@@ -21,7 +21,10 @@ $(document).ready(init);
 
 function init() {
 	rootNode = $.parseJSON(data);
-	query = rootNode.currentGoal;
+	query = "'"+rootNode.currentGoal+"'";
+	for (var goal in rootNode.nextGoals) {
+		query += ", '"+rootNode.nextGoals[goal]+"'";
+	}
 	nodeArray[1]=rootNode;
 	fillInfo();
 	createTableTemplate();
