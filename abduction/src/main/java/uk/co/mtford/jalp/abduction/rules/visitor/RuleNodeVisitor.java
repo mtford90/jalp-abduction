@@ -28,15 +28,10 @@ public abstract class RuleNodeVisitor {
     private static final Logger LOGGER = Logger.getLogger(RuleNodeVisitor.class);
 
     protected RuleNode currentRuleNode;
-    protected LinkedList<LeafRuleNode> leafRuleNodes;
 
     public RuleNodeVisitor(RuleNode ruleNode) throws DefinitionException {
         currentRuleNode = ruleNode;
-        leafRuleNodes = new LinkedList<LeafRuleNode>();
-    }
-
-    public LinkedList<LeafRuleNode> getLeafRuleNodes() {
-        return leafRuleNodes;
+        currentRuleNode.acceptVisitor(this);
     }
 
     private RuleNode constructPositiveChildNode(IInferableInstance newGoal, List<IInferableInstance> newRestOfGoals,
@@ -612,7 +607,6 @@ public abstract class RuleNodeVisitor {
         if (equalitySolveSuccess!=null) {
             if (LOGGER.isInfoEnabled()) LOGGER.info("Equality solver succeeded.");
             ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
-            leafRuleNodes.add(ruleNode);
         }
         else {
             if (LOGGER.isInfoEnabled()) LOGGER.info("Equality solver failed.");
@@ -625,7 +619,10 @@ public abstract class RuleNodeVisitor {
         if (currentRuleNode == null) {  // Finished.
             return null;
         }
-        else {
+
+        currentRuleNode = chooseNextNode();
+
+        if (!(currentRuleNode==null)) {
             Map<VariableInstance,IUnifiableAtomInstance> assignments = currentRuleNode.equalitySolve();
             if (assignments == null) {
                 currentRuleNode.setNodeMark(RuleNode.NodeMark.FAILED);
@@ -634,7 +631,6 @@ public abstract class RuleNodeVisitor {
                 currentRuleNode.setAssignments(assignments);
                 currentRuleNode.acceptVisitor(this);
             }
-            currentRuleNode = chooseNextNode();
 
         }
         return currentRuleNode;
@@ -646,4 +642,5 @@ public abstract class RuleNodeVisitor {
     }
 
     protected abstract RuleNode chooseNextNode();
+    public abstract boolean hasNextNode();
 }

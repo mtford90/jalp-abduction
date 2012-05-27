@@ -32,6 +32,7 @@ public class InE2RuleNode extends NegativeRuleNode {
     }
 
     private InE2RuleNode() {
+        super();
     }
 
     @Override

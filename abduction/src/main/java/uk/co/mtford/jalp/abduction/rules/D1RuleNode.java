@@ -30,6 +30,7 @@ public class D1RuleNode extends PositiveRuleNode {
     }
 
     protected D1RuleNode() {
+        super();
     }
 
     @Override

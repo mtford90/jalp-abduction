@@ -30,6 +30,7 @@ public class NegativeFalseRuleNode extends NegativeRuleNode {
     }
 
     protected NegativeFalseRuleNode() {
+        super();
     }
 
     @Override

@@ -29,6 +29,7 @@ public class E1RuleNode extends PositiveRuleNode {
     }
 
     protected E1RuleNode() {
+        super();
     }
 
     @Override

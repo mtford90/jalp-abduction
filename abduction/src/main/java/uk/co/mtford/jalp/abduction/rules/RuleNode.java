@@ -34,7 +34,7 @@ public abstract class RuleNode {
     protected List<IInferableInstance> nextGoals; // G - {currentGoal}
     protected Store store; // ST
     protected Map<VariableInstance, IUnifiableAtomInstance> assignments;  // Theta
-    protected AbductiveFramework abductiveFramework; // (P,A,IC)
+    protected AbductiveFramework abductiveFramework; // (P,A,IC),Theta
     protected NodeMark nodeMark; // Defines whether or not leaf node or search node.
     protected List<RuleNode> children; // Next states.
 
@@ -56,10 +56,12 @@ public abstract class RuleNode {
         this.abductiveFramework = abductiveFramework;
         this.currentGoal = goal;
         this.nextGoals = restOfGoals;
+        this.nodeMark = nodeMark.UNEXPANDED;
 
     }
 
     protected RuleNode() {
+        nodeMark = nodeMark.UNEXPANDED;
     } // For use whilst cloning.
 
     public List<RuleNode> getChildren() {
@@ -149,13 +151,6 @@ public abstract class RuleNode {
                 "nodeType = " + this.getClass() + "\n" +
                 "nodeMark = " + this.getNodeMark() + "\n" +
                 "numChildren = " + this.getChildren().size();
-        if (this.getChildren().size()>0) {
-            message+="\nchildren = ";
-            for (RuleNode child:children) {
-                message += "\n--------------------------------------------------------------" + "\n" + child;
-            }
-            message += "\n--------------------------------------------------------------";
-        }
         return message;
     }
 
@@ -173,50 +168,7 @@ public abstract class RuleNode {
                         spaces+"nodeType = " + this.getClass() + "\n" +
                         spaces+"nodeMark = " + this.getNodeMark() + "\n" +
                         spaces+"numChildren = " + this.getChildren().size();
-        if (this.getChildren().size()>0) {
-            message+="\n"+spaces+"children = ";
-            for (RuleNode child:children) {
-                message += "\n"+ spaces+"--------------------------------------------------------------" + "\n" + child.toString(4);
-            }
-            message += "\n"+ spaces+"--------------------------------------------------------------";
-        }
         return message;
-    }
-
-    public String toXML() {
-        String type[] = this.getClass().toString().split("\\.");
-
-        String xml="<node>\n"+
-                   "<type>"+type[type.length-1]+"</type>\n"+
-                   "<current-goal>"+currentGoal+"</current-goal>\n"+
-                   "<next-goals>\n";
-        for (IInferableInstance inferable:nextGoals) {
-            xml+="<goal>"+inferable+"</goal>\n";
-        }
-        xml+="</next-goals>\n<substitutions>\n";
-        for (VariableInstance v:assignments.keySet()) {
-            xml+="<substitution>\n"+"<variable>"+v+"</variable>\n"+"<assignment>"+assignments.get(v)+"</assignment>\n"+"</substitution>\n";
-        }
-        xml+="</substitutions>\n<store>\n<delta>\n";
-        for (PredicateInstance abducible:store.abducibles) {
-            xml+="<abducible>"+abducible+"</abducible>\n";
-        }
-        xml+="</delta>\n<delta-star>\n";
-        for (DenialInstance denial:store.denials) {
-            xml+="<denial>"+denial+"</denial>\n";
-        }
-        xml+="</delta-star>\n<epsilon>\n";
-        for (IEqualityInstance equalitie:store.equalities) {
-            xml+="<equality>"+equalitie+"</equality>\n";
-        }
-        xml+="</epsilon>\n</store>\n<mark>"+this.getNodeMark()+"</mark>\n";
-
-               xml+= "<children>\n";
-        for (RuleNode child:children) {
-            xml+=child.toXML();
-        }
-        xml+="</children>\n</node>\n";
-        return xml;
     }
 
     public String toJSON()  {

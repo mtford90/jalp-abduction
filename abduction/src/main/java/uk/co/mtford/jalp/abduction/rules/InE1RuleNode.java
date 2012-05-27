@@ -31,6 +31,7 @@ public class InE1RuleNode extends PositiveRuleNode {
     }
 
     private InE1RuleNode() {
+        super();
     }
 
     @Override

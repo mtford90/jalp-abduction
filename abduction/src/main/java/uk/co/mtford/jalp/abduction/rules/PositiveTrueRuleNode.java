@@ -29,6 +29,7 @@ public class PositiveTrueRuleNode extends PositiveRuleNode {
     }
 
     protected PositiveTrueRuleNode() {
+        super();
     }
 
     @Override

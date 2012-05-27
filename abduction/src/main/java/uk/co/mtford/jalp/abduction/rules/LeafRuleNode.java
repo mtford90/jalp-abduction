@@ -30,6 +30,7 @@ public class LeafRuleNode extends RuleNode {
     }
 
     protected LeafRuleNode() {
+        super();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package uk.co.mtford.jalp.abduction;
 
+import uk.co.mtford.jalp.JALPException;
+
 /**
  * Created with IntelliJ IDEA.
  * User: mtford
@@ -7,7 +9,7 @@ package uk.co.mtford.jalp.abduction;
  * Time: 13:53
  * To change this template use File | Settings | File Templates.
  */
-public class DefinitionException extends Exception {
+public class DefinitionException extends JALPException {
 
     public DefinitionException() {
     }

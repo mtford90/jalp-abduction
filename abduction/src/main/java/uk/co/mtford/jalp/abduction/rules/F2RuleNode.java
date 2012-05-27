@@ -32,6 +32,7 @@ public class F2RuleNode extends NegativeRuleNode {
     }
 
     protected F2RuleNode() {
+        super();
     }
 
     @Override

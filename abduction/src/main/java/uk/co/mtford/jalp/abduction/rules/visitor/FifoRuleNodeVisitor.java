@@ -35,4 +35,11 @@ public class FifoRuleNodeVisitor extends RuleNodeVisitor {
         RuleNode chosenNode = nodeStack.pop();
         return chosenNode;
     }
+
+    @Override
+    public boolean hasNextNode() {
+        return !(currentRuleNode==null) || !nodeStack.isEmpty();
+    }
+
+
 }

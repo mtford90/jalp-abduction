@@ -31,6 +31,7 @@ public class D2RuleNode extends NegativeRuleNode {
     }
 
     protected D2RuleNode() {
+        super();
     }
 
     @Override
