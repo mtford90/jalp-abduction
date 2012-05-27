@@ -386,7 +386,35 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(InE2RuleNode ruleNode) {
-        throw new UnsupportedOperationException(); // TODO
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2 inequality to node.");
+        InEqualityInstance currentGoal = (InEqualityInstance) ruleNode.getCurrentGoal();
+
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
+        List<DenialInstance> newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
+        DenialInstance newCurrentDenial = newNestedDenials.remove(0).shallowClone();
+        IInferableInstance newGoal = null;
+
+        RuleNode childNode;
+        List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
+
+        // Branch 1
+        newGoal = currentGoal.getEqualityInstance();
+        newNestedDenials.add(0,newCurrentDenial);
+        childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+        newChildNodes.add(childNode);
+        // Branch 2
+        newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
+        newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
+        newCurrentDenial = newNestedDenials.remove(0).shallowClone();
+
+        newNestedDenials.add(newCurrentDenial);
+        newGoal = currentGoal;
+        childNode = constructNegativeChildNode(newGoal, newNestedDenials, newRestOfGoals, ruleNode);
+
+        newChildNodes.add(childNode);
+        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        ruleNode.getChildren().addAll(newChildNodes);
+
     }
 
     public void visit(N1RuleNode ruleNode) {

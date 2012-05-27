@@ -24,6 +24,14 @@ public class InEqualityInstance implements IEqualityInstance {
         this.equalityInstance = equalityInstance;
     }
 
+    public EqualityInstance getEqualityInstance() {
+        return equalityInstance;
+    }
+
+    public void setEqualityInstance(EqualityInstance equalityInstance) {
+        this.equalityInstance = equalityInstance;
+    }
+
     @Override
     public String toString() {
         return equalityInstance.getLeft()+"!="+equalityInstance.getRight();
