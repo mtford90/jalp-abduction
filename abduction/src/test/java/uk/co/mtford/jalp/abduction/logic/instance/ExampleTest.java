@@ -55,6 +55,42 @@ public class ExampleTest {
         assertTrue(onlyResult.getAssignments().get(X).equals(new ConstantInstance("john")));
     }
 
+    @Test
+    public void factTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/fact-example-b.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance X = new VariableInstance("X");
+        VariableInstance Y = new VariableInstance("Y");
+        PredicateInstance likes = new PredicateInstance("likes",X,Y);
+        query.add(likes);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==2);
+        Result resultOne = result.remove(0);
+        Result resultTwo = result.remove(0);
+        JALPSystem.reduceResult(resultOne);
+        JALPSystem.reduceResult(resultTwo);
+        assertTrue(resultOne.getAssignments().get(X).equals(new ConstantInstance("bob")));
+        assertTrue(resultOne.getAssignments().get(Y).equals(new ConstantInstance("jane")));
+        assertTrue(resultTwo.getAssignments().get(X).equals(new ConstantInstance("john")));
+        assertTrue(resultTwo.getAssignments().get(Y).equals(new ConstantInstance("jane")));
+    }
+
+    @Test
+    public void ruleTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/rule-example-a.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance Y = new VariableInstance("Y");
+        PredicateInstance likes = new PredicateInstance("likes",new ConstantInstance("john"),Y);
+        query.add(likes);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==2);
+        Result resultOne = result.remove(0);
+        Result resultTwo = result.remove(0);
+        JALPSystem.reduceResult(resultOne);
+        JALPSystem.reduceResult(resultTwo);
+        assertTrue(resultOne.getAssignments().get(Y).equals(new ConstantInstance("mary")));
+        assertTrue(resultTwo.getAssignments().get(Y).equals(new ConstantInstance("jane")));
+    }
 
 
 
