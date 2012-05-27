@@ -39,7 +39,7 @@ public class Main {
     private static final String FILE_OPTION = "-f";
     private static final String QUERY_OPTION = "-q";
 
-    private static final String JS_FILE_NAME = "../visualizer/output.js";
+    private static final String JS_FILE_NAME = "../visualizer2/output.js";
 
     private static boolean debugMode = false;
     private static boolean jsonMode = false;

@@ -15,14 +15,21 @@ var currentDialogId = 1;
 var rootNode = null;
 var myTree = null;
 var nodeArray = [];
+var query = null;
 
 $(document).ready(init);
 
 function init() {
 	rootNode = $.parseJSON(data);
+	query = rootNode.currentGoal;
 	nodeArray[1]=rootNode;
+	fillInfo();
 	createTableTemplate();
 	createDerivationTree();
+}
+
+function fillInfo() {
+	$("#query").text(query);
 }
 
 function createTableTemplate () {
@@ -186,6 +193,9 @@ function fillNodeMark(nodeMark, dialogId) {
 <div id="heading">
 	<h1>JALP Visual Debugger</h1>
 	<div class="header-border"></div>
+</div>
+<div id="info">
+Query: <span id="query"></span>
 </div>
 <div id="tree">
 </div>
