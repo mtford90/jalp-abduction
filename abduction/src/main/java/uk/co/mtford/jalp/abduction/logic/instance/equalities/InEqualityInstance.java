@@ -2,7 +2,7 @@ package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.rules.RuleNode;
+import uk.co.mtford.jalp.abduction.rules.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,14 +39,14 @@ public class InEqualityInstance implements IEqualityInstance {
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        throw new UnsupportedOperationException(); // TODO I think a rule for inequalities is mentioned in the ASystem paper in order to increase efficiency.
-        // TODO i.e. create a rule rather than use an equality solver.
+        return new InE1RuleNode(abductiveFramework, this, goals);
+
     }
 
     @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
-        throw new UnsupportedOperationException(); // TODO I think a rule for inequalities is mentioned in the ASystem paper in order to increase efficiency.
-        // TODO i.e. create a rule rather than use an equality solver.
+        return new InE2RuleNode(abductiveFramework, this, goals, nestedDenials);
+
     }
 
     @Override
