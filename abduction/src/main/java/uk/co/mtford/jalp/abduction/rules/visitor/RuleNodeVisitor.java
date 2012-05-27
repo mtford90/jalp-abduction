@@ -118,7 +118,7 @@ public abstract class RuleNodeVisitor {
             if (goalAbducible.isSameFunction(storeAbducible)) {
                 List<EqualityInstance> equalitySolved = goalAbducible.reduce(storeAbducible);
                 for (EqualityInstance result : equalitySolved) {
-                    newRestOfGoals.add(0,new NegationInstance(result));
+                    newRestOfGoals.add(0,new InEqualityInstance(result));
                 }
             }
         }
@@ -251,6 +251,20 @@ public abstract class RuleNodeVisitor {
         ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
     }
 
+    public void visit(InE1RuleNode ruleNode) {
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E1 Inequality to node.");
+        RuleNode childNode;
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
+        InEqualityInstance currentGoal = (InEqualityInstance) ruleNode.getCurrentGoal();
+        IInferableInstance newGoal = null;
+
+        if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
+        childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+        childNode.getStore().equalities.add(currentGoal);
+        ruleNode.getChildren().add(childNode);
+        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+    }
+
     public void visit(E2RuleNode ruleNode) {
         EqualityInstance currentGoal = (EqualityInstance) ruleNode.getCurrentGoal();
 
@@ -302,27 +316,6 @@ public abstract class RuleNodeVisitor {
 
                 childNode.setAssignments(newAssignments);
                 newChildNodes.add(childNode);
-
-
-               /* if (newCurrentDenial.getBody().isEmpty()) {
-                    if (unificationSuccess) {
-                        newGoal = new FalseInstance();
-                    }
-                    else newGoal = new TrueInstance();
-                    if (newNestedDenials.isEmpty()) {
-                        childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-                    }
-                    else {
-                        childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-                    }
-                }
-                else {
-                    newGoal = newCurrentDenial.getBody().remove(0);
-                    newNestedDenials.add(newCurrentDenial);
-                    childNode = constructNegativeChildNode(newGoal, newNestedDenials,newRestOfGoals,ruleNode);
-                }
-                childNode.setAssignments(newAssignments);
-                newChildNodes.add(childNode); */
             }
             else { // Now in equational solved form.
                 if (currentGoal.getRight() instanceof VariableInstance) {
@@ -390,6 +383,10 @@ public abstract class RuleNodeVisitor {
         ruleNode.getChildren().addAll(0,newChildNodes);
         ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
 
+    }
+
+    public void visit(InE2RuleNode ruleNode) {
+        throw new UnsupportedOperationException(); // TODO
     }
 
     public void visit(N1RuleNode ruleNode) {
