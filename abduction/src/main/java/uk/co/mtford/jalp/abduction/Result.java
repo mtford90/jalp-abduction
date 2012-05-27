@@ -1,8 +1,10 @@
 package uk.co.mtford.jalp.abduction;
 
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.VariableInstance;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,12 +15,14 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class Result {
+    private List<IInferableInstance> query;
     private Store store;
     private Map<VariableInstance, IUnifiableAtomInstance> assignments;  // Theta
 
-    public Result(Store store,Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public Result(Store store,Map<VariableInstance, IUnifiableAtomInstance> assignments, List<IInferableInstance> query) {
         this.assignments = assignments;
         this.store = store;
+        this.query = query;
     }
 
     public Store getStore() {
@@ -35,5 +39,13 @@ public class Result {
 
     public void setAssignments(Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         this.assignments = assignments;
+    }
+
+    public List<IInferableInstance> getQuery() {
+        return query;
+    }
+
+    public void setQuery(List<IInferableInstance> query) {
+        this.query = query;
     }
 }

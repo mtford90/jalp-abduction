@@ -5,18 +5,19 @@ import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.Store;
-import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
 import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.parse.program.TokenMgrError;
+import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 import uk.co.mtford.jalp.abduction.rules.visitor.FifoRuleNodeVisitor;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
 import java.io.FileNotFoundException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,6 +28,56 @@ import java.util.List;
  */
 public class JALPSystem {
 
+    public static void reduceResult(Result result) {
+        List<PredicateInstance> substAbducibles = new LinkedList<PredicateInstance>();
+        List<DenialInstance> substDenials = new LinkedList<DenialInstance>();
+        List<IEqualityInstance> substEqualities = new LinkedList<IEqualityInstance>();
+        List<IConstraintInstance> substConstraints = new LinkedList<IConstraintInstance>();
+        List<VariableInstance> queryVariables = new LinkedList<VariableInstance>();
+
+        for (IInferableInstance inferable:result.getQuery()) queryVariables.addAll(inferable.getVariables());
+
+        Set<VariableInstance> relevantVariables = new HashSet<VariableInstance>(queryVariables);
+        HashMap<VariableInstance,IUnifiableAtomInstance> relevantAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+
+
+        for (PredicateInstance a:result.getStore().abducibles) {
+            substAbducibles.add((PredicateInstance)a.performSubstitutions(result.getAssignments()));
+        }
+
+        for (DenialInstance d:result.getStore().denials) {
+            substDenials.add((DenialInstance) d.performSubstitutions(result.getAssignments()));
+        }
+
+        for (IEqualityInstance e:result.getStore().equalities) {
+            substEqualities.add((IEqualityInstance) e.performSubstitutions(result.getAssignments()));
+        }
+
+        for (IConstraintInstance c:result.getStore().constraints) {
+            substConstraints.add((IConstraintInstance)c.performSubstitutions(result.getAssignments()));
+        }
+
+        Set<IUnifiableAtomInstance> keySet = new HashSet<IUnifiableAtomInstance>(result.getAssignments().keySet());
+
+        for (IUnifiableAtomInstance key:keySet) {
+
+
+            if (queryVariables.contains(key)) {
+                IUnifiableAtomInstance value = result.getAssignments().get(key);
+
+                while (keySet.contains(value)) value = result.getAssignments().get(value);
+                relevantAssignments.put((VariableInstance) key,value);
+            }
+        }
+
+        result.setAssignments(relevantAssignments);
+        result.getStore().abducibles=substAbducibles;
+        result.getStore().denials = substDenials;
+        result.getStore().equalities=substEqualities;
+        result.getStore().constraints=substConstraints;
+
+    }
+
     public enum Heuristic {
         NONE
     }
@@ -36,6 +87,18 @@ public class JALPSystem {
 
     public JALPSystem(AbductiveFramework framework) {
         this.framework = framework;
+    }
+
+    public JALPSystem(String fileName) throws FileNotFoundException, ParseException {
+        framework = JALPParser.readFromFile(fileName);
+    }
+
+    public JALPSystem(String[] fileNames) {
+        try {
+            setFramework(fileNames);
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     public JALPSystem() {
@@ -64,15 +127,13 @@ public class JALPSystem {
         this.framework = framework;
     }
 
-    private void loadFrameworks(String[] fileNames) throws FileNotFoundException, ParseException, TokenMgrError {  // todo
-        if (LOGGER.isInfoEnabled()) LOGGER.info("Loading files:"+fileNames);
-        if (fileNames.length == 0) {
-            throw new FileNotFoundException("Need to specify a file.");
-        } else {
-            for (int i = 1; i < fileNames.length; i++) {
-                AbductiveFramework newF = null;
-                if (newF != null) mergeFramework(newF);
-            }
+    public void setFramework(String fileName) throws FileNotFoundException, ParseException {
+        framework = JALPParser.readFromFile(fileName);
+    }
+
+    public void setFramework(String[] fileName) throws FileNotFoundException, ParseException {
+        for (String f:fileName) {
+            mergeFramework(JALPParser.readFromFile(f));
         }
     }
 
@@ -81,20 +142,29 @@ public class JALPSystem {
         return performDerivation(iterator);
     }
 
+    public List<Result> processQuery(String query, Heuristic heuristic) throws JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        RuleNodeIterator iterator = new RuleNodeIterator(new
+                LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query)),heuristic);
+        return performDerivation(iterator);
+    }
+
     private List<Result> performDerivation(RuleNodeIterator iterator) {
         LinkedList<Result> resultList = new LinkedList<Result>();
         RuleNode currentNode = iterator.getCurrentNode();
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        query.add(currentNode.getCurrentGoal());
+        query.addAll(currentNode.getNextGoals());
 
         while (iterator.hasNext()) {
             if (currentNode.getNodeMark()==RuleNode.NodeMark.SUCCEEDED) {
-                Result result = new Result(currentNode.getStore(),currentNode.getAssignments());
+                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query);
                 resultList.add(result);
             }
             currentNode = iterator.next();
         }
 
         if (currentNode.getNodeMark()==RuleNode.NodeMark.SUCCEEDED) {
-            Result result = new Result(currentNode.getStore(),currentNode.getAssignments());
+            Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query);
             resultList.add(result);
         }
 

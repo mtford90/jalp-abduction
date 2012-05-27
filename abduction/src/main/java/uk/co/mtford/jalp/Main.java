@@ -120,7 +120,7 @@ public class Main {
                 List<IEqualityInstance> equalities = leafRuleNodes.get(i).getStore().equalities;
                 List<IConstraintInstance> constraints = leafRuleNodes.get(i).getStore().constraints;
 
-                if (reduceMode) {
+                if (reduceMode) {   // TODO: Use the result in JALP System.
                     List<PredicateInstance> substAbducibles = new LinkedList<PredicateInstance>();
                     List<DenialInstance> substDenials = new LinkedList<DenialInstance>();
                     List<IEqualityInstance> substEqualities = new LinkedList<IEqualityInstance>();
