@@ -31,6 +31,7 @@ public abstract class RuleNodeVisitor {
 
     public RuleNodeVisitor(RuleNode ruleNode) throws DefinitionException {
         currentRuleNode = ruleNode;
+        currentRuleNode.getNextGoals().addAll(currentRuleNode.getAbductiveFramework().getIC()); // TODO: This should be somewhere else?
         currentRuleNode.acceptVisitor(this);
     }
 

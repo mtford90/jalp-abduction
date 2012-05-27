@@ -1,0 +1,50 @@
+/*--General---------------------------------*/
+
+body {
+	font-family: "HelveticaNeue-Light", "HelveticaNeue", Helvetica, Arial, sans-serif; /* Sans-serif is a generic font. */
+}
+
+ul {
+	list-style-position: inside;
+	padding:0; 
+}
+
+.data {
+	font-family: monaco;
+	font-size: 0.7em;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+td,th {
+	padding: 5px;
+	border-style:solid;
+	border-width: 1px;
+}
+
+/*--Header----------------------------------*/
+
+#heading {
+	padding: 4px;
+}
+
+#heading .header-border {
+	margin: 0 auto;
+	padding-top: 4px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: rgb(210,210,210);
+}
+
+/**--Dialogs--------------------------------*/
+
+#dialogs {
+	visibility: hidden; 
+}
+
+
+
+
+
