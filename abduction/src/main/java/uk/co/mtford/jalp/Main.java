@@ -79,8 +79,9 @@ public class Main {
     }
 
     private static void standardMode(List<IInferableInstance> predicates, Set<VariableInstance> queryVariables) throws JALPException {
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>(predicates);
         List<Result> results = system.processQuery(predicates, JALPSystem.Heuristic.NONE);
-        printResults(queryVariables, results);
+        printResults(queryVariables, results,query);
     }
 
     private static void jsonMode(List<IInferableInstance> predicates) throws IOException, JALPException {
@@ -109,8 +110,8 @@ public class Main {
         }
     }
 
-    private static void printResults(Set<VariableInstance> queryVariables, List<Result> leafRuleNodes) {
-        printMessage("There are "+leafRuleNodes.size()+" explanations for the query "+leafRuleNodes.get(0).getQuery());
+    private static void printResults(Set<VariableInstance> queryVariables, List<Result> leafRuleNodes, List<IInferableInstance> query) {
+        printMessage("There are "+leafRuleNodes.size()+" explanations for the query "+query);
         for (int i=0;i< leafRuleNodes.size();i++) {
             printMessage("Enter c to see next explanation or anything else to quit.");
             String s = sc.nextLine();

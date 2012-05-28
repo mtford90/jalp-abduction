@@ -24,6 +24,10 @@ public class InEqualityInstance implements IEqualityInstance {
         this.equalityInstance = equalityInstance;
     }
 
+    public InEqualityInstance(IUnifiableAtomInstance left, IUnifiableAtomInstance right) {
+        this.equalityInstance = new EqualityInstance(left,right);
+    }
+
     public EqualityInstance getEqualityInstance() {
         return equalityInstance;
     }
@@ -83,5 +87,23 @@ public class InEqualityInstance implements IEqualityInstance {
             return true;
         }
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InEqualityInstance)) return false;
+
+        InEqualityInstance that = (InEqualityInstance) o;
+
+        if (equalityInstance != null ? !equalityInstance.equals(that.equalityInstance) : that.equalityInstance != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return equalityInstance != null ? equalityInstance.hashCode() : 0;
     }
 }
