@@ -110,6 +110,12 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
         // Substitute universal variables.
         LinkedList<IInferableInstance> newBody = new LinkedList<IInferableInstance>();
 
+        for (VariableInstance key:substitutions.keySet()) {
+            if (universalVariables.contains(key)) {
+                universalVariables.remove(key);
+            }
+        }
+
         for (IInferableInstance inferable : body) {
             newBody.add((IInferableInstance) inferable.performSubstitutions(substitutions));
         }
