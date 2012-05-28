@@ -206,10 +206,12 @@ public abstract class RuleNodeVisitor {
         for (List<IInferableInstance> possibleUnfold:possibleUnfolds) {
             HashMap<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
             DenialInstance newUnfoldedDenial = (DenialInstance) newCurrentDenial.deepClone(subst);
-            for (IInferableInstance unfold:possibleUnfold) {
-                newUnfoldedDenial.getBody().add((IInferableInstance) unfold.performSubstitutions(subst));
+            List<IInferableInstance> toAddToBody = new LinkedList<IInferableInstance>();
+            for (IInferableInstance unfold:possibleUnfold) {  // TODO: This is what breaks it.
+                toAddToBody.add((IInferableInstance) unfold.performSubstitutions(subst));
                 newUnfoldedDenial.getUniversalVariables().addAll(unfold.getVariables());
             }
+            newUnfoldedDenial.getBody().addAll(0,toAddToBody);
 
             newUnfoldedDenials.add(newUnfoldedDenial);
         }
