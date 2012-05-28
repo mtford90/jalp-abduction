@@ -207,7 +207,7 @@ public abstract class RuleNodeVisitor {
             HashMap<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
             DenialInstance newUnfoldedDenial = (DenialInstance) newCurrentDenial.deepClone(subst);
             List<IInferableInstance> toAddToBody = new LinkedList<IInferableInstance>();
-            for (IInferableInstance unfold:possibleUnfold) {  // TODO: This is what breaks it.
+            for (IInferableInstance unfold:possibleUnfold) {
                 toAddToBody.add((IInferableInstance) unfold.performSubstitutions(subst));
                 newUnfoldedDenial.getUniversalVariables().addAll(unfold.getVariables());
             }
@@ -320,6 +320,9 @@ public abstract class RuleNodeVisitor {
                     if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2c to node.");
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                     boolean unificationSuccess = currentGoal.unifyRightLeft(newAssignments); // TODO Need to check success?
+
+
+
                     newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
                     if (newCurrentDenial.getBody().isEmpty()) {
                         newGoal = new FalseInstance();
@@ -357,6 +360,8 @@ public abstract class RuleNodeVisitor {
                     newCurrentDenial = newNestedDenials.remove(0).shallowClone();
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                     boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments); // TODO Need to check success?
+
+
                     newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
                     if (newCurrentDenial.getBody().isEmpty()) {
                         newGoal = new FalseInstance();

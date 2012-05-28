@@ -305,7 +305,7 @@ public class ExampleTest {
         assertTrue(resultOne.getStore().denials.contains(denial));
     }
 
-   /* @Test    TODO
+   /* @Test    TODO based on ale's/jiefeis response.
     public void graphNode1Node2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/graph.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
