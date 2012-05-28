@@ -6,7 +6,7 @@ edge(node3,node1).
 colour(red).
 colour(blue).
 
-ic :- colour(C), has_colour(N,C), edge(N,M), has_colour(M,C).
+ic :- colour(C), edge(N,M), has_colour(N,C), has_colour(M,C).
 
 abducible(has_colour(N,C)).
 

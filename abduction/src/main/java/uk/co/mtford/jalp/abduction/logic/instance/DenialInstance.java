@@ -152,4 +152,25 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
         }
         return variables;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DenialInstance)) return false;
+
+        DenialInstance that = (DenialInstance) o;
+
+        if (body != null ? !body.equals(that.body) : that.body != null) return false;
+        if (universalVariables != null ? !universalVariables.equals(that.universalVariables) : that.universalVariables != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = body != null ? body.hashCode() : 0;
+        result = 31 * result + (universalVariables != null ? universalVariables.hashCode() : 0);
+        return result;
+    }
 }

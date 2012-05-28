@@ -285,5 +285,70 @@ public class ExampleTest {
         assertTrue(resultOne.getStore().equalities.contains(new InEqualityInstance(XAssignment,new ConstantInstance("1"))));
     }
 
+    @Test
+    public void graphNode1Red() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/graph.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance X = new VariableInstance("X");
+        ConstantInstance node1 = new ConstantInstance("node1");
+        ConstantInstance node2 = new ConstantInstance("node2");
+        ConstantInstance red = new ConstantInstance("red");
+        PredicateInstance has_colour = new PredicateInstance("has_colour",node1,red);
+        query.add(has_colour);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+        Result resultOne = result.get(0);
+        JALPSystem.reduceResult(resultOne);
+        assertTrue(resultOne.getStore().abducibles.size()==1);
+        assertTrue(resultOne.getStore().abducibles.get(0).equals(has_colour));
+        DenialInstance denial = new DenialInstance(new PredicateInstance("has_colour",node2,red));
+        assertTrue(resultOne.getStore().denials.contains(denial));
+    }
+
+   /* @Test    TODO
+    public void graphNode1Node2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/graph.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance C = new VariableInstance("C");
+        VariableInstance D = new VariableInstance("D");
+        ConstantInstance node1 = new ConstantInstance("node1");
+        ConstantInstance node2 = new ConstantInstance("node2");
+        ConstantInstance red = new ConstantInstance("red");
+        PredicateInstance has_colour1 = new PredicateInstance("has_colour",node1,C);
+        PredicateInstance has_colour2 = new PredicateInstance("has_colour",node2,D);
+        query.add(has_colour1);
+        query.add(has_colour2);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==2);
+        Result resultOne = result.get(0);
+        Result resultTwo = result.get(1);
+        JALPSystem.reduceResult(resultOne);
+        JALPSystem.reduceResult(resultTwo);
+        assertTrue(resultOne.getStore().abducibles.size()==2);
+    } */
+
+    @Test
+    public void graph2Node1Red() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/graph2.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance X = new VariableInstance("X");
+        ConstantInstance node1 = new ConstantInstance("node1");
+        ConstantInstance node2 = new ConstantInstance("node2");
+        ConstantInstance node3 = new ConstantInstance("node3");
+        ConstantInstance red = new ConstantInstance("red");
+        PredicateInstance has_colour = new PredicateInstance("has_colour",node1,red);
+        query.add(has_colour);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+        Result resultOne = result.get(0);
+        JALPSystem.reduceResult(resultOne);
+        assertTrue(resultOne.getStore().abducibles.size()==1);
+        assertTrue(resultOne.getStore().abducibles.get(0).equals(has_colour));
+        DenialInstance denial1 = new DenialInstance(new PredicateInstance("has_colour",node2,red));
+        DenialInstance denial2 = new DenialInstance(new PredicateInstance("has_colour",node3,red));
+        assertTrue(resultOne.getStore().denials.contains(denial1));
+        assertTrue(resultOne.getStore().denials.contains(denial2));
+    }
+
 
 }
