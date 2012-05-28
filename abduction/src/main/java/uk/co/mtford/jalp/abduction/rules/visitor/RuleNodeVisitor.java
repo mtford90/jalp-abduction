@@ -146,7 +146,7 @@ public abstract class RuleNodeVisitor {
             if (storeAbducible.isSameFunction(currentGoal)) {
                 DenialInstance newDenial = (DenialInstance) newCurrentDenial.deepClone(new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments()));
                 PredicateInstance newDenialHead = (PredicateInstance) newDenial.getBody().remove(0);
-                List<EqualityInstance> equalitySolved = newDenialHead.reduce(storeAbducible);
+                List<EqualityInstance> equalitySolved = storeAbducible.reduce(newDenialHead);
                 newDenial.getBody().addAll(0,equalitySolved);
                 if (!newNestedDenialList.isEmpty()) newNestedDenialList.get(0).getBody().add(0,newDenial);
                 else newRestOfGoals.add(0,newDenial);
