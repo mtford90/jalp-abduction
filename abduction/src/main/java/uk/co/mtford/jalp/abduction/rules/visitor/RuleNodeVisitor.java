@@ -300,7 +300,7 @@ public abstract class RuleNodeVisitor {
             if (newCurrentDenial.getUniversalVariables().contains(left)) {
                 HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                 boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments);
-                //newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
+                newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments); // TODO, Good idea?
 
                 newNestedDenials.add(newCurrentDenial);
 
