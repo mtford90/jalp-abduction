@@ -92,6 +92,37 @@ public class ExampleTest {
         assertTrue(resultTwo.getAssignments().get(Y).equals(new ConstantInstance("jane")));
     }
 
+    @Test
+    public void abducibleTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/abducible-example-a.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance Y = new VariableInstance("Y");
+        PredicateInstance likes = new PredicateInstance("likes",new ConstantInstance("john"),Y);
+        query.add(likes);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+        Result resultOne = result.remove(0);
+        JALPSystem.reduceResult(resultOne);
+        assertTrue(resultOne.getStore().abducibles.size()==1);
+        assertTrue(resultOne.getStore().abducibles.get(0).isSameFunction(new PredicateInstance("girl",Y)));
+    }
+
+    @Test
+    public void abducibleTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/abducible-example-a.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        ConstantInstance john = new ConstantInstance(("john"));
+        ConstantInstance jane = new ConstantInstance("jane");
+        PredicateInstance likes = new PredicateInstance("likes",john,jane);
+        query.add(likes);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+        Result resultOne = result.remove(0);
+        JALPSystem.reduceResult(resultOne);
+        assertTrue(resultOne.getStore().abducibles.size()==1);
+        assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("girl",jane)));
+    }
+
 
 
 
