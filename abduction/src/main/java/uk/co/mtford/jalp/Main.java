@@ -110,6 +110,7 @@ public class Main {
     }
 
     private static void printResults(Set<VariableInstance> queryVariables, List<Result> leafRuleNodes) {
+        printMessage("There are "+leafRuleNodes.size()+" explanations for the query "+leafRuleNodes.get(0).getQuery());
         for (int i=0;i< leafRuleNodes.size();i++) {
             printMessage("Enter c to see next explanation or anything else to quit.");
             String s = sc.nextLine();
