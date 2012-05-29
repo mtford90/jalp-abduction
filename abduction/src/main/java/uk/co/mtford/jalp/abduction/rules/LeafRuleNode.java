@@ -38,27 +38,19 @@ public class LeafRuleNode extends RuleNode {
         throw new UnsupportedOperationException(); // TODO
     }
 
-
-
-    public List<Map<VariableInstance, IUnifiableAtomInstance>> constraintSolve() {
-        throw new UnsupportedOperationException(); // TODO
-    }
-
     @Override
     public void acceptVisitor(RuleNodeVisitor v) throws DefinitionException {
         v.visit(this);
     }
 
     @Override
-    public String toString(int space) {
-        String spaces = "";
-        for (int i=0;i<space;i++) spaces+=" ";
+    public String toString() {
         String message =
-                        spaces+"delta = " + store.abducibles + "\n" +
-                        spaces+"delta* = " + store.denials + "\n" +
-                        spaces+"epsilon = " + store.equalities + "\n\n" +
-                        spaces+"nodeType = " + this.getClass() + "\n" +
-                        spaces+"nodeMark = " + this.getNodeMark() + "\n";
+                        "delta = " + store.abducibles + "\n" +
+                        "delta* = " + store.denials + "\n" +
+                        "epsilon = " + store.equalities + "\n\n" +
+                        "nodeType = " + this.getClass() + "\n" +
+                        "nodeMark = " + this.getNodeMark() + "\n";
         return message;
     }
 

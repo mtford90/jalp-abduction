@@ -120,6 +120,7 @@ public abstract class RuleNode {
         this.currentGoal = currentGoal;
     }
 
+    /** Equality solver implementation **/
     public Map<VariableInstance, IUnifiableAtomInstance> equalitySolve()  {
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments
                 = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
@@ -134,7 +135,7 @@ public abstract class RuleNode {
         return newAssignments;
     }
 
-    public abstract RuleNode shallowClone(); // TODO: Use reflection instead?
+    public abstract RuleNode shallowClone();
 
     public abstract void acceptVisitor(RuleNodeVisitor v) throws DefinitionException;
 
@@ -151,23 +152,6 @@ public abstract class RuleNode {
                 "nodeType = " + this.getClass() + "\n" +
                 "nodeMark = " + this.getNodeMark() + "\n" +
                 "numChildren = " + this.getChildren().size();
-        return message;
-    }
-
-    public String toString(int space) {
-        String spaces = "";
-        for (int i=0;i<space;i++) spaces+=" ";
-        String message =
-                spaces+"currentGoal = " + currentGoal + "\n" +
-                        spaces+"nextGoals = " + nextGoals + "\n" +
-                        spaces+"assignments = " + assignments + "\n\n" +
-                        spaces+"delta = " + store.abducibles + "\n" +
-                        spaces+"delta* = " + store.denials + "\n" +
-                        spaces+"epsilon = " + store.equalities + "\n" +
-                        spaces+"fd = " + store.constraints + "\n\n" +
-                        spaces+"nodeType = " + this.getClass() + "\n" +
-                        spaces+"nodeMark = " + this.getNodeMark() + "\n" +
-                        spaces+"numChildren = " + this.getChildren().size();
         return message;
     }
 

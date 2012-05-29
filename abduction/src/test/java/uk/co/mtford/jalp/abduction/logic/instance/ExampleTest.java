@@ -43,7 +43,7 @@ public class ExampleTest {
 
     @Test
     public void factTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/fact-example-a.alp");
+        system = new JALPSystem("examples/basic/fact-example-a.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
@@ -59,7 +59,7 @@ public class ExampleTest {
 
     @Test
     public void factTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/fact-example-b.alp");
+        system = new JALPSystem("examples/basic/fact-example-b.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
@@ -79,7 +79,7 @@ public class ExampleTest {
 
     @Test
     public void ruleTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/rule-example-a.alp");
+        system = new JALPSystem("examples/basic/rule-example-a.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance likes = new PredicateInstance("likes",new ConstantInstance("john"),Y);
@@ -96,7 +96,7 @@ public class ExampleTest {
 
     @Test
     public void abducibleTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/abducible-example-a.alp");
+        system = new JALPSystem("examples/basic/abducible-example-a.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance likes = new PredicateInstance("likes",new ConstantInstance("john"),Y);
@@ -111,7 +111,7 @@ public class ExampleTest {
 
     @Test
     public void abducibleTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/abducible-example-a.alp");
+        system = new JALPSystem("examples/basic/abducible-example-a.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         ConstantInstance john = new ConstantInstance(("john"));
         ConstantInstance jane = new ConstantInstance("jane");
@@ -127,7 +127,7 @@ public class ExampleTest {
 
     @Test
       public void notTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/not-example-a.alp");
+        system = new JALPSystem("examples/basic/not-example-a.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         ConstantInstance john = new ConstantInstance(("john"));
         ConstantInstance jane = new ConstantInstance("jane");
@@ -144,7 +144,7 @@ public class ExampleTest {
 
     @Test
     public void simpleExample() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/simple-example.alp");
+        system = new JALPSystem("examples/basic/simple-example.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         VariableInstance Y = new VariableInstance(("Y"));
@@ -156,7 +156,7 @@ public class ExampleTest {
 
     @Test
     public void fliesX() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/alp_exp/flies.alp");
+        system = new JALPSystem("examples/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         PredicateInstance likes = new PredicateInstance("flies",X);
@@ -170,7 +170,7 @@ public class ExampleTest {
 
     @Test
     public void fliesTweety() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/alp_exp/flies.alp");
+        system = new JALPSystem("examples/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance likes = new PredicateInstance("flies",new ConstantInstance("tweety"));
         query.add(likes);
@@ -180,7 +180,7 @@ public class ExampleTest {
 
     @Test
      public void fliesSam() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/alp_exp/flies.alp");
+        system = new JALPSystem("examples/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         PredicateInstance likes = new PredicateInstance("flies",new ConstantInstance("sam"));
@@ -191,7 +191,7 @@ public class ExampleTest {
 
     @Test
     public void fliesAbnormalX() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/alp_exp/flies.alp");
+        system = new JALPSystem("examples/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         PredicateInstance abnormal = new PredicateInstance("abnormal",X);
@@ -205,7 +205,7 @@ public class ExampleTest {
 
     @Test
     public void medicalHeadacheJohn() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/alp_exp/medical.alp");
+        system = new JALPSystem("examples/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         ConstantInstance john = new ConstantInstance("john");
         PredicateInstance headache = new PredicateInstance("headache",john);
@@ -225,7 +225,7 @@ public class ExampleTest {
 
     @Test
     public void medicalDizzinessJohn() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/alp_exp/medical.alp");
+        system = new JALPSystem("examples/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         ConstantInstance john = new ConstantInstance("john");
         PredicateInstance dizziness = new PredicateInstance("dizziness",john);
@@ -240,7 +240,7 @@ public class ExampleTest {
 
     @Test
     public void medicalSicknessJohn() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/alp_exp/medical.alp");
+        system = new JALPSystem("examples/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         ConstantInstance john = new ConstantInstance("john");
         PredicateInstance sickness = new PredicateInstance("sickness",john);
@@ -255,7 +255,7 @@ public class ExampleTest {
 
     @Test
     public void carDoesntStart() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/alp_exp/cars.alp");
+        system = new JALPSystem("examples/jiefei/cars.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         ConstantInstance mycar = new ConstantInstance("mycar");
         PredicateInstance car_doesnt_start = new PredicateInstance("car_doesnt_start",mycar);
@@ -270,7 +270,7 @@ public class ExampleTest {
 
     @Test
     public void ungroundAbducible() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/unground-abducible.alp");
+        system = new JALPSystem("examples/basic/unground-abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance a = new PredicateInstance("p",X);
@@ -287,7 +287,7 @@ public class ExampleTest {
 
     @Test
     public void graphNode1Red() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/graph.alp");
+        system = new JALPSystem("examples/basic/graph.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         ConstantInstance node1 = new ConstantInstance("node1");
@@ -305,9 +305,9 @@ public class ExampleTest {
         assertTrue(resultOne.getStore().denials.contains(denial));
     }
 
-   /* @Test    TODO based on ale's/jiefeis response.
+   @Test
     public void graphNode1Node2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/graph.alp");
+        system = new JALPSystem("examples/basic/graph.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance C = new VariableInstance("C");
         VariableInstance D = new VariableInstance("D");
@@ -319,17 +319,12 @@ public class ExampleTest {
         query.add(has_colour1);
         query.add(has_colour2);
         List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
-        assertTrue(result.size()==2);
-        Result resultOne = result.get(0);
-        Result resultTwo = result.get(1);
-        JALPSystem.reduceResult(resultOne);
-        JALPSystem.reduceResult(resultTwo);
-        assertTrue(resultOne.getStore().abducibles.size()==2);
-    } */
+        assertTrue(result.size()==9); // Matches jiefeis ASystem implementation.
+    }
 
     @Test
     public void graph2Node1Red() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/graph2.alp");
+        system = new JALPSystem("examples/basic/graph2.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         ConstantInstance node1 = new ConstantInstance("node1");
