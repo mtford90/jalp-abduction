@@ -39,4 +39,9 @@ public class LessThanEqConstraintInstance extends ConstraintInstance {
     public String toString () {
         return left + "<="+ right;
     }
+
+    @Override
+    public void acceptVisitor(IConstraintSolverProxy constraintSolverProxy) {
+        constraintSolverProxy.visit(this);
+    }
 }

@@ -13,11 +13,12 @@ import java.util.Map;
  * Time: 09:44
  * To change this template use File | Settings | File Templates.
  */
-public interface IConstraintSolverProxy {
+public interface IConstraintSolverProxy{
     public void visit(GreaterThanConstraintInstance constraintInstance);
     public void visit(GreaterThanEqConstraintInstance constraintInstance);
     public void visit(LessThanConstraintInstance constraintInstance);
     public void visit(LessThanEqConstraintInstance constraintInstance);
     public void visit(InConstraintInstance constraintInstance);
+    public void visit(NegativeConstraintInstance constraintInstance);
     public List<Map<VariableInstance,IUnifiableAtomInstance>> executeSolver();
 }

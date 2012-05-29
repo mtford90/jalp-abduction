@@ -56,4 +56,9 @@ public class NegativeConstraintInstance implements IConstraintInstance {
     public String toString () {
         return "not " + constraintInstance;
     }
+
+    @Override
+    public void acceptVisitor(IConstraintSolverProxy constraintSolverProxy) {
+        constraintSolverProxy.visit(this);
+    }
 }

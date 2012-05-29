@@ -40,4 +40,8 @@ public class GreaterThanConstraintInstance extends ConstraintInstance {
         return left + ">"+ right;
     }
 
+    @Override
+    public void acceptVisitor(IConstraintSolverProxy constraintSolverProxy) {
+        constraintSolverProxy.visit(this);
+    }
 }
