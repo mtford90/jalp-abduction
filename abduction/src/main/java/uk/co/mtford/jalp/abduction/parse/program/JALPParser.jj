@@ -26,9 +26,9 @@ ParameterList -> Parameter (COMMA Parameter)*
 Term -> (Variable | Constant | List)
 Parameter -> (Variable | Constant | Predicate)
 
-List -> LSQBRACKET (IntegerConstantList | CharConstantList)? RSQBRACKET
-IntegerConstantList -> IntegerConstant (COMMA IntegerConstant)*
-CharConstantList -> CharConstant (COMMA CharConstant)*
+List -> IntegerConstantList | CharConstantList
+IntegerConstantList -> LSQBRACKET IntegerConstant (COMMA IntegerConstant)* RSQBRACKET
+CharConstantList -> LSQBRACKET CharConstant (COMMA CharConstant)* RSQBRACKET
 
 Variable -> UCASENAME
 IntegerConstant -> INTEGER
@@ -129,7 +129,7 @@ TOKEN :
   <IN: "in"> |
   <ABDUCIBLE: "abducible"> |
   <INTEGER: ["0"-"9"]> |
-  <LCASENAME: ["a"-"z","0"-"9"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
+  <LCASENAME: ["a"-"z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
   <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*>
 
 }
@@ -380,10 +380,10 @@ InListConstraintInstance InListConstraint(HashMap<String, VariableInstance> vari
 {
     left = Term(variablesSoFar)
     <IN>
-    (right = CharConstantList(variablesSoFar)
-    { return new InConstantListConstraintInstance(left,(ConstantListInstance)right); } |
-    right = IntegerConstantList(variablesSoFar)
-    { return new InIntegerListConstraintInstance(left,(IntegerListInstance)right); } )
+    ((right = CharConstantList(variablesSoFar)
+    { return new InConstantListConstraintInstance(left,(ConstantListInstance)right); }) |
+    (right = IntegerConstantList(variablesSoFar)
+    { return new InIntegerListConstraintInstance(left,(IntegerListInstance)right); }))
 }
 
 ITermInstance Term(HashMap<String, VariableInstance> variablesSoFar):
@@ -438,13 +438,10 @@ ListInstance List(HashMap<String, VariableInstance> variablesSoFar):
    ListInstance listInstance;
 }
 {
-    <LSQBRACKET>
     (listInstance = IntegerConstantList(variablesSoFar)
-    <RSQBRACKET>
     { return listInstance; }) |
     (listInstance = CharConstantList(variablesSoFar)
-    <RSQBRACKET>
-     { return listInstance; })
+    { return listInstance; })
 }
 
 IntegerListInstance IntegerConstantList(HashMap<String, VariableInstance> variablesSoFar):
@@ -453,6 +450,7 @@ IntegerListInstance IntegerConstantList(HashMap<String, VariableInstance> variab
     IntegerConstantInstance constantInstance;
 }
 {
+    <LSQBRACKET>
     constantInstance = IntegerConstant()
     {
         listInstance.getList().add(constantInstance);
@@ -464,6 +462,7 @@ IntegerListInstance IntegerConstantList(HashMap<String, VariableInstance> variab
            listInstance.getList().add(constantInstance);
        }
     )*
+    <RSQBRACKET>
     { return listInstance; }
 }
 
@@ -473,6 +472,7 @@ ConstantListInstance CharConstantList(HashMap<String, VariableInstance> variable
     CharConstantInstance constantInstance;
 }
 {
+    <LSQBRACKET>
     constantInstance = CharConstant()
     {
         listInstance.getList().add(constantInstance);
@@ -484,6 +484,7 @@ ConstantListInstance CharConstantList(HashMap<String, VariableInstance> variable
            listInstance.getList().add(constantInstance);
        }
     )*
+    <RSQBRACKET>
     { return listInstance; }
 }
 

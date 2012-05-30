@@ -606,17 +606,11 @@ public abstract class RuleNodeVisitor {
     }
 
     public void visit(LeafRuleNode ruleNode) {
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Executing equality solver on leaf node:\n" +
-                "--------------------------------------\n" +
-                ruleNode + "\n" +
-                "--------------------------------------\n");
         Map<VariableInstance, IUnifiableAtomInstance> equalitySolveSuccess = ruleNode.equalitySolve();
         if (equalitySolveSuccess!=null) {
-            if (LOGGER.isInfoEnabled()) LOGGER.info("Equality solver succeeded.");
             ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
         }
         else {
-            if (LOGGER.isInfoEnabled()) LOGGER.info("Equality solver failed.");
             ruleNode.setNodeMark(RuleNode.NodeMark.FAILED);
         }
     }
@@ -631,6 +625,7 @@ public abstract class RuleNodeVisitor {
 
         if (!(currentRuleNode==null)) {
             Map<VariableInstance,IUnifiableAtomInstance> assignments = currentRuleNode.equalitySolve();
+            List<Map<VariableInstance,IUnifiableAtomInstance>> possibleAssignments = currentRuleNode.constraintSolve();
             if (assignments == null) {
                 currentRuleNode.setNodeMark(RuleNode.NodeMark.FAILED);
             }

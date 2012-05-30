@@ -14,5 +14,5 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface IConstraintSolverFacade {
-    public List<Map<VariableInstance,IUnifiableAtomInstance>> executeSolver(Map<VariableInstance,IUnifiableAtomInstance> subst, List<InListConstraintInstance> listConstraints);
+    public List<Map<VariableInstance,IUnifiableAtomInstance>> executeSolver(Map<VariableInstance,IUnifiableAtomInstance> subst, List<IConstraintInstance> listConstraints);
 }

@@ -1,12 +1,11 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
-import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.ITermInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.VariableInstance;
+import choco.kernel.model.constraints.Constraint;
+import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.list.ConstantListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.list.IntegerListInstance;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,5 +34,10 @@ public class InConstantListConstraintInstance  extends InListConstraintInstance 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
         return new InConstantListConstraintInstance((ITermInstance)left,(ConstantListInstance)right);
+    }
+
+    @Override
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
+        return left.inList((ConstantListInstance) right,possSubst);
     }
 }

@@ -4,8 +4,10 @@
  */
 package uk.co.mtford.jalp.abduction.logic.instance;
 
+import choco.kernel.model.variables.Variable;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.list.ConstantListInstance;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.*;
@@ -185,5 +187,32 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
     @Override
     public boolean acceptUnifyVisitor(IUnifiableAtomInstance unifiableAtom, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
         return unifiableAtom.unify(this,assignment);
+    }
+
+    @Override
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Variable> chocoVariables) {
+        throw new UnsupportedOperationException(); // TODO
+    }
+
+    @Override
+    public boolean inList(ConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
+        if (possSubst.isEmpty()) {
+            Map<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+            possSubst.add(subst);
+        }
+        List<Map<VariableInstance, IUnifiableAtomInstance>> newSubstList = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
+        for (Map<VariableInstance,IUnifiableAtomInstance> subst:possSubst) {
+            for (CharConstantInstance constant:constantList.getList()) {
+                HashMap<VariableInstance,IUnifiableAtomInstance> newSubst = new HashMap<VariableInstance, IUnifiableAtomInstance>(subst);
+                boolean unificationSuccess = this.unify(constant,newSubst);
+                if (unificationSuccess) newSubstList.add(newSubst);
+            }
+        }
+        if (newSubstList.isEmpty()) return false;
+        else {
+            while (!possSubst.isEmpty()) possSubst.remove(0);
+            possSubst.addAll(newSubstList);
+            return true;
+        }
     }
 }

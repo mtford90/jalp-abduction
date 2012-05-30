@@ -1,10 +1,12 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
+import choco.kernel.model.constraints.Constraint;
 import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.ITermInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.VariableInstance;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,4 +41,8 @@ public class LessThanConstraintInstance extends ConstraintInstance {
         return left + "<"+ right;
     }
 
+    @Override
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
+        throw new UnsupportedOperationException(); // TODO
+    }
 }

@@ -367,14 +367,11 @@ public class JALPParser implements JALPParserConstants {
   final public ListInstance List(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
    ListInstance listInstance;
     if (jj_2_29(2)) {
-      jj_consume_token(LSQBRACKET);
       listInstance = IntegerConstantList(variablesSoFar);
-      jj_consume_token(RSQBRACKET);
       {if (true) return listInstance;}
     } else if (jj_2_30(2)) {
       listInstance = CharConstantList(variablesSoFar);
-      jj_consume_token(RSQBRACKET);
-       {if (true) return listInstance;}
+      {if (true) return listInstance;}
     } else {
       jj_consume_token(-1);
       throw new ParseException();
@@ -385,6 +382,7 @@ public class JALPParser implements JALPParserConstants {
   final public IntegerListInstance IntegerConstantList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     IntegerListInstance listInstance = new IntegerListInstance();
     IntegerConstantInstance constantInstance;
+    jj_consume_token(LSQBRACKET);
     constantInstance = IntegerConstant();
         listInstance.getList().add(constantInstance);
     label_5:
@@ -398,6 +396,7 @@ public class JALPParser implements JALPParserConstants {
       constantInstance = IntegerConstant();
            listInstance.getList().add(constantInstance);
     }
+    jj_consume_token(RSQBRACKET);
       {if (true) return listInstance;}
     throw new Error("Missing return statement in function");
   }
@@ -405,6 +404,7 @@ public class JALPParser implements JALPParserConstants {
   final public ConstantListInstance CharConstantList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     ConstantListInstance listInstance = new ConstantListInstance();
     CharConstantInstance constantInstance;
+    jj_consume_token(LSQBRACKET);
     constantInstance = CharConstant();
         listInstance.getList().add(constantInstance);
     label_6:
@@ -418,6 +418,7 @@ public class JALPParser implements JALPParserConstants {
       constantInstance = CharConstant();
            listInstance.getList().add(constantInstance);
     }
+    jj_consume_token(RSQBRACKET);
       {if (true) return listInstance;}
     throw new Error("Missing return statement in function");
   }
@@ -718,12 +719,6 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_31() {
-    if (jj_scan_token(COMMA)) return true;
-    if (jj_3R_29()) return true;
-    return false;
-  }
-
   private boolean jj_3R_21() {
     if (jj_3R_31()) return true;
     if (jj_scan_token(GREATERTHANEQ)) return true;
@@ -736,13 +731,15 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_24() {
+  private boolean jj_3_31() {
+    if (jj_scan_token(COMMA)) return true;
     if (jj_3R_29()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_31()) { jj_scanpos = xsp; break; }
-    }
+    return false;
+  }
+
+  private boolean jj_3R_24() {
+    if (jj_scan_token(LSQBRACKET)) return true;
+    if (jj_3R_29()) return true;
     return false;
   }
 
@@ -808,14 +805,13 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_30() {
-    if (jj_3R_23()) return true;
-    if (jj_scan_token(RSQBRACKET)) return true;
+  private boolean jj_3_3() {
+    if (jj_3R_8()) return true;
     return false;
   }
 
-  private boolean jj_3_3() {
-    if (jj_3R_8()) return true;
+  private boolean jj_3_30() {
+    if (jj_3R_23()) return true;
     return false;
   }
 
@@ -835,7 +831,6 @@ public class JALPParser implements JALPParserConstants {
   }
 
   private boolean jj_3_29() {
-    if (jj_scan_token(LSQBRACKET)) return true;
     if (jj_3R_24()) return true;
     return false;
   }
@@ -917,22 +912,22 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_25() {
-    if (jj_3R_28()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_24()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
   private boolean jj_3R_26() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3_33()) {
     jj_scanpos = xsp;
     if (jj_3_34()) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3_25() {
+    if (jj_3R_28()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_24()) { jj_scanpos = xsp; break; }
     }
     return false;
   }
@@ -1086,16 +1081,6 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_23() {
-    if (jj_3R_30()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_32()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
   private boolean jj_3R_22() {
     if (jj_3R_31()) return true;
     if (jj_scan_token(IN)) return true;
@@ -1105,6 +1090,12 @@ public class JALPParser implements JALPParserConstants {
   private boolean jj_3_5() {
     if (jj_scan_token(DEFINES)) return true;
     if (jj_3R_10()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_23() {
+    if (jj_scan_token(LSQBRACKET)) return true;
+    if (jj_3R_30()) return true;
     return false;
   }
 

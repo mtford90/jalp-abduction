@@ -1,7 +1,10 @@
 package uk.co.mtford.jalp.abduction.logic.instance;
 
+import choco.kernel.model.variables.Variable;
 import org.apache.log4j.Logger;
+import uk.co.mtford.jalp.abduction.logic.instance.list.ConstantListInstance;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,4 +62,13 @@ public class IntegerConstantInstance extends ConstantInstance {
         return value.toString();
     }
 
+    @Override
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Variable> chocoVariables) {
+        throw new UnsupportedOperationException(); // TODO
+    }
+
+    @Override
+    public boolean inList(ConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
+        throw new UnsupportedOperationException(); // Dealt with by Choco.
+    }
 }

@@ -1,5 +1,6 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
+import choco.kernel.model.constraints.Constraint;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
@@ -57,4 +58,8 @@ public class NegativeConstraintInstance implements IConstraintInstance {
         return "not " + constraintInstance;
     }
 
+    @Override
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
+        throw new UnsupportedOperationException(); // TODO
+    }
 }
