@@ -92,7 +92,7 @@ function fillNode(node,dialogId) {
 	fillAbducibles(node.abducibles,dialogId);
 	fillDenials(node.denials,dialogId);
 	fillEqualities(node.equalities,dialogId);
-	fillConstraints(node.constraints,dialogId);
+	fillConstraints(node.listConstraints,dialogId);
 	fillNodeMark(node.mark,dialogId);
 }	
 
@@ -185,7 +185,7 @@ function fillConstraints(constraintArray, dialogId) {
 		$(li).text(constraintArray[constraint]);
 		ul.appendChild(li);
 	}
-	$("#"+dialogId+" #dataTable #constraints").html(ul);
+	$("#"+dialogId+" #dataTable #listConstraints").html(ul);
 }
 
 function fillNodeMark(nodeMark, dialogId) {
@@ -213,7 +213,7 @@ Query: <span id="query"></span>
 		<tr><td>Abducibles</td><td  class="data" id="abducibles"></td></tr>
 		<tr><td>Denials</td><td  class="data" id="denials"></td></tr>
 		<tr><td>Equalities</td><td  class="data" id="equalities"></td></tr>
-		<tr><td>Constraints</td><td  class="data" id="constraints"></td></tr>
+		<tr><td>Constraints</td><td  class="data" id="listConstraints"></td></tr>
 		<tr><td>Mark</td><td  class="data" id="mark"></td></tr>
 	</table>
 </div>

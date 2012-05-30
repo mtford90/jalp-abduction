@@ -19,7 +19,7 @@ LessThanConstraint -> Term LESSTHAN Term
 LessThanEqConstraint -> Term LESSTHANEQ Term
 GreaterThanConstraint -> Term GREATERTHAN Term
 GreaterThanEqConstraint -> Term GREATERTHANEQ Term
-InConstraint -> Term IN Term
+InListConstraint -> Term IN List
 
 ParameterList -> Parameter (COMMA Parameter)*
 
@@ -138,7 +138,7 @@ TOKEN :
 AbductiveFramework AbductiveLogicProgram():
 {
 	LinkedList<Definition> program = new LinkedList<Definition>();
-    LinkedList<DenialInstance> constraints = new LinkedList<DenialInstance>();
+    LinkedList<DenialInstance> listConstraints = new LinkedList<DenialInstance>();
     HashMap<String, Integer> abducibles = new HashMap<String, Integer>();
 
     Definition r;
@@ -152,7 +152,7 @@ AbductiveFramework AbductiveLogicProgram():
             program.add(r);
         } |
         d = Denial()
-        { constraints.add(d); } |
+        { listConstraints.add(d); } |
         newAbducibles = Abducible()
         {
             for (PredicateInstance p:newAbducibles) {
@@ -162,7 +162,7 @@ AbductiveFramework AbductiveLogicProgram():
 	)*
 	<EOF>
 	{ 
-        return new AbductiveFramework(program,abducibles,constraints);
+        return new AbductiveFramework(program,abducibles,listConstraints);
     }
 }
 
@@ -317,7 +317,7 @@ IConstraintInstance Constraint(HashMap<String, VariableInstance> variablesSoFar)
     { return instance; } |
     instance = GreaterThanEqConstraint(variablesSoFar)
     { return instance; } |
-    instance = InConstraint(variablesSoFar)
+    instance = InListConstraint(variablesSoFar)
     { return instance; }
 }
 
@@ -372,7 +372,7 @@ GreaterThanEqConstraintInstance GreaterThanEqConstraint(HashMap<String, Variable
 }
 
 
-InConstraintInstance InConstraint(HashMap<String, VariableInstance> variablesSoFar):
+InListConstraintInstance InListConstraint(HashMap<String, VariableInstance> variablesSoFar):
 {
     ITermInstance left;
     ITermInstance right;
@@ -380,8 +380,10 @@ InConstraintInstance InConstraint(HashMap<String, VariableInstance> variablesSoF
 {
     left = Term(variablesSoFar)
     <IN>
-    right = Term(variablesSoFar)
-    { return new InConstraintInstance(left,right); }
+    (right = CharConstantList(variablesSoFar)
+    { return new InConstantListConstraintInstance(left,(ConstantListInstance)right); } |
+    right = IntegerConstantList(variablesSoFar)
+    { return new InIntegerListConstraintInstance(left,(IntegerListInstance)right); } )
 }
 
 ITermInstance Term(HashMap<String, VariableInstance> variablesSoFar):

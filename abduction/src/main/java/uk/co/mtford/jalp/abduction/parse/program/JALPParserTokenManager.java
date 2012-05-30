@@ -13,6 +13,9 @@ import uk.co.mtford.jalp.abduction.logic.instance.constraints.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.Definition;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.list.ConstantListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.list.IntegerListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.list.ListInstance;
 
 /** Token Manager. */
 public class JALPParserTokenManager implements JALPParserConstants
