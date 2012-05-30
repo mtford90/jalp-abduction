@@ -17,4 +17,5 @@ import java.util.Map;
  */
 public interface IConstraintInstance extends IInferableInstance {
     boolean reduceToChoco(List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints);
+    boolean reduceToNegativeChoco(List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints);
 }

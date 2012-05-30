@@ -40,4 +40,9 @@ public class InConstantListConstraintInstance  extends InListConstraintInstance 
     public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
         return left.inList((ConstantListInstance) right,possSubst);
     }
+
+    @Override
+    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
+        throw new UnsupportedOperationException(); // TODO
+    }
 }

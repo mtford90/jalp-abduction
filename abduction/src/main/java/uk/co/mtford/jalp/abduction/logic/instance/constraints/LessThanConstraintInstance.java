@@ -45,4 +45,9 @@ public class LessThanConstraintInstance extends ConstraintInstance {
     public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
         throw new UnsupportedOperationException(); // TODO
     }
+
+    @Override
+    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
+        throw new UnsupportedOperationException(); // TODO
+    }
 }

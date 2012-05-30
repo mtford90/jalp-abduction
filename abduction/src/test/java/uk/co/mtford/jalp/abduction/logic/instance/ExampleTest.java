@@ -424,5 +424,27 @@ public class ExampleTest {
         assertTrue(result.size()==1);
     }
 
+    @Test
+    public void verySimpleConstantNegativeConstraintTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple-negative.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        CharConstantInstance john = new CharConstantInstance("john");
+        PredicateInstance q = new PredicateInstance("q",john);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==0);
+    }
+
+    @Test
+    public void verySimpleConstantNegativeConstraintTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple-negative.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        CharConstantInstance will = new CharConstantInstance("will");
+        PredicateInstance q = new PredicateInstance("q",will);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+    }
+
 
 }
