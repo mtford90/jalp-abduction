@@ -17,9 +17,11 @@ public interface JALPQueryParserConstants {
   /** RegularExpression Id. */
   int COMMA = 7;
   /** RegularExpression Id. */
-  int LCASENAME = 8;
+  int INTEGER = 8;
   /** RegularExpression Id. */
-  int UCASENAME = 9;
+  int LCASENAME = 9;
+  /** RegularExpression Id. */
+  int UCASENAME = 10;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -34,6 +36,7 @@ public interface JALPQueryParserConstants {
     "\"(\"",
     "\")\"",
     "\",\"",
+    "<INTEGER>",
     "<LCASENAME>",
     "<UCASENAME>",
   };

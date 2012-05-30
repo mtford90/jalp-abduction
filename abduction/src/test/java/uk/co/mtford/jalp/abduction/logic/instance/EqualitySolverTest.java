@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class EqualitySolverTest {
     VariableInstance X, B, Y;
-    ConstantInstance john, bob;
+    CharConstantInstance john, bob;
     EqualityInstance E1, E2, E3;
     InEqualityInstance IE1;
 
@@ -37,8 +37,8 @@ public class EqualitySolverTest {
         X = new VariableInstance("X");
         Y = new VariableInstance("Y");
         B = new VariableInstance("B");
-        john = new ConstantInstance("john");
-        bob = new ConstantInstance("bob");
+        john = new CharConstantInstance("john");
+        bob = new CharConstantInstance("bob");
         E1 = new EqualityInstance(john, X);
         E2 = new EqualityInstance(B,Y);
         E3 = new EqualityInstance(X,B);
@@ -158,7 +158,7 @@ public class EqualitySolverTest {
                 = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         Store store = new Store();
         VariableInstance X = new VariableInstance("X");
-        ConstantInstance one = new ConstantInstance("1");
+        CharConstantInstance one = new CharConstantInstance("1");
         store.equalities.add(new InEqualityInstance(new EqualityInstance(X, one)));
         LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments);
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
@@ -168,8 +168,8 @@ public class EqualitySolverTest {
 
     @Test
     public void complexTest1() {
-        ConstantInstance sam = new ConstantInstance("sam");
-        ConstantInstance tweety = new ConstantInstance("tweety");
+        CharConstantInstance sam = new CharConstantInstance("sam");
+        CharConstantInstance tweety = new CharConstantInstance("tweety");
         VariableInstance X6 = new VariableInstance("X");
         VariableInstance X7 = new VariableInstance("X");
         VariableInstance X9 = new VariableInstance("X");

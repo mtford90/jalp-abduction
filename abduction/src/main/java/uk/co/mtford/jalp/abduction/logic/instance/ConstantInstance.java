@@ -12,26 +12,9 @@ import java.util.*;
 /**
  * @author mtford
  */
-public class ConstantInstance implements ITermInstance, IUnifiableAtomInstance {
+public abstract class ConstantInstance implements ITermInstance, IUnifiableAtomInstance {
 
     private static final Logger LOGGER = Logger.getLogger(ConstantInstance.class);
-
-    private String value;
-
-    public ConstantInstance(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-
-
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
@@ -39,43 +22,9 @@ public class ConstantInstance implements ITermInstance, IUnifiableAtomInstance {
     }
 
     @Override
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new ConstantInstance(value);
-    }
-
-    @Override
-    public IFirstOrderLogicInstance shallowClone() {
-        return new ConstantInstance(value);
-    }
-
-    @Override
     public Set<VariableInstance> getVariables() {
         return new HashSet<VariableInstance>();
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ConstantInstance)) return false;
-
-        ConstantInstance that = (ConstantInstance) o;
-
-        if (!value.equals(that.value)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-
-    @Override
-    public String toString() {
-        return value;
-    }
-
 
     @Override
     public List<EqualityInstance> reduce(VariableInstance other) {

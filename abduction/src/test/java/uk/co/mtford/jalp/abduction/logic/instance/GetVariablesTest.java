@@ -27,7 +27,7 @@ public class GetVariablesTest {
 
     @Test
     public void constantTest() {
-        ConstantInstance c = new ConstantInstance("a");
+        ConstantInstance c = new CharConstantInstance("a");
         assertTrue(c.getVariables().isEmpty());
     }
 

@@ -43,9 +43,11 @@ public interface JALPParserConstants {
   /** RegularExpression Id. */
   int ABDUCIBLE = 20;
   /** RegularExpression Id. */
-  int LCASENAME = 21;
+  int INTEGER = 21;
   /** RegularExpression Id. */
-  int UCASENAME = 22;
+  int LCASENAME = 22;
+  /** RegularExpression Id. */
+  int UCASENAME = 23;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -73,6 +75,7 @@ public interface JALPParserConstants {
     "\"ic\"",
     "\"in\"",
     "\"abducible\"",
+    "<INTEGER>",
     "<LCASENAME>",
     "<UCASENAME>",
   };

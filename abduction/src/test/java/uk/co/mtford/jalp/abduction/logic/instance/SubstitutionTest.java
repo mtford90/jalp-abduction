@@ -13,7 +13,7 @@ public class SubstitutionTest {
 
     VariableInstance x, y, z;
     VariableInstance q, r, s;
-    ConstantInstance c, d, e;
+    CharConstantInstance c, d, e;
     FalseInstance f;
     TrueInstance t;
 
@@ -30,9 +30,9 @@ public class SubstitutionTest {
         q = new VariableInstance("q");
         r = new VariableInstance("r");
         s = new VariableInstance("s");
-        c = new ConstantInstance("c");
-        d = new ConstantInstance("d");
-        e = new ConstantInstance("e");
+        c = new CharConstantInstance("c");
+        d = new CharConstantInstance("d");
+        e = new CharConstantInstance("e");
         f = new FalseInstance();
         t = new TrueInstance();
     }

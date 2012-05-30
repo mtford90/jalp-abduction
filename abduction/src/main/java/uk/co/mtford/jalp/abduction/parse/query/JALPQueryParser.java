@@ -86,31 +86,69 @@ public class JALPQueryParser implements JALPQueryParserConstants {
   }
 
   final public IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    Token t;
-    PredicateInstance predicate;
-    String name;
+    IUnifiableAtomInstance unifiable;
     if (jj_2_5(2)) {
-      t = jj_consume_token(UCASENAME);
-            name = t.image;
-            if (variablesSoFar.containsKey(name)) {
-                {if (true) return variablesSoFar.get(name);}
-            }
-            else {
-                VariableInstance variable = new VariableInstance(name);
-                variablesSoFar.put(name,variable);
-                {if (true) return variable;}
-            }
+      unifiable = Variable(variablesSoFar);
+          {if (true) return unifiable;}
     } else if (jj_2_6(2)) {
-      t = jj_consume_token(LCASENAME);
-            name = t.image;
-            {if (true) return new ConstantInstance(name);}
+      unifiable = Constant();
+          {if (true) return unifiable;}
     } else if (jj_2_7(2)) {
-      predicate = Predicate(variablesSoFar);
-          {if (true) return predicate;}
+      unifiable = Predicate(variablesSoFar);
+          {if (true) return unifiable;}
     } else {
       jj_consume_token(-1);
       throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public VariableInstance Variable(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+    Token t;
+    String name;
+    t = jj_consume_token(UCASENAME);
+        name = t.image;
+        if (variablesSoFar.containsKey(name)) {
+            {if (true) return variablesSoFar.get(name);}
+        }
+        else {
+            VariableInstance variable = new VariableInstance(name);
+            variablesSoFar.put(name,variable);
+            {if (true) return variable;}
+        }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public ConstantInstance Constant() throws ParseException {
+    ConstantInstance constantInstance;
+    if (jj_2_8(2)) {
+      constantInstance = IntegerConstant();
+      {if (true) return constantInstance;}
+    } else if (jj_2_9(2)) {
+      constantInstance = CharConstant();
+      {if (true) return constantInstance;}
+    } else {
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public IntegerConstantInstance IntegerConstant() throws ParseException {
+    Token t;
+    Integer integer;
+    t = jj_consume_token(INTEGER);
+        integer = Integer.parseInt(t.image);
+        {if (true) return new IntegerConstantInstance(integer);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public CharConstantInstance CharConstant() throws ParseException {
+    Token t;
+    String name;
+    t = jj_consume_token(LCASENAME);
+        name = t.image;
+        {if (true) return new CharConstantInstance(name);}
     throw new Error("Missing return statement in function");
   }
 
@@ -163,27 +201,18 @@ public class JALPQueryParser implements JALPQueryParserConstants {
     finally { jj_save(6, xla); }
   }
 
-  private boolean jj_3_4() {
-    if (jj_3R_5()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_3()) { jj_scanpos = xsp; break; }
-    }
-    return false;
+  private boolean jj_2_8(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_8(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(7, xla); }
   }
 
-  private boolean jj_3R_3() {
-    if (jj_scan_token(LCASENAME)) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_2()) jj_scanpos = xsp;
-    return false;
-  }
-
-  private boolean jj_3_5() {
-    if (jj_scan_token(UCASENAME)) return true;
-    return false;
+  private boolean jj_2_9(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_9(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(8, xla); }
   }
 
   private boolean jj_3_1() {
@@ -199,14 +228,16 @@ public class JALPQueryParser implements JALPQueryParserConstants {
     return false;
   }
 
-  private boolean jj_3_7() {
-    if (jj_3R_3()) return true;
-    return false;
-  }
-
   private boolean jj_3_3() {
     if (jj_scan_token(COMMA)) return true;
     if (jj_3R_5()) return true;
+    return false;
+  }
+
+  private boolean jj_3_2() {
+    if (jj_scan_token(LBRACKET)) return true;
+    if (jj_3R_4()) return true;
+    if (jj_scan_token(RBRACKET)) return true;
     return false;
   }
 
@@ -223,15 +254,71 @@ public class JALPQueryParser implements JALPQueryParserConstants {
     return false;
   }
 
-  private boolean jj_3_2() {
-    if (jj_scan_token(LBRACKET)) return true;
-    if (jj_3R_4()) return true;
-    if (jj_scan_token(RBRACKET)) return true;
+  private boolean jj_3R_8() {
+    if (jj_scan_token(INTEGER)) return true;
+    return false;
+  }
+
+  private boolean jj_3_4() {
+    if (jj_3R_5()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_3()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_6() {
+    if (jj_scan_token(UCASENAME)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_3() {
+    if (jj_scan_token(LCASENAME)) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_2()) jj_scanpos = xsp;
+    return false;
+  }
+
+  private boolean jj_3_7() {
+    if (jj_3R_3()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_9() {
+    if (jj_scan_token(LCASENAME)) return true;
+    return false;
+  }
+
+  private boolean jj_3_9() {
+    if (jj_3R_9()) return true;
     return false;
   }
 
   private boolean jj_3_6() {
-    if (jj_scan_token(LCASENAME)) return true;
+    if (jj_3R_7()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_7() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_8()) {
+    jj_scanpos = xsp;
+    if (jj_3_9()) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3_5() {
+    if (jj_3R_6()) return true;
+    return false;
+  }
+
+  private boolean jj_3_8() {
+    if (jj_3R_8()) return true;
     return false;
   }
 
@@ -254,7 +341,7 @@ public class JALPQueryParser implements JALPQueryParserConstants {
    private static void jj_la1_init_0() {
       jj_la1_0 = new int[] {};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[7];
+  final private JJCalls[] jj_2_rtns = new JJCalls[9];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -438,7 +525,7 @@ public class JALPQueryParser implements JALPQueryParserConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[10];
+    boolean[] la1tokens = new boolean[11];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -452,7 +539,7 @@ public class JALPQueryParser implements JALPQueryParserConstants {
         }
       }
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 11; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
@@ -479,7 +566,7 @@ public class JALPQueryParser implements JALPQueryParserConstants {
 
   private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 9; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -493,6 +580,8 @@ public class JALPQueryParser implements JALPQueryParserConstants {
             case 4: jj_3_5(); break;
             case 5: jj_3_6(); break;
             case 6: jj_3_7(); break;
+            case 7: jj_3_8(); break;
+            case 8: jj_3_9(); break;
           }
         }
         p = p.next;

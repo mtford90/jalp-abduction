@@ -451,11 +451,35 @@ public class JALPParser implements JALPParserConstants {
   }
 
   final public ConstantInstance Constant() throws ParseException {
+    ConstantInstance constantInstance;
+    if (jj_2_34(2)) {
+      constantInstance = IntegerConstant();
+      {if (true) return constantInstance;}
+    } else if (jj_2_35(2)) {
+      constantInstance = CharConstant();
+      {if (true) return constantInstance;}
+    } else {
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public IntegerConstantInstance IntegerConstant() throws ParseException {
+    Token t;
+    Integer integer;
+    t = jj_consume_token(INTEGER);
+        integer = Integer.parseInt(t.image);
+        {if (true) return new IntegerConstantInstance(integer);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public CharConstantInstance CharConstant() throws ParseException {
     Token t;
     String name;
     t = jj_consume_token(LCASENAME);
         name = t.image;
-        {if (true) return new ConstantInstance(name);}
+        {if (true) return new CharConstantInstance(name);}
     throw new Error("Missing return statement in function");
   }
 
@@ -690,6 +714,20 @@ public class JALPParser implements JALPParserConstants {
     finally { jj_save(32, xla); }
   }
 
+  private boolean jj_2_34(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_34(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(33, xla); }
+  }
+
+  private boolean jj_2_35(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_35(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(34, xla); }
+  }
+
   private boolean jj_3R_8() {
     if (jj_3R_13()) return true;
     Token xsp;
@@ -700,7 +738,7 @@ public class JALPParser implements JALPParserConstants {
   }
 
   private boolean jj_3R_22() {
-    if (jj_3R_31()) return true;
+    if (jj_3R_33()) return true;
     if (jj_scan_token(GREATERTHANEQ)) return true;
     return false;
   }
@@ -714,6 +752,11 @@ public class JALPParser implements JALPParserConstants {
   private boolean jj_3R_15() {
     if (jj_scan_token(NOT)) return true;
     if (jj_3R_14()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_32() {
+    if (jj_scan_token(LCASENAME)) return true;
     return false;
   }
 
@@ -733,7 +776,7 @@ public class JALPParser implements JALPParserConstants {
   }
 
   private boolean jj_3R_21() {
-    if (jj_3R_31()) return true;
+    if (jj_3R_33()) return true;
     if (jj_scan_token(GREATERTHAN)) return true;
     return false;
   }
@@ -758,6 +801,11 @@ public class JALPParser implements JALPParserConstants {
 
   private boolean jj_3_10() {
     if (jj_3R_13()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_31() {
+    if (jj_scan_token(INTEGER)) return true;
     return false;
   }
 
@@ -837,7 +885,7 @@ public class JALPParser implements JALPParserConstants {
   }
 
   private boolean jj_3R_20() {
-    if (jj_3R_31()) return true;
+    if (jj_3R_33()) return true;
     if (jj_scan_token(LESSTHANEQ)) return true;
     return false;
   }
@@ -862,13 +910,28 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
+  private boolean jj_3_35() {
+    if (jj_3R_32()) return true;
+    return false;
+  }
+
   private boolean jj_3R_25() {
-    if (jj_scan_token(LCASENAME)) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_34()) {
+    jj_scanpos = xsp;
+    if (jj_3_35()) return true;
+    }
     return false;
   }
 
   private boolean jj_3_24() {
     if (jj_3R_24()) return true;
+    return false;
+  }
+
+  private boolean jj_3_34() {
+    if (jj_3R_31()) return true;
     return false;
   }
 
@@ -898,7 +961,7 @@ public class JALPParser implements JALPParserConstants {
   }
 
   private boolean jj_3R_19() {
-    if (jj_3R_31()) return true;
+    if (jj_3R_33()) return true;
     if (jj_scan_token(LESSTHAN)) return true;
     return false;
   }
@@ -1020,7 +1083,7 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_31() {
+  private boolean jj_3R_33() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3_19()) {
@@ -1059,7 +1122,7 @@ public class JALPParser implements JALPParserConstants {
   }
 
   private boolean jj_3R_23() {
-    if (jj_3R_31()) return true;
+    if (jj_3R_33()) return true;
     if (jj_scan_token(IN)) return true;
     return false;
   }
@@ -1099,7 +1162,7 @@ public class JALPParser implements JALPParserConstants {
    private static void jj_la1_init_0() {
       jj_la1_0 = new int[] {};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[33];
+  final private JJCalls[] jj_2_rtns = new JJCalls[35];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -1283,7 +1346,7 @@ public class JALPParser implements JALPParserConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[23];
+    boolean[] la1tokens = new boolean[24];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -1297,7 +1360,7 @@ public class JALPParser implements JALPParserConstants {
         }
       }
     }
-    for (int i = 0; i < 23; i++) {
+    for (int i = 0; i < 24; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
@@ -1324,7 +1387,7 @@ public class JALPParser implements JALPParserConstants {
 
   private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 33; i++) {
+    for (int i = 0; i < 35; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -1364,6 +1427,8 @@ public class JALPParser implements JALPParserConstants {
             case 30: jj_3_31(); break;
             case 31: jj_3_32(); break;
             case 32: jj_3_33(); break;
+            case 33: jj_3_34(); break;
+            case 34: jj_3_35(); break;
           }
         }
         p = p.next;

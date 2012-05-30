@@ -13,7 +13,7 @@ public class CloningTest {
 
     VariableInstance x, y, z;
     VariableInstance q, r, s;
-    ConstantInstance c, d, e;
+    CharConstantInstance c, d, e;
     FalseInstance f;
     TrueInstance t;
 
@@ -30,9 +30,9 @@ public class CloningTest {
         q = new VariableInstance("q");
         r = new VariableInstance("r");
         s = new VariableInstance("s");
-        c = new ConstantInstance("c");
-        d = new ConstantInstance("d");
-        e = new ConstantInstance("e");
+        c = new CharConstantInstance("c");
+        d = new CharConstantInstance("d");
+        e = new CharConstantInstance("e");
         f = new FalseInstance();
         t = new TrueInstance();
     }
@@ -46,7 +46,7 @@ public class CloningTest {
     public void constantTest() {
         HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         subst.put(x, d);
-        ConstantInstance c2 = (ConstantInstance) c.deepClone(subst);
+        CharConstantInstance c2 = (CharConstantInstance) c.deepClone(subst);
         assertTrue(c != c2);
         assertTrue(c.equals(c2));
     }

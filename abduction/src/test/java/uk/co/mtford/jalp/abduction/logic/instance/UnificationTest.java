@@ -21,7 +21,7 @@ public class UnificationTest { // TODO
 
     VariableInstance X, Y, Z;
     PredicateInstance p, p1, p2, q;
-    ConstantInstance c, d, e;
+    CharConstantInstance c, d, e;
     FalseInstance f;
     TrueInstance t;
 
@@ -35,9 +35,9 @@ public class UnificationTest { // TODO
         X = new VariableInstance("X");
         Y = new VariableInstance("Y");
         Z = new VariableInstance("Z");
-        c = new ConstantInstance("c");
-        d = new ConstantInstance("d");
-        e = new ConstantInstance("e");
+        c = new CharConstantInstance("c");
+        d = new CharConstantInstance("d");
+        e = new CharConstantInstance("e");
         f = new FalseInstance();
         t = new TrueInstance();
         p = new PredicateInstance("p", Y);

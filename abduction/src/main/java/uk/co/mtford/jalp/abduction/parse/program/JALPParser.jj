@@ -32,7 +32,8 @@ ConstantList -> Constant (COMMA Constant)*
 NestedList -> List (COMMA List)*
 
 Variable -> UCASENAME
-Constant -> INTEGER | LCASENAME
+IntegerConstant -> INTEGER
+CharConstant -> LCASENAME
 
 */
 
@@ -125,6 +126,7 @@ TOKEN :
   <IC: "ic"> |
   <IN: "in"> |
   <ABDUCIBLE: "abducible"> |
+  <INTEGER: ["0"-"9"]> |
   <LCASENAME: ["a"-"z","0"-"9"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
   <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*>
 
@@ -521,6 +523,30 @@ VariableInstance Variable(HashMap<String, VariableInstance> variablesSoFar):
 
 ConstantInstance Constant():
 {
+    ConstantInstance constantInstance;
+}
+{
+    constantInstance = IntegerConstant()
+    { return constantInstance; } |
+    constantInstance = CharConstant()
+    { return constantInstance; }
+}
+
+IntegerConstantInstance IntegerConstant():
+{
+    Token t;
+    Integer integer;
+}
+{
+    t = <INTEGER>
+    {
+        integer = Integer.parseInt(t.image);
+        return new IntegerConstantInstance(integer);
+    }
+}
+
+CharConstantInstance CharConstant():
+{
     Token t;
     String name;
 }
@@ -528,6 +554,6 @@ ConstantInstance Constant():
     t = <LCASENAME>
     {
         name = t.image;
-        return new ConstantInstance(name);
+        return new CharConstantInstance(name);
     }
 }

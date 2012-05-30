@@ -3,9 +3,15 @@
 LL(2) grammar for queries.
 
 Query -> Predicate (COMMA PREDICATE)* EOF
+
 Predicate -> LCASENAME (LBRACKET ParameterList RBRACKET)?
-ParameterList -> (Parameter (COMMA Parameter)*)?
-Parameter -> (UCASENAME | LCASENAME | Predicate)
+
+ParameterList -> Parameter (COMMA Parameter)*
+Parameter -> (Variable | Constant | Predicate)
+
+Variable -> UCASENAME
+IntegerConstant -> INTEGER
+CharConstant -> LCASENAME
 
 */
 
@@ -72,6 +78,7 @@ TOKEN :
   <LBRACKET: "("> |
   <RBRACKET: ")"> |
   <COMMA: ","> |
+  <INTEGER: ["0"-"9"]> |
   <LCASENAME: (["a"-"z"]|["0"-"9"]) ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
   <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> 
 }
@@ -130,31 +137,73 @@ List<IUnifiableAtomInstance> ParameterList(HashMap<String, VariableInstance> var
 
 IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar):
 {
-    Token t;
-    PredicateInstance predicate;
-    String name;
+    IUnifiableAtomInstance unifiable;
 }
 {
 	(
-		t = <UCASENAME> 
-        { 
-            name = t.image;
-            if (variablesSoFar.containsKey(name)) {
-                return variablesSoFar.get(name);
-            }
-            else {
-                VariableInstance variable = new VariableInstance(name);
-                variablesSoFar.put(name,variable);
-                return variable;
-            }
-        } | 
-		t = <LCASENAME> 
-        { 
-            name = t.image;
-            return new ConstantInstance(name);
-        } | 
-		predicate = Predicate(variablesSoFar)
-        { return predicate; }
+		unifiable = Variable(variablesSoFar)
+        { return unifiable; } |
+		unifiable = Constant()
+        { return unifiable; } |
+		unifiable = Predicate(variablesSoFar)
+        { return unifiable; }
 	)
 
+}
+
+VariableInstance Variable(HashMap<String, VariableInstance> variablesSoFar):
+{
+    Token t;
+    String name;
+}
+{
+    t = <UCASENAME>
+    {
+        name = t.image;
+        if (variablesSoFar.containsKey(name)) {
+            return variablesSoFar.get(name);
+        }
+        else {
+            VariableInstance variable = new VariableInstance(name);
+            variablesSoFar.put(name,variable);
+            return variable;
+        }
+    }
+}
+
+ConstantInstance Constant():
+{
+    ConstantInstance constantInstance;
+}
+{
+    constantInstance = IntegerConstant()
+    { return constantInstance; } |
+    constantInstance = CharConstant()
+    { return constantInstance; }
+}
+
+IntegerConstantInstance IntegerConstant():
+{
+    Token t;
+    Integer integer;
+}
+{
+    t = <INTEGER>
+    {
+        integer = Integer.parseInt(t.image);
+        return new IntegerConstantInstance(integer);
+    }
+}
+
+CharConstantInstance CharConstant():
+{
+    Token t;
+    String name;
+}
+{
+    t = <LCASENAME>
+    {
+        name = t.image;
+        return new CharConstantInstance(name);
+    }
 }
