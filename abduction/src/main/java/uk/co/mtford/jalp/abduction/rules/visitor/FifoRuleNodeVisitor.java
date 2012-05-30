@@ -33,12 +33,19 @@ public class FifoRuleNodeVisitor extends RuleNodeVisitor {
             return null;
         }
         RuleNode chosenNode = nodeStack.pop();
+        while (chosenNode.getNodeMark()== RuleNode.NodeMark.FAILED) {
+            if (nodeStack.isEmpty()) return null;
+            chosenNode = nodeStack.pop();
+        }
         return chosenNode;
     }
 
     @Override
     public boolean hasNextNode() {
-        return !currentRuleNode.getChildren().isEmpty() || !nodeStack.isEmpty();
+        if (currentRuleNode==null) return false;
+        else {
+            return !currentRuleNode.getChildren().isEmpty() || !nodeStack.isEmpty() || !(currentRuleNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED);
+        }
     }
 
 

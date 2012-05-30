@@ -35,7 +35,13 @@ public class LeafRuleNode extends RuleNode {
 
     @Override
     public RuleNode shallowClone() {
-        throw new UnsupportedOperationException(); // TODO
+        LeafRuleNode newRuleNode = new LeafRuleNode();
+        newRuleNode.children = new LinkedList<RuleNode>(children);
+        newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
+        newRuleNode.abductiveFramework = abductiveFramework;
+        newRuleNode.store = store.shallowClone();
+        newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
+        return newRuleNode;
     }
 
     @Override
@@ -46,9 +52,11 @@ public class LeafRuleNode extends RuleNode {
     @Override
     public String toString() {
         String message =
+                        "assignments = " + assignments + "\n\n"+
                         "delta = " + store.abducibles + "\n" +
                         "delta* = " + store.denials + "\n" +
-                        "epsilon = " + store.equalities + "\n\n" +
+                        "epsilon = " + store.equalities + "\n" +
+                        "fd = " + store.constraints + "\n\n" +
                         "nodeType = " + this.getClass() + "\n" +
                         "nodeMark = " + this.getNodeMark() + "\n";
         return message;

@@ -36,7 +36,7 @@ public class F1RuleNode extends PositiveRuleNode {
 
     @Override
     public RuleNode shallowClone() {
-        A2RuleNode newRuleNode = new A2RuleNode();
+        F1RuleNode newRuleNode = new F1RuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
         newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
         newRuleNode.currentGoal = currentGoal;

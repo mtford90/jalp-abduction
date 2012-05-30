@@ -382,5 +382,47 @@ public class ExampleTest {
         assertTrue(result.size()==9); // Matches jiefeis ASystem implementation.
     }
 
+    @Test
+    public void verySimpleConstantConstraintTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance X = new VariableInstance("X");
+        PredicateInstance q = new PredicateInstance("q",X);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==3);
+        Result resultOne = result.get(0);
+        Result resultTwo = result.get(1);
+        Result resultThree = result.get(2);
+        JALPSystem.reduceResult(resultOne);
+        JALPSystem.reduceResult(resultTwo);
+        JALPSystem.reduceResult(resultThree);
+        assertTrue(resultOne.getAssignments().get(X).equals(new CharConstantInstance("mary")));
+        assertTrue(resultTwo.getAssignments().get(X).equals(new CharConstantInstance("bob")));
+        assertTrue(resultThree.getAssignments().get(X).equals(new CharConstantInstance("john")));
+    }
+
+    @Test
+    public void verySimpleConstantConstraintTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        CharConstantInstance mike = new CharConstantInstance("mike");
+        PredicateInstance q = new PredicateInstance("q",mike);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==0);
+    }
+
+    @Test
+    public void verySimpleConstantConstraintTest3() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        CharConstantInstance bob = new CharConstantInstance("bob");
+        PredicateInstance q = new PredicateInstance("q",bob);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+    }
+
 
 }

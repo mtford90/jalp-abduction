@@ -73,8 +73,7 @@ public abstract class RuleNodeVisitor {
         RuleNode secondBranchChildNode = getA1SecondBranch(ruleNode, store, goalAbducible);
         childNodes.add(secondBranchChildNode);
         if (LOGGER.isInfoEnabled()) LOGGER.info("A1 generated "+childNodes.size()+" new states.");
-        ruleNode.getChildren().addAll(0,childNodes);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode, childNodes);
     }
 
     private LinkedList<RuleNode> getA1FirstBranch(A1RuleNode ruleNode, Store store, PredicateInstance goalAbducible) {
@@ -164,8 +163,7 @@ public abstract class RuleNodeVisitor {
 
         childNode.getStore().denials.add(newCurrentDenial);
 
-        ruleNode.getChildren().add(childNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode,childNode);
     }
 
     public void visit(D1RuleNode ruleNode) throws DefinitionException {
@@ -180,10 +178,8 @@ public abstract class RuleNodeVisitor {
             RuleNode childNode = constructPositiveChildNode(newGoal, restOfGoals, ruleNode);
             childNodes.add(childNode);
         }
-
-        ruleNode.getChildren().addAll(0,childNodes);
         if (LOGGER.isInfoEnabled()) LOGGER.info("D1 generated "+childNodes.size()+" new states.");
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode,childNodes);
     }
 
     public void visit(D2RuleNode ruleNode) throws DefinitionException {
@@ -229,8 +225,7 @@ public abstract class RuleNodeVisitor {
             childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
         }
 
-        ruleNode.getChildren().add(childNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode,childNode);
 
     }
 
@@ -244,8 +239,8 @@ public abstract class RuleNodeVisitor {
         if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
         childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
         childNode.getStore().equalities.add(currentGoal);
-        ruleNode.getChildren().add(childNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode,childNode);
+
     }
 
     public void visit(InE1RuleNode ruleNode) {
@@ -258,8 +253,7 @@ public abstract class RuleNodeVisitor {
         if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
         childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
         childNode.getStore().equalities.add(currentGoal);
-        ruleNode.getChildren().add(childNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode,childNode);
     }
 
     public void visit(E2RuleNode ruleNode) {
@@ -382,9 +376,7 @@ public abstract class RuleNodeVisitor {
             }
         }
 
-        ruleNode.getChildren().addAll(0,newChildNodes);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
-
+        expandNode(ruleNode,newChildNodes);
     }
 
     public void visit(InE2RuleNode ruleNode) {
@@ -425,8 +417,7 @@ public abstract class RuleNodeVisitor {
         NegationInstance goal = (NegationInstance) ruleNode.getCurrentGoal();
         DenialInstance denial = new DenialInstance(goal.getSubFormula());
         RuleNode childNode = constructPositiveChildNode(denial, newRestOfGoals, ruleNode);   // TODO The denial should be at the end of the list, not the front, according to nuffelen?
-        ruleNode.getChildren().add(childNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode,childNode);
     }
 
     public void visit(N2RuleNode ruleNode) {
@@ -457,8 +448,8 @@ public abstract class RuleNodeVisitor {
             childNode = constructNegativeChildNode(goal, newNestedDenialList, newRestOfGoals, ruleNode);
         }
         childNodes.add(childNode);
-        ruleNode.getChildren().addAll(0,childNodes);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode,childNodes);
+
     }
 
     public void visit(F1RuleNode ruleNode) {
@@ -471,8 +462,8 @@ public abstract class RuleNodeVisitor {
         if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
         childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
         childNode.getStore().constraints.add(currentGoal);
-        ruleNode.getChildren().add(childNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode,childNode);
+
     }
 
     public void visit(F2RuleNode ruleNode) {
@@ -518,8 +509,7 @@ public abstract class RuleNodeVisitor {
 
         childNode.getStore().constraints.add(currentGoal);
         newChildNodes.add(childNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
-        ruleNode.getChildren().addAll(newChildNodes);
+        expandNode(ruleNode,newChildNodes);
 
     }
 
@@ -536,8 +526,8 @@ public abstract class RuleNodeVisitor {
         IInferableInstance newGoal = null;
         if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
         RuleNode newRuleNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
-        ruleNode.getChildren().add(newRuleNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode,newRuleNode);
+
     }
 
     /**
@@ -568,8 +558,7 @@ public abstract class RuleNodeVisitor {
             childNode = constructNegativeChildNode(newGoal,newNestedDenialList,newRestOfGoals,ruleNode);
         }
 
-        ruleNode.getChildren().add(childNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode,childNode);
     }
 
     /**
@@ -601,43 +590,52 @@ public abstract class RuleNodeVisitor {
             IInferableInstance newGoal = newDenial.getBody().remove(0);
             newChildNode = constructNegativeChildNode(newGoal, newNestedDenialList, newRestOfGoals, ruleNode);
         }
-        ruleNode.getChildren().add(newChildNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+        expandNode(ruleNode,newChildNode);
+
     }
 
     public void visit(LeafRuleNode ruleNode) {
-        Map<VariableInstance, IUnifiableAtomInstance> equalitySolveSuccess = ruleNode.equalitySolve();
-        if (equalitySolveSuccess!=null) {
-            ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
+        ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Found a success node:\n"+ruleNode);
+    }
+
+    private void expandNode(RuleNode parent, RuleNode child) {
+        Map<VariableInstance,IUnifiableAtomInstance> assignments = child.equalitySolve();
+        if (assignments == null) {
+            child.setNodeMark(RuleNode.NodeMark.FAILED);
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality solver failed on\n"+child);
         }
-        else {
-            ruleNode.setNodeMark(RuleNode.NodeMark.FAILED);
+        else { // Equality solver succeeded.
+            child.setAssignments(assignments);
+            List<Map<VariableInstance,IUnifiableAtomInstance>> possibleAssignments = child.constraintSolve();
+            if (possibleAssignments==null) {
+                child.setNodeMark(RuleNode.NodeMark.FAILED);
+                if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver failed on\n"+child);
+                parent.getChildren().add(child);
+            }
+            else { // Constraint solver succeeded. Generate possible children.
+                if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver generated "+possibleAssignments.size()+" possible children.");
+                for (Map<VariableInstance,IUnifiableAtomInstance> assignment:possibleAssignments) {
+                    RuleNode newChildNode = child.shallowClone();
+                    newChildNode.setAssignments(assignment);
+                    parent.getChildren().add(newChildNode);
+                }
+            }
+        }
+        parent.setNodeMark(RuleNode.NodeMark.EXPANDED);
+    }
+
+    private void expandNode(RuleNode parent, List<RuleNode> children) {
+        for (RuleNode child:children) {
+            expandNode(parent, child);
         }
     }
 
     public RuleNode stateRewrite() throws DefinitionException {
-
         currentRuleNode = chooseNextNode();
-
-        if (currentRuleNode == null) {  // Finished.
-            return null;
-        }
-
-        if (!(currentRuleNode==null)) {
-            Map<VariableInstance,IUnifiableAtomInstance> assignments = currentRuleNode.equalitySolve();
-            List<Map<VariableInstance,IUnifiableAtomInstance>> possibleAssignments = currentRuleNode.constraintSolve();
-            if (assignments == null) {
-                currentRuleNode.setNodeMark(RuleNode.NodeMark.FAILED);
-            }
-            else {
-                currentRuleNode.setAssignments(assignments);
-                currentRuleNode.acceptVisitor(this);
-            }
-
-        }
-
+        if (currentRuleNode==null) return null;
+        currentRuleNode.acceptVisitor(this);
         return currentRuleNode;
-
     }
 
     public RuleNode getCurrentRuleNode() {

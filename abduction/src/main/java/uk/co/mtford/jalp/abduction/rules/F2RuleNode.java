@@ -37,7 +37,7 @@ public class F2RuleNode extends NegativeRuleNode {
 
     @Override
     public RuleNode shallowClone() {
-        A2RuleNode newRuleNode = new A2RuleNode();
+        F2RuleNode newRuleNode = new F2RuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
         newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
         newRuleNode.currentGoal = currentGoal;
