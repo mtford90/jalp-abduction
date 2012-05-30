@@ -5,6 +5,8 @@ import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.list.ConstantListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.list.IntegerListInstance;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +45,10 @@ public class InConstantListConstraintInstance  extends InListConstraintInstance 
 
     @Override
     public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
-        throw new UnsupportedOperationException(); // TODO
+        List<Map<VariableInstance,IUnifiableAtomInstance>> newPossSubst = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>(possSubst);
+        boolean reduceSuccess = left.inList((ConstantListInstance) right,newPossSubst);
+        boolean trueAndMadeSubst = reduceSuccess && newPossSubst.size()>possSubst.size();
+        boolean notInList = trueAndMadeSubst || !reduceSuccess;
+        return notInList;
     }
 }

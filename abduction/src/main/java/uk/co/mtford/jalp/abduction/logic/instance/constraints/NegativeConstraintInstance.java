@@ -60,11 +60,11 @@ public class NegativeConstraintInstance implements IConstraintInstance {
 
     @Override
     public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
-        throw new UnsupportedOperationException(); // TODO
+        return constraintInstance.reduceToNegativeChoco(possSubst,chocoConstraints);
     }
 
     @Override
     public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
-        throw new UnsupportedOperationException(); // TODO
+        return constraintInstance.reduceToChoco(possSubst,chocoConstraints);
     }
 }
