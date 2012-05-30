@@ -26,10 +26,9 @@ ParameterList -> Parameter (COMMA Parameter)*
 Term -> (Variable | Constant | List)
 Parameter -> (Variable | Constant | Predicate)
 
-List -> LSQBRACKET (VariableList | ConstantList | NestedList)? RSQBRACKET
-VariableList -> Variable (COMMA Variable)*
-ConstantList -> Constant (COMMA Constant)*
-NestedList -> List (COMMA List)*
+List -> LSQBRACKET (IntegerConstantList | CharConstantList)? RSQBRACKET
+IntegerConstantList -> IntegerConstant (COMMA IntegerConstant)*
+CharConstantList -> CharConstant (COMMA CharConstant)*
 
 Variable -> UCASENAME
 IntegerConstant -> INTEGER
@@ -74,6 +73,9 @@ import uk.co.mtford.jalp.abduction.logic.instance.constraints.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.Definition;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.list.ConstantListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.list.IntegerListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.list.ListInstance;
 
 public class JALPParser {
 
@@ -431,52 +433,31 @@ IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFa
 
 ListInstance List(HashMap<String, VariableInstance> variablesSoFar):
 {
-   ListInstance listInstance = new ListInstance();
+   ListInstance listInstance;
 }
 {
     <LSQBRACKET>
-    [
-        listInstance = VariableList(variablesSoFar) |
-        listInstance = ConstantList(variablesSoFar) |
-        listInstance = NestedList(variablesSoFar)
-    ]
+    (listInstance = IntegerConstantList(variablesSoFar)
     <RSQBRACKET>
-    { return listInstance; }
+    { return listInstance; }) |
+    (listInstance = CharConstantList(variablesSoFar)
+    <RSQBRACKET>
+     { return listInstance; })
 }
 
-ListInstance<VariableInstance> VariableList(HashMap<String, VariableInstance> variablesSoFar):
+IntegerListInstance IntegerConstantList(HashMap<String, VariableInstance> variablesSoFar):
 {
-    ListInstance<VariableInstance> listInstance = new ListInstance<VariableInstance>();
-    VariableInstance variableInstance;
+    IntegerListInstance listInstance = new IntegerListInstance();
+    IntegerConstantInstance constantInstance;
 }
 {
-    variableInstance = Variable(variablesSoFar)
-    {
-        listInstance.getList().add(variableInstance);
-    }
-    (
-       <COMMA>
-       variableInstance = Variable(variablesSoFar)
-       {
-           listInstance.getList().add(variableInstance);
-       }
-    )*
-    { return listInstance; }
-}
-
-ListInstance<ConstantInstance> ConstantList(HashMap<String, VariableInstance> variablesSoFar):
-{
-    ListInstance<ConstantInstance> listInstance = new ListInstance<ConstantInstance>();
-    ConstantInstance constantInstance;
-}
-{
-    constantInstance = Constant()
+    constantInstance = IntegerConstant()
     {
         listInstance.getList().add(constantInstance);
     }
     (
        <COMMA>
-       constantInstance = Constant()
+       constantInstance = IntegerConstant()
        {
            listInstance.getList().add(constantInstance);
        }
@@ -484,19 +465,22 @@ ListInstance<ConstantInstance> ConstantList(HashMap<String, VariableInstance> va
     { return listInstance; }
 }
 
-ListInstance<ListInstance> NestedList(HashMap<String, VariableInstance> variablesSoFar):
+ConstantListInstance CharConstantList(HashMap<String, VariableInstance> variablesSoFar):
 {
-    ListInstance<ListInstance> listInstance = new ListInstance<ListInstance>();
-    ListInstance nestedListInstance;
+    ConstantListInstance listInstance = new ConstantListInstance();
+    CharConstantInstance constantInstance;
 }
 {
-    nestedListInstance = List(variablesSoFar)
+    constantInstance = CharConstant()
     {
-        listInstance.getList().add(nestedListInstance);
+        listInstance.getList().add(constantInstance);
     }
     (
        <COMMA>
-       nestedListInstance = List(variablesSoFar)
+       constantInstance = CharConstant()
+       {
+           listInstance.getList().add(constantInstance);
+       }
     )*
     { return listInstance; }
 }
