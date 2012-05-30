@@ -3,7 +3,6 @@ package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,8 +36,4 @@ public class InConstraintInstance extends ConstraintInstance {
         return left + " in "+ right;
     }
 
-    @Override
-    public void acceptVisitor(IConstraintSolverProxy constraintSolverProxy) {
-        constraintSolverProxy.visit(this);
-    }
 }

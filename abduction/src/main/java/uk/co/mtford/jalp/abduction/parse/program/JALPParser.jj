@@ -29,10 +29,10 @@ Parameter -> (Variable | Constant | Predicate)
 List -> LSQBRACKET (VariableList | ConstantList | NestedList)? RSQBRACKET
 VariableList -> Variable (COMMA Variable)*
 ConstantList -> Constant (COMMA Constant)*
-NestedList -> Variable (COMMA Constant)*
+NestedList -> List (COMMA List)*
 
 Variable -> UCASENAME
-Constant -> LCASENAME
+Constant -> INTEGER | LCASENAME
 
 */
 

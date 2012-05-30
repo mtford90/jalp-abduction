@@ -1,7 +1,6 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.ITermInstance;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,5 +10,4 @@ import uk.co.mtford.jalp.abduction.logic.instance.ITermInstance;
  * To change this template use File | Settings | File Templates.
  */
 public interface IConstraintInstance extends IInferableInstance {
-    public void acceptVisitor(IConstraintSolverProxy constraintSolverProxy);
 }

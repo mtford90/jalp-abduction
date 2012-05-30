@@ -6,7 +6,6 @@ import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.VariableInstance;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,8 +39,4 @@ public class LessThanConstraintInstance extends ConstraintInstance {
         return left + "<"+ right;
     }
 
-    @Override
-    public void acceptVisitor(IConstraintSolverProxy constraintSolverProxy) {
-        constraintSolverProxy.visit(this);
-    }
 }
