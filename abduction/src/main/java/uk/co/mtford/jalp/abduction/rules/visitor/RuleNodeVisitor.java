@@ -549,13 +549,15 @@ public abstract class RuleNodeVisitor {
 
         if (newNestedDenials.isEmpty()) {
             newRestOfGoals.addAll(0,newDenials);
-            newGoal = newRestOfGoals.remove(0);
+            newGoal = null;
+            if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
             childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
         }
 
         else {
             newNestedDenials.get(0).getBody().addAll(0,newDenials);
-            newGoal = newNestedDenials.get(0).getBody().remove(0);
+            newGoal = null;
+            if (!newNestedDenials.get(0).getBody().isEmpty()) newGoal = newNestedDenials.get(0).getBody().remove(0);
             childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
         }
 
