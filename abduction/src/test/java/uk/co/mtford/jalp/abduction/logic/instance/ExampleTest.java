@@ -446,5 +446,38 @@ public class ExampleTest {
         assertTrue(result.size()==1);
     }
 
+    @Test
+    public void verySimpleIntegerNegativeConstraintTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple-negative-integer.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        IntegerConstantInstance one = new IntegerConstantInstance(1);
+        PredicateInstance q = new PredicateInstance("q",one);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+    }
+
+    @Test
+      public void verySimpleIntegerNegativeConstraintTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple-negative-integer.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        IntegerConstantInstance four = new IntegerConstantInstance(4);
+        PredicateInstance q = new PredicateInstance("q",four);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==0);
+    }
+
+    @Test
+    public void verySimpleIntegerNegativeConstraintTest3() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple-negative-integer.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance X = new VariableInstance("X");
+        PredicateInstance q = new PredicateInstance("q",X);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==3);
+    }
+
 
 }
