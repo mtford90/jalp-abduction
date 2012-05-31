@@ -55,8 +55,8 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
         this.body = body;
     }
 
-    public List<VariableInstance> getUniversalVariables() {
-        return new LinkedList<VariableInstance>(universalVariables);
+    public Set<VariableInstance> getUniversalVariables() {
+        return universalVariables;
     }
 
     public void setUniversalVariables(List<VariableInstance> universalVariables) {

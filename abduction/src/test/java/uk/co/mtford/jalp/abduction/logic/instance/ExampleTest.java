@@ -162,9 +162,9 @@ public class ExampleTest {
         PredicateInstance likes = new PredicateInstance("flies",X);
         query.add(likes);
         List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALPSystem.reduceResult(resultOne);
-        assertTrue(result.size()==1);
         assertTrue(resultOne.getAssignments().get(X).equals(new CharConstantInstance("sam")));
     }
 

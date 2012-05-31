@@ -10,10 +10,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.rules.*;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -199,15 +196,18 @@ public abstract class RuleNodeVisitor {
         List<DenialInstance> newUnfoldedDenials = new LinkedList<DenialInstance>();
 
         for (List<IInferableInstance> possibleUnfold:possibleUnfolds) {
-            HashMap<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+            HashMap<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
             DenialInstance newUnfoldedDenial = (DenialInstance) newCurrentDenial.deepClone(subst);
+            Set<VariableInstance> newUniversalVariables = new HashSet<VariableInstance>();
             List<IInferableInstance> toAddToBody = new LinkedList<IInferableInstance>();
             for (IInferableInstance unfold:possibleUnfold) {
                 toAddToBody.add((IInferableInstance) unfold.performSubstitutions(subst));
-                newUnfoldedDenial.getUniversalVariables().addAll(unfold.getVariables());
+                if (!(unfold instanceof EqualityInstance)) { // TODO: instanceof
+                    newUniversalVariables.addAll(unfold.getVariables());
+                }
             }
             newUnfoldedDenial.getBody().addAll(0,toAddToBody);
-
+            newUnfoldedDenial.getUniversalVariables().addAll(newUniversalVariables);
             newUnfoldedDenials.add(newUnfoldedDenial);
         }
 
@@ -275,11 +275,13 @@ public abstract class RuleNodeVisitor {
             currentGoal = (EqualityInstance) newCurrentDenial.getBody().remove(0);
         }
 
-        if (currentGoal.getLeft() instanceof ConstantInstance) {  // c=c
-            boolean unificationSuccess = currentGoal.unifyLeftRight(new HashMap<VariableInstance, IUnifiableAtomInstance>()); // Blank assignments as should be just constants.
+        if (currentGoal.getLeft() instanceof ConstantInstance) {  // c=c or for all X c=X
+            HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
+            boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments); // Blank assignments as should be just constants.
             newNestedDenials.add(newCurrentDenial);
             if (unificationSuccess) {
                 childNode = constructNegativeChildNode(new TrueInstance(),newNestedDenials,newRestOfGoals,ruleNode);
+                childNode.setAssignments(newAssignments);
             }
             else {
                 childNode = constructNegativeChildNode(new FalseInstance(),newNestedDenials,newRestOfGoals,ruleNode);
@@ -604,6 +606,7 @@ public abstract class RuleNodeVisitor {
         if (assignments == null) {
             child.setNodeMark(RuleNode.NodeMark.FAILED);
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality solver failed on\n"+child);
+            parent.getChildren().add(child);
         }
         else { // Equality solver succeeded.
             child.setAssignments(assignments);
