@@ -6,8 +6,12 @@ package uk.co.mtford.jalp.abduction.logic.instance;
 
 import choco.kernel.model.variables.Variable;
 import org.apache.log4j.Logger;
+import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.list.ConstantListInstance;
+import uk.co.mtford.jalp.abduction.rules.F2RuleNode;
+import uk.co.mtford.jalp.abduction.rules.F2bRuleNode;
+import uk.co.mtford.jalp.abduction.rules.RuleNode;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.*;
@@ -215,4 +219,15 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
             return true;
         }
     }
+
+    @Override
+    public RuleNode getNegativeRootRuleNode(IInferableInstance newGoal, AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
+        if (nestedDenials.get(0).getUniversalVariables().contains(this)) {
+            return new F2bRuleNode(abductiveFramework,newGoal,goals,nestedDenials);
+        }
+        else {
+            return new F2RuleNode(abductiveFramework,newGoal,goals,nestedDenials);
+        }
+    }
+
 }

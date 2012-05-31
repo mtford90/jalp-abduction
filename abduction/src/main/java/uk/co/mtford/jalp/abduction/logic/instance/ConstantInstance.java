@@ -5,7 +5,10 @@
 package uk.co.mtford.jalp.abduction.logic.instance;
 
 import org.apache.log4j.Logger;
+import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
+import uk.co.mtford.jalp.abduction.rules.F2RuleNode;
+import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
 import java.util.*;
 
@@ -74,6 +77,11 @@ public abstract class ConstantInstance implements ITermInstance, IUnifiableAtomI
     @Override
     public boolean acceptUnifyVisitor(IUnifiableAtomInstance unifiableAtom, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
         return unifiableAtom.unify(this,assignment);
+    }
+
+    @Override
+    public RuleNode getNegativeRootRuleNode(IInferableInstance newGoal, AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
+        return new F2RuleNode(abductiveFramework,newGoal,goals,nestedDenials);
     }
 
 

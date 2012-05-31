@@ -5,9 +5,11 @@ import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.InListConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.NegativeConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.list.ListInstance;
 import uk.co.mtford.jalp.abduction.rules.*;
 
 import java.util.*;
@@ -512,6 +514,52 @@ public abstract class RuleNodeVisitor {
         childNode.getStore().constraints.add(currentGoal);
         newChildNodes.add(childNode);
         expandNode(ruleNode,newChildNodes);
+
+    }
+
+    public void visit(F2bRuleNode ruleNode) {
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Applying F2b to node.");
+        // Very much like D2.
+        // Make copies of the denial and perform an assignment to the variable for each element in the domain
+        // of X. For now this just supports a list.
+
+        InListConstraintInstance constraintInstance = (InListConstraintInstance) ruleNode.getCurrentGoal();
+
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
+        List<DenialInstance> newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
+        DenialInstance newCurrentDenial = newNestedDenials.remove(0).shallowClone();
+
+        IInferableInstance newGoal;
+
+        RuleNode childNode;
+
+        VariableInstance variable = (VariableInstance) constraintInstance.getLeft();
+        LinkedList<ConstantInstance> constantList = ((ListInstance)constraintInstance.getRight()).getList();
+
+        LinkedList<DenialInstance> newDenials = new LinkedList<DenialInstance>();
+
+        for (ConstantInstance constant:constantList) {
+            Map<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
+            boolean unificationSuccess = variable.unify(constant,newAssignments);
+            if (unificationSuccess) {
+                DenialInstance newDenialInstance = (DenialInstance) newCurrentDenial.deepClone(newAssignments);
+                newDenials.add(newDenialInstance);
+            }
+        }
+
+        if (newNestedDenials.isEmpty()) {
+            newRestOfGoals.addAll(0,newDenials);
+            newGoal = newRestOfGoals.remove(0);
+            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+        }
+
+        else {
+            newNestedDenials.get(0).getBody().addAll(0,newDenials);
+            newGoal = newNestedDenials.get(0).getBody().remove(0);
+            childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+        }
+
+        expandNode(ruleNode,childNode);
 
     }
 

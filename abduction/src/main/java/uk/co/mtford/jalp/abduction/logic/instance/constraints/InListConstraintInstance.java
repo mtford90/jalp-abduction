@@ -1,7 +1,11 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
+import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.rules.F2RuleNode;
+import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,6 +23,11 @@ public abstract class InListConstraintInstance extends ConstraintInstance {
     @Override
     public String toString () {
         return left + " in "+ right;
+    }
+
+    @Override
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
+        return left.getNegativeRootRuleNode(this,abductiveFramework,nestedDenials,goals);
     }
 
 }

@@ -1,14 +1,11 @@
 package uk.co.mtford.jalp.abduction.logic.instance.list;
 
-import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.ITermInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.VariableInstance;
+import uk.co.mtford.jalp.abduction.AbductiveFramework;
+import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.rules.F2RuleNode;
+import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,5 +38,10 @@ public abstract class ListInstance<E extends ITermInstance> implements ITermInst
     @Override
     public String toString () {
         return list.toString();
+    }
+
+    @Override
+    public RuleNode getNegativeRootRuleNode(IInferableInstance newGoal, AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
+        throw new UnsupportedOperationException(); // TODO Nested lists.
     }
 }
