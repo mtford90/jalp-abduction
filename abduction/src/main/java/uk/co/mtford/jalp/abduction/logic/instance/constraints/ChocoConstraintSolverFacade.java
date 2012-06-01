@@ -32,6 +32,14 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
         chocoVariables = new HashMap<ITermInstance, Variable>();
     }
 
+    public LinkedList<Constraint> getChocoConstraints() {
+        return chocoConstraints;
+    }
+
+    public HashMap<ITermInstance, Variable> getChocoVariables() {
+        return chocoVariables;
+    }
+
     @Override
     public List<Map<VariableInstance, IUnifiableAtomInstance>> executeSolver(Map<VariableInstance, IUnifiableAtomInstance> subst, List<IConstraintInstance> listConstraints) {
 
@@ -111,6 +119,8 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
 
         return newPossSubst;
     }
+
+
 
 
 }

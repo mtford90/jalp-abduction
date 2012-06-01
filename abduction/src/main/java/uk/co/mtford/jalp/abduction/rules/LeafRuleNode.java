@@ -58,6 +58,7 @@ public class LeafRuleNode extends RuleNode {
                         "delta* = " + store.denials + "\n" +
                         "epsilon = " + store.equalities + "\n" +
                         "fd = " + store.constraints + "\n\n" +
+                        "chocoFd = " + constraintSolver.getChocoConstraints() + "\n\n" +
                         "nodeType = " + this.getClass() + "\n" +
                         "nodeMark = " + this.getNodeMark() + "\n";
         return message;

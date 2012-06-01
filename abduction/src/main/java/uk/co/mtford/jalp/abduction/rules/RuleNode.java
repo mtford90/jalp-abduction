@@ -172,7 +172,9 @@ public abstract class RuleNode {
                 "delta* = " + store.denials + "\n" +
                 "epsilon = " + store.equalities + "\n" +
                 "fd = " + store.constraints + "\n\n" +
-                "nodeType = " + this.getClass() + "\n" +
+                        "chocoFd = " + constraintSolver.getChocoConstraints() + "\n\n" +
+
+                        "nodeType = " + this.getClass() + "\n" +
                 "nodeMark = " + this.getNodeMark() + "\n" +
                 "numChildren = " + this.getChildren().size();
         return message;
