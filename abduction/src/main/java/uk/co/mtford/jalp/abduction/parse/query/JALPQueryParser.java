@@ -2,16 +2,15 @@
 package uk.co.mtford.jalp.abduction.parse.query;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import uk.co.mtford.jalp.abduction.AbductiveFramework;
-import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
-import uk.co.mtford.jalp.abduction.Definition;
+
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.ConstantInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 public class JALPQueryParser implements JALPQueryParserConstants {
 

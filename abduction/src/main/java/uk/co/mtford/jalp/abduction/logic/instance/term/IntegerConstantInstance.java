@@ -1,9 +1,13 @@
-package uk.co.mtford.jalp.abduction.logic.instance;
+package uk.co.mtford.jalp.abduction.logic.instance.term;
 
+import choco.Choco;
 import choco.kernel.model.variables.Variable;
+import choco.kernel.model.variables.integer.IntegerConstantVariable;
 import org.apache.log4j.Logger;
-import uk.co.mtford.jalp.abduction.logic.instance.list.ConstantListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,8 +67,11 @@ public class IntegerConstantInstance extends ConstantInstance {
     }
 
     @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Variable> chocoVariables) {
-        throw new UnsupportedOperationException(); // TODO
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
+        if (!termToVarMap.containsKey(this)) {
+            termToVarMap.put(this,Choco.constant(value));
+        }
+        return true;
     }
 
     @Override

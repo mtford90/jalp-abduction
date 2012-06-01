@@ -7,6 +7,7 @@ package uk.co.mtford.jalp.abduction;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.*;
 

@@ -1,9 +1,11 @@
-package uk.co.mtford.jalp.abduction.logic.instance;
+package uk.co.mtford.jalp.abduction.logic.instance.term;
 
 import choco.kernel.model.variables.Variable;
 import org.apache.log4j.Logger;
-import uk.co.mtford.jalp.abduction.logic.instance.list.ConstantListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +66,7 @@ public class CharConstantInstance extends ConstantInstance {
     }
 
     @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Variable> chocoVariables) {
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
         throw new UnsupportedOperationException(); // Dealt with natively.
     }
 

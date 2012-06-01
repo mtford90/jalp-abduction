@@ -1,6 +1,8 @@
 package uk.co.mtford.jalp.abduction.logic.instance;
 
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.ConstantInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.List;
 import java.util.Map;

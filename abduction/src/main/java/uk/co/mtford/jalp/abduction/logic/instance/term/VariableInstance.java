@@ -2,19 +2,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.mtford.jalp.abduction.logic.instance;
+package uk.co.mtford.jalp.abduction.logic.instance.term;
 
 import choco.kernel.model.variables.Variable;
+import choco.kernel.model.variables.integer.IntegerVariable;
+import choco.kernel.model.variables.set.SetVariable;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
+import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.list.ConstantListInstance;
 import uk.co.mtford.jalp.abduction.rules.F2RuleNode;
 import uk.co.mtford.jalp.abduction.rules.F2bRuleNode;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
+import uk.co.mtford.jalp.abduction.tools.NameGenerator;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.*;
+
+import static choco.Choco.makeIntVar;
+import static choco.Choco.makeSetVar;
 
 /**
  * @author mtford
@@ -194,8 +200,12 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
     }
 
     @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Variable> chocoVariables) {
-        throw new UnsupportedOperationException(); // TODO
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
+        if (!termToVarMap.containsKey(this)) {
+            IntegerVariable var = makeIntVar(name,Integer.MIN_VALUE,Integer.MAX_VALUE);
+            termToVarMap.put(this,var);
+        }
+        return true;
     }
 
     @Override

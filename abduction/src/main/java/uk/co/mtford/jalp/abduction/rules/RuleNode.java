@@ -5,9 +5,9 @@ import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
-import uk.co.mtford.jalp.abduction.logic.instance.constraints.ConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
 import java.util.HashMap;
@@ -38,6 +38,7 @@ public abstract class RuleNode {
     protected AbductiveFramework abductiveFramework; // (P,A,IC),Theta
     protected NodeMark nodeMark; // Defines whether or not leaf node or search node.
     protected List<RuleNode> children; // Next states.
+    protected ChocoConstraintSolverFacade constraintSolver;
 
     public RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals) {
         children = new LinkedList<RuleNode>();
@@ -46,6 +47,7 @@ public abstract class RuleNode {
         this.abductiveFramework = abductiveFramework;
         this.currentGoal = goal;
         this.nextGoals = restOfGoals;
+        this.constraintSolver=new ChocoConstraintSolverFacade();
         store = new Store();
     }
 
@@ -57,6 +59,7 @@ public abstract class RuleNode {
         this.abductiveFramework = abductiveFramework;
         this.currentGoal = goal;
         this.nextGoals = restOfGoals;
+        this.constraintSolver=new ChocoConstraintSolverFacade();
         this.nodeMark = nodeMark.UNEXPANDED;
 
     }
@@ -64,6 +67,14 @@ public abstract class RuleNode {
     protected RuleNode() {
         nodeMark = nodeMark.UNEXPANDED;
     } // For use whilst cloning.
+
+    public ChocoConstraintSolverFacade getConstraintSolver() {
+        return constraintSolver;
+    }
+
+    public void setConstraintSolver(ChocoConstraintSolverFacade constraintSolver) {
+        this.constraintSolver = constraintSolver;
+    }
 
     public List<RuleNode> getChildren() {
         return children;
@@ -137,8 +148,14 @@ public abstract class RuleNode {
     }
 
     public List<Map<VariableInstance, IUnifiableAtomInstance>> constraintSolve() {
-        ChocoConstraintSolverFacade constraintSolver = new ChocoConstraintSolverFacade();
-        return constraintSolver.executeSolver(new HashMap<VariableInstance,IUnifiableAtomInstance>(assignments),new LinkedList<IConstraintInstance>(store.constraints));
+        LinkedList<IConstraintInstance> constraints = new LinkedList<IConstraintInstance>();
+        for (IConstraintInstance d:store.constraints) {
+            constraints.add((IConstraintInstance) d.performSubstitutions(assignments));
+        }
+        List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst
+                = constraintSolver.executeSolver(new HashMap<VariableInstance,IUnifiableAtomInstance>(assignments),constraints);
+        store.constraints.removeAll(store.constraints);
+        return possSubst;
     }
 
     public abstract RuleNode shallowClone();

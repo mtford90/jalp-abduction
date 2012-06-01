@@ -1,6 +1,5 @@
 package uk.co.mtford.jalp.abduction.logic.instance;
 
-import com.sun.org.apache.bcel.internal.classfile.ConstantNameAndType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +7,10 @@ import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.JALPSystem;
 import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.ConstantInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
 import java.io.FileNotFoundException;
@@ -461,6 +464,50 @@ public class ExampleTest {
     }
 
     @Test
+    public void verySimpleConstantNegativeConstraintTest3() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple-negative.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance X = new VariableInstance("X");
+        PredicateInstance q = new PredicateInstance("q",X);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+    }
+
+    @Test
+    public void verySimpleIntegerConstraintTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple-integer.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        IntegerConstantInstance three = new IntegerConstantInstance(3);
+        PredicateInstance q = new PredicateInstance("q",three);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+    }
+
+    @Test
+    public void verySimpleIntegerConstraintTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple-integer.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        IntegerConstantInstance three = new IntegerConstantInstance(5);
+        PredicateInstance q = new PredicateInstance("q",three);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==0);
+    }
+
+    @Test
+    public void verySimpleIntegerConstraintTest3() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/very-simple-integer.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance X = new VariableInstance("X");
+        PredicateInstance q = new PredicateInstance("q",X);
+        query.add(q);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==3);
+    }
+
+    @Test
     public void verySimpleIntegerNegativeConstraintTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/very-simple-negative-integer.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
@@ -492,6 +539,64 @@ public class ExampleTest {
         List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
         assertTrue(result.size()==1);
     }
+
+    @Test
+    public void simpleConstraintTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/simple.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance X = new VariableInstance("X");
+        PredicateInstance p = new PredicateInstance("p",X);
+        query.add(p);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+        Result resultOne = result.remove(0);
+        JALPSystem.reduceResult(resultOne);
+        assertTrue(resultOne.getAssignments().get(X).equals(new IntegerConstantInstance(1)));
+    }
+
+    @Test
+    public void simpleConstraintTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/simple.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(1));
+        query.add(p);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+    }
+
+    @Test
+    public void simpleConstraintTest3() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/simple.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(2));
+        query.add(p);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==0);
+    }
+
+    @Test
+    public void simpleConstraintTest4() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/simple.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(3));
+        query.add(p);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==0);
+    }
+
+    @Test
+    public void simpleConstraintTest5() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/simple.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(4));
+        query.add(p);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==0);
+    }
+
+
+
+
 
 
 

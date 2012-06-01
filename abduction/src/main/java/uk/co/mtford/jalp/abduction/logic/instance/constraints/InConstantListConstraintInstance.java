@@ -1,9 +1,11 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
 import choco.kernel.model.constraints.Constraint;
+import choco.kernel.model.variables.Variable;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.logic.instance.list.ConstantListInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.list.IntegerListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.ConstantListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.ITermInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -39,16 +41,17 @@ public class InConstantListConstraintInstance  extends InListConstraintInstance 
     }
 
     @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables) {
         return left.inList((ConstantListInstance) right,possSubst);
     }
 
     @Override
-    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
+    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables) {
         List<Map<VariableInstance,IUnifiableAtomInstance>> newPossSubst = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>(possSubst);
         boolean reduceSuccess = left.inList((ConstantListInstance) right,newPossSubst);
         boolean trueAndMadeSubst = reduceSuccess && newPossSubst.size()>possSubst.size();
         boolean notInList = trueAndMadeSubst || !reduceSuccess;
         return notInList;
     }
+
 }

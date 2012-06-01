@@ -5,6 +5,7 @@ import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.List;
 import java.util.Map;

@@ -1,5 +1,7 @@
 package uk.co.mtford.jalp.abduction.logic.instance;
 
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
+
 import java.util.Map;
 import java.util.Set;
 

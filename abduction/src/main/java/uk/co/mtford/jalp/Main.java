@@ -7,14 +7,11 @@ import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
-import uk.co.mtford.jalp.abduction.parse.program.TokenMgrError;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
-import uk.co.mtford.jalp.abduction.rules.LeafRuleNode;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
-import uk.co.mtford.jalp.abduction.rules.visitor.FifoRuleNodeVisitor;
-import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;

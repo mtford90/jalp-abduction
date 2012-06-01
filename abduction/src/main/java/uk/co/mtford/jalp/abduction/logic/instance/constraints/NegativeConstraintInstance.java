@@ -1,10 +1,14 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
 import choco.kernel.model.constraints.Constraint;
+import choco.kernel.model.variables.Variable;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.term.ITermInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,12 +63,13 @@ public class NegativeConstraintInstance implements IConstraintInstance {
     }
 
     @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
-        return constraintInstance.reduceToNegativeChoco(possSubst,chocoConstraints);
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables) {
+        return constraintInstance.reduceToNegativeChoco(possSubst, chocoConstraints,chocoVariables);
     }
 
     @Override
-    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints) {
-        return constraintInstance.reduceToChoco(possSubst,chocoConstraints);
+    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables) {
+        return constraintInstance.reduceToChoco(possSubst, chocoConstraints,chocoVariables);
     }
+
 }

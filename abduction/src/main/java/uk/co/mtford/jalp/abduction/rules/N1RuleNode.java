@@ -4,7 +4,7 @@ import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.VariableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
 import java.util.HashMap;
@@ -41,6 +41,8 @@ public class N1RuleNode extends PositiveRuleNode {
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
         newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
+        newRuleNode.constraintSolver = constraintSolver;
+
         return newRuleNode;
     }
 

@@ -5,6 +5,7 @@
 package uk.co.mtford.jalp.abduction.logic.instance;
 
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.NegativeFalseRuleNode;
 import uk.co.mtford.jalp.abduction.rules.PositiveFalseRuleNode;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;

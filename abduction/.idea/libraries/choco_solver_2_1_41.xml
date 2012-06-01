@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="choco-solver-2.1.41">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Code Library/choco-2.1.4/choco-solver-2.1.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -9,7 +9,9 @@ import uk.co.mtford.jalp.abduction.logic.instance.constraints.InListConstraintIn
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.NegativeConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.list.ListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.ListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.ConstantInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.*;
 
 import java.util.*;
@@ -40,10 +42,13 @@ public abstract class RuleNodeVisitor {
             newRuleNode = newGoal.getPositiveRootRuleNode(previousNode.getAbductiveFramework(), newRestOfGoals);
             newRuleNode.setStore(previousNode.getStore().shallowClone());
             newRuleNode.setAssignments(new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
+            newRuleNode.setConstraintSolver(previousNode.getConstraintSolver());
         }
         else {
             Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
             newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),assignments);
+            newRuleNode.setConstraintSolver(previousNode.getConstraintSolver());
+
         }
 
         return newRuleNode;
@@ -56,6 +61,7 @@ public abstract class RuleNodeVisitor {
         Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
         newRuleNode.setAssignments(assignments);
         newRuleNode.setStore(previousNode.getStore().shallowClone());
+        newRuleNode.setConstraintSolver(previousNode.getConstraintSolver());
         return newRuleNode;
     }
 
@@ -555,7 +561,7 @@ public abstract class RuleNodeVisitor {
         }
 
         else {
-            newNestedDenials.get(0).getBody().addAll(0,newDenials);
+            newNestedDenials.get(0).getBody().addAll(0, newDenials);
             newGoal = null;
             if (!newNestedDenials.get(0).getBody().isEmpty()) newGoal = newNestedDenials.get(0).getBody().remove(0);
             childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);

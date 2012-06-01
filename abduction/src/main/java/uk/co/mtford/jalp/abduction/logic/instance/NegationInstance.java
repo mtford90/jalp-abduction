@@ -6,6 +6,7 @@ package uk.co.mtford.jalp.abduction.logic.instance;
 
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.N1RuleNode;
 import uk.co.mtford.jalp.abduction.rules.N2RuleNode;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;

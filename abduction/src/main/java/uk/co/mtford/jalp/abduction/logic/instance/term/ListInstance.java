@@ -1,8 +1,9 @@
-package uk.co.mtford.jalp.abduction.logic.instance.list;
+package uk.co.mtford.jalp.abduction.logic.instance.term;
 
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.rules.F2RuleNode;
+import uk.co.mtford.jalp.abduction.logic.instance.term.ITermInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
 import java.util.*;
