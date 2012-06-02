@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author mtford
  */
-public class Store implements Cloneable {
+public class Store {
 
     private static final Logger LOGGER = Logger.getLogger(Store.class);
 

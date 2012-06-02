@@ -28,12 +28,16 @@ public class Result {
         this.root = root;
     }
 
-    public Store getStore() {
-        return store;
+    public List<IInferableInstance> getQuery() {
+        return query;
     }
 
-    public void setStore(Store store) {
-        this.store = store;
+    public RuleNode getRoot() {
+        return root;
+    }
+
+    public Store getStore() {
+        return store;
     }
 
     public Map<VariableInstance, IUnifiableAtomInstance> getAssignments() {
@@ -44,11 +48,27 @@ public class Result {
         this.assignments = assignments;
     }
 
-    public List<IInferableInstance> getQuery() {
-        return query;
-    }
-
     public void setQuery(List<IInferableInstance> query) {
         this.query = query;
     }
+
+    public void setRoot(RuleNode root) {
+        this.root = root;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+
+    public String toString() {
+        String message =
+                        "assignments = " + assignments + "\n\n" +
+                        "delta = " + store.abducibles + "\n" +
+                        "delta* = " + store.denials + "\n" +
+                        "epsilon = " + store.equalities + "\n" +
+                        "fd = " + store.constraints + "\n";
+        return message;
+    }
+
 }

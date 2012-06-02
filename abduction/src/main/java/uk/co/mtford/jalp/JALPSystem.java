@@ -59,6 +59,10 @@ public class JALPSystem {
         }
     }
 
+    public void mergeFramework(String fileName) throws FileNotFoundException, ParseException {
+        mergeFramework(JALPParser.readFromFile(fileName));
+    }
+
     private void reset() {
         framework = new AbductiveFramework();
     }
@@ -144,7 +148,12 @@ public class JALPSystem {
         return results;
     }
 
-    public RuleNodeIterator getRuleNodeIterator(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
+    public List<Result> generateDebugFiles(String query, String folderName) throws IOException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        return generateDebugFiles(new LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query)),folderName);
+    }
+
+
+        public RuleNodeIterator getRuleNodeIterator(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
         return new RuleNodeIterator(query,heuristic);
     }
 
