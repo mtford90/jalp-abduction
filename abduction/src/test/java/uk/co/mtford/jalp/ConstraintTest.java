@@ -6,9 +6,14 @@ import org.junit.Test;
 import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.InIntegerListConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.NegativeConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
@@ -240,6 +245,31 @@ public class ConstraintTest {
         assertTrue(result.size()==0);
     }
 
+    /*
+    p(X) :- a(X), not q(X).
+    q(X) :- X in [1].
 
+    abducible(a(X)).
+
+    We expect to collect a FD not X in [1].
+    */
+    @Test
+    public void ungroundAbducible() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/abducible/unground-abducible.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance X = new VariableInstance("X");
+        PredicateInstance a = new PredicateInstance("p",X);
+        query.add(a);
+        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        assertTrue(result.size()==1);
+        Result resultOne = result.get(0);
+        JALPSystem.reduceResult(resultOne);
+        assertTrue(resultOne.getStore().abducibles.size()==1);
+        IUnifiableAtomInstance XAssignment = resultOne.getAssignments().get(X);
+        assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("a",XAssignment)));
+        IntegerListInstance list = new IntegerListInstance();
+        list.getList().add(new IntegerConstantInstance(1));
+        assertTrue(resultOne.getStore().constraints.contains(new NegativeConstraintInstance(new InIntegerListConstraintInstance(X, list))));
+    }
 
 }
