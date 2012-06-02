@@ -7,11 +7,10 @@ import choco.kernel.model.variables.set.SetVariable;
 import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.ITermInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,23 +25,23 @@ import static choco.Choco.*;
  */
 public class InIntegerListConstraintInstance extends InListConstraintInstance {
 
-    public InIntegerListConstraintInstance(ITermInstance left, IntegerListInstance right) {
+    public InIntegerListConstraintInstance(ITermInstance left, IntegerConstantListInstance right) {
         super(left, right);
     }
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new InIntegerListConstraintInstance((ITermInstance)left.performSubstitutions(substitutions), (IntegerListInstance) right.performSubstitutions(substitutions));
+        return new InIntegerListConstraintInstance((ITermInstance)left.performSubstitutions(substitutions), (IntegerConstantListInstance) right.performSubstitutions(substitutions));
     }
 
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new InIntegerListConstraintInstance((ITermInstance)left.deepClone(substitutions), (IntegerListInstance)right.deepClone(substitutions));
+        return new InIntegerListConstraintInstance((ITermInstance)left.deepClone(substitutions), (IntegerConstantListInstance)right.deepClone(substitutions));
     }
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new InIntegerListConstraintInstance((ITermInstance)left,(IntegerListInstance)right);
+        return new InIntegerListConstraintInstance((ITermInstance)left,(IntegerConstantListInstance)right);
     }
 
     @Override

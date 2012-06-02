@@ -9,7 +9,6 @@ import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,7 +68,7 @@ public class CarTest {
         List<Result> result = system.generateDebugFiles(query, "debug/cars");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALPSystem.reduceResult(resultOne);
+        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().abducibles.size() == 1);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("has_no_fuel",mycar)));
     }

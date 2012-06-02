@@ -20,11 +20,20 @@ public class Definition {
 
     private PredicateInstance head;
     private List<IInferableInstance> body;
-    private HashMap<String, VariableInstance> variables;
+    private HashMap<String, VariableInstance> variables; // TODO Get rid of?
 
     public Definition(PredicateInstance head, List<IInferableInstance> body,
                       HashMap<String, VariableInstance> variables) {
         this.body = body;
+        this.head = head;
+        this.variables = variables;
+    }
+
+    public Definition(PredicateInstance head, IInferableInstance[] body,
+                      HashMap<String, VariableInstance> variables) {
+        for (IInferableInstance instance:body) {
+            this.body.add(instance);
+        }
         this.head = head;
         this.variables = variables;
     }

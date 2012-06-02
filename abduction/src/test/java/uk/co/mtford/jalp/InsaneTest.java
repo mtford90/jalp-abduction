@@ -10,7 +10,6 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -99,7 +98,7 @@ public class InsaneTest {
         List<Result> result = system.generateDebugFiles(query, "debug/insane/insane-2");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
-        JALPSystem.reduceResult(resultOne);
+        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getAssignments().get(Y).equals(new CharConstantInstance("jane")));
     }
 
@@ -152,7 +151,7 @@ public class InsaneTest {
         List<Result> result = system.generateDebugFiles(query, "debug/insane/insane-constraint-2");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
-        JALPSystem.reduceResult(resultOne);
+        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getAssignments().get(Y).equals(new CharConstantInstance("jane")));
     }
 

@@ -9,7 +9,6 @@ import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,7 +62,7 @@ public class NotTest {
         List<Result> result = system.generateDebugFiles(query, "debug/negation/not");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
-        JALPSystem.reduceResult(resultOne);
+        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().denials.size()==1);
         assertTrue(resultOne.getStore().denials.get(0).getBody().size()==1);
         assertTrue(resultOne.getStore().denials.get(0).getBody().get(0).equals(new PredicateInstance("girl",jane)));

@@ -4,20 +4,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import uk.co.mtford.jalp.abduction.Result;
-import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.InIntegerListConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.NegativeConstraintInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,9 +64,9 @@ public class ConstraintTest {
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
         Result resultThree = result.get(2);
-        JALPSystem.reduceResult(resultOne);
-        JALPSystem.reduceResult(resultTwo);
-        JALPSystem.reduceResult(resultThree);
+        JALP.reduceResult(resultOne);
+        JALP.reduceResult(resultTwo);
+        JALP.reduceResult(resultThree);
         assertTrue(resultOne.getAssignments().get(X).equals(new CharConstantInstance("mary")));
         assertTrue(resultTwo.getAssignments().get(X).equals(new CharConstantInstance("bob")));
         assertTrue(resultThree.getAssignments().get(X).equals(new CharConstantInstance("john")));
@@ -178,7 +175,7 @@ public class ConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-test-1");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
-        JALPSystem.reduceResult(resultOne);
+        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getAssignments().get(X).equals(new IntegerConstantInstance(1)));
     }
 
@@ -264,11 +261,11 @@ public class ConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/constraint/unground-abducible");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALPSystem.reduceResult(resultOne);
+        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().abducibles.size()==1);
         IUnifiableAtomInstance XAssignment = resultOne.getAssignments().get(X);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("a",XAssignment)));
-        IntegerListInstance list = new IntegerListInstance();
+        IntegerConstantListInstance list = new IntegerConstantListInstance();
         list.getList().add(new IntegerConstantInstance(1));
         assertTrue(resultOne.getStore().constraints.contains(new NegativeConstraintInstance(new InIntegerListConstraintInstance(X, list))));
     }

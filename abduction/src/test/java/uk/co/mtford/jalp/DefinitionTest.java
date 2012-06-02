@@ -10,7 +10,6 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,8 +62,8 @@ public class DefinitionTest {
         assertTrue(result.size()==2);
         Result resultOne = result.remove(0);
         Result resultTwo = result.remove(0);
-        JALPSystem.reduceResult(resultOne);
-        JALPSystem.reduceResult(resultTwo);
+        JALP.reduceResult(resultOne);
+        JALP.reduceResult(resultTwo);
         assertTrue(resultOne.getAssignments().get(Y).equals(new CharConstantInstance("mary")));
         assertTrue(resultTwo.getAssignments().get(Y).equals(new CharConstantInstance("jane")));
     }

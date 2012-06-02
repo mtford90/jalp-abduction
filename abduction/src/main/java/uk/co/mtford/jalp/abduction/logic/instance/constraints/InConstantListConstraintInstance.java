@@ -3,7 +3,7 @@ package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 import choco.kernel.model.constraints.Constraint;
 import choco.kernel.model.variables.Variable;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.logic.instance.term.ConstantListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.ITermInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
@@ -21,34 +21,34 @@ import java.util.Map;
  */
 public class InConstantListConstraintInstance  extends InListConstraintInstance {
 
-    public InConstantListConstraintInstance(ITermInstance left, ConstantListInstance right) {
+    public InConstantListConstraintInstance(ITermInstance left, CharConstantListInstance right) {
         super(left, right);
     }
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new InConstantListConstraintInstance((ITermInstance)left.performSubstitutions(substitutions), (ConstantListInstance) right.performSubstitutions(substitutions));
+        return new InConstantListConstraintInstance((ITermInstance)left.performSubstitutions(substitutions), (CharConstantListInstance) right.performSubstitutions(substitutions));
     }
 
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new InConstantListConstraintInstance((ITermInstance)left.deepClone(substitutions), (ConstantListInstance)right.deepClone(substitutions));
+        return new InConstantListConstraintInstance((ITermInstance)left.deepClone(substitutions), (CharConstantListInstance)right.deepClone(substitutions));
     }
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new InConstantListConstraintInstance((ITermInstance)left,(ConstantListInstance)right);
+        return new InConstantListConstraintInstance((ITermInstance)left,(CharConstantListInstance)right);
     }
 
     @Override
     public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables) {
-        return left.inList((ConstantListInstance) right,possSubst);
+        return left.inList((CharConstantListInstance) right,possSubst);
     }
 
     @Override
     public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables) {
         List<Map<VariableInstance,IUnifiableAtomInstance>> newPossSubst = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>(possSubst);
-        boolean reduceSuccess = left.inList((ConstantListInstance) right,newPossSubst);
+        boolean reduceSuccess = left.inList((CharConstantListInstance) right,newPossSubst);
         boolean trueAndMadeSubst = reduceSuccess && newPossSubst.size()>possSubst.size();
         boolean notInList = trueAndMadeSubst || !reduceSuccess;
         return notInList;

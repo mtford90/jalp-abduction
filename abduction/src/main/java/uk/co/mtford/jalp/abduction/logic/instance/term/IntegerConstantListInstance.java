@@ -5,6 +5,7 @@ import choco.kernel.model.variables.set.SetVariable;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.tools.NameGenerator;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +19,27 @@ import static choco.Choco.makeSetVar;
  * Time: 10:24
  * To change this template use File | Settings | File Templates.
  */
-public class IntegerListInstance extends ListInstance<IntegerConstantInstance> {
+public class IntegerConstantListInstance extends ListInstance<IntegerConstantInstance> {
+    public IntegerConstantListInstance() {
+        super();
+    }
+
+    public IntegerConstantListInstance(Collection<IntegerConstantInstance> integers) {
+        super();
+        this.getList().addAll(integers);
+    }
+
+    public IntegerConstantListInstance(IntegerConstantInstance[] integers) {
+        super();
+        for (IntegerConstantInstance instance:integers) {
+            this.getList().add(instance);
+        }
+    }
+
+
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        IntegerListInstance newListInstance = new IntegerListInstance();
+        IntegerConstantListInstance newListInstance = new IntegerConstantListInstance();
         for (IntegerConstantInstance term:list) {
             newListInstance.getList().add((IntegerConstantInstance) term.performSubstitutions(substitutions));
         }
@@ -30,7 +48,7 @@ public class IntegerListInstance extends ListInstance<IntegerConstantInstance> {
 
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        IntegerListInstance newListInstance = new IntegerListInstance();
+        IntegerConstantListInstance newListInstance = new IntegerConstantListInstance();
         for (IntegerConstantInstance term:list) {
             newListInstance.getList().add((IntegerConstantInstance) term.deepClone(substitutions));
         }
@@ -39,7 +57,7 @@ public class IntegerListInstance extends ListInstance<IntegerConstantInstance> {
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        IntegerListInstance newListInstance = new IntegerListInstance();
+        IntegerConstantListInstance newListInstance = new IntegerConstantListInstance();
         for (IntegerConstantInstance term:list) {
             newListInstance.getList().add(term);
         }
@@ -56,7 +74,7 @@ public class IntegerListInstance extends ListInstance<IntegerConstantInstance> {
     }
 
     @Override
-    public boolean inList(ConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
+    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
         throw new UnsupportedOperationException();
     }
 

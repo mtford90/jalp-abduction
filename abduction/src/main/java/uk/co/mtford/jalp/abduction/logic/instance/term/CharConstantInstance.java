@@ -71,7 +71,7 @@ public class CharConstantInstance extends ConstantInstance {
     }
 
     @Override
-    public boolean inList(ConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
+    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
         return constantList.getList().contains(this);
     }
 }

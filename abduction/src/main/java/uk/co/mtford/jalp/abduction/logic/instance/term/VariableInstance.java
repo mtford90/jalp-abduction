@@ -6,7 +6,6 @@ package uk.co.mtford.jalp.abduction.logic.instance.term;
 
 import choco.kernel.model.variables.Variable;
 import choco.kernel.model.variables.integer.IntegerVariable;
-import choco.kernel.model.variables.set.SetVariable;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
@@ -14,7 +13,6 @@ import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.rules.F2RuleNode;
 import uk.co.mtford.jalp.abduction.rules.F2bRuleNode;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
-import uk.co.mtford.jalp.abduction.tools.NameGenerator;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.*;
@@ -209,7 +207,7 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
     }
 
     @Override
-    public boolean inList(ConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
+    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
         if (possSubst.isEmpty()) {
             Map<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
             possSubst.add(subst);

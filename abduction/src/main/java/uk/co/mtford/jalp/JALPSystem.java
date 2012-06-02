@@ -2,14 +2,10 @@ package uk.co.mtford.jalp;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.*;
-import org.apache.log4j.spi.RootLogger;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
@@ -51,64 +47,6 @@ public class JALPSystem {
 
     public JALPSystem() {
         framework = new AbductiveFramework();
-    }
-
-    public static void getVisualizer(String folderName, RuleNode root) throws IOException {
-        File visualizer = new File("visualizer2");
-        File destination = new File(folderName);
-        FileUtils.copyDirectory(visualizer,destination);
-        String js = "var data=\""+root.toJSON()+"\"";
-        FileUtils.writeStringToFile(new File(folderName+"/output.js"),js);
-    }
-
-    public static void reduceResult(Result result) {
-        List<PredicateInstance> substAbducibles = new LinkedList<PredicateInstance>();
-        List<DenialInstance> substDenials = new LinkedList<DenialInstance>();
-        List<IEqualityInstance> substEqualities = new LinkedList<IEqualityInstance>();
-        List<IConstraintInstance> substConstraints = new LinkedList<IConstraintInstance>();
-        List<VariableInstance> queryVariables = new LinkedList<VariableInstance>();
-
-        for (IInferableInstance inferable:result.getQuery()) queryVariables.addAll(inferable.getVariables());
-
-        Set<VariableInstance> relevantVariables = new HashSet<VariableInstance>(queryVariables);
-        HashMap<VariableInstance,IUnifiableAtomInstance> relevantAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-
-
-        for (PredicateInstance a:result.getStore().abducibles) {
-            substAbducibles.add((PredicateInstance)a.performSubstitutions(result.getAssignments()));
-        }
-
-        for (DenialInstance d:result.getStore().denials) {
-            substDenials.add((DenialInstance) d.performSubstitutions(result.getAssignments()));
-        }
-
-        for (IEqualityInstance e:result.getStore().equalities) {
-            substEqualities.add((IEqualityInstance) e.performSubstitutions(result.getAssignments()));
-        }
-
-        for (IConstraintInstance c:result.getStore().constraints) {
-            substConstraints.add((IConstraintInstance)c.performSubstitutions(result.getAssignments()));
-        }
-
-        Set<IUnifiableAtomInstance> keySet = new HashSet<IUnifiableAtomInstance>(result.getAssignments().keySet());
-
-        for (IUnifiableAtomInstance key:keySet) {
-
-
-            if (queryVariables.contains(key)) {
-                IUnifiableAtomInstance value = result.getAssignments().get(key);
-
-                while (keySet.contains(value)) value = result.getAssignments().get(value);
-                relevantAssignments.put((VariableInstance) key,value);
-            }
-        }
-
-        result.setAssignments(relevantAssignments);
-        result.getStore().abducibles=substAbducibles;
-        result.getStore().denials = substDenials;
-        result.getStore().equalities=substEqualities;
-        result.getStore().constraints=substConstraints;
-
     }
 
     public void mergeFramework(AbductiveFramework newFramework) {
@@ -191,34 +129,19 @@ public class JALPSystem {
         newAppender.setName("R");
         Logger.getRootLogger().addAppender(newAppender);
         LOGGER.info("Abductive framework is:\n"+framework);
-        LOGGER.info("Query is:"+query);
-
-
+        LOGGER.info("Query is:" + query);
         List<Result> results = new LinkedList<Result>();
         RuleNode root = processQuery(query,Heuristic.NONE,results);
-        getVisualizer(folderName+"/visualizer",root);
-        Logger.getRootLogger().removeAppender("R");
-        Logger.getRootLogger().addAppender(R);
+        JALP.getVisualizer(folderName + "/visualizer", root);
         int rNum = 1;
+        LOGGER.info("Found "+results.size()+" results");
         for (Result r:results) {
             LOGGER.info("Result "+rNum+" is\n"+r);
             rNum++;
         }
+        Logger.getRootLogger().removeAppender("R");
+        Logger.getRootLogger().addAppender(R);
         return results;
-    }
-
-    public RuleNode getDerivationTree(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
-        RuleNodeIterator iterator = new RuleNodeIterator(query,heuristic);
-        RuleNode root = iterator.getCurrentNode();
-        performDerivation(iterator);
-        return root;
-    }
-
-    public String getDerivationTreeJSON(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
-        RuleNodeIterator iterator = new RuleNodeIterator(query,heuristic);
-        RuleNode root = iterator.getCurrentNode();
-        performDerivation(iterator);
-        return "var data=\""+root.toJSON()+"\"";
     }
 
     public RuleNodeIterator getRuleNodeIterator(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
@@ -265,11 +188,11 @@ public class JALPSystem {
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException(); // TODO
+            throw new UnsupportedOperationException();
         }
     }
 
-    public enum Heuristic {
+    public enum Heuristic { // TODO
         NONE
     }
 }

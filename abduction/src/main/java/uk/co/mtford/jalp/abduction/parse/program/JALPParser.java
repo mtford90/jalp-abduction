@@ -14,8 +14,8 @@ import uk.co.mtford.jalp.abduction.logic.instance.constraints.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.Definition;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.logic.instance.term.ConstantListInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.ListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.*;
 
@@ -294,10 +294,10 @@ public class JALPParser implements JALPParserConstants {
     jj_consume_token(IN);
     if (jj_2_19(2)) {
       right = CharConstantList(variablesSoFar);
-      {if (true) return new InConstantListConstraintInstance(left,(ConstantListInstance)right);}
+      {if (true) return new InConstantListConstraintInstance(left,(CharConstantListInstance)right);}
     } else if (jj_2_20(2)) {
       right = IntegerConstantList(variablesSoFar);
-      {if (true) return new InIntegerListConstraintInstance(left,(IntegerListInstance)right);}
+      {if (true) return new InIntegerListConstraintInstance(left,(IntegerConstantListInstance)right);}
     } else {
       jj_consume_token(-1);
       throw new ParseException();
@@ -380,8 +380,8 @@ public class JALPParser implements JALPParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public IntegerListInstance IntegerConstantList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IntegerListInstance listInstance = new IntegerListInstance();
+  final public IntegerConstantListInstance IntegerConstantList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+    IntegerConstantListInstance listInstance = new IntegerConstantListInstance();
     IntegerConstantInstance constantInstance;
     jj_consume_token(LSQBRACKET);
     constantInstance = IntegerConstant();
@@ -402,8 +402,8 @@ public class JALPParser implements JALPParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public ConstantListInstance CharConstantList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    ConstantListInstance listInstance = new ConstantListInstance();
+  final public CharConstantListInstance CharConstantList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+    CharConstantListInstance listInstance = new CharConstantListInstance();
     CharConstantInstance constantInstance;
     jj_consume_token(LSQBRACKET);
     constantInstance = CharConstant();

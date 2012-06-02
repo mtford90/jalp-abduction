@@ -2,7 +2,6 @@ package uk.co.mtford.jalp.abduction.logic.instance.term;
 
 import choco.Choco;
 import choco.kernel.model.variables.Variable;
-import choco.kernel.model.variables.integer.IntegerConstantVariable;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
@@ -75,7 +74,7 @@ public class IntegerConstantInstance extends ConstantInstance {
     }
 
     @Override
-    public boolean inList(ConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
+    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
         throw new UnsupportedOperationException(); // Dealt with by Choco.
     }
 }

@@ -10,7 +10,6 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,7 +66,7 @@ public class FliesTest {
         List<Result> result = system.generateDebugFiles(query, "debug/flies/flies-X");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALPSystem.reduceResult(resultOne);
+        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getAssignments().get(X).equals(new CharConstantInstance("sam")));
     }
 
@@ -147,7 +146,7 @@ public class FliesTest {
         List<Result> result = system.generateDebugFiles(query, "debug/flies/abnormal-X");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALPSystem.reduceResult(resultOne);
+        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getAssignments().get(X).equals(new CharConstantInstance("tweety")));
     }
 }
