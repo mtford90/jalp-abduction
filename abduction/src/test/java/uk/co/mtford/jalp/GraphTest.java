@@ -12,6 +12,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class GraphTest {
 
      */
     @Test
-    public void graphTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/graph/graph.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -69,7 +70,7 @@ public class GraphTest {
         CharConstantInstance red = new CharConstantInstance("red");
         PredicateInstance has_colour = new PredicateInstance("has_colour",node1,red);
         query.add(has_colour);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/graph/graph-1");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALPSystem.reduceResult(resultOne);
@@ -99,7 +100,7 @@ public class GraphTest {
 
     */
     @Test
-    public void graphTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/graph/graph.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance C = new VariableInstance("C");
@@ -111,7 +112,7 @@ public class GraphTest {
         PredicateInstance has_colour2 = new PredicateInstance("has_colour",node2,D);
         query.add(has_colour1);
         query.add(has_colour2);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/graph/graph-2");
         assertTrue(result.size()==9); // Matches jiefeis ASystem implementation.
     }
 
@@ -135,7 +136,7 @@ public class GraphTest {
 
      */
     @Test
-    public void graph2Test1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graph2Test1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/graph/graph2.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -145,7 +146,7 @@ public class GraphTest {
         CharConstantInstance red = new CharConstantInstance("red");
         PredicateInstance has_colour = new PredicateInstance("has_colour",node1,red);
         query.add(has_colour);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/graph/graph2-1");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALPSystem.reduceResult(resultOne);
@@ -173,7 +174,7 @@ public class GraphTest {
     the same colour red.
     */
     @Test
-    public void graphConstraintTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphConstraintTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/graph/graph-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -182,7 +183,7 @@ public class GraphTest {
         CharConstantInstance red = new CharConstantInstance("red");
         PredicateInstance has_colour = new PredicateInstance("has_colour",node1,red);
         query.add(has_colour);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/graph/graph-constraint-1");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALPSystem.reduceResult(resultOne);
@@ -208,7 +209,7 @@ public class GraphTest {
     This is as per the result that ASystem gives.
     */
     @Test
-    public void graphConstraintTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphConstraintTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/graph/graph-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance C = new VariableInstance("C");
@@ -220,7 +221,7 @@ public class GraphTest {
         PredicateInstance has_colour2 = new PredicateInstance("has_colour",node2,D);
         query.add(has_colour1);
         query.add(has_colour2);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/graph/graph-constraint-2");
         assertTrue(result.size()==9); // Matches jiefeis ASystem implementation.
     }
 }

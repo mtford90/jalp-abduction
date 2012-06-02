@@ -10,6 +10,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,14 +53,14 @@ public class NotTest {
     Result should be that jane isnt a girl (denial).
      */
     @Test
-    public void notTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void notTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/negation/not.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance(("john"));
         CharConstantInstance jane = new CharConstantInstance("jane");
         PredicateInstance likes = new PredicateInstance("likes",john,jane);
         query.add(likes);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/negation/not");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALPSystem.reduceResult(resultOne);

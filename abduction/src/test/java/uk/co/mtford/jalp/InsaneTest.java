@@ -11,6 +11,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,14 +60,14 @@ public class InsaneTest {
     We expect 9 results. All the girls like all the guys, but the guys only like jane as maria is insane.
      */
     @Test
-    public void insaneTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void insaneTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/insane/insane.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/insane/insane-1");
         assertTrue(result.size()==9);
     }
 
@@ -88,14 +89,14 @@ public class InsaneTest {
    We expect one result where Y is assigned to jane, as maria is insane.
     */
     @Test
-    public void insaneTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void insaneTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/insane/insane.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/insane/insane-2");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALPSystem.reduceResult(resultOne);
@@ -116,14 +117,14 @@ public class InsaneTest {
    We expect nine results. The girls like all the guys, but the guys only like jane.
     */
     @Test
-    public void insaneConstraintTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void insaneConstraintTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/insane/insane-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/insane/insane-constraint-1");
         assertTrue(result.size()==9);
     }
 
@@ -141,14 +142,14 @@ public class InsaneTest {
    We expect one result where Y is assigned to jane, as maria is insane.
     */
     @Test
-    public void insaneConstraintTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void insaneConstraintTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/insane/insane-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/insane/insane-constraint-2");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALPSystem.reduceResult(resultOne);

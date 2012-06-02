@@ -10,6 +10,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,13 +60,13 @@ public class CarTest {
     Expected result is an abducible hypothesizing that the car has no fuel.
      */
     @Test
-    public void carDoesntStartTest() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void carDoesntStartTest() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/cars.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance mycar = new CharConstantInstance("mycar");
         PredicateInstance car_doesnt_start = new PredicateInstance("car_doesnt_start",mycar);
         query.add(car_doesnt_start);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/cars");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALPSystem.reduceResult(resultOne);

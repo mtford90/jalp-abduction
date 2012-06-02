@@ -1,6 +1,8 @@
 package uk.co.mtford.jalp;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.*;
+import org.apache.log4j.spi.RootLogger;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Result;
@@ -15,7 +17,7 @@ import uk.co.mtford.jalp.abduction.rules.RuleNode;
 import uk.co.mtford.jalp.abduction.rules.visitor.FifoRuleNodeVisitor;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -26,6 +28,38 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class JALPSystem {
+
+    private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
+
+    private AbductiveFramework framework;
+
+    public JALPSystem(AbductiveFramework framework) {
+        this.framework = framework;
+    }
+
+    public JALPSystem(String fileName) throws FileNotFoundException, ParseException {
+        framework = JALPParser.readFromFile(fileName);
+    }
+
+    public JALPSystem(String[] fileNames) {
+        try {
+            setFramework(fileNames);
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    public JALPSystem() {
+        framework = new AbductiveFramework();
+    }
+
+    public static void getVisualizer(String folderName, RuleNode root) throws IOException {
+        File visualizer = new File("visualizer2");
+        File destination = new File(folderName);
+        FileUtils.copyDirectory(visualizer,destination);
+        String js = "var data=\""+root.toJSON()+"\"";
+        FileUtils.writeStringToFile(new File(folderName+"/output.js"),js);
+    }
 
     public static void reduceResult(Result result) {
         List<PredicateInstance> substAbducibles = new LinkedList<PredicateInstance>();
@@ -77,33 +111,6 @@ public class JALPSystem {
 
     }
 
-    public enum Heuristic {
-        NONE
-    }
-
-    private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
-    private AbductiveFramework framework;
-
-    public JALPSystem(AbductiveFramework framework) {
-        this.framework = framework;
-    }
-
-    public JALPSystem(String fileName) throws FileNotFoundException, ParseException {
-        framework = JALPParser.readFromFile(fileName);
-    }
-
-    public JALPSystem(String[] fileNames) {
-        try {
-            setFramework(fileNames);
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-
-    public JALPSystem() {
-        framework = new AbductiveFramework();
-    }
-
     public void mergeFramework(AbductiveFramework newFramework) {
         if (framework == null) {
             framework = newFramework;
@@ -147,16 +154,24 @@ public class JALPSystem {
         return performDerivation(iterator);
     }
 
+    public RuleNode processQuery(List<IInferableInstance> query, Heuristic heuristic, List<Result> results) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, JALPException {
+        RuleNodeIterator iterator = new RuleNodeIterator(query,heuristic);
+        RuleNode root = iterator.getCurrentNode();
+        results.addAll(performDerivation(iterator));
+        return root;
+    }
+
     private List<Result> performDerivation(RuleNodeIterator iterator) {
         LinkedList<Result> resultList = new LinkedList<Result>();
         RuleNode currentNode = iterator.getCurrentNode();
+        RuleNode rootNode = currentNode;
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         query.add(currentNode.getCurrentGoal());
         query.addAll(currentNode.getNextGoals());
 
         while (iterator.hasNext()) {
             if (currentNode.getNodeMark()==RuleNode.NodeMark.SUCCEEDED) {
-                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query);
+                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query,rootNode);
                 resultList.add(result);
             }
             currentNode = iterator.next();
@@ -165,11 +180,45 @@ public class JALPSystem {
         return resultList;
     }
 
+    public List<Result> generateDebugFiles(List<IInferableInstance> query, String folderName) throws IOException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        File folder = new File(folderName);
+        FileUtils.touch(folder);
+        FileUtils.forceDelete(folder);
+        folder = new File(folderName);
+        Appender R = Logger.getRootLogger().getAppender("R");
+        Logger.getRootLogger().removeAppender("R");
+        FileAppender newAppender = new DailyRollingFileAppender(new PatternLayout("%d{dd-MM-yyyy HH:mm:ss} %C %L %-5p: %m%n"), folderName+"/log.txt", "'.'dd-MM-yyyy");
+        newAppender.setName("R");
+        Logger.getRootLogger().addAppender(newAppender);
+        LOGGER.info("Abductive framework is:\n"+framework);
+        LOGGER.info("Query is:"+query);
+
+
+        List<Result> results = new LinkedList<Result>();
+        RuleNode root = processQuery(query,Heuristic.NONE,results);
+        getVisualizer(folderName+"/visualizer",root);
+        Logger.getRootLogger().removeAppender("R");
+        Logger.getRootLogger().addAppender(R);
+        int rNum = 1;
+        for (Result r:results) {
+            LOGGER.info("Result "+rNum+" is\n"+r);
+            rNum++;
+        }
+        return results;
+    }
+
     public RuleNode getDerivationTree(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
         RuleNodeIterator iterator = new RuleNodeIterator(query,heuristic);
         RuleNode root = iterator.getCurrentNode();
         performDerivation(iterator);
         return root;
+    }
+
+    public String getDerivationTreeJSON(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
+        RuleNodeIterator iterator = new RuleNodeIterator(query,heuristic);
+        RuleNode root = iterator.getCurrentNode();
+        performDerivation(iterator);
+        return "var data=\""+root.toJSON()+"\"";
     }
 
     public RuleNodeIterator getRuleNodeIterator(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
@@ -218,5 +267,9 @@ public class JALPSystem {
         public void remove() {
             throw new UnsupportedOperationException(); // TODO
         }
+    }
+
+    public enum Heuristic {
+        NONE
     }
 }

@@ -10,6 +10,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,13 +63,13 @@ public class MedicalTest {
     Expect two results, either that john has a migraine, or jaundice and a stomach bug.
      */
     @Test
-    public void medicalHeadacheTest() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void medicalHeadacheTest() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");
         PredicateInstance headache = new PredicateInstance("headache",john);
         query.add(headache);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/medical/medical-headache");
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -103,13 +104,13 @@ public class MedicalTest {
    Expect one result: that john has a migraine.
     */
     @Test
-    public void medicalDizzinessTest() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void medicalDizzinessTest() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");
         PredicateInstance dizziness = new PredicateInstance("dizziness",john);
         query.add(dizziness);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/medical/medical-dizziness");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALPSystem.reduceResult(resultOne);
@@ -139,13 +140,13 @@ public class MedicalTest {
    Expect one result: that john has a stomach bug.
     */
     @Test
-    public void medicalSicknessTest() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void medicalSicknessTest() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");
         PredicateInstance sickness = new PredicateInstance("sickness",john);
         query.add(sickness);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/medical/medical-sickness");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALPSystem.reduceResult(resultOne);

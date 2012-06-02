@@ -18,6 +18,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -55,13 +56,13 @@ public class ConstraintTest {
     We expect three results i.e. an assignment to X of one of 3 in the list.
      */
     @Test
-    public void constantListTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void constantListTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/constant-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance q = new PredicateInstance("q",X);
         query.add(q);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/constant-list-1");
         assertTrue(result.size()==3);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -81,13 +82,13 @@ public class ConstraintTest {
    We expect to fail i.e. 'no'
     */
     @Test
-    public void constantListTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void constantListTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/constant-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance mike = new CharConstantInstance("mike");
         PredicateInstance q = new PredicateInstance("q",mike);
         query.add(q);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/constant-list-2");
         assertTrue(result.size()==0);
     }
 
@@ -98,13 +99,13 @@ public class ConstraintTest {
    We expect one result i.e. 'yes'
     */
     @Test
-    public void constantListTest3() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void constantListTest3() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/constant-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance bob = new CharConstantInstance("bob");
         PredicateInstance q = new PredicateInstance("q",bob);
         query.add(q);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/constant-list-3");
         assertTrue(result.size()==1);
     }
 
@@ -115,13 +116,13 @@ public class ConstraintTest {
     We expect 'yes'
      */
     @Test
-    public void integerListTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void integerListTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/integer-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance three = new IntegerConstantInstance(3);
         PredicateInstance q = new PredicateInstance("q",three);
         query.add(q);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/integer-list-1");
         assertTrue(result.size()==1);
     }
 
@@ -133,13 +134,13 @@ public class ConstraintTest {
    We expect 'no'
     */
     @Test
-    public void integerListTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void integerListTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/integer-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance three = new IntegerConstantInstance(5);
         PredicateInstance q = new PredicateInstance("q",three);
         query.add(q);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/integer-list-2");
         assertTrue(result.size()==0);
     }
 
@@ -151,13 +152,13 @@ public class ConstraintTest {
    We expect 3 results.
     */
     @Test
-    public void integerListTest3() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void integerListTest3() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/integer-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance q = new PredicateInstance("q",X);
         query.add(q);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/integer-list-3");
         assertTrue(result.size()==3);
     }
 
@@ -168,13 +169,13 @@ public class ConstraintTest {
     We expect one result: X/1
      */
     @Test
-    public void lessThanTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/less-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance p = new PredicateInstance("p",X);
         query.add(p);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-test-1");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALPSystem.reduceResult(resultOne);
@@ -188,12 +189,12 @@ public class ConstraintTest {
    We expect one result: yes
     */
     @Test
-    public void lessThanTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/less-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(1));
         query.add(p);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-test-2");
         assertTrue(result.size()==1);
     }
 
@@ -204,12 +205,12 @@ public class ConstraintTest {
    We expect one result no
     */
     @Test
-    public void lessThanTest3() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanTest3() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/less-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(2));
         query.add(p);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-test-3");
         assertTrue(result.size()==0);
     }
 
@@ -220,12 +221,12 @@ public class ConstraintTest {
    We expect result no
     */
     @Test
-    public void lessThanTest4() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanTest4() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/less-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(3));
         query.add(p);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-test-4");
         assertTrue(result.size()==0);
     }
 
@@ -236,12 +237,12 @@ public class ConstraintTest {
    We expect result no
     */
     @Test
-    public void lessThanTest5() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanTest5() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/less-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(4));
         query.add(p);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-test-5");
         assertTrue(result.size()==0);
     }
 
@@ -254,13 +255,13 @@ public class ConstraintTest {
     We expect to collect a FD not X in [1].
     */
     @Test
-    public void ungroundAbducible() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void ungroundAbducible() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/abducible/unground-abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance a = new PredicateInstance("p",X);
         query.add(a);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/unground-abducible");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALPSystem.reduceResult(resultOne);

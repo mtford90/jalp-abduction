@@ -701,6 +701,8 @@ public abstract class RuleNodeVisitor {
         return currentRuleNode;
     }
 
+
     protected abstract RuleNode chooseNextNode();
     public abstract boolean hasNextNode();
+
 }

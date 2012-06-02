@@ -14,6 +14,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,13 +55,13 @@ public class AbducibleTest {
     We expect to collect an abducible girl(Y).
      */
     @Test
-    public void abducibleTest1() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void abducibleTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/abducible/abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance likes = new PredicateInstance("likes",new CharConstantInstance("john"),Y);
         query.add(likes);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/abducible/abducible-test-1");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALPSystem.reduceResult(resultOne);
@@ -78,14 +79,14 @@ public class AbducibleTest {
    We expect to collect an abducible girl(jane).
     */
     @Test
-    public void abducibleTest2() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void abducibleTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/abducible/abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance(("john"));
         CharConstantInstance jane = new CharConstantInstance("jane");
         PredicateInstance likes = new PredicateInstance("likes",john,jane);
         query.add(likes);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/abducible/abducible-test-2");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALPSystem.reduceResult(resultOne);
@@ -104,13 +105,13 @@ public class AbducibleTest {
     We expect to collect an inequality X!=1
     */
     @Test
-    public void ungroundAbducible() throws FileNotFoundException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void ungroundAbducible() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/abducible/unground-abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance a = new PredicateInstance("p",X);
         query.add(a);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.generateDebugFiles(query, "debug/abducible/unground-abducible");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALPSystem.reduceResult(resultOne);

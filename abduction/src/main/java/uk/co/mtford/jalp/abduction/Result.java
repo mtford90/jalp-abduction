@@ -3,6 +3,7 @@ package uk.co.mtford.jalp.abduction;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
+import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
 import java.util.List;
 import java.util.Map;
@@ -16,13 +17,15 @@ import java.util.Map;
  */
 public class Result {
     private List<IInferableInstance> query;
+    private RuleNode root;
     private Store store;
     private Map<VariableInstance, IUnifiableAtomInstance> assignments;  // Theta
 
-    public Result(Store store,Map<VariableInstance, IUnifiableAtomInstance> assignments, List<IInferableInstance> query) {
+    public Result(Store store,Map<VariableInstance, IUnifiableAtomInstance> assignments, List<IInferableInstance> query, RuleNode root) {
         this.assignments = assignments;
         this.store = store;
         this.query = query;
+        this.root = root;
     }
 
     public Store getStore() {
