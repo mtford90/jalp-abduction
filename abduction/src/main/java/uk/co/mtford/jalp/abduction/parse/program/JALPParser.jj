@@ -27,7 +27,7 @@ Term -> (Variable | Constant | List)
 Parameter -> (Variable | Constant | Predicate)
 
 List -> IntegerConstantList | CharConstantList
-IntegerConstantList -> LSQBRACKET IntegerConstant (COMMA IntegerConstant)* RSQBRACKET
+IntegerConstantList -> LSQBRACKET IntegerConstant ... IntegerConstant RSQBRACKET
 CharConstantList -> LSQBRACKET CharConstant (COMMA CharConstant)* RSQBRACKET
 
 Variable -> UCASENAME

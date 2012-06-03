@@ -59,8 +59,12 @@ public class JALPSystem {
         }
     }
 
-    public void mergeFramework(String fileName) throws FileNotFoundException, ParseException {
-        mergeFramework(JALPParser.readFromFile(fileName));
+    public void mergeFramework(File file) throws FileNotFoundException, ParseException {
+        mergeFramework(JALPParser.readFromFile(file.getName()));
+    }
+
+    public void mergeFramework(String query) throws ParseException {
+        mergeFramework(JALPParser.readFromString(query));
     }
 
     private void reset() {

@@ -100,12 +100,10 @@ public class AbductiveFramework implements Cloneable {
 
     @Override
     public String toString() {
-        return "AbductiveFramework" + "\n" +
-                "{" + "\n" +
+        return
                 "P  = " + P + "\n" +
                 "A  = " + A + "\n" +
-                "IC = " + IC + "\n" +
-                "}";
+                "IC = " + IC + "\n";
     }
 
 }

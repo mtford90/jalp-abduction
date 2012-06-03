@@ -3,6 +3,7 @@ package uk.co.mtford.jalp;
 import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -59,13 +60,9 @@ public class Main {
             }
         }
 
-        if (fileNames.isEmpty()) {
-            printError("No files specified.");
-            System.exit(-1);
-        }
 
-        if (query==null) {
-            printError("No query specified.");
+        if (query!=null && !fileNames.isEmpty()) {
+            printError("You can't run a query when no abductive theory has been loaded.");
             System.exit(-1);
         }
 
@@ -74,7 +71,7 @@ public class Main {
         for (String fileName:fileNames) {
             System.out.println("Loading "+fileName);
             try {
-                system.mergeFramework(fileName);
+                system.mergeFramework(new File(fileName));
             } catch (FileNotFoundException e) {
                 printError("File "+fileName+" doesn't exist.");
             } catch (ParseException e) {
@@ -94,28 +91,35 @@ public class Main {
                 printError("Error parsing query.",e);
             }
         }
-        else {
-            try {
-                List<Result> results = system.processQuery(query, JALPSystem.Heuristic.NONE);
-                if (results.isEmpty()) {
-                    System.out.println("Found no explanation.");
-                }
-                else {
-                    int n = 1;
-                    for (Result r:results) {
-                        if (reduce) JALP.reduceResult(r);
-                        System.out.println("Result 1:\n"+r);
-                    }
-                }
 
-            } catch (JALPException e) {
-                printError("JALP encountered a problem.",e);
-            } catch (uk.co.mtford.jalp.abduction.parse.query.ParseException e) {
-                printError("Error parsing query.",e);
+        else {
+            if (query!=null) {
+                try {
+                    List<Result> results = system.processQuery(query, JALPSystem.Heuristic.NONE);
+                    if (results.isEmpty()) {
+                        System.out.println("Found no explanation.");
+                    }
+                    else {
+                        int n = 1;
+                        for (Result r:results) {
+                            if (reduce) JALP.reduceResult(r);
+                            System.out.println("Result 1:\n"+r);
+                        }
+                    }
+                    System.out.println("Exiting...");
+                } catch (JALPException e) {
+                    printError("JALP encountered a problem.",e);
+                } catch (uk.co.mtford.jalp.abduction.parse.query.ParseException e) {
+                    printError("Error parsing query.",e);
+                }
+            }
+            else {
+                JALPInterpreter jalpInterpreter = new JALPInterpreter(system);
+                jalpInterpreter.start();
             }
 
+
         }
-        System.out.println("Finished.");
 
     }
 }

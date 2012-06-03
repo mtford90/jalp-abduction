@@ -67,7 +67,7 @@ public class Result {
                         "delta = " + store.abducibles + "\n" +
                         "delta* = " + store.denials + "\n" +
                         "epsilon = " + store.equalities + "\n" +
-                        "fd = " + store.constraints + "\n";
+                        "fd = " + store.constraints;
         return message;
     }
 
