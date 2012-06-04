@@ -28,7 +28,6 @@ public class JALPSystem {
     private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
 
     private AbductiveFramework framework;
-    private List<IInferableInstance> lastQuery;
 
     public JALPSystem(AbductiveFramework framework) {
         this.framework = framework;
@@ -91,37 +90,32 @@ public class JALPSystem {
     }
 
     public List<Result> processQuery(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
-        this.lastQuery = new LinkedList<IInferableInstance>(query);
-        RuleNodeIterator iterator = new RuleNodeIterator(query,heuristic);
-        return performDerivation(iterator);
+        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(query),heuristic);
+        return performDerivation(query, iterator);
     }
 
     public List<Result> processQuery(String query, Heuristic heuristic) throws JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        lastQuery = new LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query));
-        RuleNodeIterator iterator = new RuleNodeIterator(new
-                LinkedList<IInferableInstance>(lastQuery),heuristic);
-        return performDerivation(iterator);
+       LinkedList<IInferableInstance> queryList =  new
+                LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query));
+        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(queryList),heuristic);
+        return performDerivation(queryList,iterator);
     }
 
     public RuleNode processQuery(List<IInferableInstance> query, Heuristic heuristic, List<Result> results) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, JALPException {
-        lastQuery = query;
-        RuleNodeIterator iterator = new RuleNodeIterator(query,heuristic);
+        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(query),heuristic);
         RuleNode root = iterator.getCurrentNode();
-        results.addAll(performDerivation(iterator));
+        results.addAll(performDerivation(query,iterator));
         return root;
     }
 
-    private List<Result> performDerivation(RuleNodeIterator iterator) {
+    private List<Result> performDerivation(List<IInferableInstance> query, RuleNodeIterator iterator) {
         LinkedList<Result> resultList = new LinkedList<Result>();
         RuleNode currentNode = iterator.getCurrentNode();
         RuleNode rootNode = currentNode;
-        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
-        query.add(currentNode.getCurrentGoal());
-        query.addAll(currentNode.getNextGoals());
 
         while (iterator.hasNext()) {
             if (currentNode.getNodeMark()==RuleNode.NodeMark.SUCCEEDED) {
-                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),lastQuery,rootNode,currentNode.getConstraintSolver());
+                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query,rootNode,currentNode.getConstraintSolver());
                 resultList.add(result);
             }
             currentNode = iterator.next();
@@ -131,7 +125,6 @@ public class JALPSystem {
     }
 
     public List<Result> generateDebugFiles(List<IInferableInstance> query, String folderName) throws IOException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        lastQuery = query;
         File folder = new File(folderName);
         FileUtils.touch(folder);
         FileUtils.forceDelete(folder);
