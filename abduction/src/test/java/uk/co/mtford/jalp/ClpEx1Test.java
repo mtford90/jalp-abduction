@@ -66,5 +66,10 @@ public class ClpEx1Test {
         query.add(p);
         List<Result> result = system.generateDebugFiles(query, "debug/clp-ex1");
         assertTrue(result.size()==3);
+
+        //TODO Check results.
     }
+
 }
+
+

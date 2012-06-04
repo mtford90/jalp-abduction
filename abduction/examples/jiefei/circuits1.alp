@@ -1,0 +1,25 @@
+output(Gate, Value) :-
+        inverter(Gate),
+        input(Gate,InValue),
+        opposite(InValue,Value),
+        not broken(Gate).
+
+output(Gate, InValue) :-
+        inverter(Gate),
+        input(Gate,InValue),
+        broken(Gate).
+
+input(g2,Value):- output(g1,Value).
+input(g1,on).
+
+
+inverter(g1).
+inverter(g2).
+
+opposite(on,off).
+opposite(off,on).
+
+ic :- output(Gate, on),output(Gate, off).
+ic :- input(Gate,on),input(Gate,off).
+
+abducible(broken(X)).

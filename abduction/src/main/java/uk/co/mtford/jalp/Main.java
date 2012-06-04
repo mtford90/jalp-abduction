@@ -61,7 +61,7 @@ public class Main {
         }
 
 
-        if (query!=null && !fileNames.isEmpty()) {
+        if (query!=null && fileNames.isEmpty()) {
             printError("You can't run a query when no abductive theory has been loaded.");
             System.exit(-1);
         }

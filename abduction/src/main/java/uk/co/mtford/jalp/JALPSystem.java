@@ -26,6 +26,7 @@ import java.util.*;
 public class JALPSystem {
 
     private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
+    private static final int MAX_EXPANSIONS = 200;
 
     private AbductiveFramework framework;
 
@@ -113,7 +114,15 @@ public class JALPSystem {
         RuleNode currentNode = iterator.getCurrentNode();
         RuleNode rootNode = currentNode;
 
+        int expansions = 0;
+
         while (iterator.hasNext()) {
+            expansions++;
+            if (expansions>=MAX_EXPANSIONS) {
+                System.err.println("ERROR: Reached max number of expansions.");
+                System.err.flush();
+                break;
+            }
             if (currentNode.getNodeMark()==RuleNode.NodeMark.SUCCEEDED) {
                 Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query,rootNode,currentNode.getConstraintSolver());
                 resultList.add(result);
