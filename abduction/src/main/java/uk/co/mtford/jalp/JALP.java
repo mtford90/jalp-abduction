@@ -92,7 +92,6 @@ public class JALP {
     public static CharConstantInstance makeCharConstantInstance(String string) {
         return new CharConstantInstance(string);
     }
-
     public static IntegerConstantInstance makeIntegerConstantInstance(int n) {
         return new IntegerConstantInstance(n);
     }
@@ -125,6 +124,9 @@ public class JALP {
     public static IntegerConstantListInstance makeIntegerConstantListInstance(IntegerConstantInstance[] integers) {
         return new IntegerConstantListInstance(integers);
     }
+    public static IntegerConstantListInstance makeIntegerConstantListInstance(int ... integers) {
+        return new IntegerConstantListInstance(integers);
+    }
     public static IntegerConstantListInstance makeIntegerConstantListInstance() {
         return new IntegerConstantListInstance();
     }
@@ -134,6 +136,9 @@ public class JALP {
     }
     public static CharConstantListInstance makeCharConstantListInstance(CharConstantInstance[] constants) {
         return new CharConstantListInstance(constants);
+    }
+    public static CharConstantListInstance makeCharConstantListInstance(String ... strings) {
+        return new CharConstantListInstance(strings);
     }
     public static CharConstantListInstance makeCharConstantListInstance() {
         return new CharConstantListInstance();

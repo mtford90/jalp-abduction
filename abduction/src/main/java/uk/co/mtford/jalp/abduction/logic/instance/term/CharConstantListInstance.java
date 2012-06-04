@@ -33,6 +33,14 @@ public class CharConstantListInstance extends ListInstance<CharConstantInstance>
             this.getList().add(instance);
         }
     }
+
+    public CharConstantListInstance(String... strings) {
+        super();
+        for (String s:strings) {
+            this.getList().add(new CharConstantInstance(s));
+        }
+    }
+
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         CharConstantListInstance newListInstance = new CharConstantListInstance();

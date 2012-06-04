@@ -132,7 +132,9 @@ public class JALPSystem {
         FileUtils.forceDelete(folder);
         folder = new File(folderName);
         Appender R = Logger.getRootLogger().getAppender("R");
+        Level previousLevel = Logger.getRootLogger().getLevel();
         Logger.getRootLogger().removeAppender("R");
+        Logger.getRootLogger().setLevel(Level.DEBUG);
         FileAppender newAppender = new DailyRollingFileAppender(new PatternLayout("%d{dd-MM-yyyy HH:mm:ss} %C %L %-5p: %m%n"), folderName+"/log.txt", "'.'dd-MM-yyyy");
         newAppender.setName("R");
         Logger.getRootLogger().addAppender(newAppender);
@@ -149,6 +151,7 @@ public class JALPSystem {
         }
         Logger.getRootLogger().removeAppender("R");
         Logger.getRootLogger().addAppender(R);
+        Logger.getRootLogger().setLevel(previousLevel);
         return results;
     }
 

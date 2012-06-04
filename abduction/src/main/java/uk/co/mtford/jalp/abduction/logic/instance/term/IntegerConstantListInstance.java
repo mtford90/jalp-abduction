@@ -36,6 +36,13 @@ public class IntegerConstantListInstance extends ListInstance<IntegerConstantIns
         }
     }
 
+    public IntegerConstantListInstance(int ... integers) {
+        super();
+        for (int i:integers) {
+            this.list.add(new IntegerConstantInstance(i));
+        }
+    }
+
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
