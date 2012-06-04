@@ -253,7 +253,7 @@ public class ConstraintTest {
     */
     @Test
     public void ungroundAbducible() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/abducible/unground-abducible.alp");
+        system = new JALPSystem("examples/constraint/unground-abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance a = new PredicateInstance("p",X);
