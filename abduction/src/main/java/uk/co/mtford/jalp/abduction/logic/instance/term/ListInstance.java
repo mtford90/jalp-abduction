@@ -45,4 +45,21 @@ public abstract class ListInstance<E extends ITermInstance> implements ITermInst
     public RuleNode getNegativeRootRuleNode(IInferableInstance newGoal, AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
         throw new UnsupportedOperationException(); // TODO Nested lists.
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ListInstance)) return false;
+
+        ListInstance that = (ListInstance) o;
+
+        if (!list.equals(that.list)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return list.hashCode();
+    }
 }

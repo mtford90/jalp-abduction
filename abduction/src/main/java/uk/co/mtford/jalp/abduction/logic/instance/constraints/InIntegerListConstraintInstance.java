@@ -45,13 +45,15 @@ public class InIntegerListConstraintInstance extends InListConstraintInstance {
     }
 
     @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables) {
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         left.reduceToChoco(possSubst,chocoVariables);
         IntegerVariable leftVar = (IntegerVariable) chocoVariables.get(left);
         right.reduceToChoco(possSubst, chocoVariables);
         SetVariable rightVar = (SetVariable) chocoVariables.get(right);
         if (leftVar.getDomainSize()==1) {
-            chocoConstraints.add(member(leftVar,rightVar));
+            Constraint c =  member(leftVar, rightVar);
+            chocoConstraints.add(c);
+            constraintMap.put(c, this);
         }
         else {
             int rightLowB = rightVar.getLowB();
@@ -69,12 +71,14 @@ public class InIntegerListConstraintInstance extends InListConstraintInstance {
     }
 
     @Override
-    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables) {
+    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         left.reduceToChoco(possSubst,chocoVariables);
         IntegerVariable leftVar = (IntegerVariable) chocoVariables.get(left);
         right.reduceToChoco(possSubst, chocoVariables);
         SetVariable rightVar = (SetVariable) chocoVariables.get(right);
-        chocoConstraints.add(notMember(leftVar,rightVar));
+        Constraint c = notMember(leftVar, rightVar);
+        chocoConstraints.add(c);
+        constraintMap.put(c,new NegativeConstraintInstance(this));
         return true;
     }
 

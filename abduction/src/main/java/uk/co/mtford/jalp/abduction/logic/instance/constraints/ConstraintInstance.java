@@ -61,4 +61,24 @@ public abstract class ConstraintInstance implements IConstraintInstance {
         variables.addAll(right.getVariables());
         return variables;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ConstraintInstance)) return false;
+
+        ConstraintInstance that = (ConstraintInstance) o;
+
+        if (!left.equals(that.left)) return false;
+        if (!right.equals(that.right)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = left.hashCode();
+        result = 31 * result + right.hashCode();
+        return result;
+    }
 }

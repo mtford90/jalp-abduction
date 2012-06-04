@@ -117,7 +117,7 @@ public class JALPSystem {
 
         while (iterator.hasNext()) {
             if (currentNode.getNodeMark()==RuleNode.NodeMark.SUCCEEDED) {
-                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query,rootNode);
+                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query,rootNode,currentNode.getConstraintSolver());
                 resultList.add(result);
             }
             currentNode = iterator.next();

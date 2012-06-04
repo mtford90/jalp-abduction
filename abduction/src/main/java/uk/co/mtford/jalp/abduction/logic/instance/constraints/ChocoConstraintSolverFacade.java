@@ -29,10 +29,12 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
 
     private LinkedList<Constraint> chocoConstraints;
     private HashMap<ITermInstance,Variable> chocoVariables;
+    private HashMap<Constraint,IConstraintInstance> constraintMap;
 
     public ChocoConstraintSolverFacade () {
         chocoConstraints = new LinkedList<Constraint>();
         chocoVariables = new HashMap<ITermInstance, Variable>();
+        constraintMap = new HashMap<Constraint,IConstraintInstance>();
     }
 
     public LinkedList<Constraint> getChocoConstraints() {
@@ -53,7 +55,7 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
         List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
         possSubst.add(subst);
         for (IConstraintInstance constraintInstance:listConstraints) {
-            boolean reduce = constraintInstance.reduceToChoco(possSubst,chocoConstraints,chocoVariables);
+            boolean reduce = constraintInstance.reduceToChoco(possSubst,chocoConstraints,chocoVariables,constraintMap);
             if (!reduce) return null; // One of the natively implemented constraint checks has failed.
         }
         // Now have all the choco constraints.
@@ -131,10 +133,15 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
         ChocoConstraintSolverFacade clone = new ChocoConstraintSolverFacade();
         clone.chocoConstraints=new LinkedList<Constraint>(chocoConstraints);
         clone.chocoVariables=new HashMap<ITermInstance,Variable>(chocoVariables);
+        clone.constraintMap=new HashMap<Constraint,IConstraintInstance>(constraintMap);
         return clone;
     }
 
+    public HashMap<Constraint, IConstraintInstance> getConstraintMap() {
+        return constraintMap;
+    }
 
-
-
+    public void setConstraintMap(HashMap<Constraint, IConstraintInstance> constraintMap) {
+        this.constraintMap = constraintMap;
+    }
 }

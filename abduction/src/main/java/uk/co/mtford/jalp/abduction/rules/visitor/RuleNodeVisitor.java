@@ -1,10 +1,12 @@
 package uk.co.mtford.jalp.abduction.rules.visitor;
 
+import choco.kernel.model.constraints.Constraint;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.InListConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.NegativeConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
@@ -655,6 +657,11 @@ public abstract class RuleNodeVisitor {
     public void visit(LeafRuleNode ruleNode) {
         ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Found a success node:\n"+ruleNode);
+        List<Constraint> leftOverChocoConstraints = ruleNode.getConstraintSolver().getChocoConstraints();
+        Map<Constraint,IConstraintInstance> constraintMap = ruleNode.getConstraintSolver().getConstraintMap();
+        for (Constraint c:leftOverChocoConstraints) {
+            ruleNode.getStore().constraints.add(constraintMap.get(c));
+        }
     }
 
     private void expandNode(RuleNode parent, RuleNode child) {

@@ -9,10 +9,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.InIntegerListConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.NegativeConstraintInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantListInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.*;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
 import java.io.IOException;
@@ -267,7 +264,8 @@ public class ConstraintTest {
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("a",XAssignment)));
         IntegerConstantListInstance list = new IntegerConstantListInstance();
         list.getList().add(new IntegerConstantInstance(1));
-        assertTrue(resultOne.getStore().constraints.contains(new NegativeConstraintInstance(new InIntegerListConstraintInstance(X, list))));
+        NegativeConstraintInstance expectedConstraint = new NegativeConstraintInstance(new InIntegerListConstraintInstance((ITermInstance) XAssignment, list));
+        assertTrue(resultOne.getStore().constraints.contains(expectedConstraint));
     }
 
 }

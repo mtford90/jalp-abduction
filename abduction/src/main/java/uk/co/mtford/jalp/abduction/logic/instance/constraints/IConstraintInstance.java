@@ -19,6 +19,6 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface IConstraintInstance extends IInferableInstance {
-    boolean reduceToChoco(List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables);
-    boolean reduceToNegativeChoco(List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables);
+    boolean reduceToChoco(List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap);
+    boolean reduceToNegativeChoco(List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap);
 }

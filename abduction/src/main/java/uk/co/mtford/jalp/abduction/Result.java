@@ -2,6 +2,7 @@ package uk.co.mtford.jalp.abduction;
 
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
@@ -19,13 +20,15 @@ public class Result {
     private List<IInferableInstance> query;
     private RuleNode root;
     private Store store;
+    private ChocoConstraintSolverFacade constraintSolver;
     private Map<VariableInstance, IUnifiableAtomInstance> assignments;  // Theta
 
-    public Result(Store store,Map<VariableInstance, IUnifiableAtomInstance> assignments, List<IInferableInstance> query, RuleNode root) {
+    public Result(Store store,Map<VariableInstance, IUnifiableAtomInstance> assignments, List<IInferableInstance> query, RuleNode root,ChocoConstraintSolverFacade constraintSolver) {
         this.assignments = assignments;
         this.store = store;
         this.query = query;
         this.root = root;
+        this.constraintSolver=constraintSolver;
     }
 
     public List<IInferableInstance> getQuery() {
@@ -63,12 +66,19 @@ public class Result {
 
     public String toString() {
         String message =
-                        "assignments = " + assignments + "\n\n" +
-                        "delta = " + store.abducibles + "\n" +
-                        "delta* = " + store.denials + "\n" +
-                        "epsilon = " + store.equalities + "\n" +
+                        "Assignments = " + assignments + "\n\n" +
+                        "Abducibles = " + store.abducibles + "\n" +
+                        "Integrity Constraints = " + store.denials + "\n" +
+                        "Equalities = " + store.equalities + "\n" +
                         "fd = " + store.constraints;
         return message;
     }
 
+    public ChocoConstraintSolverFacade getConstraintSolver() {
+        return constraintSolver;
+    }
+
+    public void setConstraintSolver(ChocoConstraintSolverFacade constraintSolver) {
+        this.constraintSolver = constraintSolver;
+    }
 }

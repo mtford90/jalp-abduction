@@ -63,13 +63,29 @@ public class NegativeConstraintInstance implements IConstraintInstance {
     }
 
     @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables) {
-        return constraintInstance.reduceToNegativeChoco(possSubst, chocoConstraints,chocoVariables);
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
+        return constraintInstance.reduceToNegativeChoco(possSubst, chocoConstraints,chocoVariables,constraintMap);
     }
 
     @Override
-    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables) {
-        return constraintInstance.reduceToChoco(possSubst, chocoConstraints,chocoVariables);
+    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
+        return constraintInstance.reduceToChoco(possSubst, chocoConstraints,chocoVariables,constraintMap);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NegativeConstraintInstance)) return false;
+
+        NegativeConstraintInstance that = (NegativeConstraintInstance) o;
+
+        if (!constraintInstance.equals(that.constraintInstance)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return constraintInstance.hashCode();
+    }
 }
