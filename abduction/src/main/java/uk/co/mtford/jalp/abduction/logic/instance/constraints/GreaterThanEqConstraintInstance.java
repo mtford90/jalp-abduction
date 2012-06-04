@@ -50,9 +50,9 @@ public class GreaterThanEqConstraintInstance extends ConstraintInstance {
     @Override
     public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         left.reduceToChoco(possSubst,chocoVariables);
-        IntegerVariable leftVar = (IntegerVariable) chocoVariables.remove(0);
+        IntegerVariable leftVar = (IntegerVariable) chocoVariables.get(left);
         right.reduceToChoco(possSubst, chocoVariables);
-        IntegerVariable rightVar = (IntegerVariable) chocoVariables.remove(0);
+        IntegerVariable rightVar = (IntegerVariable) chocoVariables.get(right);
         if (leftVar.getDomainSize()==1) {
             if (rightVar.getDomainSize()==1) {
                 Constraint c = geq(leftVar,rightVar);

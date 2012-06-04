@@ -28,6 +28,7 @@ public class JALPSystem {
     private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
 
     private AbductiveFramework framework;
+    private List<IInferableInstance> lastQuery;
 
     public JALPSystem(AbductiveFramework framework) {
         this.framework = framework;
@@ -60,7 +61,7 @@ public class JALPSystem {
     }
 
     public void mergeFramework(File file) throws FileNotFoundException, ParseException {
-        mergeFramework(JALPParser.readFromFile(file.getName()));
+        mergeFramework(JALPParser.readFromFile(file.getPath()));
     }
 
     public void mergeFramework(String query) throws ParseException {
@@ -90,17 +91,20 @@ public class JALPSystem {
     }
 
     public List<Result> processQuery(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
+        this.lastQuery = new LinkedList<IInferableInstance>(query);
         RuleNodeIterator iterator = new RuleNodeIterator(query,heuristic);
         return performDerivation(iterator);
     }
 
     public List<Result> processQuery(String query, Heuristic heuristic) throws JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        lastQuery = new LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query));
         RuleNodeIterator iterator = new RuleNodeIterator(new
-                LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query)),heuristic);
+                LinkedList<IInferableInstance>(lastQuery),heuristic);
         return performDerivation(iterator);
     }
 
     public RuleNode processQuery(List<IInferableInstance> query, Heuristic heuristic, List<Result> results) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, JALPException {
+        lastQuery = query;
         RuleNodeIterator iterator = new RuleNodeIterator(query,heuristic);
         RuleNode root = iterator.getCurrentNode();
         results.addAll(performDerivation(iterator));
@@ -117,7 +121,7 @@ public class JALPSystem {
 
         while (iterator.hasNext()) {
             if (currentNode.getNodeMark()==RuleNode.NodeMark.SUCCEEDED) {
-                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query,rootNode,currentNode.getConstraintSolver());
+                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),lastQuery,rootNode,currentNode.getConstraintSolver());
                 resultList.add(result);
             }
             currentNode = iterator.next();
@@ -127,6 +131,7 @@ public class JALPSystem {
     }
 
     public List<Result> generateDebugFiles(List<IInferableInstance> query, String folderName) throws IOException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        lastQuery = query;
         File folder = new File(folderName);
         FileUtils.touch(folder);
         FileUtils.forceDelete(folder);
