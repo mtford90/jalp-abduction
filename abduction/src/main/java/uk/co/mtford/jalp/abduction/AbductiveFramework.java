@@ -103,7 +103,7 @@ public class AbductiveFramework implements Cloneable {
         return
                 "P  = " + P + "\n" +
                 "A  = " + A + "\n" +
-                "IC = " + IC + "\n";
+                "IC = " + IC;
     }
 
 }

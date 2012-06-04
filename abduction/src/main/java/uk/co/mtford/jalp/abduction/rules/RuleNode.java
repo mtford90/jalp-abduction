@@ -1,5 +1,6 @@
 package uk.co.mtford.jalp.abduction.rules;
 
+import choco.kernel.model.constraints.Constraint;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
@@ -148,6 +149,14 @@ public abstract class RuleNode {
     }
 
     public List<Map<VariableInstance, IUnifiableAtomInstance>> constraintSolve() {
+        if (store.constraints.isEmpty()) {
+            if (constraintSolver.getChocoConstraints().isEmpty()) {
+                List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst
+                        = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
+                possSubst.add(assignments);
+                return possSubst;
+            }
+        }
         LinkedList<IConstraintInstance> constraints = new LinkedList<IConstraintInstance>();
         for (IConstraintInstance d:store.constraints) {
             constraints.add((IConstraintInstance) d.performSubstitutions(assignments));
@@ -172,9 +181,8 @@ public abstract class RuleNode {
                 "delta* = " + store.denials + "\n" +
                 "epsilon = " + store.equalities + "\n" +
                 "fd = " + store.constraints + "\n\n" +
-                        "chocoFd = " + constraintSolver.getChocoConstraints() + "\n\n" +
-
-                        "nodeType = " + this.getClass() + "\n" +
+                "chocoFd = " + constraintSolver.getChocoConstraints() + "\n\n" +
+                "nodeType = " + this.getClass() + "\n" +
                 "nodeMark = " + this.getNodeMark() + "\n" +
                 "numChildren = " + this.getChildren().size();
         return message;
@@ -241,6 +249,9 @@ public abstract class RuleNode {
 
         json+="\\\"constraints\\\""+":[ ";
         for (IConstraintInstance constraint:store.constraints) {
+            json+="\\\""+constraint+"\\\",";
+        }
+        for (Constraint constraint:constraintSolver.getChocoConstraints()) {
             json+="\\\""+constraint+"\\\",";
         }
         json=json.substring(0,json.length()-1);

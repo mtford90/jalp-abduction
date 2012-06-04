@@ -8,6 +8,7 @@ import choco.kernel.model.constraints.Constraint;
 import choco.kernel.model.variables.Variable;
 import choco.kernel.model.variables.integer.IntegerVariable;
 import choco.kernel.solver.Solver;
+import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.ITermInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantInstance;
@@ -23,6 +24,8 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
+
+    private static final Logger LOGGER = Logger.getLogger(ChocoConstraintSolverFacade.class);
 
     private LinkedList<Constraint> chocoConstraints;
     private HashMap<ITermInstance,Variable> chocoVariables;
@@ -42,7 +45,11 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
 
     @Override
     public List<Map<VariableInstance, IUnifiableAtomInstance>> executeSolver(Map<VariableInstance, IUnifiableAtomInstance> subst, List<IConstraintInstance> listConstraints) {
-
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Executing constraint solver");
+            LOGGER.debug("Received "+listConstraints);
+            LOGGER.debug("Already have "+chocoConstraints);
+        }
         List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
         possSubst.add(subst);
         for (IConstraintInstance constraintInstance:listConstraints) {
@@ -118,6 +125,13 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
 
 
         return newPossSubst;
+    }
+
+    public ChocoConstraintSolverFacade shallowClone() {
+        ChocoConstraintSolverFacade clone = new ChocoConstraintSolverFacade();
+        clone.chocoConstraints=new LinkedList<Constraint>(chocoConstraints);
+        clone.chocoVariables=new HashMap<ITermInstance,Variable>(chocoVariables);
+        return clone;
     }
 
 

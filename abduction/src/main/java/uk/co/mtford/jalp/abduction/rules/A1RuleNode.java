@@ -40,7 +40,7 @@ public class A1RuleNode extends PositiveRuleNode {
         newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
         newRuleNode.currentGoal = currentGoal;
         newRuleNode.abductiveFramework = abductiveFramework;
-        newRuleNode.constraintSolver = constraintSolver;
+        newRuleNode.constraintSolver = constraintSolver.shallowClone();
 
         newRuleNode.store = store.shallowClone();
         newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);

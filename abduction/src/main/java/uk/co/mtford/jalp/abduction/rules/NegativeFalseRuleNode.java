@@ -42,8 +42,8 @@ public class NegativeFalseRuleNode extends NegativeRuleNode {
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
         newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
-        newRuleNode.nestedDenialsList = nestedDenialsList;
-        newRuleNode.constraintSolver = constraintSolver;
+        newRuleNode.nestedDenialsList = new LinkedList<DenialInstance>(nestedDenialsList);
+        newRuleNode.constraintSolver = constraintSolver.shallowClone();
 
         return newRuleNode;
     }

@@ -45,7 +45,7 @@ public class F2RuleNode extends NegativeRuleNode {
         newRuleNode.store = store.shallowClone();
         newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
         newRuleNode.nestedDenialsList = nestedDenialsList;
-        newRuleNode.constraintSolver = constraintSolver;
+        newRuleNode.constraintSolver = constraintSolver.shallowClone();
 
         return newRuleNode;
     }

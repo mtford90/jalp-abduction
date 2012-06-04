@@ -200,7 +200,7 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
     @Override
     public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
         if (!termToVarMap.containsKey(this)) {
-            IntegerVariable var = makeIntVar(name,Integer.MIN_VALUE,Integer.MAX_VALUE);
+            IntegerVariable var = makeIntVar(name+uniqueId,Integer.MIN_VALUE,Integer.MAX_VALUE);
             termToVarMap.put(this,var);
         }
         return true;

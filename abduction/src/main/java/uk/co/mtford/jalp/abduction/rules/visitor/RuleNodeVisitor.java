@@ -42,12 +42,12 @@ public abstract class RuleNodeVisitor {
             newRuleNode = newGoal.getPositiveRootRuleNode(previousNode.getAbductiveFramework(), newRestOfGoals);
             newRuleNode.setStore(previousNode.getStore().shallowClone());
             newRuleNode.setAssignments(new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
-            newRuleNode.setConstraintSolver(previousNode.getConstraintSolver());
+            newRuleNode.setConstraintSolver(previousNode.getConstraintSolver().shallowClone());
         }
         else {
             Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
             newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),assignments);
-            newRuleNode.setConstraintSolver(previousNode.getConstraintSolver());
+            newRuleNode.setConstraintSolver(previousNode.getConstraintSolver().shallowClone());
 
         }
 
@@ -61,7 +61,7 @@ public abstract class RuleNodeVisitor {
         Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
         newRuleNode.setAssignments(assignments);
         newRuleNode.setStore(previousNode.getStore().shallowClone());
-        newRuleNode.setConstraintSolver(previousNode.getConstraintSolver());
+        newRuleNode.setConstraintSolver(previousNode.getConstraintSolver().shallowClone());
         return newRuleNode;
     }
 
@@ -673,7 +673,6 @@ public abstract class RuleNodeVisitor {
                 parent.getChildren().add(child);
             }
             else { // Constraint solver succeeded. Generate possible children.
-                if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver generated "+possibleAssignments.size()+" possible children.");
                 for (Map<VariableInstance,IUnifiableAtomInstance> assignment:possibleAssignments) {
                     RuleNode newChildNode = child.shallowClone();
                     newChildNode.setAssignments(assignment);

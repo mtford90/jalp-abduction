@@ -41,8 +41,7 @@ public class PositiveFalseRuleNode extends PositiveRuleNode {
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
         newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
-        newRuleNode.constraintSolver = constraintSolver;
-
+        newRuleNode.constraintSolver = constraintSolver.shallowClone();
         return newRuleNode;
     }
 
