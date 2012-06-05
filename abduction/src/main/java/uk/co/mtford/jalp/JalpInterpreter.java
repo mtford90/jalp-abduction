@@ -72,6 +72,17 @@ public class JALPInterpreter {
         system.setFramework(new AbductiveFramework());
     }
 
+    private void printDashes(int n) {
+        for (int i=0;i<n;i++) {
+            printDash();
+        }
+        System.out.println();
+    }
+
+    private void printDash() {
+        System.out.print("-");
+    }
+
     private void executeQuery(String next) {
         try {
             List<Result> results = system.processQuery(next.substring(2,next.length()-1), JALPSystem.Heuristic.NONE);
@@ -79,13 +90,17 @@ public class JALPInterpreter {
                 System.out.println("No explanations available.");
             }
             else {
+                System.out.println("Found "+results.size()+" explanations.");
+                int rNum = 1;
                 for (Result r:results) {
                     JALP.reduceResult(r);
-                    System.out.println("Result 1");
-                    System.out.println("-----------------------");
+                    String text = "Explanation "+rNum+" for query "+r.getQuery();
+                    printDashes(text.length());
+                    System.out.println(text);
+                    printDashes(text.length());
                     System.out.println(r.toString());
+                    rNum++;
                 }
-                System.out.println("-----------------------");
             }
 
         } catch (JALPException e) {
@@ -102,14 +117,14 @@ public class JALPInterpreter {
     }
 
     private void loadFrameworkFromFile(String next) {
+        File file = new File(next.substring(2, next.length()).trim());
         try {
-            system.mergeFramework(new File(next.substring(2, next.length())));
+            system.mergeFramework(file);
         } catch (ParseException e) {
             System.err.println("Parse error.");
             System.err.println(e);
         } catch (FileNotFoundException e) {
-            System.err.println("Parse error.");
-            System.err.println(e);
+            System.err.println("Could not find file at "+file.getAbsolutePath());
         }
     }
 

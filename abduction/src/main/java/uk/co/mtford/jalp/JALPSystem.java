@@ -26,13 +26,13 @@ import java.util.*;
 public class JALPSystem {
 
     private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
-    private static final int MAX_EXPANSIONS = 200;
+    private static final int MAX_EXPANSIONS = 400;
 
     private AbductiveFramework framework;
 
     public JALPSystem(AbductiveFramework framework) {
         this.framework = framework;
-    }
+    }                                                                             s
 
     public JALPSystem(String fileName) throws FileNotFoundException, ParseException {
         framework = JALPParser.readFromFile(fileName);
