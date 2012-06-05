@@ -112,7 +112,7 @@ public class GraphTest {
         query.add(has_colour1);
         query.add(has_colour2);
         List<Result> result = system.generateDebugFiles(query, "debug/graph/graph-2");
-        assertTrue(result.size()==9); // Matches jiefeis ASystem implementation.
+        assertTrue(result.size()==7); // Matches jiefeis ASystem implementation.
     }
 
     /*
@@ -221,6 +221,6 @@ public class GraphTest {
         query.add(has_colour1);
         query.add(has_colour2);
         List<Result> result = system.generateDebugFiles(query, "debug/graph/graph-constraint-2");
-        assertTrue(result.size()==9); // Matches jiefeis ASystem implementation.
+        assertTrue(result.size()==7); // Matches jiefeis ASystem implementation.
     }
 }

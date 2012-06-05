@@ -2,6 +2,7 @@ package uk.co.mtford.jalp.abduction.rules.visitor;
 
 import choco.kernel.model.constraints.Constraint;
 import org.apache.log4j.Logger;
+import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
@@ -31,7 +32,7 @@ public abstract class RuleNodeVisitor {
 
     protected RuleNode currentRuleNode;
 
-    public RuleNodeVisitor(RuleNode ruleNode) throws DefinitionException {
+    public RuleNodeVisitor(RuleNode ruleNode) throws JALPException {
         currentRuleNode = ruleNode;
         currentRuleNode.getNextGoals().addAll(currentRuleNode.getAbductiveFramework().getIC()); // TODO: This should be somewhere else?
         currentRuleNode.acceptVisitor(this);
@@ -272,7 +273,7 @@ public abstract class RuleNodeVisitor {
         expandNode(ruleNode,childNode);
     }
 
-    public void visit(E2RuleNode ruleNode) {
+    public void visit(E2RuleNode ruleNode) throws JALPException {
         EqualityInstance currentGoal = (EqualityInstance) ruleNode.getCurrentGoal();
 
         List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
@@ -331,9 +332,7 @@ public abstract class RuleNodeVisitor {
                     if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2c to node.");
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                     boolean unificationSuccess = currentGoal.unifyRightLeft(newAssignments); // TODO Need to check success? I think it does the same thing either way...
-
-
-
+                    if (!unificationSuccess) throw new JALPException("Error in JALP. E2c should never fail unification");
                     newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments); // TODO, Could just make a true instance instead then no need to check the denial or nested denials...
                     if (newCurrentDenial.getBody().isEmpty()) {
                         newGoal = new FalseInstance();
@@ -371,25 +370,27 @@ public abstract class RuleNodeVisitor {
                     newCurrentDenial = newNestedDenials.remove(0).shallowClone();
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                     boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments); // TODO Need to check success? I think it does the same thing either way...
-
-
-                    newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
-                    if (newCurrentDenial.getBody().isEmpty()) {  // TODO, Could just make a true instance instead then no need to check the denial or nested denials...
-                        newGoal = new FalseInstance();
-                        if (newNestedDenials.isEmpty()) {
-                            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+                    if (unificationSuccess) {
+                        newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
+                        if (newCurrentDenial.getBody().isEmpty()) {  // TODO, Could just make a true instance instead then no need to check the denial or nested denials...
+                            newGoal = new FalseInstance();
+                            if (newNestedDenials.isEmpty()) {
+                                childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+                            }
+                            else {
+                                childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+                            }
                         }
                         else {
-                            childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+                            newGoal = newCurrentDenial.getBody().remove(0);
+                            newNestedDenials.add(newCurrentDenial);
+                            childNode = constructNegativeChildNode(newGoal, newNestedDenials,newRestOfGoals,ruleNode);
                         }
+                        childNode.setAssignments(newAssignments);
+                        newChildNodes.add(childNode);
                     }
-                    else {
-                        newGoal = newCurrentDenial.getBody().remove(0);
-                        newNestedDenials.add(newCurrentDenial);
-                        childNode = constructNegativeChildNode(newGoal, newNestedDenials,newRestOfGoals,ruleNode);
-                    }
-                    childNode.setAssignments(newAssignments);
-                    newChildNodes.add(childNode);
+
+
                 }
             }
         }
@@ -702,7 +703,7 @@ public abstract class RuleNodeVisitor {
         }
     }
 
-    public RuleNode stateRewrite() throws DefinitionException {
+    public RuleNode stateRewrite() throws JALPException {
         currentRuleNode = chooseNextNode();
         if (currentRuleNode==null) return null;
         currentRuleNode.acceptVisitor(this);

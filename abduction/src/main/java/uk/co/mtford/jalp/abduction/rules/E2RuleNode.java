@@ -1,5 +1,6 @@
 package uk.co.mtford.jalp.abduction.rules;
 
+import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
@@ -49,7 +50,7 @@ public class E2RuleNode extends NegativeRuleNode {
     }
 
     @Override
-    public void acceptVisitor(RuleNodeVisitor v) {
+    public void acceptVisitor(RuleNodeVisitor v) throws JALPException {
         v.visit(this);
     }
 }

@@ -1,6 +1,7 @@
 package uk.co.mtford.jalp.abduction.rules;
 
 import choco.kernel.model.constraints.Constraint;
+import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
@@ -169,7 +170,7 @@ public abstract class RuleNode {
 
     public abstract RuleNode shallowClone();
 
-    public abstract void acceptVisitor(RuleNodeVisitor v) throws DefinitionException;
+    public abstract void acceptVisitor(RuleNodeVisitor v) throws JALPException;
 
     @Override
     public String toString() {

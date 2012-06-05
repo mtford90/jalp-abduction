@@ -26,7 +26,7 @@ import java.util.*;
 public class JALPSystem {
 
     private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
-    private static final int MAX_EXPANSIONS = 400;
+    private static final int MAX_EXPANSIONS = 4000;
 
     private AbductiveFramework framework;
 
@@ -203,7 +203,7 @@ public class JALPSystem {
         public RuleNode next() {
             try {
                 currentNode=nodeVisitor.stateRewrite();
-            } catch (DefinitionException e) {
+            } catch (JALPException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
             return currentNode;

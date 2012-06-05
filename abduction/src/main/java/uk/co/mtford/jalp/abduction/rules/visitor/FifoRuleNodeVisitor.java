@@ -1,6 +1,7 @@
 package uk.co.mtford.jalp.abduction.rules.visitor;
 
 import org.apache.log4j.Logger;
+import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
@@ -19,7 +20,7 @@ public class FifoRuleNodeVisitor extends RuleNodeVisitor {
 
     private Stack<RuleNode> nodeStack;
 
-    public FifoRuleNodeVisitor(RuleNode ruleNode) throws DefinitionException {
+    public FifoRuleNodeVisitor(RuleNode ruleNode) throws JALPException {
         super(ruleNode);
         nodeStack = new Stack<RuleNode>();
     }
