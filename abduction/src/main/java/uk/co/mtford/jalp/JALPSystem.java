@@ -32,7 +32,7 @@ public class JALPSystem {
 
     public JALPSystem(AbductiveFramework framework) {
         this.framework = framework;
-    }                                                                             s
+    }
 
     public JALPSystem(String fileName) throws FileNotFoundException, ParseException {
         framework = JALPParser.readFromFile(fileName);

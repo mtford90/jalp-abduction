@@ -245,12 +245,18 @@ public abstract class RuleNodeVisitor {
         List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         EqualityInstance currentGoal = (EqualityInstance) ruleNode.getCurrentGoal();
         IInferableInstance newGoal = null;
-
         if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
         childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-        childNode.getStore().equalities.add(currentGoal);
-        expandNode(ruleNode,childNode);
+        //childNode.getStore().equalities.add(currentGoal);
 
+        // Optimization.
+        boolean equalitySolveSuccess = currentGoal.equalitySolve(childNode.getAssignments());
+        if (equalitySolveSuccess)  {
+            expandNode(ruleNode,childNode);
+        }
+        else {
+            childNode.setNodeMark(RuleNode.NodeMark.FAILED);
+        }
     }
 
     public void visit(InE1RuleNode ruleNode) {
