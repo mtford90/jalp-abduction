@@ -26,7 +26,7 @@ import java.util.*;
 public class JALPSystem {
 
     private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
-    private static final int MAX_EXPANSIONS = 4000;
+    private static final int MAX_EXPANSIONS = Integer.MAX_VALUE;
 
     private AbductiveFramework framework;
 
