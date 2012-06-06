@@ -681,7 +681,7 @@ public abstract class RuleNodeVisitor {
         else { // Equality solver succeeded.
             child.setAssignments(assignments);
             List<Map<VariableInstance,IUnifiableAtomInstance>> possibleAssignments = child.constraintSolve();
-            if (possibleAssignments==null) {
+            if (possibleAssignments.isEmpty()) {
                 child.setNodeMark(RuleNode.NodeMark.FAILED);
                 if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver failed on\n"+child);
                 parent.getChildren().add(child);

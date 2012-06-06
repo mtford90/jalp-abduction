@@ -56,7 +56,7 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
         possSubst.add(subst);
         for (IConstraintInstance constraintInstance:listConstraints) {
             boolean reduce = constraintInstance.reduceToChoco(possSubst,chocoConstraints,chocoVariables,constraintMap);
-            if (!reduce) return null; // One of the natively implemented constraint checks has failed.
+            if (!reduce) return new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>(); // One of the natively implemented constraint checks has failed.
         }
         // Now have all the choco constraints.
         Model m = new CPModel();
