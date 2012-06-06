@@ -56,7 +56,10 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
         possSubst.add(subst);
         for (IConstraintInstance constraintInstance:listConstraints) {
             boolean reduce = constraintInstance.reduceToChoco(possSubst,chocoConstraints,chocoVariables,constraintMap);
-            if (!reduce) return new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>(); // One of the natively implemented constraint checks has failed.
+            if (!reduce) {
+                if (LOGGER.isDebugEnabled()) LOGGER.debug("Native constraint checked failed. Found 0 possible assignments.");
+                return new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>(); // One of the natively implemented constraint checks has failed.
+            }
         }
         // Now have all the choco constraints.
         Model m = new CPModel();
@@ -121,11 +124,14 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
                 chocoVariables.remove(term); // Clean up variables that have been expanded i.e. had non infinite domain.
             }
 
-            if (newPossSubst.isEmpty() && !hadVariables) return possSubst;
+            if (newPossSubst.isEmpty() && !hadVariables) {
+                if (LOGGER.isDebugEnabled()) LOGGER.debug("Found "+possSubst.size()+" possible assignments.");
+                return possSubst;
+            }
 
         }
 
-
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Found "+newPossSubst.size()+" possible assignments.");
         return newPossSubst;
     }
 

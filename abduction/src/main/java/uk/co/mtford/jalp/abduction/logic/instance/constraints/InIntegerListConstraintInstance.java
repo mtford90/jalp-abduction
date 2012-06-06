@@ -76,7 +76,7 @@ public class InIntegerListConstraintInstance extends InListConstraintInstance {
         IntegerVariable leftVar = (IntegerVariable) chocoVariables.get(left);
         right.reduceToChoco(possSubst, chocoVariables);
         SetVariable rightVar = (SetVariable) chocoVariables.get(right);
-        Constraint c = notMember(leftVar, rightVar);
+        Constraint c = notMember(leftVar, rightVar.getLowB(),rightVar.getUppB());
         chocoConstraints.add(c);
         constraintMap.put(c,new NegativeConstraintInstance(this));
         return true;

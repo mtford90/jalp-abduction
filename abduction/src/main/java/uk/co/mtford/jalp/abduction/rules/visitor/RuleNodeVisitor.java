@@ -498,34 +498,18 @@ public abstract class RuleNodeVisitor {
         List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
         // Branch 1
         NegativeConstraintInstance negativeConstraintInstance = new NegativeConstraintInstance(currentGoal);
-        newGoal = new TrueInstance(); // TODO: Is this correct?
-        if (newNestedDenials.isEmpty()) {
-            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-        }
-        else {
-            childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-        }
+        newGoal = new FalseInstance(); // TODO: Is this correct?
+        newNestedDenials.add(newCurrentDenial);
+        childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
         childNode.getStore().constraints.add(negativeConstraintInstance);
         newChildNodes.add(childNode);
         // Branch 2
         newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
         newCurrentDenial = newNestedDenials.remove(0).shallowClone();
-        if (newCurrentDenial.getBody().isEmpty()) {
-            newGoal = new FalseInstance();
-            if (newNestedDenials.isEmpty()) {
-                childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-            }
-            else {
-                childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-            }
-        }
-        else {
-            newGoal = newCurrentDenial.getBody().remove(0);
-            newNestedDenials.add(newCurrentDenial);
-            childNode = constructNegativeChildNode(newGoal, newNestedDenials,newRestOfGoals,ruleNode);
-        }
-
+        newNestedDenials.add(newCurrentDenial);
+        newGoal = new TrueInstance();
+        childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
         childNode.getStore().constraints.add(currentGoal);
         newChildNodes.add(childNode);
         expandNode(ruleNode,newChildNodes);
