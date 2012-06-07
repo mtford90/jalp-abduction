@@ -159,6 +159,7 @@ public class JALPSystem {
         int rNum = 1;
         LOGGER.info("Found "+results.size()+" results");
         for (Result r:results) {
+            JALP.reduceResult(r);
             LOGGER.info("Result "+rNum+" is\n"+r);
             rNum++;
         }
