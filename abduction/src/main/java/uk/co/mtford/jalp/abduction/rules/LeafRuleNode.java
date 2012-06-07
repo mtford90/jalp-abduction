@@ -39,7 +39,6 @@ public class LeafRuleNode extends RuleNode {
     public RuleNode shallowClone() {
         LeafRuleNode newRuleNode = new LeafRuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
-        newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
         newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);

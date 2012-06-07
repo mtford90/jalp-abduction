@@ -432,21 +432,30 @@ public abstract class RuleNodeVisitor {
 
         // Branch 1
         newGoal = currentGoal.getEqualityInstance();
-        newNestedDenials.add(0,newCurrentDenial);
-        childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+        if (newNestedDenials.isEmpty()) {
+            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+        }
+        else {
+            childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+        }
         newChildNodes.add(childNode);
         // Branch 2
         newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
         newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
         newCurrentDenial = newNestedDenials.remove(0).shallowClone();
 
-        newNestedDenials.add(newCurrentDenial);
-        newGoal = currentGoal;
-        childNode = constructNegativeChildNode(newGoal, newNestedDenials, newRestOfGoals, ruleNode);
+        newGoal = newCurrentDenial;
+        if (newNestedDenials.isEmpty()) {
+            newRestOfGoals.add(0,currentGoal);
+            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+        }
+        else {
+            newNestedDenials.get(0).getBody().add(0,currentGoal);
+            childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+        }
 
         newChildNodes.add(childNode);
-        ruleNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
-        ruleNode.getChildren().addAll(newChildNodes);
+        expandNode(ruleNode,newChildNodes);
 
     }
 
@@ -562,7 +571,7 @@ public abstract class RuleNodeVisitor {
             boolean unificationSuccess = variable.unify(constant,newAssignments);
             if (unificationSuccess) {
                 DenialInstance newDenialInstance = (DenialInstance) newCurrentDenial.shallowClone();
-                newDenialInstance = (DenialInstance) newDenialInstance.performSubstitutions(newAssignments); // TODO: Should be perform substitution?
+                newDenialInstance = (DenialInstance) newDenialInstance.performSubstitutions(newAssignments);
                 newDenials.add(newDenialInstance);
             }
         }
@@ -669,7 +678,6 @@ public abstract class RuleNodeVisitor {
     // Expands a leaf node using the constraint solver.
     public void visit(LeafRuleNode ruleNode) {
         //ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
-
         if (ruleNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Found a leaf node to expand:\n"+ruleNode);
             ruleNode.getParentNode().getChildren().remove(ruleNode);
@@ -690,7 +698,15 @@ public abstract class RuleNodeVisitor {
             for (Map<VariableInstance,IUnifiableAtomInstance> assignment:possibleAssignments) {
                 RuleNode newLeafNode = childNode.shallowClone();
                 newLeafNode.setAssignments(assignment);
-                newLeafNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
+                Map<VariableInstance, IUnifiableAtomInstance> n = newLeafNode.equalitySolve();
+                if (n==null) {
+                    newLeafNode.setNodeMark(RuleNode.NodeMark.FAILED);
+                    if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality solver failed on\n"+newLeafNode);
+                }
+                else {
+                    newLeafNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
+                }
+                childNode.setAssignments(n);
                 parentNode.getChildren().add(newLeafNode);
             }
         }

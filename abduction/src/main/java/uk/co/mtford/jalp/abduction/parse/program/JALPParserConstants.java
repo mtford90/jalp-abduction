@@ -23,31 +23,33 @@ public interface JALPParserConstants {
   /** RegularExpression Id. */
   int EQUALS = 10;
   /** RegularExpression Id. */
-  int LESSTHAN = 11;
+  int NOTEQUALS = 11;
   /** RegularExpression Id. */
-  int LESSTHANEQ = 12;
+  int LESSTHAN = 12;
   /** RegularExpression Id. */
-  int GREATERTHAN = 13;
+  int LESSTHANEQ = 13;
   /** RegularExpression Id. */
-  int GREATERTHANEQ = 14;
+  int GREATERTHAN = 14;
   /** RegularExpression Id. */
-  int LSQBRACKET = 15;
+  int GREATERTHANEQ = 15;
   /** RegularExpression Id. */
-  int RSQBRACKET = 16;
+  int LSQBRACKET = 16;
   /** RegularExpression Id. */
-  int NOT = 17;
+  int RSQBRACKET = 17;
   /** RegularExpression Id. */
-  int IC = 18;
+  int NOT = 18;
   /** RegularExpression Id. */
-  int IN = 19;
+  int IC = 19;
   /** RegularExpression Id. */
-  int ABDUCIBLE = 20;
+  int IN = 20;
   /** RegularExpression Id. */
-  int INTEGER = 21;
+  int ABDUCIBLE = 21;
   /** RegularExpression Id. */
-  int LCASENAME = 22;
+  int INTEGER = 22;
   /** RegularExpression Id. */
-  int UCASENAME = 23;
+  int LCASENAME = 23;
+  /** RegularExpression Id. */
+  int UCASENAME = 24;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -65,6 +67,7 @@ public interface JALPParserConstants {
     "\",\"",
     "\".\"",
     "\"=\"",
+    "\"!=\"",
     "\"<\"",
     "\"<=\"",
     "\">\"",

@@ -37,7 +37,7 @@ public class JALPInterpreter {
         this.system=system;
     }
 
-    public void start() {
+    public void start() throws Exception {
         System.out.println("Welcome to JALP. Type :h for help.");
         String next = null;
         while(true) {
@@ -83,7 +83,7 @@ public class JALPInterpreter {
         System.out.print("-");
     }
 
-    private void executeQuery(String next) {
+    private void executeQuery(String next) throws Exception {
         try {
             List<Result> results = system.processQuery(next.substring(2,next.length()-1), JALPSystem.Heuristic.NONE);
             if (results.isEmpty()) {

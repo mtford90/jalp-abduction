@@ -9,11 +9,12 @@ Body -> Inferable (COMMA Inferable)*
 Abducible -> ABDUCIBLE LBRACKET Predicate (COMMA Predicate)* RBRACKET DOT
 
 Inferable -> PosInferable | NegInferable
-PosInferable -> Predicate | Equality | Constraint
+PosInferable -> Predicate | Equality | InEquality | Constraint
 NegInferable -> NOT PosInferable
 
 Predicate -> LCASENAME (LBRACKET ParameterList RBRACKET)?
 Equality -> Parameter EQUALS Parameter
+InEquality -> Parameter NOTEQUALS Parameter
 Constraint -> LessThanConstraint | LessThanEqConstraint | GreaterThanConstraint | GreaterThanEqConstraint | InConstraint
 LessThanConstraint -> Term LESSTHAN Term
 LessThanEqConstraint -> Term LESSTHANEQ Term
@@ -73,9 +74,8 @@ import uk.co.mtford.jalp.abduction.logic.instance.constraints.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.Definition;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantListInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantListInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.ListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.*;
 
 public class JALPParser {
 
@@ -118,6 +118,7 @@ TOKEN :
   <COMMA: ","> |
   <DOT: "."> |
   <EQUALS: "="> |
+  <NOTEQUALS: "!="> |
   <LESSTHAN: "<"> |
   <LESSTHANEQ: "<="> |
   <GREATERTHAN: ">"> |
@@ -260,6 +261,8 @@ IInferableInstance PositiveInferable(HashMap<String, VariableInstance> variables
     { return inferable; } |
     inferable = Equality(variablesSoFar)
     { return inferable; } |
+    inferable = InEquality(variablesSoFar)
+    { return inferable; } |
     inferable = Constraint(variablesSoFar)
     { return inferable; }
 }
@@ -302,6 +305,18 @@ EqualityInstance Equality(HashMap<String, VariableInstance> variablesSoFar):
 	<EQUALS>
 	right = Parameter(variablesSoFar)
     { return new EqualityInstance(left,right); }
+}
+
+InEqualityInstance InEquality(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IUnifiableAtomInstance left;
+    IUnifiableAtomInstance right;
+}
+{
+	left = Parameter(variablesSoFar)
+	<NOTEQUALS>
+	right = Parameter(variablesSoFar)
+    { return new InEqualityInstance(left,right); }
 }
 
 IConstraintInstance Constraint(HashMap<String, VariableInstance> variablesSoFar):
@@ -381,9 +396,9 @@ InListConstraintInstance InListConstraint(HashMap<String, VariableInstance> vari
     left = Term(variablesSoFar)
     <IN>
     ((right = CharConstantList(variablesSoFar)
-    { return new InConstantListConstraintInstance(left,(ConstantListInstance)right); }) |
+    { return new InConstantListConstraintInstance(left,(CharConstantListInstance)right); }) |
     (right = IntegerConstantList(variablesSoFar)
-    { return new InIntegerListConstraintInstance(left,(IntegerListInstance)right); }))
+    { return new InIntegerListConstraintInstance(left,(IntegerConstantListInstance)right); }))
 }
 
 ITermInstance Term(HashMap<String, VariableInstance> variablesSoFar):
@@ -444,9 +459,9 @@ ListInstance List(HashMap<String, VariableInstance> variablesSoFar):
     { return listInstance; })
 }
 
-IntegerListInstance IntegerConstantList(HashMap<String, VariableInstance> variablesSoFar):
+IntegerConstantListInstance IntegerConstantList(HashMap<String, VariableInstance> variablesSoFar):
 {
-    IntegerListInstance listInstance = new IntegerListInstance();
+    IntegerConstantListInstance listInstance = new IntegerConstantListInstance();
     IntegerConstantInstance constantInstance;
 }
 {
@@ -466,9 +481,9 @@ IntegerListInstance IntegerConstantList(HashMap<String, VariableInstance> variab
     { return listInstance; }
 }
 
-ConstantListInstance CharConstantList(HashMap<String, VariableInstance> variablesSoFar):
+CharConstantListInstance CharConstantList(HashMap<String, VariableInstance> variablesSoFar):
 {
-    ConstantListInstance listInstance = new ConstantListInstance();
+    CharConstantListInstance listInstance = new CharConstantListInstance();
     CharConstantInstance constantInstance;
 }
 {
