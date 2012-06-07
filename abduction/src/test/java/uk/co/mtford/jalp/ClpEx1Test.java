@@ -57,7 +57,7 @@ public class ClpEx1Test {
 
      */
     @Test
-    public void clpEx1Test1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void clpEx1Test1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/clp-ex1.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));

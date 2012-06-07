@@ -90,19 +90,19 @@ public class JALPSystem {
         }
     }
 
-    public List<Result> processQuery(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
+    public List<Result> processQuery(List<IInferableInstance> query, Heuristic heuristic) throws Exception {
         RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(query),heuristic);
         return performDerivation(query, iterator);
     }
 
-    public List<Result> processQuery(String query, Heuristic heuristic) throws JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public List<Result> processQuery(String query, Heuristic heuristic) throws Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
        LinkedList<IInferableInstance> queryList =  new
                 LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query));
         RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(queryList),heuristic);
         return performDerivation(queryList,iterator);
     }
 
-    public RuleNode processQuery(List<IInferableInstance> query, Heuristic heuristic, List<Result> results) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, JALPException {
+    public RuleNode processQuery(List<IInferableInstance> query, Heuristic heuristic, List<Result> results) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, Exception {
         RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(query),heuristic);
         RuleNode root = iterator.getCurrentNode();
         results.addAll(performDerivation(query,iterator));
@@ -127,13 +127,19 @@ public class JALPSystem {
                 Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query,rootNode,currentNode.getConstraintSolver());
                 resultList.add(result);
             }
-            currentNode = iterator.next();
+            try {
+                currentNode = iterator.next();
+            } catch (Exception e) {
+               System.err.println("Encounted an exception. Returning results collected so far...");
+               e.printStackTrace();
+            }
+
         }
 
         return resultList;
     }
 
-    public List<Result> generateDebugFiles(List<IInferableInstance> query, String folderName) throws IOException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public List<Result> generateDebugFiles(List<IInferableInstance> query, String folderName) throws Exception, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         File folder = new File(folderName);
         FileUtils.touch(folder);
         FileUtils.forceDelete(folder);
@@ -162,12 +168,12 @@ public class JALPSystem {
         return results;
     }
 
-    public List<Result> generateDebugFiles(String query, String folderName) throws IOException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public List<Result> generateDebugFiles(String query, String folderName) throws IOException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         return generateDebugFiles(new LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query)),folderName);
     }
 
 
-        public RuleNodeIterator getRuleNodeIterator(List<IInferableInstance> query, Heuristic heuristic) throws JALPException {
+        public RuleNodeIterator getRuleNodeIterator(List<IInferableInstance> query, Heuristic heuristic) throws Exception {
         return new RuleNodeIterator(query,heuristic);
     }
 
@@ -184,7 +190,7 @@ public class JALPSystem {
             this.currentNode = currentNode;
         }
 
-        private RuleNodeIterator(List<IInferableInstance> goals, Heuristic heuristic) throws JALPException {
+        private RuleNodeIterator(List<IInferableInstance> goals, Heuristic heuristic) throws Exception {
             switch (heuristic) {
                 case NONE:
                     currentNode = goals.remove(0).getPositiveRootRuleNode(framework,goals);
@@ -203,7 +209,7 @@ public class JALPSystem {
         public RuleNode next() {
             try {
                 currentNode=nodeVisitor.stateRewrite();
-            } catch (JALPException e) {
+            } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
             return currentNode;

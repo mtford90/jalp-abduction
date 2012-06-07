@@ -50,7 +50,7 @@ public class E2RuleNode extends NegativeRuleNode {
     }
 
     @Override
-    public void acceptVisitor(RuleNodeVisitor v) throws JALPException {
+    public void acceptVisitor(RuleNodeVisitor v) throws Exception {
         v.visit(this);
     }
 }

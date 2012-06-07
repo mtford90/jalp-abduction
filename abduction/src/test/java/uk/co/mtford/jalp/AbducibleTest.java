@@ -54,7 +54,7 @@ public class AbducibleTest {
     We expect to collect an abducible girl(Y).
      */
     @Test
-    public void abducibleTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void abducibleTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/abducible/abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance Y = new VariableInstance("Y");
@@ -78,7 +78,7 @@ public class AbducibleTest {
    We expect to collect an abducible girl(jane).
     */
     @Test
-    public void abducibleTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void abducibleTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/abducible/abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance(("john"));
@@ -104,7 +104,7 @@ public class AbducibleTest {
     We expect to collect an inequality X!=1
     */
     @Test
-    public void ungroundAbducible() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void ungroundAbducible() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/abducible/unground-abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");

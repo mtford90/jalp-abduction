@@ -60,7 +60,7 @@ public class GraphTest {
 
      */
     @Test
-    public void graphTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/graph/graph.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -99,7 +99,7 @@ public class GraphTest {
 
     */
     @Test
-    public void graphTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/graph/graph.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance C = new VariableInstance("C");
@@ -135,7 +135,7 @@ public class GraphTest {
 
      */
     @Test
-    public void graph2Test1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graph2Test1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/graph/graph2.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -173,7 +173,7 @@ public class GraphTest {
     the same colour red.
     */
     @Test
-    public void graphConstraintTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphConstraintTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/graph/graph-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -208,7 +208,7 @@ public class GraphTest {
     This is as per the result that ASystem gives.
     */
     @Test
-    public void graphConstraintTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphConstraintTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/graph/graph-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance C = new VariableInstance("C");

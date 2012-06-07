@@ -20,7 +20,7 @@ public class FifoRuleNodeVisitor extends RuleNodeVisitor {
 
     private Stack<RuleNode> nodeStack;
 
-    public FifoRuleNodeVisitor(RuleNode ruleNode) throws JALPException {
+    public FifoRuleNodeVisitor(RuleNode ruleNode) throws Exception {
         super(ruleNode);
         nodeStack = new Stack<RuleNode>();
     }

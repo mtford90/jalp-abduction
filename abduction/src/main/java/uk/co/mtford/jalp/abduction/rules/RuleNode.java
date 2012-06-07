@@ -167,7 +167,7 @@ public abstract class RuleNode {
 
     public abstract RuleNode shallowClone();
 
-    public abstract void acceptVisitor(RuleNodeVisitor v) throws JALPException;
+    public abstract void acceptVisitor(RuleNodeVisitor v) throws Exception;
 
     @Override
     public String toString() {

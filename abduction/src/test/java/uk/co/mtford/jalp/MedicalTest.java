@@ -62,7 +62,7 @@ public class MedicalTest {
     Expect two results, either that john has a migraine, or jaundice and a stomach bug.
      */
     @Test
-    public void medicalHeadacheTest() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void medicalHeadacheTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");
@@ -103,7 +103,7 @@ public class MedicalTest {
    Expect one result: that john has a migraine.
     */
     @Test
-    public void medicalDizzinessTest() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void medicalDizzinessTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");
@@ -139,7 +139,7 @@ public class MedicalTest {
    Expect one result: that john has a stomach bug.
     */
     @Test
-    public void medicalSicknessTest() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void medicalSicknessTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");

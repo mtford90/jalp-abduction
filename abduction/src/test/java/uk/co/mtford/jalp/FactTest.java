@@ -51,7 +51,7 @@ public class FactTest {
 
      */
     @Test
-    public void oneFactTest() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void oneFactTest() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/fact/one-fact.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -78,7 +78,7 @@ public class FactTest {
 
     */
     @Test
-    public void twoFactTest() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void twoFactTest() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/fact/two-fact.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");

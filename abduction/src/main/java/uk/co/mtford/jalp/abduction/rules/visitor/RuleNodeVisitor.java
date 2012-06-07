@@ -32,7 +32,7 @@ public abstract class RuleNodeVisitor {
 
     protected RuleNode currentRuleNode;
 
-    public RuleNodeVisitor(RuleNode ruleNode) throws JALPException {
+    public RuleNodeVisitor(RuleNode ruleNode) throws Exception {
         currentRuleNode = ruleNode;
         currentRuleNode.getNextGoals().addAll(currentRuleNode.getAbductiveFramework().getIC()); // TODO: This should be somewhere else?
         currentRuleNode.acceptVisitor(this);
@@ -146,30 +146,32 @@ public abstract class RuleNodeVisitor {
         PredicateInstance currentGoal = (PredicateInstance) ruleNode.getCurrentGoal();
 
         // Check that the new constraint we are creating isn't instantly violated by an already collected abducible.
-        newCurrentDenial.getBody().add(0, currentGoal);
         Store store = ruleNode.getStore();
+        List<DenialInstance> newDenials = new LinkedList<DenialInstance>();
         for (PredicateInstance storeAbducible : store.abducibles) {
             if (storeAbducible.isSameFunction(currentGoal)) {
                 HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
-                DenialInstance newDenial = (DenialInstance) newCurrentDenial.deepClone(subst);
-                PredicateInstance newDenialHead = (PredicateInstance) newDenial.getBody().remove(0);
-                List<EqualityInstance> equalitySolved = storeAbducible.reduce(newDenialHead);
+                DenialInstance newDenial = (DenialInstance) newCurrentDenial.shallowClone();
+                newDenial = (DenialInstance) newDenial.performSubstitutions(subst);
+                List<EqualityInstance> equalitySolved = storeAbducible.reduce(currentGoal);
                 newDenial.getBody().addAll(0,equalitySolved);
-                if (!newNestedDenialList.isEmpty()) newNestedDenialList.get(0).getBody().add(0,newDenial);
-                else newRestOfGoals.add(0,newDenial);
+                newDenials.add(newDenial);
             }
         }
 
         if (newNestedDenialList.isEmpty()) {
+            newRestOfGoals.addAll(0,newDenials);
             IInferableInstance newGoal = null;
             if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
             childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
         }
         else {
-            IInferableInstance newGoal = newNestedDenialList.get(0).getBody().remove(0);
+            newNestedDenialList.get(0).getBody().addAll(0, newDenials);
+            IInferableInstance newGoal = newNestedDenialList.remove(0);
             childNode = constructNegativeChildNode(newGoal,newNestedDenialList,newRestOfGoals,ruleNode);
         }
 
+        newCurrentDenial.getBody().add(0,currentGoal);
         childNode.getStore().denials.add(newCurrentDenial);
 
         expandNode(ruleNode,childNode);
@@ -275,7 +277,7 @@ public abstract class RuleNodeVisitor {
         expandNode(ruleNode,childNode);
     }
 
-    public void visit(E2RuleNode ruleNode) throws JALPException {
+    public void visit(E2RuleNode ruleNode) throws Exception {
         EqualityInstance currentGoal = (EqualityInstance) ruleNode.getCurrentGoal();
 
         List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
@@ -335,25 +337,38 @@ public abstract class RuleNodeVisitor {
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                     boolean unificationSuccess = currentGoal.unifyRightLeft(newAssignments);
                     if (!unificationSuccess) {
-                        throw new JALPException("Error in JALP. E2c should never fail unification");
+                        //throw new JALPException("Error in JALP. E2c should never fail unification");
                     }
-                    newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
-                    if (newCurrentDenial.getBody().isEmpty()) {
-                        newGoal = new FalseInstance();
-                        if (newNestedDenials.isEmpty()) {
-                            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+                    if (unificationSuccess) {
+                        newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
+                        if (newCurrentDenial.getBody().isEmpty()) {
+                            newGoal = new FalseInstance();
+                            if (newNestedDenials.isEmpty()) {
+                                childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+                            }
+                            else {
+                                childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+                            }
                         }
                         else {
+                            newGoal = newCurrentDenial.getBody().remove(0);
+                            newNestedDenials.add(newCurrentDenial);
                             childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
                         }
                     }
                     else {
-                        newGoal = newCurrentDenial.getBody().remove(0);
-                        newNestedDenials.add(newCurrentDenial);
-                        childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+                        if (newNestedDenials.isEmpty()) {
+                            childNode = constructPositiveChildNode(new TrueInstance(), newRestOfGoals,ruleNode);
+                        }
+                        else {
+                            childNode = constructNegativeChildNode(new TrueInstance(), newNestedDenials,newRestOfGoals,ruleNode);
+                        }
                     }
+
+
                     // TODO: No assignment needed for universally quantified? childNode.setAssignments(newAssignments);
                     newChildNodes.add(childNode);
+
                 }
                 else {
                     if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2b to node.");
@@ -699,7 +714,7 @@ public abstract class RuleNodeVisitor {
         }
     }
 
-    public RuleNode stateRewrite() throws JALPException {
+    public RuleNode stateRewrite() throws Exception {
         currentRuleNode = chooseNextNode();
         if (currentRuleNode==null) return null;
         currentRuleNode.acceptVisitor(this);

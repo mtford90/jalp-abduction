@@ -52,7 +52,7 @@ public class DefinitionTest {
     We expect two results, Y/jane or Y/mary
      */
     @Test
-    public void definitionTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void definitionTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/definition/definition.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance Y = new VariableInstance("Y");

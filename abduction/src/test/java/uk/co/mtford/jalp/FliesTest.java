@@ -57,7 +57,7 @@ public class FliesTest {
     We expect X/sam
      */
     @Test
-    public void fliesX() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void fliesX() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
@@ -86,7 +86,7 @@ public class FliesTest {
    We expect no
     */
     @Test
-    public void fliesTweety() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void fliesTweety() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance likes = new PredicateInstance("flies",new CharConstantInstance("tweety"));
@@ -111,7 +111,7 @@ public class FliesTest {
    We expect yes
     */
     @Test
-    public void fliesSam() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void fliesSam() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
@@ -137,7 +137,7 @@ public class FliesTest {
    We expect X/tweety
     */
     @Test
-    public void fliesAbnormalX() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void fliesAbnormalX() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));

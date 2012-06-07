@@ -59,7 +59,7 @@ public class InsaneTest {
     We expect 9 results. All the girls like all the guys, but the guys only like jane as maria is insane.
      */
     @Test
-    public void insaneTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void insaneTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/insane/insane.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
@@ -88,7 +88,7 @@ public class InsaneTest {
    We expect one result where Y is assigned to jane, as maria is insane.
     */
     @Test
-    public void insaneTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void insaneTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/insane/insane.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance bob = new CharConstantInstance("bob");
@@ -116,7 +116,7 @@ public class InsaneTest {
    We expect nine results. The girls like all the guys, but the guys only like jane.
     */
     @Test
-    public void insaneConstraintTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void insaneConstraintTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/insane/insane-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
@@ -141,7 +141,7 @@ public class InsaneTest {
    We expect one result where Y is assigned to jane, as maria is insane.
     */
     @Test
-    public void insaneConstraintTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void insaneConstraintTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/insane/insane-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance bob = new CharConstantInstance("bob");

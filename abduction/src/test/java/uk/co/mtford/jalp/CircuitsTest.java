@@ -71,7 +71,7 @@ public class CircuitsTest {
 
      */
     @Test
-    public void circuitTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void circuitTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/circuits1.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance g1 = new CharConstantInstance("g1");
@@ -124,7 +124,7 @@ public class CircuitsTest {
 
     */
     @Test
-    public void circuitTest2() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void circuitTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/circuits1.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance g1 = new CharConstantInstance("g1");
@@ -178,7 +178,7 @@ public class CircuitsTest {
 
     */
     @Test
-    public void circuitTest3() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void circuitTest3() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/circuits2.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance g1 = new CharConstantInstance("g1");
@@ -234,7 +234,7 @@ public class CircuitsTest {
    Expected result is an abducible hypothesizing that the car has no fuel.
     */
     @Test
-    public void circuitTest4() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void circuitTest4() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/circuits2.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance g1 = new CharConstantInstance("g1");

@@ -59,7 +59,7 @@ public class CarTest {
     Expected result is an abducible hypothesizing that the car has no fuel.
      */
     @Test
-    public void carDoesntStartTest() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void carDoesntStartTest() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/jiefei/cars.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance mycar = new CharConstantInstance("mycar");
