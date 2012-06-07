@@ -561,7 +561,8 @@ public abstract class RuleNodeVisitor {
             Map<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = variable.unify(constant,newAssignments);
             if (unificationSuccess) {
-                DenialInstance newDenialInstance = (DenialInstance) newCurrentDenial.deepClone(newAssignments); // TODO: Should be perform substitution?
+                DenialInstance newDenialInstance = (DenialInstance) newCurrentDenial.shallowClone();
+                newDenialInstance = (DenialInstance) newDenialInstance.performSubstitutions(newAssignments); // TODO: Should be perform substitution?
                 newDenials.add(newDenialInstance);
             }
         }
