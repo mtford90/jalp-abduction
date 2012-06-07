@@ -466,4 +466,24 @@ public class ConstraintTest {
         assertTrue(resultOne.getStore().constraints.contains(expectedConstraint));
     }
 
+    /*
+   p(X) :- X<Y, X in [1,2,3], Y in [1,2].
+   Q = p(X)
+
+   We expect one result: X/1
+    */
+    @Test
+    public void lessThanInfDomTest1() throws IOException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/constraint/individual/less-than-inf-dom.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance X = new VariableInstance("X");
+        PredicateInstance p = new PredicateInstance("p",X);
+        query.add(p);
+        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-inf-dom-test-1");
+        assertTrue(result.size()==1);
+        Result resultOne = result.remove(0);
+        JALP.reduceResult(resultOne);
+        assertTrue(resultOne.getAssignments().get(X).equals(new IntegerConstantInstance(1)));
+    }
+
 }

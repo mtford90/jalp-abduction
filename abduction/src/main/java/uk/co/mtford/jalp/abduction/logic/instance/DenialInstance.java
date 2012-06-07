@@ -137,8 +137,10 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
             if (newV instanceof VariableInstance) newUniversalVariables.add((VariableInstance)newV);
         }
 
+        Map<VariableInstance, IUnifiableAtomInstance> tempSubst = new HashMap<VariableInstance,IUnifiableAtomInstance>(substitutions);
+
         for (IInferableInstance inferable : body) {
-            newBody.add((IInferableInstance) inferable.deepClone(substitutions));
+            newBody.add((IInferableInstance) inferable.deepClone(tempSubst));
         }
 
         return new DenialInstance(newBody, newUniversalVariables);

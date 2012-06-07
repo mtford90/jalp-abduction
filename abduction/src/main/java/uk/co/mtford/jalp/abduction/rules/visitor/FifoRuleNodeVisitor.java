@@ -34,7 +34,7 @@ public class FifoRuleNodeVisitor extends RuleNodeVisitor {
             return null;
         }
         RuleNode chosenNode = nodeStack.pop();
-        while (chosenNode.getNodeMark()== RuleNode.NodeMark.FAILED) {
+        while (chosenNode.getNodeMark()==RuleNode.NodeMark.FAILED) {
             if (nodeStack.isEmpty()) return null;
             chosenNode = nodeStack.pop();
         }

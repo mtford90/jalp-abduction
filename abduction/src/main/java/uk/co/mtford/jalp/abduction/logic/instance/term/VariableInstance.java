@@ -94,6 +94,9 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         if (substitutions.containsKey(this)) {
+            if (substitutions.get(this).equals(this)) {
+                return this;
+            }
             return substitutions.get(this).performSubstitutions(substitutions);
         } else {
             VariableInstance clonedVariable = new VariableInstance(new String(name));
@@ -200,7 +203,7 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
     @Override
     public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
         if (!termToVarMap.containsKey(this)) {
-            IntegerVariable var = makeIntVar(name+uniqueId,Integer.MIN_VALUE,Integer.MAX_VALUE);
+            IntegerVariable var = makeIntVar(name+uniqueId);
             termToVarMap.put(this,var);
         }
         return true;

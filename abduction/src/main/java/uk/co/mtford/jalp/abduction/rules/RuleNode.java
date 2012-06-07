@@ -151,12 +151,10 @@ public abstract class RuleNode {
 
     public List<Map<VariableInstance, IUnifiableAtomInstance>> constraintSolve() {
         if (store.constraints.isEmpty()) {
-            if (constraintSolver.getChocoConstraints().isEmpty()) {
-                List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst
-                        = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
-                possSubst.add(assignments);
-                return possSubst;
-            }
+            List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst
+                    = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
+            possSubst.add(assignments);
+            return possSubst;
         }
         LinkedList<IConstraintInstance> constraints = new LinkedList<IConstraintInstance>();
         for (IConstraintInstance d:store.constraints) {
@@ -164,7 +162,6 @@ public abstract class RuleNode {
         }
         List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst
                 = constraintSolver.executeSolver(new HashMap<VariableInstance,IUnifiableAtomInstance>(assignments),constraints);
-        store.constraints.removeAll(store.constraints);
         return possSubst;
     }
 

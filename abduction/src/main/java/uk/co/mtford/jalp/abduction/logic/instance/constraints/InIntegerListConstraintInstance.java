@@ -10,11 +10,10 @@ import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static choco.Choco.*;
+import static choco.Choco.makeIntVar;
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,38 +47,62 @@ public class InIntegerListConstraintInstance extends InListConstraintInstance {
     public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         left.reduceToChoco(possSubst,chocoVariables);
         IntegerVariable leftVar = (IntegerVariable) chocoVariables.get(left);
-        right.reduceToChoco(possSubst, chocoVariables);
-        SetVariable rightVar = (SetVariable) chocoVariables.get(right);
-        if (leftVar.getDomainSize()==1) {
-            Constraint c =  member(leftVar, rightVar);
-            chocoConstraints.add(c);
-            constraintMap.put(c, this);
+        IntegerConstantListInstance rightVar = (IntegerConstantListInstance) right;
+        int[] leftDomainArray = leftVar.getValues();
+        int[] rightDomainArray = rightVar.getIntArray();
+        IntegerVariable newLeftVar;
+        if (leftDomainArray==null) {
+            newLeftVar = makeIntVar(leftVar.getName(),rightDomainArray);
         }
         else {
-            int rightLowB = rightVar.getLowB();
-            int rightUppB = rightVar.getUppB();
-            int leftLowB = leftVar.getLowB();
-            int leftUppB = leftVar.getUppB();
-            if (rightLowB>leftLowB) {
-                leftVar.setLowB(rightLowB);
-            }
-            if (rightUppB<leftUppB) {
-                leftVar.setUppB(rightUppB);
-            }
+            Set<Integer> leftDomainSet = new HashSet<Integer>();
+            Set<Integer> rightDomainSet = new HashSet<Integer>();
+            for (int i:leftDomainArray) leftDomainSet.add(i);
+            for (int i:rightDomainArray) rightDomainSet.add(i);
+            leftDomainSet.retainAll(rightDomainSet);
+            if (leftDomainSet.isEmpty()) return false;
+            List<Integer> newDomain = new LinkedList<Integer>(leftDomainSet);
+            newLeftVar = makeIntVar(leftVar.getName(), newDomain);
         }
+
+        for (Constraint c:chocoConstraints) {
+            c.replaceBy(leftVar,newLeftVar);
+        }
+
+        chocoVariables.put(left,newLeftVar);
+
         return true;
     }
 
     @Override
-    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
+    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) { // TODO messy
         left.reduceToChoco(possSubst,chocoVariables);
         IntegerVariable leftVar = (IntegerVariable) chocoVariables.get(left);
-        right.reduceToChoco(possSubst, chocoVariables);
-        SetVariable rightVar = (SetVariable) chocoVariables.get(right);
-        Constraint c = notMember(leftVar, rightVar.getLowB(),rightVar.getUppB());
-        chocoConstraints.add(c);
-        constraintMap.put(c,new NegativeConstraintInstance(this));
+        IntegerConstantListInstance rightVar = (IntegerConstantListInstance) right;
+        int[] leftDomainArray = leftVar.getValues();
+        int[] rightDomainArray = rightVar.getIntArray();
+
+        Set<Integer> leftDomainSet = new HashSet<Integer>();
+        Set<Integer> rightDomainSet = new HashSet<Integer>();
+        for (int i:leftDomainArray) leftDomainSet.add(i);
+        for (int i:rightDomainArray) rightDomainSet.add(i);
+        leftDomainSet.removeAll(rightDomainSet);
+        if (leftDomainSet.isEmpty()) return false;
+        List<Integer> newDomain = new LinkedList<Integer>(leftDomainSet);
+
+        IntegerVariable newLeftVar = makeIntVar(leftVar.getName(), newDomain);
+
+        for (Constraint c:chocoConstraints) {
+            c.replaceBy(leftVar,newLeftVar);
+        }
+
+        chocoVariables.put(left,newLeftVar);
+
+
         return true;
+
+
+
     }
 
 

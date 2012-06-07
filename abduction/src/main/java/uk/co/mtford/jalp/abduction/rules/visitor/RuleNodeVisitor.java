@@ -49,13 +49,13 @@ public abstract class RuleNodeVisitor {
         }
         else {
             Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
-            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),assignments);
+            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),assignments,previousNode);
             newRuleNode.setConstraintSolver(previousNode.getConstraintSolver().shallowClone());
-
         }
 
         return newRuleNode;
     }
+
 
     private RuleNode constructNegativeChildNode(IInferableInstance newGoal, List<DenialInstance> nestedDenialList,
                                                 List<IInferableInstance> newRestOfGoals, RuleNode previousNode) {
@@ -150,7 +150,8 @@ public abstract class RuleNodeVisitor {
         Store store = ruleNode.getStore();
         for (PredicateInstance storeAbducible : store.abducibles) {
             if (storeAbducible.isSameFunction(currentGoal)) {
-                DenialInstance newDenial = (DenialInstance) newCurrentDenial.deepClone(new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments()));
+                HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
+                DenialInstance newDenial = (DenialInstance) newCurrentDenial.deepClone(subst);
                 PredicateInstance newDenialHead = (PredicateInstance) newDenial.getBody().remove(0);
                 List<EqualityInstance> equalitySolved = storeAbducible.reduce(newDenialHead);
                 newDenial.getBody().addAll(0,equalitySolved);
@@ -207,6 +208,7 @@ public abstract class RuleNodeVisitor {
         List<DenialInstance> newUnfoldedDenials = new LinkedList<DenialInstance>();
 
         for (List<IInferableInstance> possibleUnfold:possibleUnfolds) {
+
             HashMap<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
             DenialInstance newUnfoldedDenial = (DenialInstance) newCurrentDenial.deepClone(subst);
             Set<VariableInstance> newUniversalVariables = new HashSet<VariableInstance>();
@@ -331,9 +333,12 @@ public abstract class RuleNodeVisitor {
                 if (currentGoal.getRight() instanceof VariableInstance) {
                     if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2c to node.");
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
-                    boolean unificationSuccess = currentGoal.unifyRightLeft(newAssignments); // TODO Need to check success? I think it does the same thing either way...
-                    if (!unificationSuccess) throw new JALPException("Error in JALP. E2c should never fail unification");
-                    newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments); // TODO, Could just make a true instance instead then no need to check the denial or nested denials...
+                    boolean unificationSuccess = currentGoal.unifyRightLeft(newAssignments);
+                    if (!unificationSuccess) {
+                        throw new JALPException("Error in JALP. E2c should never fail unification");
+                    }
+                    newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
+                    // TODO, Could just make a true instance instead then no need to check the denial or nested denials...
                     if (newCurrentDenial.getBody().isEmpty()) {
                         newGoal = new FalseInstance();
                         if (newNestedDenials.isEmpty()) {
@@ -645,13 +650,33 @@ public abstract class RuleNodeVisitor {
 
     }
 
+    // Expands a leaf node using the constraint solver.
     public void visit(LeafRuleNode ruleNode) {
-        ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Found a success node:\n"+ruleNode);
-        List<Constraint> leftOverChocoConstraints = ruleNode.getConstraintSolver().getChocoConstraints();
-        Map<Constraint,IConstraintInstance> constraintMap = ruleNode.getConstraintSolver().getConstraintMap();
-        for (Constraint c:leftOverChocoConstraints) {
-            ruleNode.getStore().constraints.add(constraintMap.get(c));
+        //ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
+
+        if (ruleNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Found a leaf node to expand:\n"+ruleNode);
+            ruleNode.getParentNode().getChildren().remove(ruleNode);
+            executeConstraintSolver(ruleNode.getParentNode(),ruleNode);
+            currentRuleNode = ruleNode.getParentNode();
+        }
+    }
+
+
+    private void executeConstraintSolver(RuleNode parentNode,RuleNode childNode) {
+        List<Map<VariableInstance,IUnifiableAtomInstance>> possibleAssignments = childNode.constraintSolve();
+        if (possibleAssignments.isEmpty()) {
+            parentNode.setNodeMark(RuleNode.NodeMark.FAILED);
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver failed on\n"+childNode);
+        }
+        else { // Constraint solver succeeded. Generate possible children.
+            parentNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
+            for (Map<VariableInstance,IUnifiableAtomInstance> assignment:possibleAssignments) {
+                RuleNode newLeafNode = childNode.shallowClone();
+                newLeafNode.setAssignments(assignment);
+                newLeafNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
+                parentNode.getChildren().add(newLeafNode);
+            }
         }
     }
 
@@ -664,19 +689,7 @@ public abstract class RuleNodeVisitor {
         }
         else { // Equality solver succeeded.
             child.setAssignments(assignments);
-            List<Map<VariableInstance,IUnifiableAtomInstance>> possibleAssignments = child.constraintSolve();
-            if (possibleAssignments.isEmpty()) {
-                child.setNodeMark(RuleNode.NodeMark.FAILED);
-                if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver failed on\n"+child);
-                parent.getChildren().add(child);
-            }
-            else { // Constraint solver succeeded. Generate possible children.
-                for (Map<VariableInstance,IUnifiableAtomInstance> assignment:possibleAssignments) {
-                    RuleNode newChildNode = child.shallowClone();
-                    newChildNode.setAssignments(assignment);
-                    parent.getChildren().add(newChildNode);
-                }
-            }
+            parent.getChildren().add(child);
         }
         parent.setNodeMark(RuleNode.NodeMark.EXPANDED);
     }

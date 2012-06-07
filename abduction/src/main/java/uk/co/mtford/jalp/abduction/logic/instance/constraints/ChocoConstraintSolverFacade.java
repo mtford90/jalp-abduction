@@ -1,13 +1,16 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
+import choco.Choco;
 import choco.cp.model.CPModel;
 import choco.cp.solver.CPSolver;
+import choco.cp.solver.search.integer.varselector.RandomIntVarSelector;
 import choco.kernel.common.util.iterators.DisposableIntIterator;
 import choco.kernel.model.Model;
 import choco.kernel.model.constraints.Constraint;
 import choco.kernel.model.variables.Variable;
 import choco.kernel.model.variables.integer.IntegerVariable;
 import choco.kernel.solver.Solver;
+import choco.kernel.solver.variables.integer.IntVar;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.ITermInstance;
@@ -50,8 +53,8 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Executing constraint solver");
             LOGGER.debug("Received "+listConstraints);
-            LOGGER.debug("Already have "+chocoConstraints);
         }
+
         List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
         possSubst.add(subst);
         for (IConstraintInstance constraintInstance:listConstraints) {
@@ -61,21 +64,16 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
                 return new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>(); // One of the natively implemented constraint checks has failed.
             }
         }
+
+
+
         // Now have all the choco constraints.
         Model m = new CPModel();
+        for (Variable v:chocoVariables.values()) {
+            m.addVariable(v);
+        }
         for (Constraint c:chocoConstraints) {
-            Variable[] variables = c.getVariables();
-            boolean willAddConstraint = true;
-            for (Variable v:variables) {
-                if (v instanceof IntegerVariable)  {// TODO: SetVariables shouldn't be in here anyway.
-                   IntegerVariable integerVariable = (IntegerVariable) v;
-                   if (integerVariable.getUppB()==Integer.MAX_VALUE) willAddConstraint = false;
-                   if (integerVariable.getLowB()==Integer.MIN_VALUE) willAddConstraint = false;
-                }
-            }
-            if (willAddConstraint) {
                 m.addConstraint(c);
-            }
         }
 
         Iterator addedConstraintIterator = m.getConstraintIterator();
@@ -83,56 +81,32 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
         while (addedConstraintIterator.hasNext()) chocoConstraints.remove(addedConstraintIterator.next());
 
         Solver s = new CPSolver();
+
         s.read(m);
-        Boolean solveSuccess = s.solve();
 
         List<Map<VariableInstance,IUnifiableAtomInstance>> newPossSubst = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
 
-        if (solveSuccess) {
+        boolean success = s.solve();
 
-            boolean hadVariables = false;
-
-            List<ITermInstance> expandedTerms = new LinkedList<ITermInstance>();
-            for (Map<VariableInstance, IUnifiableAtomInstance> assignments:possSubst) {
-                for (ITermInstance term:chocoVariables.keySet()) {
-                    boolean expandedTerm = false;
-                    for (VariableInstance v:term.getVariables()) {
-                        IntegerVariable chocoVariable = (IntegerVariable) chocoVariables.get(v);
-                        if (chocoVariable.getUppB()!=Integer.MAX_VALUE&&chocoVariable.getLowB()!=Integer.MIN_VALUE) {
-                            hadVariables = true;
-                            expandedTerm = true;
-                            DisposableIntIterator iterator = chocoVariable.getDomainIterator();
-                            while (iterator.hasNext()) {
-                                int d = iterator.next();
-                                HashMap<VariableInstance,IUnifiableAtomInstance> newSubst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-                                newSubst.putAll(subst);
-                                boolean unificationSuccess = v.unify(new IntegerConstantInstance(d),newSubst);
-                                if (unificationSuccess) {
-                                    newPossSubst.add(newSubst);
-                                }
-                            }
-                        }
-
+        if (success) {
+            do {
+                for (Map<VariableInstance,IUnifiableAtomInstance> nativeSubst:possSubst) {
+                    HashMap<VariableInstance,IUnifiableAtomInstance> newSubst = new HashMap<VariableInstance,IUnifiableAtomInstance>(nativeSubst);
+                    boolean unificationSuccess = true;
+                    for (ITermInstance term:chocoVariables.keySet()) {
+                        Variable chocoVariable = chocoVariables.get(term);
+                        int n = ((IntVar)s.getVar(chocoVariable)).getVal();
+                        IUnifiableAtomInstance v = (IUnifiableAtomInstance) term;
+                        unificationSuccess = v.unify(new IntegerConstantInstance(n),newSubst);
                     }
-                    if (expandedTerm) {
-                        expandedTerms.add(term); // Clean up variables that have been expanded i.e. had non infinite domain.
-                    }
+                    if (unificationSuccess) newPossSubst.add(newSubst);
                 }
-            }
-
-            for (ITermInstance term:expandedTerms) {
-                chocoVariables.remove(term); // Clean up variables that have been expanded i.e. had non infinite domain.
-            }
-
-            if (newPossSubst.isEmpty() && !hadVariables) {
-                if (LOGGER.isDebugEnabled()) LOGGER.debug("Found "+possSubst.size()+" possible assignments.");
-                return possSubst;
-            }
-
+            } while (success = s.nextSolution() == true);
         }
 
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Found "+newPossSubst.size()+" possible assignments.");
+
         return newPossSubst;
+
     }
 
     public ChocoConstraintSolverFacade shallowClone() {

@@ -21,11 +21,14 @@ import java.util.Map;
  */
 public class LeafRuleNode extends RuleNode {
 
+    private RuleNode parentNode;
+
     private static Logger LOGGER = Logger.getLogger(LeafRuleNode.class);
 
     public LeafRuleNode(AbductiveFramework framework, Store store, Map<VariableInstance,
-            IUnifiableAtomInstance> assignments) {
+            IUnifiableAtomInstance> assignments, RuleNode parentNode) {
         super(framework, null, new LinkedList<IInferableInstance>(), store, assignments);
+        this.parentNode = parentNode;
     }
 
     protected LeafRuleNode() {
@@ -41,13 +44,21 @@ public class LeafRuleNode extends RuleNode {
         newRuleNode.store = store.shallowClone();
         newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
         newRuleNode.constraintSolver = constraintSolver.shallowClone();
-
+        newRuleNode.parentNode = parentNode;
         return newRuleNode;
     }
 
     @Override
     public void acceptVisitor(RuleNodeVisitor v) throws DefinitionException {
         v.visit(this);
+    }
+
+    public RuleNode getParentNode() {
+        return parentNode;
+    }
+
+    public void setParentNode(RuleNode parentNode) {
+        this.parentNode = parentNode;
     }
 
     @Override

@@ -3,9 +3,7 @@ package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 import choco.kernel.model.constraints.Constraint;
 import choco.kernel.model.variables.Variable;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantListInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.ITermInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.*;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -48,10 +46,20 @@ public class InConstantListConstraintInstance  extends InListConstraintInstance 
     @Override
     public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         List<Map<VariableInstance,IUnifiableAtomInstance>> newPossSubst = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>(possSubst);
-        boolean reduceSuccess = left.inList((CharConstantListInstance) right,newPossSubst);
-        boolean trueAndMadeSubst = reduceSuccess && newPossSubst.size()>possSubst.size();
-        boolean notInList = trueAndMadeSubst || !reduceSuccess;
-        return notInList;
+        for (Map<VariableInstance, IUnifiableAtomInstance> subst:possSubst) {
+            for (CharConstantInstance constantInstance: ((CharConstantListInstance)right).getList()) {
+                CharConstantInstance substLeft = (CharConstantInstance) left.performSubstitutions(subst);
+                boolean unificationSuccess = substLeft.unify(constantInstance,subst);
+                if (unificationSuccess) {
+                    newPossSubst.remove(subst); // It's in the list.
+                    break;
+                }
+            }
+        }
+        possSubst.removeAll(possSubst);
+        possSubst.addAll(newPossSubst);
+        if (possSubst.isEmpty()) return false;
+        return true;
     }
 
 }

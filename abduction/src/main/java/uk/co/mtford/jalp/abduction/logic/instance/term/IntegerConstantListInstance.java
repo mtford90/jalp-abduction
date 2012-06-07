@@ -100,4 +100,14 @@ public class IntegerConstantListInstance extends ListInstance<IntegerConstantIns
         }
         return min;
     }
+
+    public int[] getIntArray() {
+        int[] ints = new int[list.size()];
+        int i =0;
+        for (IntegerConstantInstance c:list) {
+           ints[i]=c.getValue();
+            i++;
+        }
+        return ints;
+    }
 }

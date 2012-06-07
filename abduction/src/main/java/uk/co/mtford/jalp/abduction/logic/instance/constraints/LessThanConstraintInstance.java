@@ -48,51 +48,20 @@ public class LessThanConstraintInstance extends ConstraintInstance {
     public String toString () {
         return left + "<"+ right;
     }
-
     @Override
     public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         left.reduceToChoco(possSubst,chocoVariables);
         IntegerVariable leftVar = (IntegerVariable) chocoVariables.get(left);
         right.reduceToChoco(possSubst, chocoVariables);
         IntegerVariable rightVar = (IntegerVariable) chocoVariables.get(right);
-        if (leftVar.getDomainSize()==1) {
-            if (rightVar.getDomainSize()==1) {
-                Constraint c = lt(leftVar,rightVar);
-                chocoConstraints.add(c);
-                constraintMap.put(c,this);
-            }
-            else {
-                int rightLowB = rightVar.getLowB();
-                int left = leftVar.getLowB();
-                if (left+1>rightLowB) {
-                    rightVar.setLowB(left + 1);
-                }
-            }
-        }
-        else {
-            if (rightVar.getDomainSize()==1) {
-                int right = rightVar.getLowB();
-                int leftUppb = leftVar.getUppB();
-                if (right-1<leftUppb) {
-                    leftVar.setUppB(right - 1);
-                }
-            }
-            else {
-                Constraint c = lt(leftVar,rightVar);
-                chocoConstraints.add(c);
-                constraintMap.put(c,this);
-            }
-        }
+        chocoConstraints.add(lt(leftVar,rightVar));
         return true;
     }
 
     @Override
-    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
-        HashMap<Constraint,IConstraintInstance> newConstraintMap = new HashMap<Constraint,IConstraintInstance>();
+    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) { // TODO messy
         ConstraintInstance c = new GreaterThanEqConstraintInstance(left,right);
-        boolean success = c.reduceToChoco(possSubst, chocoConstraints, chocoVariables, newConstraintMap);
-        assert(newConstraintMap.size()==1);
-        constraintMap.put((Constraint) newConstraintMap.keySet().toArray()[0], new NegativeConstraintInstance(c));
+        boolean success = c.reduceToChoco(possSubst, chocoConstraints, chocoVariables, constraintMap);
         return success;
     }
 }
