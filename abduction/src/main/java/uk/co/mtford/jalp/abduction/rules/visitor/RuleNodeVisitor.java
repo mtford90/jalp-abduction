@@ -314,7 +314,7 @@ public abstract class RuleNodeVisitor {
             if (newCurrentDenial.getUniversalVariables().contains(left)) {
                 HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                 boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments);
-                newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments); // TODO, Good idea?
+                newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
 
                 newNestedDenials.add(newCurrentDenial);
 
@@ -326,7 +326,7 @@ public abstract class RuleNodeVisitor {
                 }
                 childNode = constructNegativeChildNode(newGoal, newNestedDenials,newRestOfGoals,ruleNode);
 
-                childNode.setAssignments(newAssignments);
+                // TODO: No assignment needed for universally quantified? childNode.setAssignments(newAssignments);
                 newChildNodes.add(childNode);
             }
             else { // Now in equational solved form.
@@ -338,7 +338,6 @@ public abstract class RuleNodeVisitor {
                         throw new JALPException("Error in JALP. E2c should never fail unification");
                     }
                     newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
-                    // TODO, Could just make a true instance instead then no need to check the denial or nested denials...
                     if (newCurrentDenial.getBody().isEmpty()) {
                         newGoal = new FalseInstance();
                         if (newNestedDenials.isEmpty()) {
@@ -353,7 +352,7 @@ public abstract class RuleNodeVisitor {
                         newNestedDenials.add(newCurrentDenial);
                         childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
                     }
-                    childNode.setAssignments(newAssignments);
+                    // TODO: No assignment needed for universally quantified? childNode.setAssignments(newAssignments);
                     newChildNodes.add(childNode);
                 }
                 else {
@@ -374,10 +373,10 @@ public abstract class RuleNodeVisitor {
                     newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
                     newCurrentDenial = newNestedDenials.remove(0).shallowClone();
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
-                    boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments); // TODO Need to check success? I think it does the same thing either way...
+                    boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments);
                     if (unificationSuccess) {
                         newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
-                        if (newCurrentDenial.getBody().isEmpty()) {  // TODO, Could just make a true instance instead then no need to check the denial or nested denials...
+                        if (newCurrentDenial.getBody().isEmpty()) {
                             newGoal = new FalseInstance();
                             if (newNestedDenials.isEmpty()) {
                                 childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
