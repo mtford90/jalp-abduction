@@ -212,12 +212,13 @@ public abstract class RuleNodeVisitor {
         for (List<IInferableInstance> possibleUnfold:possibleUnfolds) {
 
             HashMap<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
-            DenialInstance newUnfoldedDenial = (DenialInstance) newCurrentDenial.deepClone(subst);
+            DenialInstance newUnfoldedDenial = (DenialInstance) newCurrentDenial.shallowClone(); // TODO: This should be performSubstitution?
+            newUnfoldedDenial = (DenialInstance) newUnfoldedDenial.performSubstitutions(subst);
             Set<VariableInstance> newUniversalVariables = new HashSet<VariableInstance>();
             List<IInferableInstance> toAddToBody = new LinkedList<IInferableInstance>();
             for (IInferableInstance unfold:possibleUnfold) {
                 toAddToBody.add((IInferableInstance) unfold.performSubstitutions(subst));
-                if (!(unfold instanceof EqualityInstance)) { // TODO: instanceof
+                if (!(unfold instanceof EqualityInstance)) {
                     newUniversalVariables.addAll(unfold.getVariables());
                 }
             }
@@ -560,7 +561,7 @@ public abstract class RuleNodeVisitor {
             Map<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = variable.unify(constant,newAssignments);
             if (unificationSuccess) {
-                DenialInstance newDenialInstance = (DenialInstance) newCurrentDenial.deepClone(newAssignments);
+                DenialInstance newDenialInstance = (DenialInstance) newCurrentDenial.deepClone(newAssignments); // TODO: Should be perform substitution?
                 newDenials.add(newDenialInstance);
             }
         }

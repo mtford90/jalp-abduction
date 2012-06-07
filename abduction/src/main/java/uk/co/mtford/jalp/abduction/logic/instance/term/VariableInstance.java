@@ -107,7 +107,7 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new VariableInstance(name);
+        return this;
     }
 
     @Override

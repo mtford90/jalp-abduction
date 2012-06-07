@@ -172,7 +172,7 @@ public class PredicateInstance implements IUnifiableAtomInstance, IInferableInst
     public IFirstOrderLogicInstance shallowClone() {
         IUnifiableAtomInstance[] newParameters = new IUnifiableAtomInstance[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            newParameters[i] = parameters[i];
+            newParameters[i] = (IUnifiableAtomInstance) parameters[i].shallowClone();
         }
         return new PredicateInstance(new String(name), newParameters);
     }

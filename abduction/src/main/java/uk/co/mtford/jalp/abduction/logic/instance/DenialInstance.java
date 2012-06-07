@@ -81,7 +81,11 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
     }
 
     public DenialInstance shallowClone() {
-        return new DenialInstance(new LinkedList<IInferableInstance>(body),
+        LinkedList<IInferableInstance> newBody = new LinkedList<IInferableInstance>();
+        for (IInferableInstance inferable:body){
+            newBody.add((IInferableInstance) inferable.shallowClone());
+        }
+        return new DenialInstance(newBody,
                 new LinkedList<VariableInstance>(universalVariables));
     }
 
