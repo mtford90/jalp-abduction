@@ -39,7 +39,8 @@ public class NegativeConstraintInstance implements IConstraintInstance {
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new NegativeConstraintInstance((ConstraintInstance)constraintInstance.performSubstitutions(substitutions));
+        constraintInstance = (ConstraintInstance)constraintInstance.performSubstitutions(substitutions);
+        return this;
     }
 
     @Override
@@ -49,7 +50,7 @@ public class NegativeConstraintInstance implements IConstraintInstance {
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new NegativeConstraintInstance(constraintInstance);
+        return new NegativeConstraintInstance((ConstraintInstance) constraintInstance.shallowClone());
     }
 
     @Override
