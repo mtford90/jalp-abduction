@@ -31,7 +31,9 @@ public class LessThanConstraintInstance extends ConstraintInstance {
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new LessThanConstraintInstance((ITermInstance)left.performSubstitutions(substitutions), (ITermInstance) right.performSubstitutions(substitutions));
+        left = (ITermInstance) left.performSubstitutions(substitutions);
+        right = (ITermInstance) right.performSubstitutions(substitutions);
+        return this;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class LessThanConstraintInstance extends ConstraintInstance {
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new LessThanConstraintInstance((ITermInstance)left,(ITermInstance)right);
+        return new LessThanConstraintInstance((ITermInstance)left.shallowClone(),(ITermInstance)right.shallowClone());
     }
 
     @Override
