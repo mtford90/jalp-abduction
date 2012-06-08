@@ -25,7 +25,9 @@ public class InConstantListConstraintInstance  extends InListConstraintInstance 
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new InConstantListConstraintInstance((ITermInstance)left.performSubstitutions(substitutions), (CharConstantListInstance) right.performSubstitutions(substitutions));
+        left = (ITermInstance)left.performSubstitutions(substitutions);
+        right = (CharConstantListInstance) right.performSubstitutions(substitutions);
+        return this;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class InConstantListConstraintInstance  extends InListConstraintInstance 
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new InConstantListConstraintInstance((ITermInstance)left,(CharConstantListInstance)right);
+        return new InConstantListConstraintInstance((ITermInstance)left.shallowClone(),(CharConstantListInstance)right.shallowClone());
     }
 
     @Override
