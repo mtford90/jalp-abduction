@@ -118,10 +118,10 @@ public abstract class RuleNodeVisitor {
         // Check our new collected abducible won't unifyLeftRight with any already collected abducibles.
         for (PredicateInstance storeAbducible : store.abducibles) {
             if (goalAbducible.isSameFunction(storeAbducible)) {
+                DenialInstance denialInstance = new DenialInstance();
                 List<EqualityInstance> equalitySolved = goalAbducible.reduce(storeAbducible);
-                for (EqualityInstance result : equalitySolved) {
-                    newRestOfGoals.add(0,new InEqualityInstance(result));
-                }
+                denialInstance.getBody().addAll(equalitySolved);
+                newRestOfGoals.add(0,denialInstance);
             }
         }
 
