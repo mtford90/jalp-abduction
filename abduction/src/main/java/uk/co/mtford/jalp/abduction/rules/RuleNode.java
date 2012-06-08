@@ -8,7 +8,9 @@ import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualitySolver;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualitySolver;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
@@ -141,12 +143,11 @@ public abstract class RuleNode {
 
         List<IEqualityInstance> equalities = new LinkedList<IEqualityInstance>(this.getStore().equalities);
 
-        for (IEqualityInstance equality:equalities) {
-            if (equality.equalitySolve(newAssignments)) continue;
-            return null;  // TODO null... really?
-        }
+        IEqualitySolver solver = new EqualitySolver();
+        boolean equalitySolveSuccess = solver.executeSolver(newAssignments,equalities);
 
-        return newAssignments;
+        if (equalitySolveSuccess) return newAssignments;
+        else return null; // TODO: Null...?
     }
 
     public List<Map<VariableInstance, IUnifiableAtomInstance>> constraintSolve() {
