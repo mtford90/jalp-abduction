@@ -48,11 +48,11 @@ public class IntegerConstantListInstance extends ListInstance<IntegerConstantIns
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         IntegerConstantListInstance newListInstance = new IntegerConstantListInstance();
         for (IntegerConstantInstance term:list) {
-            IntegerConstantInstance newTerm = (IntegerConstantInstance) term.shallowClone();
-            newTerm = (IntegerConstantInstance) newTerm.performSubstitutions(substitutions);
+            IntegerConstantInstance newTerm = (IntegerConstantInstance) term.performSubstitutions(substitutions);
             newListInstance.getList().add(newTerm);
         }
-        return newListInstance;
+        list = newListInstance.getList();
+        return this;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class IntegerConstantListInstance extends ListInstance<IntegerConstantIns
     public IFirstOrderLogicInstance shallowClone() {
         IntegerConstantListInstance newListInstance = new IntegerConstantListInstance();
         for (IntegerConstantInstance term:list) {
-            newListInstance.getList().add(term);
+            newListInstance.getList().add((IntegerConstantInstance) term.shallowClone());
         }
         return newListInstance;
     }

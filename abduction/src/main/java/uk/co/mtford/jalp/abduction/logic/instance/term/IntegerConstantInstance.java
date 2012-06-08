@@ -35,12 +35,12 @@ public class IntegerConstantInstance extends ConstantInstance {
 
     @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new IntegerConstantInstance(value);
+        return new IntegerConstantInstance(new Integer(value));
     }
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new IntegerConstantInstance(value);
+        return new IntegerConstantInstance(new Integer(value));
     }
 
     @Override
