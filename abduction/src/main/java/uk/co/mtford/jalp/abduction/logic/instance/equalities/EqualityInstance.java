@@ -90,7 +90,7 @@ public class EqualityInstance implements IEqualityInstance {
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new EqualityInstance(left, right);
+        return new EqualityInstance((IUnifiableAtomInstance)left.shallowClone(), (IUnifiableAtomInstance) right.shallowClone());
     }
 
     @Override
