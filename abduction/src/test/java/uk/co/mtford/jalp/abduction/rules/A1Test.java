@@ -95,7 +95,7 @@ public class A1Test {
 
    G = {ab(X,Y,Z), p(Z)}
 
-   Delta = {ab(a,b,c), ab(d,e,f}}
+   Delta = {ab(a,b,c), ab(d,e,f), ba(d,e,f)}
    Delta* = {ic :- ab(g,h,i), p(N)}
 
    Branch 1 should generate 2 E1 nodes containing G =  {X=a, Y=b, Z=c} or {X=d, Y=e, Z=f}
@@ -136,6 +136,7 @@ public class A1Test {
         PredicateInstance ab1 = new PredicateInstance("ab",X,Y,Z);
         PredicateInstance ab2 = new PredicateInstance("ab",a,b,c);
         PredicateInstance ab3 = new PredicateInstance("ab",d,e,f);
+        PredicateInstance ba = new PredicateInstance("ba",d,e,f);
         PredicateInstance ab4 = new PredicateInstance("ab",g,h,i);
         PredicateInstance ab5 = new PredicateInstance("ab",j,k,l);
 
@@ -149,13 +150,19 @@ public class A1Test {
         denial2.getBody().add(ab5);
         denial2.getBody().add(p2);
 
+        DenialInstance denial3 = new DenialInstance();
+        denial3.getBody().add(ba);
+
         A1RuleNode A1Node = new A1RuleNode();
         A1Node.getStore().abducibles.add(ab2);
         A1Node.getStore().abducibles.add(ab3);
+        A1Node.getStore().abducibles.add(ba);
         A1Node.currentGoal=ab1;
         A1Node.getNextGoals().add(p1);
         A1Node.getStore().denials.add(denial1);
         A1Node.getStore().denials.add(denial2);
+        A1Node.getStore().denials.add(denial3);
+
 
 
 
