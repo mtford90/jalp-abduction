@@ -38,6 +38,10 @@ public abstract class RuleNodeVisitor {
         currentRuleNode.acceptVisitor(this);
     }
 
+    private RuleNodeVisitor() {
+
+    }
+
     private RuleNode constructPositiveChildNode(IInferableInstance newGoal, List<IInferableInstance> newRestOfGoals,
                                                 RuleNode previousNode) {
         RuleNode newRuleNode;
@@ -739,8 +743,18 @@ public abstract class RuleNodeVisitor {
         }
     }
 
-    public void applyRule(RuleNode r) throws Exception {
-        r.acceptVisitor(this);
+    public static void applyRule(RuleNode r) throws Exception {
+        RuleNodeVisitor v = new RuleNodeVisitor() {
+            @Override
+            protected RuleNode chooseNextNode() {
+                throw new UnsupportedOperationException(); // TODO
+            }
+            @Override
+            public boolean hasNextNode() {
+                throw new UnsupportedOperationException(); // TODO
+            }
+        };
+        r.acceptVisitor(v);
     }
 
     public RuleNode stateRewrite() throws Exception {
