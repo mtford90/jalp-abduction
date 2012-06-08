@@ -158,7 +158,9 @@ public abstract class RuleNode {
         }
         LinkedList<IConstraintInstance> constraints = new LinkedList<IConstraintInstance>();
         for (IConstraintInstance d:store.constraints) {
-            constraints.add((IConstraintInstance) d.performSubstitutions(assignments));
+            IConstraintInstance newConstraint = (IConstraintInstance) d.shallowClone();
+            newConstraint = (IConstraintInstance) newConstraint.performSubstitutions(assignments);
+            constraints.add(newConstraint);
         }
         List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst
                 = constraintSolver.executeSolver(new HashMap<VariableInstance,IUnifiableAtomInstance>(assignments),constraints);
