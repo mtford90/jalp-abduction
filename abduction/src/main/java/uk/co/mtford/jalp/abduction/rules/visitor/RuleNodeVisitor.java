@@ -736,6 +736,10 @@ public abstract class RuleNodeVisitor {
         }
     }
 
+    public void applyRule(RuleNode r) throws Exception {
+        r.acceptVisitor(this);
+    }
+
     public RuleNode stateRewrite() throws Exception {
         currentRuleNode = chooseNextNode();
         if (currentRuleNode==null) return null;

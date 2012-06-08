@@ -144,7 +144,7 @@ public abstract class RuleNode {
         List<IEqualityInstance> equalities = new LinkedList<IEqualityInstance>(this.getStore().equalities);
 
         IEqualitySolver solver = new EqualitySolver();
-        boolean equalitySolveSuccess = solver.executeSolver(newAssignments,equalities);
+        boolean equalitySolveSuccess = solver.executeSolver(newAssignments,equalities); // TODO
 
         if (equalitySolveSuccess) return newAssignments;
         else return null; // TODO: Null...?

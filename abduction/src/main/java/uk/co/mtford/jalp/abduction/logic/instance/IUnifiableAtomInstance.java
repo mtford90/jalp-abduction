@@ -22,7 +22,6 @@ public interface IUnifiableAtomInstance extends IAtomInstance {
     public List<EqualityInstance> reduce(IUnifiableAtomInstance other);
     public List<EqualityInstance> acceptReduceVisitor (IUnifiableAtomInstance unifiableAtom);
 
-
     public boolean unify(VariableInstance other,
                                   Map<VariableInstance, IUnifiableAtomInstance> assignment);
     public boolean unify(ConstantInstance other,

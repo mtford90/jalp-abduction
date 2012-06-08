@@ -1,4 +1,4 @@
-package uk.co.mtford.jalp.abduction.rules;
+package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
  * Time: 10:21
  * To change this template use File | Settings | File Templates.
  */
-public class EqualitySolverTest {
+public class EqualitySolverTest { // TODO fix up. i.e. equality solver now seperated...
     VariableInstance X, B, Y;
     CharConstantInstance john, bob;
     EqualityInstance E1, E2, E3;
