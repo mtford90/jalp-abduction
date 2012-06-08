@@ -1,7 +1,7 @@
 initiallyAt(sam,kitchen).
 
 location(X) :- X in [kitchen,bedroom,bathroom].
-time(X) :- X in [0,1,2].
+time(X) :- X in [0,1].
 
 inRoom(X,Y,T) :- initiallyAt(X,Y), not moved(X,Y,0,T).
 inRoom(X,Y,T) :- move(X,Y,E), E<T, not moved(X,Y,E,T).

@@ -300,6 +300,7 @@ public abstract class RuleNodeVisitor {
         if (currentGoal.getLeft() instanceof ConstantInstance) {  // c=c or for all X c=X
             HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments); // Blank assignments as should be just constants.
+            newCurrentDenial.performSubstitutions(newAssignments);
             newNestedDenials.add(newCurrentDenial);
             if (unificationSuccess) {
                 childNode = constructNegativeChildNode(new TrueInstance(),newNestedDenials,newRestOfGoals,ruleNode);
@@ -321,7 +322,6 @@ public abstract class RuleNodeVisitor {
                 newCurrentDenial = newCurrentDenial.shallowClone();
                 newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
 
-                newNestedDenials.add(newCurrentDenial);
 
                 if (unificationSuccess) {
                     newGoal = new TrueInstance();
@@ -329,6 +329,8 @@ public abstract class RuleNodeVisitor {
                 else {
                     newGoal = new FalseInstance();
                 }
+                newNestedDenials.add(newCurrentDenial);
+
                 childNode = constructNegativeChildNode(newGoal, newNestedDenials,newRestOfGoals,ruleNode);
 
                 // TODO: No assignment needed for universally quantified? childNode.setAssignments(newAssignments);
