@@ -717,16 +717,7 @@ public abstract class RuleNodeVisitor {
     }
 
     private void expandNode(RuleNode parent, RuleNode child) {
-        Map<VariableInstance,IUnifiableAtomInstance> assignments = child.equalitySolve();
-        if (assignments == null) {
-            child.setNodeMark(RuleNode.NodeMark.FAILED);
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality solver failed on\n"+child);
-            parent.getChildren().add(child);
-        }
-        else { // Equality solver succeeded.
-            child.setAssignments(assignments);
-            parent.getChildren().add(child);
-        }
+        parent.getChildren().add(child);
         parent.setNodeMark(RuleNode.NodeMark.EXPANDED);
     }
 
@@ -736,11 +727,26 @@ public abstract class RuleNodeVisitor {
         }
     }
 
+    private boolean applyEqualitySolver(RuleNode node) {
+        Map<VariableInstance,IUnifiableAtomInstance> assignments = node.equalitySolve();
+        if (assignments == null) {
+            node.setNodeMark(RuleNode.NodeMark.FAILED);
+            return false;
+        }
+        else {
+            node.setAssignments(assignments);
+            return true;
+        }
+    }
+
     public void applyRule(RuleNode r) throws Exception {
         r.acceptVisitor(this);
     }
 
     public RuleNode stateRewrite() throws Exception {
+        for (RuleNode r:currentRuleNode.getChildren()) {
+            applyEqualitySolver(r);
+        }
         currentRuleNode = chooseNextNode();
         if (currentRuleNode==null) return null;
         currentRuleNode.acceptVisitor(this);
