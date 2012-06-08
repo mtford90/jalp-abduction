@@ -48,7 +48,9 @@ public class IntegerConstantListInstance extends ListInstance<IntegerConstantIns
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         IntegerConstantListInstance newListInstance = new IntegerConstantListInstance();
         for (IntegerConstantInstance term:list) {
-            newListInstance.getList().add((IntegerConstantInstance) term.performSubstitutions(substitutions));
+            IntegerConstantInstance newTerm = (IntegerConstantInstance) term.shallowClone();
+            newTerm = (IntegerConstantInstance) newTerm.performSubstitutions(substitutions);
+            newListInstance.getList().add(newTerm);
         }
         return newListInstance;
     }

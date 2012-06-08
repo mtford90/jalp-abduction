@@ -45,7 +45,9 @@ public class CharConstantListInstance extends ListInstance<CharConstantInstance>
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         CharConstantListInstance newListInstance = new CharConstantListInstance();
         for (CharConstantInstance term:list) {
-            newListInstance.getList().add((CharConstantInstance) term.performSubstitutions(substitutions));
+            CharConstantInstance newTerm = (CharConstantInstance) term.shallowClone();
+            newTerm = (CharConstantInstance) newTerm.performSubstitutions(substitutions);
+            newListInstance.getList().add(newTerm);
         }
         return newListInstance;
     }
