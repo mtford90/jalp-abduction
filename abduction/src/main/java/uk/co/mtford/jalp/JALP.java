@@ -46,19 +46,27 @@ public class JALP {
 
 
         for (PredicateInstance a:result.getStore().abducibles) {
-            substAbducibles.add((PredicateInstance)a.performSubstitutions(result.getAssignments()));
+            PredicateInstance newPredicate = (PredicateInstance) a.shallowClone();
+            newPredicate = (PredicateInstance) newPredicate.performSubstitutions(result.getAssignments());
+            substAbducibles.add(newPredicate);
         }
 
         for (DenialInstance d:result.getStore().denials) {
-            substDenials.add((DenialInstance) d.performSubstitutions(result.getAssignments()));
+            DenialInstance newDenial = d.shallowClone();
+            newDenial = (DenialInstance) newDenial.performSubstitutions(result.getAssignments());
+            substDenials.add(newDenial);
         }
 
         for (IEqualityInstance e:result.getStore().equalities) {
-            substEqualities.add((IEqualityInstance) e.performSubstitutions(result.getAssignments()));
+            IEqualityInstance newEquality = (IEqualityInstance) e.shallowClone();
+            newEquality = (IEqualityInstance) newEquality.performSubstitutions(result.getAssignments());
+            substEqualities.add(newEquality);
         }
 
         for (IConstraintInstance c:result.getStore().constraints) {
-            substConstraints.add((IConstraintInstance)c.performSubstitutions(result.getAssignments()));
+            IConstraintInstance newConstraint = (IConstraintInstance) c.shallowClone();
+            newConstraint = (IConstraintInstance) newConstraint.performSubstitutions(result.getAssignments());
+            substConstraints.add(newConstraint);
         }
 
         Set<IUnifiableAtomInstance> keySet = new HashSet<IUnifiableAtomInstance>(result.getAssignments().keySet());

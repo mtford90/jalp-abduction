@@ -1,0 +1,15 @@
+initiallyAt(sam,kitchen).
+
+connected(kitchen,bedroom).
+connected(bedroom,bathroom).
+
+time(X) :- X in [0,1].
+
+in(X,Y,T) :-
+
+ic :- move(X,Y,E), in(X,Z,E), time(E), connected(Y,Z).
+
+abducible(move(X,Y,T))
+
+
+

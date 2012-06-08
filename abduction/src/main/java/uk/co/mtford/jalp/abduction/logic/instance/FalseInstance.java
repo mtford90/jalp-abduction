@@ -47,7 +47,7 @@ public class FalseInstance implements IAtomInstance, IInferableInstance {
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new FalseInstance();
+        return this;
     }
 
     @Override
