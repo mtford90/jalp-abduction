@@ -30,7 +30,9 @@ public class InIntegerListConstraintInstance extends InListConstraintInstance {
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new InIntegerListConstraintInstance((ITermInstance)left.performSubstitutions(substitutions), (IntegerConstantListInstance) right.performSubstitutions(substitutions));
+        left = (ITermInstance)left.performSubstitutions(substitutions);
+        right = (IntegerConstantListInstance) right.performSubstitutions(substitutions);
+        return this;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class InIntegerListConstraintInstance extends InListConstraintInstance {
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new InIntegerListConstraintInstance((ITermInstance)left,(IntegerConstantListInstance)right);
+        return new InIntegerListConstraintInstance((ITermInstance)left.shallowClone(),(IntegerConstantListInstance)right.shallowClone());
     }
 
     @Override
