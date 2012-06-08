@@ -1,0 +1,5 @@
+blah(X) :- X in [1,2,3], a(X).
+
+ic :- a(X), X!=1.
+
+abducible(a(X)).

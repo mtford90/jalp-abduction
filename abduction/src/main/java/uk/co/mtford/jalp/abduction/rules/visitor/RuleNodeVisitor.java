@@ -298,7 +298,7 @@ public abstract class RuleNodeVisitor {
         }
 
         if (currentGoal.getLeft() instanceof ConstantInstance) {  // c=c or for all X c=X
-            HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+            HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments); // Blank assignments as should be just constants.
             if (unificationSuccess) {
                 newCurrentDenial.performSubstitutions(newAssignments);
@@ -318,7 +318,7 @@ public abstract class RuleNodeVisitor {
         else if (currentGoal.getLeft() instanceof VariableInstance) {
             VariableInstance left = (VariableInstance) currentGoal.getLeft();
             if (newCurrentDenial.getUniversalVariables().contains(left)) {
-                HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>();
+                HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                 boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments);
 
                 if (unificationSuccess) {
