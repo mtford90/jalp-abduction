@@ -22,4 +22,7 @@ public class UniqueIdGenerator {
             return 1;
         }
     }
+    public static void reset() {
+        numberMap = new HashMap<String,Integer>();
+    }
 }

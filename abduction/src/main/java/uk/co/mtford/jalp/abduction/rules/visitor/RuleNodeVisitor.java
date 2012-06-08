@@ -49,12 +49,10 @@ public abstract class RuleNodeVisitor {
             newRuleNode = newGoal.getPositiveRootRuleNode(previousNode.getAbductiveFramework(), newRestOfGoals);
             newRuleNode.setStore(previousNode.getStore().shallowClone());
             newRuleNode.setAssignments(new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
-            newRuleNode.setConstraintSolver(previousNode.getConstraintSolver().shallowClone());
         }
         else {
             Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
             newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),assignments,previousNode);
-            newRuleNode.setConstraintSolver(previousNode.getConstraintSolver().shallowClone());
         }
 
         return newRuleNode;

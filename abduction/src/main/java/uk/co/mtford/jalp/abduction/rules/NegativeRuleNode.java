@@ -7,6 +7,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstanc
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,7 @@ public abstract class NegativeRuleNode extends RuleNode {
 
     protected NegativeRuleNode() {
         super();
+        nestedDenialsList = new LinkedList<DenialInstance>();
     }
 
     @Override

@@ -10,6 +10,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.*;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
+import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,10 @@ public class JALP {
         FileUtils.copyDirectory(visualizer, destination);
         String js = "var data=\""+root.toJSON()+"\"";
         FileUtils.writeStringToFile(new File(folderName+"/output.js"),js);
+    }
+
+    public static void applyRule(RuleNode node) throws Exception {
+        RuleNodeVisitor.applyRule(node);
     }
 
     public static void reduceResult(Result result) {

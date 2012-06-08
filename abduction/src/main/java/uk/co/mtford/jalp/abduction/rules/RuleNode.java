@@ -69,6 +69,11 @@ public abstract class RuleNode {
     }
 
     protected RuleNode() {
+        store = new Store();
+        abductiveFramework = new AbductiveFramework();
+        nextGoals = new LinkedList<IInferableInstance>();
+        assignments = new HashMap<VariableInstance,IUnifiableAtomInstance>();
+        children = new LinkedList<RuleNode>();
         nodeMark = nodeMark.UNEXPANDED;
     } // For use whilst cloning.
 
@@ -250,9 +255,6 @@ public abstract class RuleNode {
 
         json+="\\\"constraints\\\""+":[ ";
         for (IConstraintInstance constraint:store.constraints) {
-            json+="\\\""+constraint+"\\\",";
-        }
-        for (Constraint constraint:constraintSolver.getChocoConstraints()) {
             json+="\\\""+constraint+"\\\",";
         }
         json=json.substring(0,json.length()-1);
