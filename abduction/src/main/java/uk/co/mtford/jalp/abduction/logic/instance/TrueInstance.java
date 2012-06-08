@@ -47,7 +47,7 @@ public class TrueInstance implements IAtomInstance, IInferableInstance {
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new TrueInstance();
+        return this;
     }
 
     @Override
