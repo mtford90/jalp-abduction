@@ -41,7 +41,6 @@ public class A1RuleNode extends PositiveRuleNode {
         newRuleNode.currentGoal = currentGoal;
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.constraintSolver = constraintSolver.shallowClone();
-
         newRuleNode.store = store.shallowClone();
         newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
         return newRuleNode;
