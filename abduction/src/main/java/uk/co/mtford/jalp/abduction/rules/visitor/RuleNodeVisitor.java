@@ -343,6 +343,7 @@ public abstract class RuleNodeVisitor {
                         //throw new JALPException("Error in JALP. E2c should never fail unification");
                     }
                     if (unificationSuccess) {
+                        newCurrentDenial = newCurrentDenial.shallowClone();
                         newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
                         if (newCurrentDenial.getBody().isEmpty()) {
                             newGoal = new FalseInstance();
@@ -393,6 +394,7 @@ public abstract class RuleNodeVisitor {
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                     boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments);
                     if (unificationSuccess) {
+                        newCurrentDenial = newCurrentDenial.shallowClone();
                         newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
                         if (newCurrentDenial.getBody().isEmpty()) {
                             newGoal = new FalseInstance();
