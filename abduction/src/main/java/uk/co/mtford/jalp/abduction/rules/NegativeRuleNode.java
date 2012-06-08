@@ -156,4 +156,5 @@ public abstract class NegativeRuleNode extends RuleNode {
 
         return json;
     }
+
 }

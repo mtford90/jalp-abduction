@@ -19,7 +19,7 @@ import java.util.Map;
  * Time: 17:14
  * To change this template use File | Settings | File Templates.
  */
-public class LeafRuleNode extends RuleNode {
+public class LeafRuleNode extends PositiveRuleNode {
 
     private RuleNode parentNode;
 

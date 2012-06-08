@@ -4,6 +4,7 @@ import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.List;
@@ -29,7 +30,5 @@ public abstract class PositiveRuleNode extends RuleNode {
     protected PositiveRuleNode() {
         super();
     }
-
-
 
 }

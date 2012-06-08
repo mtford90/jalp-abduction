@@ -152,7 +152,7 @@ public abstract class RuleNodeVisitor {
             if (storeAbducible.isSameFunction(currentGoal)) {
                 HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
                 DenialInstance newDenial = (DenialInstance) newCurrentDenial.shallowClone();
-                newDenial = (DenialInstance) newDenial.performSubstitutions(subst);
+                // todo newDenial = (DenialInstance) newDenial.performSubstitutions(subst);
                 List<EqualityInstance> equalitySolved = storeAbducible.reduce(currentGoal);
                 newDenial.getBody().addAll(0,equalitySolved);
                 newDenials.add(newDenial);
@@ -213,7 +213,7 @@ public abstract class RuleNodeVisitor {
 
             HashMap<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
             DenialInstance newUnfoldedDenial = (DenialInstance) newCurrentDenial.shallowClone();
-            newUnfoldedDenial = (DenialInstance) newUnfoldedDenial.performSubstitutions(subst);
+            //todo newUnfoldedDenial = (DenialInstance) newUnfoldedDenial.performSubstitutions(subst);
             Set<VariableInstance> newUniversalVariables = new HashSet<VariableInstance>();
             List<IInferableInstance> toAddToBody = new LinkedList<IInferableInstance>();
             for (IInferableInstance unfold:possibleUnfold) {
