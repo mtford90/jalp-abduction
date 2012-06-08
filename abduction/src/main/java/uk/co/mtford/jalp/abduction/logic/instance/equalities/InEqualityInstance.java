@@ -56,7 +56,8 @@ public class InEqualityInstance implements IEqualityInstance {
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new InEqualityInstance((EqualityInstance) equalityInstance.performSubstitutions(substitutions));
+       equalityInstance = ((EqualityInstance) equalityInstance.performSubstitutions(substitutions));
+       return this;
     }
 
     @Override
