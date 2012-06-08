@@ -29,7 +29,9 @@ public class GreaterThanEqConstraintInstance extends ConstraintInstance {
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        return new GreaterThanEqConstraintInstance((ITermInstance)left.performSubstitutions(substitutions), (ITermInstance) right.performSubstitutions(substitutions));
+        left=(ITermInstance)left.performSubstitutions(substitutions);
+        right=(ITermInstance) right.performSubstitutions(substitutions);
+        return this;
     }
 
     @Override
@@ -39,7 +41,7 @@ public class GreaterThanEqConstraintInstance extends ConstraintInstance {
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new GreaterThanEqConstraintInstance((ITermInstance)left,(ITermInstance)right);
+        return new GreaterThanEqConstraintInstance((ITermInstance)left.shallowClone(),(ITermInstance)right.shallowClone());
     }
 
     @Override
