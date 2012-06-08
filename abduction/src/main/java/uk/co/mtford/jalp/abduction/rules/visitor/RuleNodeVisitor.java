@@ -298,15 +298,17 @@ public abstract class RuleNodeVisitor {
         }
 
         if (currentGoal.getLeft() instanceof ConstantInstance) {  // c=c or for all X c=X
-            HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
+            HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
             boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments); // Blank assignments as should be just constants.
-            newCurrentDenial.performSubstitutions(newAssignments);
-            newNestedDenials.add(newCurrentDenial);
             if (unificationSuccess) {
+                newCurrentDenial.performSubstitutions(newAssignments);
+                newNestedDenials.add(newCurrentDenial);
                 childNode = constructNegativeChildNode(new TrueInstance(),newNestedDenials,newRestOfGoals,ruleNode);
+                newAssignments.putAll(ruleNode.getAssignments());
                 childNode.setAssignments(newAssignments);
             }
             else {
+                newNestedDenials.add(newCurrentDenial);
                 childNode = constructNegativeChildNode(new FalseInstance(),newNestedDenials,newRestOfGoals,ruleNode);
             }
             newChildNodes.add(childNode);
@@ -316,14 +318,13 @@ public abstract class RuleNodeVisitor {
         else if (currentGoal.getLeft() instanceof VariableInstance) {
             VariableInstance left = (VariableInstance) currentGoal.getLeft();
             if (newCurrentDenial.getUniversalVariables().contains(left)) {
-                HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
+                HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>();
                 boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments);
 
-                newCurrentDenial = newCurrentDenial.shallowClone();
-                newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
-
-
                 if (unificationSuccess) {
+                    newCurrentDenial = newCurrentDenial.shallowClone();
+                    newAssignments.putAll(ruleNode.getAssignments());
+                    newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
                     newGoal = new TrueInstance();
                 }
                 else {
@@ -333,7 +334,6 @@ public abstract class RuleNodeVisitor {
 
                 childNode = constructNegativeChildNode(newGoal, newNestedDenials,newRestOfGoals,ruleNode);
 
-                // TODO: No assignment needed for universally quantified? childNode.setAssignments(newAssignments);
                 newChildNodes.add(childNode);
             }
             else { // Now in equational solved form.
@@ -415,8 +415,6 @@ public abstract class RuleNodeVisitor {
                         childNode.setAssignments(newAssignments);
                         newChildNodes.add(childNode);
                     }
-
-
                 }
             }
         }
