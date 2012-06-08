@@ -148,14 +148,13 @@ public class PredicateInstance implements IUnifiableAtomInstance, IInferableInst
 
     @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        PredicateInstance clonedThis = (PredicateInstance)this.shallowClone();
         LinkedList<IAtomInstance> newParameters = new LinkedList<IAtomInstance>();
         for (IAtomInstance parameter : parameters) {
             IAtomInstance newParameter = (IAtomInstance) parameter.performSubstitutions(substitutions);
             newParameters.add(newParameter);
         }
-        clonedThis.parameters = newParameters.toArray(new IUnifiableAtomInstance[parameters.length]);
-        return clonedThis;
+        parameters = newParameters.toArray(new IUnifiableAtomInstance[parameters.length]);
+        return this;
     }
 
     @Override
