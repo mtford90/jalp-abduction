@@ -40,7 +40,7 @@ public class CharConstantInstance extends ConstantInstance {
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new CharConstantInstance(value);
+        return new CharConstantInstance(new String(value));
     }
 
     @Override
