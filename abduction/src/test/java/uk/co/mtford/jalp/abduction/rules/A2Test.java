@@ -39,7 +39,7 @@ public class A2Test {
     Delta = {ab(a,b,c), ab(d,e,f), ba(g,h,i)}
 
      */
-    /*
+
     @Test
     public void test1() {
 
@@ -79,9 +79,7 @@ public class A2Test {
         A2Node.getStore().abducibles.add(ab3);
         A2Node.getStore().abducibles.add(ba);
 
-        A2Node.currentGoal=denial.getBody().remove(0);
-        A2Node.nestedDenialsList.add(denial);
-        A2Node.getGoals().add(p1);
+        A2Node.getGoals().add(denial);
 
         try {
             JALP.applyRule(A2Node);
@@ -98,6 +96,5 @@ public class A2Test {
 
     }
 
-    */
 
 }
