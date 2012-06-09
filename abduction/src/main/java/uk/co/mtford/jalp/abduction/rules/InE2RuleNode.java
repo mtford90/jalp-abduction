@@ -22,12 +22,12 @@ import java.util.Map;
  */
 public class InE2RuleNode extends NegativeRuleNode {
 
-    public InE2RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, List<DenialInstance> denial) {
-        super(abductiveFramework, goal, restOfGoals, denial);
+    public InE2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, restOfGoals);
     }
 
-    public InE2RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
-        super(abductiveFramework, goal, restOfGoals, store, assignments, denial);
+    public InE2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, restOfGoals, store, assignments);
     }
 
     private InE2RuleNode() {
@@ -39,13 +39,9 @@ public class InE2RuleNode extends NegativeRuleNode {
         E2RuleNode newRuleNode = new E2RuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
         newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
-        newRuleNode.currentGoal = currentGoal;
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
-        newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
-        newRuleNode.nestedDenialsList = new LinkedList<DenialInstance>(nestedDenialsList);
-        newRuleNode.constraintSolver = constraintSolver.shallowClone();
-
+        newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         return newRuleNode;
     }
 

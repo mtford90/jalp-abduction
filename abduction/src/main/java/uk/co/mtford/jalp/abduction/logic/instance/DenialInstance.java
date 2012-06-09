@@ -91,23 +91,15 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        LinkedList<DenialInstance> nestedDenialList = new LinkedList<DenialInstance>();
         if (this.getBody().size()==0) {
             return new FalseInstance().getPositiveRootRuleNode(abductiveFramework,goals);
         }
-        DenialInstance shallowClone = this.shallowClone();
-        nestedDenialList.add(0,shallowClone);
-        return shallowClone.getBody().remove(0).getNegativeRootRuleNode(abductiveFramework, nestedDenialList, goals);
+        return this.getBody().get(0).getNegativeRootRuleNode(abductiveFramework,goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IInferableInstance> goals) {
-        if (this.getBody().size()==0) {
-            return new FalseInstance().getNegativeRootRuleNode(abductiveFramework,nestedDenialList,goals);
-        }
-        DenialInstance shallowClone = this.shallowClone();
-        nestedDenialList.add(0, shallowClone);
-        return shallowClone.getBody().remove(0).getNegativeRootRuleNode(abductiveFramework, nestedDenialList, goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
+        throw new UnsupportedOperationException(); // TODO: Nested denials...?
     }
 
     @Override

@@ -33,7 +33,7 @@ public class NegativeConstraintInstance implements IConstraintInstance {
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
         throw new UnsupportedOperationException(); // TODO Again ASystem paper may suggest rules to deal with negatives constraints?
     }
 

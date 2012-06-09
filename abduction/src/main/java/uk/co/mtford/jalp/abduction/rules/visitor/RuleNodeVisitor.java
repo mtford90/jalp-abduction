@@ -1,13 +1,11 @@
 package uk.co.mtford.jalp.abduction.rules.visitor;
 
-import choco.kernel.model.constraints.Constraint;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ConstraintInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.InListConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.NegativeConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
@@ -34,7 +32,7 @@ public abstract class RuleNodeVisitor {
 
     public RuleNodeVisitor(RuleNode ruleNode) throws Exception {
         currentRuleNode = ruleNode;
-        currentRuleNode.getNextGoals().addAll(currentRuleNode.getAbductiveFramework().getIC()); // TODO: This should be somewhere else?
+        currentRuleNode.getGoals().addAll(currentRuleNode.getAbductiveFramework().getIC()); // TODO: This should be somewhere else?
         currentRuleNode.acceptVisitor(this);
     }
 
@@ -42,69 +40,57 @@ public abstract class RuleNodeVisitor {
 
     }
 
-    private RuleNode constructPositiveChildNode(IInferableInstance newGoal, List<IInferableInstance> newRestOfGoals,
-                                                RuleNode previousNode) {
+    private RuleNode constructChildNode(List<IInferableInstance> newGoals, RuleNode previousNode) {
         RuleNode newRuleNode;
-        if (!(newGoal==null)) {
-            newRuleNode = newGoal.getPositiveRootRuleNode(previousNode.getAbductiveFramework(), newRestOfGoals);
+        if (!(newGoals.isEmpty())) {
+            newRuleNode = newGoals.get(0).getPositiveRootRuleNode(previousNode.getAbductiveFramework(), newGoals);
             newRuleNode.setStore(previousNode.getStore().shallowClone());
             newRuleNode.setAssignments(new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
         }
         else {
-            Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
-            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),assignments,previousNode);
+            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()),previousNode);
         }
 
-        return newRuleNode;
-    }
-
-
-    private RuleNode constructNegativeChildNode(IInferableInstance newGoal, List<DenialInstance> nestedDenialList,
-                                                List<IInferableInstance> newRestOfGoals, RuleNode previousNode) {
-        newRestOfGoals = new LinkedList<IInferableInstance>(newRestOfGoals);
-        RuleNode newRuleNode = newGoal.getNegativeRootRuleNode(previousNode.getAbductiveFramework(), nestedDenialList, newRestOfGoals);
-        Map<VariableInstance, IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments());
-        newRuleNode.setAssignments(assignments);
-        newRuleNode.setStore(previousNode.getStore().shallowClone());
-        newRuleNode.setConstraintSolver(previousNode.getConstraintSolver().shallowClone());
         return newRuleNode;
     }
 
     public void visit(A1RuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying A1 to node.");
+
+        LinkedList<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+
         // 1st Branch: Unify with an already collected abducible.
         LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
         Store store = ruleNode.getStore();
-        PredicateInstance goalAbducible = (PredicateInstance) ruleNode.getCurrentGoal();
-        LinkedList<RuleNode> firstBranchChildNodes = getA1FirstBranch(ruleNode, store, goalAbducible);
+        PredicateInstance goalAbducible = (PredicateInstance) newGoals.remove(0);
+        LinkedList<RuleNode> firstBranchChildNodes = getA1FirstBranch(ruleNode, store, goalAbducible, newGoals);
         childNodes.addAll(0,firstBranchChildNodes);
 
         // Second branch: Add a new abducible. Check satisfies collected nestedDenialsList. Check not possible to unifyLeftRight with any existing.
-        RuleNode secondBranchChildNode = getA1SecondBranch(ruleNode, store, goalAbducible);
+        RuleNode secondBranchChildNode = getA1SecondBranch(ruleNode, store, goalAbducible, newGoals);
         childNodes.add(secondBranchChildNode);
         if (LOGGER.isInfoEnabled()) LOGGER.info("A1 generated "+childNodes.size()+" new states.");
         expandNode(ruleNode, childNodes);
     }
 
-    private LinkedList<RuleNode> getA1FirstBranch(A1RuleNode ruleNode, Store store, PredicateInstance goalAbducible) {
+    private LinkedList<RuleNode> getA1FirstBranch(A1RuleNode ruleNode, Store store, PredicateInstance goalAbducible, List<IInferableInstance> goals) {
         LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
         for (PredicateInstance storeAbducible : store.abducibles) {
             if (goalAbducible.isSameFunction(storeAbducible)) {
                 List<IInferableInstance> equalitySolved = new LinkedList<IInferableInstance>(storeAbducible.reduce(goalAbducible));
-                List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-                IInferableInstance newGoal = equalitySolved.remove(0);
+                List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(goals);
                 newRestOfGoals.addAll(0,equalitySolved);
-                RuleNode childNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
+                RuleNode childNode = constructChildNode(newRestOfGoals, ruleNode);
                 childNodes.add(childNode);
             }
         }
         return childNodes;
     }
 
-    private RuleNode getA1SecondBranch(A1RuleNode ruleNode, Store store, PredicateInstance goalAbducible) {
+    private RuleNode getA1SecondBranch(A1RuleNode ruleNode, Store store, PredicateInstance goalAbducible,List<IInferableInstance> goals) {
         // Set up new child node and it's data structures.
         RuleNode childNode;
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(goals);
 
         // Check our new collected abducible doesn't violate any collected constraints.
         for (DenialInstance collectedDenial : store.denials) {
@@ -127,10 +113,7 @@ public abstract class RuleNodeVisitor {
             }
         }
 
-        IInferableInstance newGoal = null;
-        if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
-
-        childNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
+        childNode = constructChildNode(newRestOfGoals, ruleNode);
         childNode.getStore().abducibles.add(goalAbducible);
 
         return childNode;
@@ -141,54 +124,42 @@ public abstract class RuleNodeVisitor {
 
         // Set up new child nodes data structures.
         RuleNode childNode;
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        List<DenialInstance> newNestedDenialList = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-        DenialInstance newCurrentDenial = newNestedDenialList.remove(0).shallowClone();
-
-        PredicateInstance currentGoal = (PredicateInstance) ruleNode.getCurrentGoal();
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        PredicateInstance abducibleDenialHead = (PredicateInstance) currentGoal.getBody().remove(0);
 
         // Check that the new constraint we are creating isn't instantly violated by an already collected abducible.
         Store store = ruleNode.getStore();
         List<DenialInstance> newDenials = new LinkedList<DenialInstance>();
         for (PredicateInstance storeAbducible : store.abducibles) {
-            if (storeAbducible.isSameFunction(currentGoal)) {
+            if (storeAbducible.isSameFunction(abducibleDenialHead)) {
                 HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
-                DenialInstance newDenial = (DenialInstance) newCurrentDenial.shallowClone();
-                // todo newDenial = (DenialInstance) newDenial.performSubstitutions(subst);
-                List<EqualityInstance> equalitySolved = storeAbducible.reduce(currentGoal);
+                DenialInstance newDenial = (DenialInstance) currentGoal.shallowClone();
+                List<EqualityInstance> equalitySolved = storeAbducible.reduce(abducibleDenialHead);
                 newDenial.getBody().addAll(0,equalitySolved);
                 newDenials.add(newDenial);
             }
         }
 
-        if (newNestedDenialList.isEmpty()) {
-            newRestOfGoals.addAll(0,newDenials);
-            IInferableInstance newGoal = null;
-            if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
-            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-        }
-        else {
-            newNestedDenialList.get(0).getBody().addAll(0, newDenials);
-            IInferableInstance newGoal = newNestedDenialList.remove(0);
-            childNode = constructNegativeChildNode(newGoal,newNestedDenialList,newRestOfGoals,ruleNode);
-        }
+        newGoals.addAll(0,newDenials);
+        childNode = constructChildNode(newGoals,ruleNode);
 
-        newCurrentDenial.getBody().add(0,currentGoal);
-        childNode.getStore().denials.add(newCurrentDenial);
+        currentGoal.getBody().add(0,abducibleDenialHead);
+        childNode.getStore().denials.add(currentGoal);
 
         expandNode(ruleNode,childNode);
     }
 
     public void visit(D1RuleNode ruleNode) throws DefinitionException {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying D1 to node.");
-        PredicateInstance definedPredicate = (PredicateInstance) ruleNode.getCurrentGoal();
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        PredicateInstance definedPredicate = (PredicateInstance) newGoals.remove(0);
         List<List<IInferableInstance>> possibleUnfolds = ruleNode.getAbductiveFramework().unfoldDefinitions(definedPredicate);
         LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
         for (List<IInferableInstance> possibleUnfold : possibleUnfolds) {
-            List<IInferableInstance> restOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-            restOfGoals.addAll(0,possibleUnfold);
-            IInferableInstance newGoal = restOfGoals.remove(0);
-            RuleNode childNode = constructPositiveChildNode(newGoal, restOfGoals, ruleNode);
+            List<IInferableInstance> goals = new LinkedList<IInferableInstance>(newGoals);
+            goals.addAll(0, possibleUnfold);
+            RuleNode childNode = constructChildNode(goals, ruleNode);
             childNodes.add(childNode);
         }
         if (LOGGER.isInfoEnabled()) LOGGER.info("D1 generated "+childNodes.size()+" new states.");
@@ -198,24 +169,22 @@ public abstract class RuleNodeVisitor {
     public void visit(D2RuleNode ruleNode) throws DefinitionException {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying D2 to node.");
 
-        PredicateInstance currentGoal = (PredicateInstance) ruleNode.getCurrentGoal();
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        PredicateInstance definedPredicateDenialHead = (PredicateInstance) currentGoal.getBody().remove(0);
 
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        List<DenialInstance> newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-        DenialInstance newCurrentDenial = newNestedDenials.remove(0).shallowClone();
         IInferableInstance newGoal = null;
 
         RuleNode childNode;
 
-        List<List<IInferableInstance>> possibleUnfolds = ruleNode.getAbductiveFramework().unfoldDefinitions(currentGoal);
+        List<List<IInferableInstance>> possibleUnfolds = ruleNode.getAbductiveFramework().unfoldDefinitions(definedPredicateDenialHead);
 
         List<DenialInstance> newUnfoldedDenials = new LinkedList<DenialInstance>();
 
         for (List<IInferableInstance> possibleUnfold:possibleUnfolds) {
 
             HashMap<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
-            DenialInstance newUnfoldedDenial = (DenialInstance) newCurrentDenial.shallowClone();
-            //todo newUnfoldedDenial = (DenialInstance) newUnfoldedDenial.performSubstitutions(subst);
+            DenialInstance newUnfoldedDenial = (DenialInstance) currentGoal.shallowClone();
             Set<VariableInstance> newUniversalVariables = new HashSet<VariableInstance>();
             List<IInferableInstance> toAddToBody = new LinkedList<IInferableInstance>();
             for (IInferableInstance unfold:possibleUnfold) {
@@ -229,19 +198,8 @@ public abstract class RuleNodeVisitor {
             newUnfoldedDenials.add(newUnfoldedDenial);
         }
 
-        if (newNestedDenials.isEmpty()) {
-            newRestOfGoals.addAll(0,newUnfoldedDenials);
-            newGoal = null;
-            if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
-            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-        }
-
-        else {
-            newNestedDenials.get(0).getBody().addAll(0,newUnfoldedDenials);
-            newGoal = null;
-            if (!newNestedDenials.get(0).getBody().isEmpty()) newGoal = newNestedDenials.get(0).getBody().remove(0);
-            childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-        }
+        newGoals.addAll(0,newUnfoldedDenials);
+        childNode = constructChildNode(newGoals,ruleNode);
 
         expandNode(ruleNode,childNode);
 
@@ -250,14 +208,11 @@ public abstract class RuleNodeVisitor {
     public void visit(E1RuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E1 to node.");
         RuleNode childNode;
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        EqualityInstance currentGoal = (EqualityInstance) ruleNode.getCurrentGoal();
-        IInferableInstance newGoal = null;
-        if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
-        childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-        //childNode.getStore().equalities.add(currentGoal);
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        EqualityInstance currentGoal = (EqualityInstance) newGoals.remove(0);
 
-        // Optimization.
+        childNode = constructChildNode(newGoals, ruleNode);
+
         boolean equalitySolveSuccess = currentGoal.equalitySolve(childNode.getAssignments());
         if (equalitySolveSuccess)  {
             expandNode(ruleNode,childNode);
@@ -270,164 +225,125 @@ public abstract class RuleNodeVisitor {
     public void visit(InE1RuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E1 Inequality to node.");
         RuleNode childNode;
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        InEqualityInstance currentGoal = (InEqualityInstance) ruleNode.getCurrentGoal();
-        IInferableInstance newGoal = null;
+        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        InEqualityInstance currentGoal = (InEqualityInstance) newRestOfGoals.remove(0);
 
-        if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
-        childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+        childNode = constructChildNode(newRestOfGoals, ruleNode);
         childNode.getStore().equalities.add(currentGoal);
         expandNode(ruleNode,childNode);
     }
 
     public void visit(E2RuleNode ruleNode) throws Exception {
-        EqualityInstance currentGoal = (EqualityInstance) ruleNode.getCurrentGoal();
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        EqualityInstance equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
 
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        List<DenialInstance> newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-        DenialInstance newCurrentDenial = newNestedDenials.remove(0).shallowClone();
         IInferableInstance newGoal = null;
 
         RuleNode childNode;
         List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
 
-        List<EqualityInstance> reductionResult = reductionResult = currentGoal.reduceLeftRight();
-
+        List<EqualityInstance> reductionResult = reductionResult = equalityDenialHead.reduceLeftRight();
 
         while (!reductionResult.isEmpty()) {
-            newCurrentDenial.getBody().addAll(0,reductionResult);
-            currentGoal = (EqualityInstance) newCurrentDenial.getBody().remove(0);
+            currentGoal.getBody().addAll(0,reductionResult);
+            equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
         }
 
-        if (currentGoal.getLeft() instanceof ConstantInstance) {  // c=c or for all X c=X
-            if (currentGoal.getRight() instanceof VariableInstance) {
-                if (!newCurrentDenial.getUniversalVariables().contains(currentGoal.getRight())) {
+        if (equalityDenialHead.getLeft() instanceof ConstantInstance) {  // c=c or for all X c=X
+            if (equalityDenialHead.getRight() instanceof VariableInstance) {
+                if (!currentGoal.getUniversalVariables().contains(equalityDenialHead.getRight())) {
                     throw new JALPException("WE have a '<- c = Z,Q' as goal where Z is existentially quantified? How to handle this? Should this even occur?rule node:\n" +
-                            ruleNode );   // TODO
+                            ruleNode );   // Sanity check.
                 }
             }
             HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
-            boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments); // Blank assignments as should be just constants.
+            boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments); // Blank assignments as should be just constants.
             if (unificationSuccess) {
-                newCurrentDenial.performSubstitutions(newAssignments);
-                newNestedDenials.add(newCurrentDenial);
-                childNode = constructNegativeChildNode(new TrueInstance(),newNestedDenials,newRestOfGoals,ruleNode);
-                newAssignments.putAll(ruleNode.getAssignments());
-                childNode.setAssignments(newAssignments);
+                currentGoal.performSubstitutions(newAssignments);
+                newGoals.add(0,currentGoal);
+                newGoals.add(0,new TrueInstance());
             }
             else {
-                newNestedDenials.add(newCurrentDenial);
-                childNode = constructNegativeChildNode(new FalseInstance(),newNestedDenials,newRestOfGoals,ruleNode);
+                newGoals.add(0,currentGoal);
+                newGoals.add(0,new FalseInstance());
             }
+            childNode = constructChildNode(newGoals,ruleNode);
+            newAssignments.putAll(ruleNode.getAssignments());
+            childNode.setAssignments(newAssignments);
             newChildNodes.add(childNode);
 
         }
 
-        else if (currentGoal.getLeft() instanceof VariableInstance) {
-            VariableInstance left = (VariableInstance) currentGoal.getLeft();
-            if (newCurrentDenial.getUniversalVariables().contains(left)) {
-                if (currentGoal.getRight() instanceof VariableInstance) {
-                    if (!newCurrentDenial.getUniversalVariables().contains(currentGoal.getRight())) {
+        else if (equalityDenialHead.getLeft() instanceof VariableInstance) {
+            VariableInstance left = (VariableInstance) equalityDenialHead.getLeft();
+            if (currentGoal.getUniversalVariables().contains(left)) {
+                if (equalityDenialHead.getRight() instanceof VariableInstance) {
+                    if (!currentGoal.getUniversalVariables().contains(equalityDenialHead.getRight())) {
                         throw new JALPException("WE have a '<- Y = Z,Q' as goal where Z is existentially quantified? How to handle this? Should this even occur?rule node:\n" +
-                                ruleNode );   // TODO
+                                ruleNode );   // Sanity check.
                     }
                 }
+
                 HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
-                boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments);
+                boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments);
+
+                newGoals.add(0,currentGoal);
 
                 if (unificationSuccess) {
-                    newCurrentDenial = newCurrentDenial.shallowClone();
-                    newAssignments.putAll(ruleNode.getAssignments());
-                    newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
                     newGoal = new TrueInstance();
                 }
                 else {
                     newGoal = new FalseInstance();
-                }
-                newNestedDenials.add(newCurrentDenial);
 
-                childNode = constructNegativeChildNode(newGoal, newNestedDenials,newRestOfGoals,ruleNode);
+                }
+
+                newGoals.add(0,newGoal);
+
+                childNode = constructChildNode(newGoals,ruleNode);
 
                 newChildNodes.add(childNode);
             }
+
             else { // Now in equational solved form.
-                if (currentGoal.getRight() instanceof VariableInstance) {
+                if (equalityDenialHead.getRight() instanceof VariableInstance) { // E2c
                     if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2c to node.");
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
-                    boolean unificationSuccess = currentGoal.unifyRightLeft(newAssignments);
+                    boolean unificationSuccess = equalityDenialHead.unifyRightLeft(newAssignments);
                     if (!unificationSuccess) {
-                        throw new JALPException("Error in JALP. E2c is failed unification on rule node:\n"+ruleNode);
+                        throw new JALPException("Error in JALP. E2c failed unification on rule node:\n"+ruleNode);  // Sanity check.
                     }
-                    if (unificationSuccess) {
-                        newCurrentDenial = newCurrentDenial.shallowClone();
-                        newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
-                        if (newCurrentDenial.getBody().isEmpty()) {
-                            newGoal = new FalseInstance();
-                            if (newNestedDenials.isEmpty()) {
-                                childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-                            }
-                            else {
-                                childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-                            }
-                        }
-                        else {
-                            newGoal = newCurrentDenial.getBody().remove(0);
-                            newNestedDenials.add(newCurrentDenial);
-                            childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-                        }
-                    }
-                    else {
-                        if (newNestedDenials.isEmpty()) {
-                            childNode = constructPositiveChildNode(new TrueInstance(), newRestOfGoals,ruleNode);
-                        }
-                        else {
-                            childNode = constructNegativeChildNode(new TrueInstance(), newNestedDenials,newRestOfGoals,ruleNode);
-                        }
+                    else  {
+                        currentGoal = currentGoal.shallowClone();
+                        currentGoal = (DenialInstance)currentGoal.performSubstitutions(newAssignments);
+                        newGoals.add(0,currentGoal);
+                        childNode = constructChildNode(newGoals,ruleNode);
                     }
 
-
-                    // TODO: No assignment needed for universally quantified? childNode.setAssignments(newAssignments);
                     newChildNodes.add(childNode);
 
                 }
-                else {
+                else { // E2b
                     if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2b to node.");
                     // Branch 1
-                    InEqualityInstance inEqualityInstance = new InEqualityInstance(currentGoal);
-                    newGoal = new TrueInstance(); // TODO: Is this correct?
-                    if (newNestedDenials.isEmpty()) {
-                        childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-                    }
-                    else {
-                        childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-                    }
+                    InEqualityInstance inEqualityInstance = new InEqualityInstance(equalityDenialHead);
+                    childNode = constructChildNode(newGoals,ruleNode);
                     childNode.getStore().equalities.add(inEqualityInstance);
                     newChildNodes.add(childNode);
                     // Branch 2
-                    newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-                    newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-                    newCurrentDenial = newNestedDenials.remove(0).shallowClone();
+                    newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+                    currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
-                    boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments);
+                    boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments);
                     if (unificationSuccess) {
-                        newCurrentDenial = newCurrentDenial.shallowClone();
-                        newCurrentDenial = (DenialInstance)newCurrentDenial.performSubstitutions(newAssignments);
-                        if (newCurrentDenial.getBody().isEmpty()) {
-                            newGoal = new FalseInstance();
-                            if (newNestedDenials.isEmpty()) {
-                                childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-                            }
-                            else {
-                                childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-                            }
-                        }
-                        else {
-                            newGoal = newCurrentDenial.getBody().remove(0);
-                            newNestedDenials.add(newCurrentDenial);
-                            childNode = constructNegativeChildNode(newGoal, newNestedDenials,newRestOfGoals,ruleNode);
-                        }
+                        currentGoal = (DenialInstance)currentGoal.performSubstitutions(newAssignments);
+                        newGoals.add(0,currentGoal);
+                        childNode = constructChildNode(newGoals,ruleNode);
                         childNode.setAssignments(newAssignments);
                         newChildNodes.add(childNode);
+                    }
+                    else {
+                        throw new JALPException("Equality solver failed in E2b. Should this happen? RuleNode:\n"+ruleNode);
                     }
                 }
             }
@@ -438,39 +354,26 @@ public abstract class RuleNodeVisitor {
 
     public void visit(InE2RuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2 inequality to node.");
-        InEqualityInstance currentGoal = (InEqualityInstance) ruleNode.getCurrentGoal();
 
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        List<DenialInstance> newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-        DenialInstance newCurrentDenial = newNestedDenials.remove(0).shallowClone();
+
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        InEqualityInstance inEqualityDenialHead = (InEqualityInstance) currentGoal.getBody().remove(0);
+
         IInferableInstance newGoal = null;
-
         RuleNode childNode;
         List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
 
         // Branch 1
-        newGoal = currentGoal.getEqualityInstance();
-        if (newNestedDenials.isEmpty()) {
-            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-        }
-        else {
-            childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-        }
+        newGoals.add(0,inEqualityDenialHead.getEqualityInstance());
+        childNode = constructChildNode(newGoals,ruleNode);
         newChildNodes.add(childNode);
         // Branch 2
-        newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-        newCurrentDenial = newNestedDenials.remove(0).shallowClone();
-
-        newGoal = newCurrentDenial;
-        if (newNestedDenials.isEmpty()) {
-            newRestOfGoals.add(0,currentGoal);
-            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-        }
-        else {
-            newNestedDenials.get(0).getBody().add(0,currentGoal);
-            childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-        }
+        newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        newGoals.add(0,currentGoal);
+        newGoals.add(inEqualityDenialHead);
+        childNode = constructChildNode(newGoals,ruleNode);
 
         newChildNodes.add(childNode);
         expandNode(ruleNode,newChildNodes);
@@ -479,40 +382,45 @@ public abstract class RuleNodeVisitor {
 
     public void visit(N1RuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying N1 to node.");
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        NegationInstance goal = (NegationInstance) ruleNode.getCurrentGoal();
+
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        NegationInstance goal = (NegationInstance) newGoals.remove(0);
+
         DenialInstance denial = new DenialInstance(goal.getSubFormula());
-        RuleNode childNode = constructPositiveChildNode(denial, newRestOfGoals, ruleNode);   // TODO The denial should be at the end of the list, not the front, according to nuffelen?
+        newGoals.add(denial);
+
+        RuleNode childNode = constructChildNode(newGoals, ruleNode);
         expandNode(ruleNode,childNode);
     }
 
-    public void visit(N2RuleNode ruleNode) {
+    public void visit(N2RuleNode ruleNode) throws JALPException {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying N2 to node.");
+
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        NegationInstance negationDenialHead = (NegationInstance) currentGoal.getBody().remove(0);
+
         RuleNode childNode;
         LinkedList<RuleNode> childNodes = new LinkedList<RuleNode>();
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        NegationInstance goal = (NegationInstance) ruleNode.getCurrentGoal();
-        List<DenialInstance> newNestedDenialList = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-        DenialInstance currentDenial = newNestedDenialList.remove(0).shallowClone();
-        if (newNestedDenialList.isEmpty()) {
-            childNode = constructPositiveChildNode(goal.getSubFormula(), newRestOfGoals, ruleNode);
 
-        } else {
-            childNode = constructNegativeChildNode(goal.getSubFormula(), newNestedDenialList, newRestOfGoals, ruleNode);
+        for (VariableInstance v:negationDenialHead.getVariables()) { // Sanity check.
+            if (currentGoal.getUniversalVariables().contains(v)) {
+                throw new JALPException("Variables in the negation are universal variables at rulenode:\n"+ruleNode);
+            }
         }
+
+        List<IInferableInstance> goals = new LinkedList<IInferableInstance>(newGoals);
+        DenialInstance goal = currentGoal.shallowClone();
+
+        goals.add(0,negationDenialHead.getSubFormula());
+        childNode = constructChildNode(newGoals,ruleNode);
         childNodes.add(childNode);
         // OR
-        newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        if (newNestedDenialList.isEmpty()) {
-            newRestOfGoals.add(0, currentDenial);
-            childNode = constructPositiveChildNode(goal, newRestOfGoals, ruleNode);
-        } else {
-            DenialInstance nestedDenial = newNestedDenialList.remove(0).shallowClone();
-            nestedDenial.getBody().add(0, currentDenial);
-            nestedDenial.getBody().add(0, goal);
-            newNestedDenialList.add(0, nestedDenial);
-            childNode = constructNegativeChildNode(goal, newNestedDenialList, newRestOfGoals, ruleNode);
-        }
+        newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        newGoals.add(0, goal);
+        newGoals.add(0, negationDenialHead);
+        childNode = constructChildNode(newGoals,ruleNode);
+
         childNodes.add(childNode);
         expandNode(ruleNode,childNodes);
 
@@ -521,12 +429,11 @@ public abstract class RuleNodeVisitor {
     public void visit(F1RuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying F1 to node.");
         RuleNode childNode;
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        ConstraintInstance currentGoal = (ConstraintInstance) ruleNode.getCurrentGoal();
-        IInferableInstance newGoal = null;
 
-        if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
-        childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        ConstraintInstance currentGoal = (ConstraintInstance) newGoals.remove(0);
+
+        childNode = constructChildNode(newGoals, ruleNode);
         childNode.getStore().constraints.add(currentGoal);
         expandNode(ruleNode,childNode);
 
@@ -534,30 +441,28 @@ public abstract class RuleNodeVisitor {
 
     public void visit(F2RuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying F2 to node.");
-        ConstraintInstance currentGoal = (ConstraintInstance) ruleNode.getCurrentGoal();
 
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        List<DenialInstance> newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-        DenialInstance newCurrentDenial = newNestedDenials.remove(0).shallowClone();
-        IInferableInstance newGoal = null;
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        ConstraintInstance constraintDenialHead = (ConstraintInstance) currentGoal.getBody().remove(0);
 
         RuleNode childNode;
         List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
+        IInferableInstance newGoal = null;
+
         // Branch 1
-        NegativeConstraintInstance negativeConstraintInstance = new NegativeConstraintInstance(currentGoal);
-        newGoal = new FalseInstance(); // TODO: Is this correct?
-        newNestedDenials.add(newCurrentDenial);
-        childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
+        NegativeConstraintInstance negativeConstraintInstance = new NegativeConstraintInstance(constraintDenialHead);
+
+        childNode = constructChildNode(newGoals, ruleNode); // TODO: Rule doesn't say anything about new goals in the child node?
         childNode.getStore().constraints.add(negativeConstraintInstance);
+
         newChildNodes.add(childNode);
         // Branch 2
-        newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-        newCurrentDenial = newNestedDenials.remove(0).shallowClone();
-        newNestedDenials.add(newCurrentDenial);
-        newGoal = new TrueInstance();
-        childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-        childNode.getStore().constraints.add(currentGoal);
+        newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        newGoals.add(0,currentGoal);
+
+        childNode = constructChildNode(newGoals,ruleNode);
+        childNode.getStore().constraints.add(constraintDenialHead);
         newChildNodes.add(childNode);
         expandNode(ruleNode,newChildNodes);
 
@@ -565,22 +470,16 @@ public abstract class RuleNodeVisitor {
 
     public void visit(F2bRuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying F2b to node.");
-        // Very much like D2.
-        // Make copies of the denial and perform an assignment to the variable for each element in the domain
-        // of X. For now this just supports a list.
 
-        InListConstraintInstance constraintInstance = (InListConstraintInstance) ruleNode.getCurrentGoal();
-
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        List<DenialInstance> newNestedDenials = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-        DenialInstance newCurrentDenial = newNestedDenials.remove(0).shallowClone();
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        InListConstraintInstance constraintDenialHead = (InListConstraintInstance) currentGoal.getBody().remove(0);
 
         IInferableInstance newGoal;
-
         RuleNode childNode;
 
-        VariableInstance variable = (VariableInstance) constraintInstance.getLeft();
-        LinkedList<ConstantInstance> constantList = ((ListInstance)constraintInstance.getRight()).getList();
+        VariableInstance variable = (VariableInstance) constraintDenialHead.getLeft();
+        LinkedList<ConstantInstance> constantList = ((ListInstance)constraintDenialHead.getRight()).getList();
 
         LinkedList<DenialInstance> newDenials = new LinkedList<DenialInstance>();
 
@@ -588,25 +487,14 @@ public abstract class RuleNodeVisitor {
             Map<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = variable.unify(constant,newAssignments);
             if (unificationSuccess) {
-                DenialInstance newDenialInstance = (DenialInstance) newCurrentDenial.shallowClone();
+                DenialInstance newDenialInstance = (DenialInstance) currentGoal.shallowClone();
                 newDenialInstance = (DenialInstance) newDenialInstance.performSubstitutions(newAssignments);
                 newDenials.add(newDenialInstance);
             }
         }
 
-        if (newNestedDenials.isEmpty()) {
-            newRestOfGoals.addAll(0,newDenials);
-            newGoal = null;
-            if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
-            childNode = constructPositiveChildNode(newGoal,newRestOfGoals,ruleNode);
-        }
-
-        else {
-            newNestedDenials.get(0).getBody().addAll(0, newDenials);
-            newGoal = null;
-            if (!newNestedDenials.get(0).getBody().isEmpty()) newGoal = newNestedDenials.get(0).getBody().remove(0);
-            childNode = constructNegativeChildNode(newGoal,newNestedDenials,newRestOfGoals,ruleNode);
-        }
+        newGoals.addAll(0,newDenials);
+        childNode = constructChildNode(newGoals,ruleNode);
 
         expandNode(ruleNode,childNode);
 
@@ -621,10 +509,11 @@ public abstract class RuleNodeVisitor {
     public void visit(PositiveTrueRuleNode ruleNode)
     {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying truth conjunction rule to node.");
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        IInferableInstance newGoal = null;
-        if (!newRestOfGoals.isEmpty()) newGoal = newRestOfGoals.remove(0);
-        RuleNode newRuleNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
+
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        newGoals.remove(0); // Remove the truth instance.
+
+        RuleNode newRuleNode = constructChildNode(newGoals, ruleNode);
         expandNode(ruleNode,newRuleNode);
 
     }
@@ -636,26 +525,15 @@ public abstract class RuleNodeVisitor {
      */
     public void visit(NegativeTrueRuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying truth denial conjunction rule to node.");
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        List<DenialInstance> newNestedDenialList = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-        DenialInstance newCurrentDenial = newNestedDenialList.remove(0).shallowClone();
-        IInferableInstance newGoal;
 
-        RuleNode childNode;
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
 
-        if (newCurrentDenial.getBody().isEmpty()) {
-            if (newNestedDenialList.isEmpty()) {
-                childNode = constructPositiveChildNode(new FalseInstance(),newRestOfGoals,ruleNode);
-            }
-            else {
-                childNode = constructNegativeChildNode(new FalseInstance(),newNestedDenialList,newRestOfGoals,ruleNode);
-            }
-        }
-        else {
-            newNestedDenialList.add(newCurrentDenial);
-            newGoal = newCurrentDenial.getBody().remove(0);
-            childNode = constructNegativeChildNode(newGoal,newNestedDenialList,newRestOfGoals,ruleNode);
-        }
+        DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        currentGoal.getBody().remove(0); // Remove true instance.
+
+        newGoals.add(0,currentGoal); // TODO why remove it in the first place?
+
+        RuleNode childNode = constructChildNode(newGoals,ruleNode);
 
         expandNode(ruleNode,childNode);
     }
@@ -667,6 +545,9 @@ public abstract class RuleNodeVisitor {
      */
     public void visit(PositiveFalseRuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying false conjunction rule to node.");
+
+
+        ruleNode.getGoals().remove(0);
         ruleNode.setNodeMark(RuleNode.NodeMark.FAILED);
     }
 
@@ -677,19 +558,14 @@ public abstract class RuleNodeVisitor {
      */
     public void visit(NegativeFalseRuleNode ruleNode) {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying false denial conjunction rule to node.");
-        List<IInferableInstance> newRestOfGoals = new LinkedList<IInferableInstance>(ruleNode.getNextGoals());
-        List<DenialInstance> newNestedDenialList = new LinkedList<DenialInstance>(ruleNode.getNestedDenialsList());
-        RuleNode newChildNode;
-        newNestedDenialList.remove(0);
-        if (newNestedDenialList.isEmpty()) {
-            IInferableInstance newGoal = new TrueInstance();
-            newChildNode = constructPositiveChildNode(newGoal, newRestOfGoals, ruleNode);
-        } else {
-            DenialInstance newDenial = newNestedDenialList.remove(0).shallowClone();
-            IInferableInstance newGoal = newDenial.getBody().remove(0);
-            newChildNode = constructNegativeChildNode(newGoal, newNestedDenialList, newRestOfGoals, ruleNode);
-        }
-        expandNode(ruleNode,newChildNode);
+
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        newGoals.remove(0); // Remove succeeded denial.
+        newGoals.add(0, new TrueInstance());
+
+        RuleNode childNode = constructChildNode(newGoals,ruleNode);
+
+        expandNode(ruleNode,childNode);
 
     }
 

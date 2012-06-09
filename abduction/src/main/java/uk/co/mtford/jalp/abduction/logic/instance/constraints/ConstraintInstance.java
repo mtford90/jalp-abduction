@@ -46,12 +46,12 @@ public abstract class ConstraintInstance implements IConstraintInstance {
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        return new F1RuleNode(abductiveFramework,this,goals);
+        return new F1RuleNode(abductiveFramework,goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
-        return new F2RuleNode(abductiveFramework,this,goals,nestedDenials);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
+        return new F2RuleNode(abductiveFramework,goals);
     }
 
     @Override

@@ -1,9 +1,6 @@
 package uk.co.mtford.jalp.abduction.rules;
 
-import choco.kernel.model.constraints.Constraint;
-import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
-import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
@@ -35,35 +32,29 @@ public abstract class RuleNode {
         EXPANDED
     };
 
-    protected IInferableInstance currentGoal;
-    protected List<IInferableInstance> nextGoals; // G - {currentGoal}
+    protected List<IInferableInstance> goals; // G - {currentGoal}
     protected Store store; // ST
     protected Map<VariableInstance, IUnifiableAtomInstance> assignments;  // Theta
     protected AbductiveFramework abductiveFramework; // (P,A,IC),Theta
     protected NodeMark nodeMark; // Defines whether or not leaf node or search node.
     protected List<RuleNode> children; // Next states.
-    protected ChocoConstraintSolverFacade constraintSolver;
 
-    public RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals) {
+    public RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
         children = new LinkedList<RuleNode>();
         assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         nodeMark = nodeMark.UNEXPANDED;
         this.abductiveFramework = abductiveFramework;
-        this.currentGoal = goal;
-        this.nextGoals = restOfGoals;
-        this.constraintSolver=new ChocoConstraintSolverFacade();
+        this.goals = restOfGoals;
         store = new Store();
     }
 
-    public RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals,
+    public RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals,
                     Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         children = new LinkedList<RuleNode>();
         this.assignments = assignments;
         this.store = store;
         this.abductiveFramework = abductiveFramework;
-        this.currentGoal = goal;
-        this.nextGoals = restOfGoals;
-        this.constraintSolver=new ChocoConstraintSolverFacade();
+        this.goals = restOfGoals;
         this.nodeMark = nodeMark.UNEXPANDED;
 
     }
@@ -71,19 +62,12 @@ public abstract class RuleNode {
     protected RuleNode() {
         store = new Store();
         abductiveFramework = new AbductiveFramework();
-        nextGoals = new LinkedList<IInferableInstance>();
+        goals = new LinkedList<IInferableInstance>();
         assignments = new HashMap<VariableInstance,IUnifiableAtomInstance>();
         children = new LinkedList<RuleNode>();
         nodeMark = nodeMark.UNEXPANDED;
     } // For use whilst cloning.
 
-    public ChocoConstraintSolverFacade getConstraintSolver() {
-        return constraintSolver;
-    }
-
-    public void setConstraintSolver(ChocoConstraintSolverFacade constraintSolver) {
-        this.constraintSolver = constraintSolver;
-    }
 
     public List<RuleNode> getChildren() {
         return children;
@@ -125,20 +109,12 @@ public abstract class RuleNode {
         this.store = store;
     }
 
-    public List<IInferableInstance> getNextGoals() {
-        return nextGoals;
+    public List<IInferableInstance> getGoals() {
+        return goals;
     }
 
-    public void setNextGoals(List<IInferableInstance> nextGoals) {
-        this.nextGoals = nextGoals;
-    }
-
-    public IInferableInstance getCurrentGoal() {
-        return currentGoal;
-    }
-
-    public void setCurrentGoal(IInferableInstance currentGoal) {
-        this.currentGoal = currentGoal;
+    public void setGoals(List<IInferableInstance> goals) {
+        this.goals = goals;
     }
 
     /** Equality solver implementation **/
@@ -168,6 +144,7 @@ public abstract class RuleNode {
             newConstraint = (IConstraintInstance) newConstraint.performSubstitutions(assignments);
             constraints.add(newConstraint);
         }
+        ChocoConstraintSolverFacade constraintSolver = new ChocoConstraintSolverFacade();
         List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst
                 = constraintSolver.executeSolver(new HashMap<VariableInstance,IUnifiableAtomInstance>(assignments),constraints);
         return possSubst;
@@ -180,14 +157,12 @@ public abstract class RuleNode {
     @Override
     public String toString() {
         String message =
-                "currentGoal = " + currentGoal + "\n" +
-                "nextGoals = " + nextGoals + "\n" +
+                "goals = " + goals + "\n" +
                 "assignments = " + assignments + "\n\n" +
                 "delta = " + store.abducibles + "\n" +
                 "delta* = " + store.denials + "\n" +
                 "epsilon = " + store.equalities + "\n" +
                 "fd = " + store.constraints + "\n\n" +
-                "chocoFd = " + constraintSolver.getChocoConstraints() + "\n\n" +
                 "nodeType = " + this.getClass() + "\n" +
                 "nodeMark = " + this.getNodeMark() + "\n" +
                 "numChildren = " + this.getChildren().size();
@@ -203,12 +178,8 @@ public abstract class RuleNode {
 
         json+=",";
 
-        json+="\\\"currentGoal\\\":"+"\\\""+currentGoal+"\\\"";
-
-        json+=",";
-
-        json+="\\\"nextGoals\\\""+":[ ";
-        for (IInferableInstance inferable:nextGoals) {
+        json+="\\\"goals\\\""+":[ ";
+        for (IInferableInstance inferable: goals) {
             json+="\\\""+inferable+"\\\",";
         }
         json=json.substring(0,json.length()-1);

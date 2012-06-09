@@ -19,44 +19,28 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class NegativeRuleNode extends RuleNode {
-    protected List<DenialInstance> nestedDenialsList;
 
-    public NegativeRuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, List<DenialInstance> denial) {
-        super(abductiveFramework, goal, restOfGoals);
-        this.nestedDenialsList = denial;
+    public NegativeRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, restOfGoals);
     }
 
-    public NegativeRuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
-        super(abductiveFramework, goal, restOfGoals, store, assignments);
-        this.nestedDenialsList = denial;
-    }
-
-    public List<DenialInstance> getNestedDenialsList() {
-        return nestedDenialsList;
-    }
-
-    public void setNestedDenialsList(List<DenialInstance> nestedDenialsList) {
-        this.nestedDenialsList = nestedDenialsList;
+    public NegativeRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, restOfGoals, store, assignments);
     }
 
     protected NegativeRuleNode() {
         super();
-        nestedDenialsList = new LinkedList<DenialInstance>();
     }
 
     @Override
     public String toString() {
         String message=
-                "currentGoal = " + currentGoal + "\n" +
-                "nextGoals = " + nextGoals + "\n" +
-                "nestedDenialList = " + nestedDenialsList + "\n" +
+                "goals = " + goals + "\n" +
                 "assignments = " + assignments + "\n\n" +
                 "delta = " + store.abducibles + "\n" +
                 "delta* = " + store.denials + "\n" +
                         "epsilon = " + store.equalities + "\n" +
                         "fd = " + store.constraints + "\n\n" +
-                        "chocoFd = " + constraintSolver.getChocoConstraints() + "\n\n" +
-
 
                         "nodeType = " + this.getClass() + "\n" +
                 "nodeMark = " + this.getNodeMark() + "\n" +
@@ -75,22 +59,9 @@ public abstract class NegativeRuleNode extends RuleNode {
 
         json+=",";
 
-        json+="\\\"currentGoal\\\":"+"\\\""+currentGoal+"\\\"";
-
-        json+=",";
-
-        json+="\\\"nextGoals\\\""+":[ ";
-        for (IInferableInstance inferable:nextGoals) {
+        json+="\\\"goals\\\""+":[ ";
+        for (IInferableInstance inferable: goals) {
             json+="\\\""+inferable+"\\\",";
-        }
-        json=json.substring(0,json.length()-1);
-        json+="]";
-
-        json+=",";
-
-        json+="\\\"nestedDenials\\\""+":[ ";
-        for (DenialInstance denialInstance: nestedDenialsList) {
-            json+="\\\""+denialInstance+"\\\",";
         }
         json=json.substring(0,json.length()-1);
         json+="]";

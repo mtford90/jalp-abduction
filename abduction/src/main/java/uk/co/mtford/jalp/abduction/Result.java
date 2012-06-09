@@ -20,15 +20,13 @@ public class Result {
     private List<IInferableInstance> query;
     private RuleNode root;
     private Store store;
-    private ChocoConstraintSolverFacade constraintSolver;
     private Map<VariableInstance, IUnifiableAtomInstance> assignments;  // Theta
 
-    public Result(Store store,Map<VariableInstance, IUnifiableAtomInstance> assignments, List<IInferableInstance> query, RuleNode root,ChocoConstraintSolverFacade constraintSolver) {
+    public Result(Store store,Map<VariableInstance, IUnifiableAtomInstance> assignments, List<IInferableInstance> query, RuleNode root) {
         this.assignments = assignments;
         this.store = store;
         this.query = query;
         this.root = root;
-        this.constraintSolver=constraintSolver;
     }
 
     public List<IInferableInstance> getQuery() {
@@ -74,11 +72,4 @@ public class Result {
         return message;
     }
 
-    public ChocoConstraintSolverFacade getConstraintSolver() {
-        return constraintSolver;
-    }
-
-    public void setConstraintSolver(ChocoConstraintSolverFacade constraintSolver) {
-        this.constraintSolver = constraintSolver;
-    }
 }

@@ -1,5 +1,6 @@
 package uk.co.mtford.jalp.abduction.rules;
 
+import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
@@ -21,12 +22,12 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class N2RuleNode extends NegativeRuleNode {
-    public N2RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, List<DenialInstance> denial) {
-        super(abductiveFramework, goal, restOfGoals, denial);
+    public N2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, restOfGoals);
     }
 
-    public N2RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
-        super(abductiveFramework, goal, restOfGoals, store, assignments, denial);
+    public N2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, restOfGoals, store, assignments);
     }
 
     protected N2RuleNode() {
@@ -38,18 +39,14 @@ public class N2RuleNode extends NegativeRuleNode {
         N2RuleNode newRuleNode = new N2RuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
         newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
-        newRuleNode.currentGoal = currentGoal;
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
-        newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
-        newRuleNode.nestedDenialsList = new LinkedList<DenialInstance>(nestedDenialsList);
-        newRuleNode.constraintSolver = constraintSolver.shallowClone();
-
+        newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         return newRuleNode;
     }
 
     @Override
-    public void acceptVisitor(RuleNodeVisitor v) {
+    public void acceptVisitor(RuleNodeVisitor v) throws JALPException {
         v.visit(this);
     }
 }

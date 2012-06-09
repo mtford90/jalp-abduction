@@ -21,12 +21,12 @@ import java.util.Map;
  */
 public class InE1RuleNode extends PositiveRuleNode {
 
-    public InE1RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals) {
-        super(abductiveFramework, goal, restOfGoals);
+    public InE1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, restOfGoals);
     }
 
-    public InE1RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
-        super(abductiveFramework, goal, restOfGoals, store, assignments);
+    public InE1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, restOfGoals, store, assignments);
     }
 
     private InE1RuleNode() {
@@ -38,12 +38,9 @@ public class InE1RuleNode extends PositiveRuleNode {
         InE1RuleNode newRuleNode = new InE1RuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
         newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
-        newRuleNode.currentGoal = currentGoal;
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
-        newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
-        newRuleNode.constraintSolver = constraintSolver.shallowClone();
-
+        newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         return newRuleNode;
     }
 

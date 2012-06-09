@@ -8,7 +8,6 @@ import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class LeafRuleNode extends PositiveRuleNode {
 
     public LeafRuleNode(AbductiveFramework framework, Store store, Map<VariableInstance,
             IUnifiableAtomInstance> assignments, RuleNode parentNode) {
-        super(framework, null, new LinkedList<IInferableInstance>(), store, assignments);
+        super(framework, new LinkedList<IInferableInstance>(), store, assignments);
         this.parentNode = parentNode;
     }
 
@@ -41,8 +40,7 @@ public class LeafRuleNode extends PositiveRuleNode {
         newRuleNode.children = new LinkedList<RuleNode>(children);
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
-        newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
-        newRuleNode.constraintSolver = constraintSolver.shallowClone();
+        newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         newRuleNode.parentNode = parentNode;
         return newRuleNode;
     }
@@ -68,7 +66,6 @@ public class LeafRuleNode extends PositiveRuleNode {
                         "delta* = " + store.denials + "\n" +
                         "epsilon = " + store.equalities + "\n" +
                         "fd = " + store.constraints + "\n\n" +
-                        "chocoFd = " + constraintSolver.getChocoConstraints() + "\n\n" +
                         "nodeType = " + this.getClass() + "\n" +
                         "nodeMark = " + this.getNodeMark() + "\n";
         return message;

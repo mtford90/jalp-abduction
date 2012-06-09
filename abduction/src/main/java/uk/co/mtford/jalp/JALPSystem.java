@@ -124,7 +124,7 @@ public class JALPSystem {
                 break;
             }
             if (currentNode.getNodeMark()==RuleNode.NodeMark.SUCCEEDED) {
-                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query,rootNode,currentNode.getConstraintSolver());
+                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query,rootNode);
                 resultList.add(result);
             }
             try {
@@ -194,7 +194,7 @@ public class JALPSystem {
         private RuleNodeIterator(List<IInferableInstance> goals, Heuristic heuristic) throws Exception {
             switch (heuristic) {
                 case NONE:
-                    currentNode = goals.remove(0).getPositiveRootRuleNode(framework,goals);
+                    currentNode = goals.get(0).getPositiveRootRuleNode(framework,goals);
                     nodeVisitor = new FifoRuleNodeVisitor(currentNode);
                     break;
                 default: throw new JALPException("No such heuristic exists.");

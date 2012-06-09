@@ -21,12 +21,12 @@ import java.util.Map;
  */
 public class A1RuleNode extends PositiveRuleNode {
 
-    public A1RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals) {
-        super(abductiveFramework, goal, restOfGoals);
+    public A1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, restOfGoals);
     }
 
-    public A1RuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
-        super(abductiveFramework, goal, restOfGoals, store, assignments);
+    public A1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, restOfGoals, store, assignments);
     }
 
     protected A1RuleNode() {
@@ -38,11 +38,9 @@ public class A1RuleNode extends PositiveRuleNode {
         A1RuleNode newRuleNode = new A1RuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
         newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
-        newRuleNode.currentGoal = currentGoal;
         newRuleNode.abductiveFramework = abductiveFramework;
-        newRuleNode.constraintSolver = constraintSolver.shallowClone();
         newRuleNode.store = store.shallowClone();
-        newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
+        newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         return newRuleNode;
     }
 

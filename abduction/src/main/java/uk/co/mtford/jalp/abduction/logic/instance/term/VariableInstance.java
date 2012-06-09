@@ -232,12 +232,12 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(IInferableInstance newGoal, AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
-        if (nestedDenials.get(0).getUniversalVariables().contains(this)) {
-            return new F2bRuleNode(abductiveFramework,newGoal,goals,nestedDenials);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
+        if (((DenialInstance)goals.get(0)).getUniversalVariables().contains(this)) {
+            return new F2bRuleNode(abductiveFramework,goals);
         }
         else {
-            return new F2RuleNode(abductiveFramework,newGoal,goals,nestedDenials);
+            return new F2RuleNode(abductiveFramework,goals);
         }
     }
 

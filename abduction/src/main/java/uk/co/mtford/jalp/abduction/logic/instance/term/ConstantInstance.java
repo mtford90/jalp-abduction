@@ -81,8 +81,8 @@ public abstract class ConstantInstance implements ITermInstance, IUnifiableAtomI
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(IInferableInstance newGoal, AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
-        return new F2RuleNode(abductiveFramework,newGoal,goals,nestedDenials);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
+        return new F2RuleNode(abductiveFramework,goals);
     }
 
 

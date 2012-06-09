@@ -22,8 +22,8 @@ $(document).ready(init);
 function init() {
 	rootNode = $.parseJSON(data);
 	query = "'"+rootNode.currentGoal+"'";
-	for (var goal in rootNode.nextGoals) {
-		query += ", '"+rootNode.nextGoals[goal]+"'";
+	for (var goal in rootNode.goals) {
+		query += ", '"+rootNode.goals[goal]+"'";
 	}
 	nodeArray[1]=rootNode;
 	fillInfo();
@@ -85,9 +85,7 @@ function openInfoWindow(id) {
 
 function fillNode(node,dialogId) {
 	fillType(node.type,dialogId);
-	fillCurrentGoal(node.currentGoal,dialogId);
-	fillNestedDenials(node.nestedDenials,dialogId);
-	fillNextGoals(node.nextGoals,dialogId);
+	fillNextGoals(node.goals,dialogId);
 	fillAssignments(node.assignments,dialogId);
 	fillAbducibles(node.abducibles,dialogId);
 	fillDenials(node.denials,dialogId);
@@ -98,22 +96,6 @@ function fillNode(node,dialogId) {
 
 function fillType(type,dialogId) {
 	$("#"+dialogId+" #dataTable #type").text(type);
-}
-
-function fillCurrentGoal(type,dialogId) {
-	$("#"+dialogId+" #dataTable #current-goal").text(type);
-}
-
-function fillNestedDenials(denialArray, dialogId) {
-	var ul,li;
-
-	ul = document.createElement('ul');
-	for (var denial in denialArray) {
-		li = document.createElement('li');
-		$(li).text(denialArray[denial]);
-		ul.appendChild(li);
-	}
-	$("#"+dialogId+" #dataTable #nested-denials").html(ul);
 }
 
 function fillNextGoals(goalArray, dialogId) {
@@ -205,16 +187,14 @@ Query: <span id="query"></span>
 </div>
 <div id="dialogs">
 	<table id="dataTable">
-		<tr><td>Type</td><td class="data" id="type"></td></tr>
-		<tr><td>Current Goal</td><td  class="data" id="current-goal"></td></tr>	
-		<tr><td>Nested Denials</td><td  class="data" id="nested-denials"></td></tr>
-		<tr><td>Next Goals</td><td  class="data" id="next-goals"></td></tr>
-		<tr><td>Assignments</td><td  class="data" id="assignments"></td></tr>
-		<tr><td>Abducibles</td><td  class="data" id="abducibles"></td></tr>
-		<tr><td>Denials</td><td  class="data" id="denials"></td></tr>
-		<tr><td>Equalities</td><td  class="data" id="equalities"></td></tr>
-		<tr><td>Constraints</td><td  class="data" id="listConstraints"></td></tr>
-		<tr><td>Mark</td><td  class="data" id="mark"></td></tr>
+		<tr><td>R</td><td class="data" id="type"></td></tr>
+		<tr><td>G</td><td  class="data" id="next-goals"></td></tr>
+		<tr><td>&theta;</td><td  class="data" id="assignments"></td></tr>
+		<tr><td>&Delta;</td><td  class="data" id="abducibles"></td></tr>
+		<tr><td>&Delta;*</td><td  class="data" id="denials"></td></tr>
+		<tr><td>&epsilon;</td><td  class="data" id="equalities"></td></tr>
+		<tr><td>FD</td><td  class="data" id="listConstraints"></td></tr>
+		<tr><td>M</td><td  class="data" id="mark"></td></tr>
 	</table>
 </div>
 </body>

@@ -27,12 +27,12 @@ public class FalseInstance implements IAtomInstance, IInferableInstance {
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        return new PositiveFalseRuleNode(abductiveFramework, this, goals);
+        return new PositiveFalseRuleNode(abductiveFramework, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IInferableInstance> goals) {
-        return new NegativeFalseRuleNode(abductiveFramework, this, goals, nestedDenialList);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
+        return new NegativeFalseRuleNode(abductiveFramework, goals);
     }
 
     @Override

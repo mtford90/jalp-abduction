@@ -38,12 +38,12 @@ public class NegationInstance implements IInferableInstance, IFirstOrderLogicIns
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        return new N1RuleNode(abductiveFramework, this, goals);
+        return new N1RuleNode(abductiveFramework, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenialList, List<IInferableInstance> goals) {
-        return new N2RuleNode(abductiveFramework, this, goals, nestedDenialList);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
+        return new N2RuleNode(abductiveFramework, goals);
     }
 
     @Override

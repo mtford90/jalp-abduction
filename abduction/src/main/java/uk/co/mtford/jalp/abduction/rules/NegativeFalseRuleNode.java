@@ -21,12 +21,12 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class NegativeFalseRuleNode extends NegativeRuleNode {
-    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, List<DenialInstance> denial) {
-        super(abductiveFramework, goal, restOfGoals, denial);
+    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, restOfGoals);
     }
 
-    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework, IInferableInstance goal, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments, List<DenialInstance> denial) {
-        super(abductiveFramework, goal, restOfGoals, store, assignments, denial);
+    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, restOfGoals, store, assignments);
     }
 
     protected NegativeFalseRuleNode() {
@@ -38,13 +38,9 @@ public class NegativeFalseRuleNode extends NegativeRuleNode {
         NegativeFalseRuleNode newRuleNode = new NegativeFalseRuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
         newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
-        newRuleNode.currentGoal = currentGoal;
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
-        newRuleNode.nextGoals = new LinkedList<IInferableInstance>(nextGoals);
-        newRuleNode.nestedDenialsList = new LinkedList<DenialInstance>(nestedDenialsList);
-        newRuleNode.constraintSolver = constraintSolver.shallowClone();
-
+        newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         return newRuleNode;
     }
 

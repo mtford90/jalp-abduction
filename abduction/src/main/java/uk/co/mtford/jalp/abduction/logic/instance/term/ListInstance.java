@@ -42,7 +42,7 @@ public abstract class ListInstance<E extends ITermInstance> implements ITermInst
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(IInferableInstance newGoal, AbductiveFramework abductiveFramework, List<DenialInstance> nestedDenials, List<IInferableInstance> goals) {
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
         throw new UnsupportedOperationException(); // TODO Nested lists.
     }
 
