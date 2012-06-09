@@ -36,7 +36,7 @@ public class E2cTest {
     @Test
     public void test1() throws Exception {
         E2RuleNode ruleNode = new E2RuleNode();
-        List<IInferableInstance> goals = JALPQueryParser.readFromString("X=Y, q(X)");
+        List<IInferableInstance> goals = JALPQueryParser.readFromString("X=Y, q(Y)");
 
         DenialInstance d = new DenialInstance(goals);
         EqualityInstance e = (EqualityInstance) goals.get(0);
