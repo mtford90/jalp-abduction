@@ -37,6 +37,8 @@ public class JALP {
         RuleNodeVisitor.applyRule(node);
     }
 
+
+
     public static void reduceResult(Result result) {
         List<PredicateInstance> substAbducibles = new LinkedList<PredicateInstance>();
         List<DenialInstance> substDenials = new LinkedList<DenialInstance>();
