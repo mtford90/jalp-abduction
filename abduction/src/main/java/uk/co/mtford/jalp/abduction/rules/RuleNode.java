@@ -5,6 +5,7 @@ import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualitySolver;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualitySolver;
@@ -117,22 +118,25 @@ public abstract class RuleNode {
         this.goals = goals;
     }
 
-    /** Equality solver implementation **/
     public Map<VariableInstance, IUnifiableAtomInstance> equalitySolve()  {
+        throw new UnsupportedOperationException();
+        /*
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments
                 = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
 
-        List<IEqualityInstance> equalities = new LinkedList<IEqualityInstance>(this.getStore().equalities);
+        List<EqualityInstance> equalities = new LinkedList<EqualityInstance>(this.getStore().equalities);
 
         IEqualitySolver solver = new EqualitySolver();
-        boolean equalitySolveSuccess = solver.executeSolver(newAssignments,equalities); // TODO
+        boolean equalitySolveSuccess = solver.execute(newAssignments,equalities); // TODO
 
         if (equalitySolveSuccess) return newAssignments;
-        else return null; // TODO: Null...?
+        else return null; // TODO: Null...?   */
     }
 
     public List<Map<VariableInstance, IUnifiableAtomInstance>> constraintSolve() {
-        if (store.constraints.isEmpty()) {
+        throw new UnsupportedOperationException();    // TODO
+
+        /*if (store.constraints.isEmpty()) {
             List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst
                     = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
             possSubst.add(assignments);
@@ -146,9 +150,10 @@ public abstract class RuleNode {
         }
         ChocoConstraintSolverFacade constraintSolver = new ChocoConstraintSolverFacade();
         List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst
-                = constraintSolver.executeSolver(new HashMap<VariableInstance,IUnifiableAtomInstance>(assignments),constraints);
-        return possSubst;
+                = constraintSolver.execute(new HashMap<VariableInstance,IUnifiableAtomInstance>(assignments),constraints);
+        return possSubst;    */
     }
+
 
     public abstract RuleNode shallowClone();
 

@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class EqualitySolver implements IEqualitySolver {
     @Override
-    public boolean executeSolver(Map<VariableInstance, IUnifiableAtomInstance> subst, List<IEqualityInstance> equalities) {
+    public boolean execute(Map<VariableInstance, IUnifiableAtomInstance> subst, List<EqualityInstance> equalities) {
         for (IEqualityInstance equality:equalities) {
             if (equality.equalitySolve(subst)) continue;
             return false;

@@ -14,5 +14,5 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface IEqualitySolver {
-    public boolean executeSolver(Map<VariableInstance,IUnifiableAtomInstance> subst,  List<IEqualityInstance> equalities);
+    public boolean execute(Map<VariableInstance, IUnifiableAtomInstance> subst, List<EqualityInstance> equalities);
 }

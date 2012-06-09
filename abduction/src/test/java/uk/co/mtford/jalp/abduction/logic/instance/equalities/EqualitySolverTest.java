@@ -1,5 +1,7 @@
 package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
+import com.sun.net.httpserver.Authenticator;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +15,8 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.LeafRuleNode;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
@@ -24,7 +28,12 @@ import static org.junit.Assert.assertTrue;
  * Time: 10:21
  * To change this template use File | Settings | File Templates.
  */
-public class EqualitySolverTest { // TODO fix up. i.e. equality solver now seperated...
+public class EqualitySolverTest {
+
+    private static Logger LOGGER = Logger.getLogger(EqualitySolverTest.class);
+
+    EqualitySolver solver = new EqualitySolver();
+
     VariableInstance X, B, Y;
     CharConstantInstance john, bob;
     EqualityInstance E1, E2, E3;
@@ -52,19 +61,17 @@ public class EqualitySolverTest { // TODO fix up. i.e. equality solver now seper
 
     }
 
+    // Theta = {Y/bob}, Equalities = {B==Y}
     @Test
     public void simpleEqualityTest1() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
-        assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         assignments.put(Y,bob);
-        Store store = new Store();
-        store.equalities.add(E2);
-        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments,null);
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
-        assertTrue(newAssignments!=null);
-        assertTrue(newAssignments.size()==2);
-        assertTrue(newAssignments.get(Y)==bob);
-        assertTrue(newAssignments.get(B)==bob);
+        List<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
+        equalities.add(new EqualityInstance(B,Y));
+        assertTrue(solver.execute(assignments, equalities));
+        assertTrue(assignments.size()==2);
+        assertTrue(assignments.get(Y)==bob);
+        assertTrue(assignments.get(B)==bob);
     }
 
     @Test
@@ -72,13 +79,12 @@ public class EqualitySolverTest { // TODO fix up. i.e. equality solver now seper
         HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
         assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         assignments.put(Y,bob);
-        Store store = new Store();
-        store.equalities.add(new EqualityInstance(Y,bob));
-        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments,null);
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
-        assertTrue(newAssignments!=null);
-        assertTrue(newAssignments.size()==1);
-        assertTrue(newAssignments.get(Y)==bob);
+        List<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
+        equalities.add(new EqualityInstance(Y,bob));
+        boolean solverSuccess = solver.execute(assignments, equalities);
+        assertTrue(solverSuccess);
+        assertTrue(assignments.size()==1);
+        assertTrue(assignments.get(Y)==bob);
     }
 
     // theta = {Y/bob}, equalities = {john=X, B=Y}
@@ -87,15 +93,14 @@ public class EqualitySolverTest { // TODO fix up. i.e. equality solver now seper
         HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
         assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         assignments.put(Y,bob);
-        Store store = new Store();
-        store.equalities.add(E1);
-        store.equalities.add(E2);
-        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments,null);
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
-        assertTrue(newAssignments!=null);
-        assertTrue(newAssignments.get(Y)==bob);
-        assertTrue(newAssignments.get(X)==john);
-        assertTrue(newAssignments.get(B)==bob);
+        List<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
+        equalities.add(E1);
+        equalities.add(E2);
+        boolean solverSuccess = solver.execute(assignments, equalities);
+        assertTrue(solverSuccess);
+        assertTrue(assignments.get(Y)==bob);
+        assertTrue(assignments.get(X)==john);
+        assertTrue(assignments.get(B)==bob);
     }
 
     // theta = {Y/bob}, equalities = {john=X, B=Y, X=B}
@@ -104,104 +109,14 @@ public class EqualitySolverTest { // TODO fix up. i.e. equality solver now seper
         HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
         assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         assignments.put(Y,bob);
-        Store store = new Store();
-        store.equalities.add(E1);
-        store.equalities.add(E2);
-        store.equalities.add(E3);
-        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments,null);
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
-        assertTrue(newAssignments==null);
+        List<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
+        equalities.add(E1);
+        equalities.add(E2);
+        equalities.add(E3);
+        boolean solverSuccess = solver.execute(assignments, equalities);
+
+        assertTrue(!solverSuccess);
     }
-
-    @Test
-    public void simpleInEqualityTest1() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
-        assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        assignments.put(Y,bob);
-        Store store = new Store();
-        store.equalities.add(new InEqualityInstance(new EqualityInstance(Y, bob)));
-        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments,null);
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
-        assertTrue(newAssignments==null);
-    }
-
-    @Test
-    public void simpleInEqualityTest2() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
-        assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        assignments.put(Y,bob);
-        Store store = new Store();
-        store.equalities.add(new EqualityInstance(B, Y));
-        store.equalities.add(new InEqualityInstance(new EqualityInstance(B, bob)));
-        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments,null);
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
-        assertTrue(newAssignments==null);
-    }
-
-    @Test
-    public void simpleInEqualityTest3() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
-        assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        assignments.put(Y,john);
-        Store store = new Store();
-        store.equalities.add(new EqualityInstance(B,Y));
-        store.equalities.add(new InEqualityInstance(new EqualityInstance(B, bob)));
-        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments,null);
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
-        assertTrue(newAssignments!=null);
-        assertTrue(newAssignments.size()==2);
-        assertTrue(newAssignments.get(Y)==john);
-        assertTrue(newAssignments.get(B)==john);
-    }
-
-    @Test
-    public void simpleInEqualityTest4() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments
-                = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        Store store = new Store();
-        VariableInstance X = new VariableInstance("X");
-        CharConstantInstance one = new CharConstantInstance("1");
-        store.equalities.add(new InEqualityInstance(new EqualityInstance(X, one)));
-        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments,null);
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
-        assertTrue(newAssignments!=null);
-        assertTrue(newAssignments.isEmpty());
-    }
-
-    @Test
-    public void complexTest1() {
-        CharConstantInstance sam = new CharConstantInstance("sam");
-        CharConstantInstance tweety = new CharConstantInstance("tweety");
-        VariableInstance X6 = new VariableInstance("X");
-        VariableInstance X7 = new VariableInstance("X");
-        VariableInstance X9 = new VariableInstance("X");
-        VariableInstance X10 = new VariableInstance("X");
-        EqualityInstance E1 = new EqualityInstance(X6,X7);
-        EqualityInstance E2 = new EqualityInstance(X7,X9);
-        EqualityInstance E3 = new EqualityInstance(X9,sam);
-        InEqualityInstance IE = new InEqualityInstance(new EqualityInstance(X7,tweety));
-
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
-        assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        assignments.put(X10,X7);
-
-        Store store = new Store();
-        store.equalities.add(E1);
-        store.equalities.add(E2);
-        store.equalities.add(E3);
-        store.equalities.add(IE);
-
-        LeafRuleNode node = new LeafRuleNode(new AbductiveFramework(),store,assignments,null);
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = node.equalitySolve();
-
-        assertTrue(newAssignments!=null);
-        assertTrue(newAssignments.size()==4);
-        assertTrue(newAssignments.get(X10)==X7);
-        assertTrue(newAssignments.get(X6)==X7);
-        assertTrue(newAssignments.get(X7)==X9);
-        assertTrue(newAssignments.get(X9)==sam);
-    }
-
 
 
 }

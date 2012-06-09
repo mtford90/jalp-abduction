@@ -1,5 +1,8 @@
 package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
+import org.javatuples.Pair;
+import uk.co.mtford.jalp.JALPException;
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
@@ -14,5 +17,5 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface IInEqualitySolver {
-    public boolean executeSolver(Map<VariableInstance,IUnifiableAtomInstance> subst,  List<InEqualityInstance> inEqualities);
+    public List<IInferableInstance> execute(List<InEqualityInstance> inEqualities) throws JALPException;
 }
