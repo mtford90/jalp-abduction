@@ -29,7 +29,7 @@ public class InE1RuleNode extends PositiveRuleNode {
         super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
-    private InE1RuleNode() {
+    protected InE1RuleNode() {
         super();
     }
 

@@ -30,7 +30,7 @@ public class InE2RuleNode extends NegativeRuleNode {
         super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
-    private InE2RuleNode() {
+    protected InE2RuleNode() {
         super();
     }
 
