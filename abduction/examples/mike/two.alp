@@ -3,12 +3,15 @@ initiallyAt(sam,kitchen).
 location(X) :- X in [kitchen,bedroom,bathroom].
 time(X) :- X in [0,1,2].
 
+connected(kitchen,bedroom).
+connected(bedroom,bathroom).
+
 inRoom(X,Y,T) :- initiallyAt(X,Y), not moved(X,Y,0,T).
 inRoom(X,Y,T) :- move(X,Y,E), E<T, not moved(X,Y,E,T).
 moved(X,Y,E,T) :- move(X,Z,C), Z!=Y, between (C,E,T).
 between(C,E,T) :- E <= C, C < T.
 
-possibleMove(X,Y,E) :- location(Y), time(E).
+possibleMove(X,Y,E) :- location(Y), connected(Z,Y), inRoom(X,Z,E), time(E).
 
 ic :- move(X,Y,E), not possibleMove(X,Y,E).
 ic :- move(X,Y,T), move(X,Z,T), Y != Z.

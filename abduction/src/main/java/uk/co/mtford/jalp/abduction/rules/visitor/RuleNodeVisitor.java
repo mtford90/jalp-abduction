@@ -300,6 +300,12 @@ public abstract class RuleNodeVisitor {
         }
 
         if (currentGoal.getLeft() instanceof ConstantInstance) {  // c=c or for all X c=X
+            if (currentGoal.getRight() instanceof VariableInstance) {
+                if (!newCurrentDenial.getUniversalVariables().contains(currentGoal.getRight())) {
+                    throw new JALPException("WE have a '<- c = Z,Q' as goal where Z is existentially quantified? How to handle this? Should this even occur?rule node:\n" +
+                            ruleNode );   // TODO
+                }
+            }
             HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments); // Blank assignments as should be just constants.
             if (unificationSuccess) {
@@ -320,6 +326,12 @@ public abstract class RuleNodeVisitor {
         else if (currentGoal.getLeft() instanceof VariableInstance) {
             VariableInstance left = (VariableInstance) currentGoal.getLeft();
             if (newCurrentDenial.getUniversalVariables().contains(left)) {
+                if (currentGoal.getRight() instanceof VariableInstance) {
+                    if (!newCurrentDenial.getUniversalVariables().contains(currentGoal.getRight())) {
+                        throw new JALPException("WE have a '<- Y = Z,Q' as goal where Z is existentially quantified? How to handle this? Should this even occur?rule node:\n" +
+                                ruleNode );   // TODO
+                    }
+                }
                 HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                 boolean unificationSuccess = currentGoal.unifyLeftRight(newAssignments);
 
@@ -344,7 +356,7 @@ public abstract class RuleNodeVisitor {
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                     boolean unificationSuccess = currentGoal.unifyRightLeft(newAssignments);
                     if (!unificationSuccess) {
-                        //throw new JALPException("Error in JALP. E2c should never fail unification");
+                        throw new JALPException("Error in JALP. E2c is failed unification on rule node:\n"+ruleNode);
                     }
                     if (unificationSuccess) {
                         newCurrentDenial = newCurrentDenial.shallowClone();

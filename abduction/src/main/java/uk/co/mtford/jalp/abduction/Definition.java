@@ -38,6 +38,11 @@ public class Definition {
         this.variables = variables;
     }
 
+    public Definition(PredicateInstance head) {
+        this.head=head;
+        body = new LinkedList<IInferableInstance>();
+    }
+
     public boolean isFact() {
         if (body == null) return true;
         if (body.size() == 0) return true;

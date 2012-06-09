@@ -98,11 +98,6 @@ public class A1Test {
    Delta = {ab(a,b,c), ab(d,e,f), ba(d,e,f)}
    Delta* = {ic :- ab(g,h,i), p(N)}
 
-   Branch 1 should generate 2 E1 nodes containing G =  {X=a, Y=b, Z=c} or {X=d, Y=e, Z=f}
-
-   Branch 2 should generate 1 E2 node containing G =  {'<- X=a, Y=b, Z=c', '<- X=d, Y=e, Z=f'}
-   and Delta = {ab(a,b,c), ab(d,e,f},ab(X,Y,Z)}
-
     */
     @Test
     public void test2() {
@@ -162,10 +157,6 @@ public class A1Test {
         A1Node.getStore().denials.add(denial1);
         A1Node.getStore().denials.add(denial2);
         A1Node.getStore().denials.add(denial3);
-
-
-
-
 
         try {
             JALP.applyRule(A1Node);
