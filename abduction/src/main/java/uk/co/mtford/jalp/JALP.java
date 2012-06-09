@@ -40,7 +40,8 @@ public class JALP {
     public static void reduceResult(Result result) {
         List<PredicateInstance> substAbducibles = new LinkedList<PredicateInstance>();
         List<DenialInstance> substDenials = new LinkedList<DenialInstance>();
-        List<IEqualityInstance> substEqualities = new LinkedList<IEqualityInstance>();
+        List<EqualityInstance> substEqualities = new LinkedList<EqualityInstance>();
+        List<InEqualityInstance> substInEqualities = new LinkedList<InEqualityInstance>();
         List<IConstraintInstance> substConstraints = new LinkedList<IConstraintInstance>();
         List<VariableInstance> queryVariables = new LinkedList<VariableInstance>();
 
@@ -62,10 +63,16 @@ public class JALP {
             substDenials.add(newDenial);
         }
 
-        for (IEqualityInstance e:result.getStore().equalities) {
-            IEqualityInstance newEquality = (IEqualityInstance) e.shallowClone();
-            newEquality = (IEqualityInstance) newEquality.performSubstitutions(result.getAssignments());
+        for (EqualityInstance e:result.getStore().equalities) {
+            EqualityInstance newEquality = (EqualityInstance) e.shallowClone();
+            newEquality = (EqualityInstance) newEquality.performSubstitutions(result.getAssignments());
             substEqualities.add(newEquality);
+        }
+
+        for (InEqualityInstance e:result.getStore().inequalities) {
+            InEqualityInstance newEquality = (InEqualityInstance) e.shallowClone();
+            newEquality = (InEqualityInstance) newEquality.performSubstitutions(result.getAssignments());
+            substInEqualities.add(newEquality);
         }
 
         for (IConstraintInstance c:result.getStore().constraints) {
@@ -91,6 +98,7 @@ public class JALP {
         result.getStore().abducibles=substAbducibles;
         result.getStore().denials = substDenials;
         result.getStore().equalities=substEqualities;
+        result.getStore().inequalities=substInEqualities;
         result.getStore().constraints=substConstraints;
 
     }

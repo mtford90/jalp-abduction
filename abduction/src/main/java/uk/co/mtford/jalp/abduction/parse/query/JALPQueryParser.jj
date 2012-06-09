@@ -2,12 +2,28 @@
 
 LL(2) grammar for queries.
 
-Query -> Predicate (COMMA PREDICATE)* EOF
+Query -> Inferable (COMMA Inferable)* EOF
+
+Inferable -> PosInferable | NegInferable
+PosInferable -> Predicate | Equality | InEquality | Constraint
+NegInferable -> NOT PosInferable
 
 Predicate -> LCASENAME (LBRACKET ParameterList RBRACKET)?
+Equality -> Parameter EQUALS Parameter
+InEquality -> Parameter NOTEQUALS Parameter
+Constraint -> LessThanConstraint | LessThanEqConstraint | GreaterThanConstraint | GreaterThanEqConstraint | InConstraint
+LessThanConstraint -> Term LESSTHAN Term
+LessThanEqConstraint -> Term LESSTHANEQ Term
+GreaterThanConstraint -> Term GREATERTHAN Term
+GreaterThanEqConstraint -> Term GREATERTHANEQ Term
+InListConstraint -> Term IN List
 
-ParameterList -> Parameter (COMMA Parameter)*
+Term -> (Variable | Constant | List)
 Parameter -> (Variable | Constant | Predicate)
+
+List -> IntegerConstantList | CharConstantList
+IntegerConstantList -> LSQBRACKET IntegerConstant ... IntegerConstant RSQBRACKET
+CharConstantList -> LSQBRACKET CharConstant (COMMA CharConstant)* RSQBRACKET
 
 Variable -> UCASENAME
 IntegerConstant -> INTEGER
@@ -46,14 +62,18 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.Definition;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.*;
 
 public class JALPQueryParser {
  
-    public static List<PredicateInstance> readFromString(String string) throws ParseException {
+    public static List<IInferableInstance> readFromString(String string) throws ParseException {
         ByteArrayInputStream inputStream = null;
         byte[] buf = string.getBytes();
         inputStream = new ByteArrayInputStream(buf);
@@ -78,27 +98,76 @@ TOKEN :
   <LBRACKET: "("> |
   <RBRACKET: ")"> |
   <COMMA: ","> |
+  <DOT: "."> |
+  <EQUALS: "="> |
+  <NOTEQUALS: "!="> |
+  <LESSTHAN: "<"> |
+  <LESSTHANEQ: "<="> |
+  <GREATERTHAN: ">"> |
+  <GREATERTHANEQ: ">="> |
+  <LSQBRACKET: "["> |
+  <RSQBRACKET: "]"> |
+  <NOT: "not"> |
+  <IN: "in"> |
   <INTEGER: ["0"-"9"]> |
-  <LCASENAME: (["a"-"z"]|["0"-"9"]) ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
-  <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> 
+  <LCASENAME: ["a"-"z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
+  <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*>
+
 }
 
-List<PredicateInstance> AbductiveLogicQuery():
+List<IInferableInstance> AbductiveLogicQuery():
 {
-    LinkedList<PredicateInstance> goals = new LinkedList<PredicateInstance>();
+    LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
     HashMap<String, VariableInstance> variablesSoFar = new HashMap<String, VariableInstance>();
-    PredicateInstance goal;
+    IInferableInstance goal;
 }
 {
-	goal = Predicate(variablesSoFar)
+	goal = Inferable(variablesSoFar)
     { goals.add(goal); }
 	(
 		<COMMA>
-		goal = Predicate(variablesSoFar)
+		goal = Inferable(variablesSoFar)
         { goals.add(goal); }
 	)*
     { return goals; }
 }
+
+IInferableInstance Inferable(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IInferableInstance inferable;
+}
+{
+    inferable = PositiveInferable(variablesSoFar)
+    { return inferable; } |
+    inferable = NegativeInferable(variablesSoFar)
+    { return inferable; }
+}
+
+IInferableInstance PositiveInferable(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IInferableInstance inferable;
+}
+{
+    inferable = Predicate(variablesSoFar)
+    { return inferable; } |
+    inferable = Equality(variablesSoFar)
+    { return inferable; } |
+    inferable = InEquality(variablesSoFar)
+    { return inferable; } |
+    inferable = Constraint(variablesSoFar)
+    { return inferable; }
+}
+
+NegationInstance NegativeInferable(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IInferableInstance subformula;
+}
+{
+    <NOT>
+    subformula = PositiveInferable(variablesSoFar)
+    { return new NegationInstance(subformula); }
+}
+
 
 PredicateInstance Predicate(HashMap<String, VariableInstance> variablesSoFar):
 {
@@ -109,12 +178,131 @@ PredicateInstance Predicate(HashMap<String, VariableInstance> variablesSoFar):
 {
 	t = <LCASENAME>
     { name = t.image; }
-	[	
+	[
 		<LBRACKET>
 		parameters = ParameterList(variablesSoFar)
 		<RBRACKET>
 	]
     { return new PredicateInstance(name,parameters); }
+}
+
+EqualityInstance Equality(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IUnifiableAtomInstance left;
+    IUnifiableAtomInstance right;
+}
+{
+	left = Parameter(variablesSoFar)
+	<EQUALS>
+	right = Parameter(variablesSoFar)
+    { return new EqualityInstance(left,right); }
+}
+
+InEqualityInstance InEquality(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IUnifiableAtomInstance left;
+    IUnifiableAtomInstance right;
+}
+{
+	left = Parameter(variablesSoFar)
+	<NOTEQUALS>
+	right = Parameter(variablesSoFar)
+    { return new InEqualityInstance(left,right); }
+}
+
+IConstraintInstance Constraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IConstraintInstance instance;
+}
+{
+    instance = LessThanConstraint(variablesSoFar)
+    { return instance; } |
+    instance = LessThanEqConstraint(variablesSoFar)
+    { return instance; } |
+    instance = GreaterThanConstraint(variablesSoFar)
+    { return instance; } |
+    instance = GreaterThanEqConstraint(variablesSoFar)
+    { return instance; } |
+    instance = InListConstraint(variablesSoFar)
+    { return instance; }
+}
+
+LessThanConstraintInstance LessThanConstraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance left;
+    ITermInstance right;
+}
+{
+    left = Term(variablesSoFar)
+    <LESSTHAN>
+    right = Term(variablesSoFar)
+    { return new LessThanConstraintInstance(left,right); }
+}
+
+
+LessThanEqConstraintInstance LessThanEqConstraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance left;
+    ITermInstance right;
+}
+{
+    left = Term(variablesSoFar)
+    <LESSTHANEQ>
+    right = Term(variablesSoFar)
+    { return new LessThanEqConstraintInstance(left,right); }
+}
+
+
+GreaterThanConstraintInstance GreaterThanConstraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance left;
+    ITermInstance right;
+}
+{
+    left = Term(variablesSoFar)
+    <GREATERTHAN>
+    right = Term(variablesSoFar)
+    { return new GreaterThanConstraintInstance(left,right); }
+}
+
+GreaterThanEqConstraintInstance GreaterThanEqConstraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance left;
+    ITermInstance right;
+}
+{
+    left = Term(variablesSoFar)
+    <GREATERTHANEQ>
+    right = Term(variablesSoFar)
+    { return new GreaterThanEqConstraintInstance(left,right); }
+}
+
+
+InListConstraintInstance InListConstraint(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance left;
+    ITermInstance right;
+}
+{
+    left = Term(variablesSoFar)
+    <IN>
+    ((right = CharConstantList(variablesSoFar)
+    { return new InConstantListConstraintInstance(left,(CharConstantListInstance)right); }) |
+    (right = IntegerConstantList(variablesSoFar)
+    { return new InIntegerListConstraintInstance(left,(IntegerConstantListInstance)right); }))
+}
+
+ITermInstance Term(HashMap<String, VariableInstance> variablesSoFar):
+{
+    ITermInstance term;
+}
+{
+    term = Variable(variablesSoFar)
+    { return term; } |
+    term = Constant()
+    { return term; } |
+    term = List(variablesSoFar)
+    { return term; }
 }
 
 List<IUnifiableAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar):
@@ -149,6 +337,61 @@ IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFa
         { return unifiable; }
 	)
 
+}
+
+ListInstance List(HashMap<String, VariableInstance> variablesSoFar):
+{
+   ListInstance listInstance;
+}
+{
+    (listInstance = IntegerConstantList(variablesSoFar)
+    { return listInstance; }) |
+    (listInstance = CharConstantList(variablesSoFar)
+    { return listInstance; })
+}
+
+IntegerConstantListInstance IntegerConstantList(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IntegerConstantListInstance listInstance = new IntegerConstantListInstance();
+    IntegerConstantInstance constantInstance;
+}
+{
+    <LSQBRACKET>
+    constantInstance = IntegerConstant()
+    {
+        listInstance.getList().add(constantInstance);
+    }
+    (
+       <COMMA>
+       constantInstance = IntegerConstant()
+       {
+           listInstance.getList().add(constantInstance);
+       }
+    )*
+    <RSQBRACKET>
+    { return listInstance; }
+}
+
+CharConstantListInstance CharConstantList(HashMap<String, VariableInstance> variablesSoFar):
+{
+    CharConstantListInstance listInstance = new CharConstantListInstance();
+    CharConstantInstance constantInstance;
+}
+{
+    <LSQBRACKET>
+    constantInstance = CharConstant()
+    {
+        listInstance.getList().add(constantInstance);
+    }
+    (
+       <COMMA>
+       constantInstance = CharConstant()
+       {
+           listInstance.getList().add(constantInstance);
+       }
+    )*
+    <RSQBRACKET>
+    { return listInstance; }
 }
 
 VariableInstance Variable(HashMap<String, VariableInstance> variablesSoFar):

@@ -17,11 +17,33 @@ public interface JALPQueryParserConstants {
   /** RegularExpression Id. */
   int COMMA = 7;
   /** RegularExpression Id. */
-  int INTEGER = 8;
+  int DOT = 8;
   /** RegularExpression Id. */
-  int LCASENAME = 9;
+  int EQUALS = 9;
   /** RegularExpression Id. */
-  int UCASENAME = 10;
+  int NOTEQUALS = 10;
+  /** RegularExpression Id. */
+  int LESSTHAN = 11;
+  /** RegularExpression Id. */
+  int LESSTHANEQ = 12;
+  /** RegularExpression Id. */
+  int GREATERTHAN = 13;
+  /** RegularExpression Id. */
+  int GREATERTHANEQ = 14;
+  /** RegularExpression Id. */
+  int LSQBRACKET = 15;
+  /** RegularExpression Id. */
+  int RSQBRACKET = 16;
+  /** RegularExpression Id. */
+  int NOT = 17;
+  /** RegularExpression Id. */
+  int IN = 18;
+  /** RegularExpression Id. */
+  int INTEGER = 19;
+  /** RegularExpression Id. */
+  int LCASENAME = 20;
+  /** RegularExpression Id. */
+  int UCASENAME = 21;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -36,6 +58,17 @@ public interface JALPQueryParserConstants {
     "\"(\"",
     "\")\"",
     "\",\"",
+    "\".\"",
+    "\"=\"",
+    "\"!=\"",
+    "\"<\"",
+    "\"<=\"",
+    "\">\"",
+    "\">=\"",
+    "\"[\"",
+    "\"]\"",
+    "\"not\"",
+    "\"in\"",
     "<INTEGER>",
     "<LCASENAME>",
     "<UCASENAME>",
