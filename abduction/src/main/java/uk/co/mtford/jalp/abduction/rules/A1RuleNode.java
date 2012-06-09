@@ -21,12 +21,12 @@ import java.util.Map;
  */
 public class A1RuleNode extends PositiveRuleNode {
 
-    public A1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
-        super(abductiveFramework, restOfGoals);
+    public A1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, query, restOfGoals);
     }
 
-    public A1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
-        super(abductiveFramework, restOfGoals, store, assignments);
+    public A1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
     protected A1RuleNode() {

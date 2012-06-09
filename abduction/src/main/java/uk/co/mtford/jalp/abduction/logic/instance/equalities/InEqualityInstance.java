@@ -43,14 +43,14 @@ public class InEqualityInstance implements IEqualityInstance {
     }
 
     @Override
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        return new InE1RuleNode(abductiveFramework, goals);
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
+        return new InE1RuleNode(abductiveFramework, query, goals);
 
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        return new InE2RuleNode(abductiveFramework, goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
+        return new InE2RuleNode(abductiveFramework, query, goals);
 
     }
 

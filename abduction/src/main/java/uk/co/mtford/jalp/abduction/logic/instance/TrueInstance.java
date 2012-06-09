@@ -26,13 +26,13 @@ public class TrueInstance implements IAtomInstance, IInferableInstance {
     }
 
     @Override
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        return new PositiveTrueRuleNode(abductiveFramework, goals);
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
+        return new PositiveTrueRuleNode(abductiveFramework, query, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        return new NegativeTrueRuleNode(abductiveFramework, goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
+        return new NegativeTrueRuleNode(abductiveFramework, query, goals);
     }
 
     @Override

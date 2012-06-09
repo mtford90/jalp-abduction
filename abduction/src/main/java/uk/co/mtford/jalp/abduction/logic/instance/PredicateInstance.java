@@ -134,16 +134,16 @@ public class PredicateInstance implements IUnifiableAtomInstance, IInferableInst
     }
 
     @Override
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        if (abductiveFramework.isAbducible(this)) return new A1RuleNode(abductiveFramework, goals);
-        else return new D1RuleNode(abductiveFramework, goals);
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
+        if (abductiveFramework.isAbducible(this)) return new A1RuleNode(abductiveFramework, query,goals);
+        else return new D1RuleNode(abductiveFramework, query, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         if (abductiveFramework.isAbducible(this))
-            return new A2RuleNode(abductiveFramework, goals);
-        else return new D2RuleNode(abductiveFramework, goals);
+            return new A2RuleNode(abductiveFramework, query, goals);
+        else return new D2RuleNode(abductiveFramework,query, goals);
     }
 
     @Override

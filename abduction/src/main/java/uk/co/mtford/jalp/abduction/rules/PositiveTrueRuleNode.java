@@ -20,12 +20,12 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class PositiveTrueRuleNode extends PositiveRuleNode {
-    public PositiveTrueRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
-        super(abductiveFramework, restOfGoals);
+    public PositiveTrueRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, query, restOfGoals);
     }
 
-    public PositiveTrueRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
-        super(abductiveFramework, restOfGoals, store, assignments);
+    public PositiveTrueRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
     protected PositiveTrueRuleNode() {

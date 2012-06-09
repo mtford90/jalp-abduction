@@ -21,5 +21,5 @@ import uk.co.mtford.jalp.abduction.rules.RuleNode;
 public interface ITermInstance extends IAtomInstance {
     boolean reduceToChoco(List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance,Variable> termToVarMap);
     boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst);
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals);
 }

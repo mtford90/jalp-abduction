@@ -42,12 +42,12 @@ public abstract class RuleNodeVisitor {
     private RuleNode constructChildNode(List<IInferableInstance> newGoals, RuleNode previousNode) {
         RuleNode newRuleNode;
         if (!(newGoals.isEmpty())) {
-            newRuleNode = newGoals.get(0).getPositiveRootRuleNode(previousNode.getAbductiveFramework(), newGoals);
+            newRuleNode = newGoals.get(0).getPositiveRootRuleNode(previousNode.getAbductiveFramework(), new LinkedList<IInferableInstance>(previousNode.getQuery()), newGoals);
             newRuleNode.setStore(previousNode.getStore().shallowClone());
             newRuleNode.setAssignments(new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
         }
         else {
-            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode.getStore().shallowClone(),new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()),previousNode);
+            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),new LinkedList<IInferableInstance>(previousNode.getQuery()),previousNode.getStore().shallowClone(),new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()),previousNode);
         }
 
         return newRuleNode;

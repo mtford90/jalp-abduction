@@ -21,12 +21,12 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class NegativeFalseRuleNode extends NegativeRuleNode {
-    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
-        super(abductiveFramework, restOfGoals);
+    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, query, restOfGoals);
     }
 
-    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
-        super(abductiveFramework, restOfGoals, store, assignments);
+    public NegativeFalseRuleNode(AbductiveFramework abductiveFramework,List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
     protected NegativeFalseRuleNode() {

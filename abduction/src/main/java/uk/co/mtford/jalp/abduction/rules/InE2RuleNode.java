@@ -22,12 +22,12 @@ import java.util.Map;
  */
 public class InE2RuleNode extends NegativeRuleNode {
 
-    public InE2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
-        super(abductiveFramework, restOfGoals);
+    public InE2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework,query, restOfGoals);
     }
 
-    public InE2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
-        super(abductiveFramework, restOfGoals, store, assignments);
+    public InE2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
     private InE2RuleNode() {

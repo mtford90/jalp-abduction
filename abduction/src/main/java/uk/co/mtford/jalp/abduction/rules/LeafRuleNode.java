@@ -9,6 +9,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,9 +25,9 @@ public class LeafRuleNode extends PositiveRuleNode {
 
     private static Logger LOGGER = Logger.getLogger(LeafRuleNode.class);
 
-    public LeafRuleNode(AbductiveFramework framework, Store store, Map<VariableInstance,
+    public LeafRuleNode(AbductiveFramework framework, List<IInferableInstance> query,Store store, Map<VariableInstance,
             IUnifiableAtomInstance> assignments, RuleNode parentNode) {
-        super(framework, new LinkedList<IInferableInstance>(), store, assignments);
+        super(framework, query, new LinkedList<IInferableInstance>(), store, assignments);
         this.parentNode = parentNode;
     }
 

@@ -30,6 +30,7 @@ public abstract class RuleNode {
         EXPANDED
     };
 
+    protected List<IInferableInstance> query;
     protected List<IInferableInstance> goals; // G - {currentGoal}
     protected Store store; // ST
     protected Map<VariableInstance, IUnifiableAtomInstance> assignments;  // Theta
@@ -37,7 +38,8 @@ public abstract class RuleNode {
     protected NodeMark nodeMark; // Defines whether or not leaf node or search node.
     protected List<RuleNode> children; // Next states.
 
-    public RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals) {
+    public RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
+        this.query = query;
         children = new LinkedList<RuleNode>();
         assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         nodeMark = nodeMark.UNEXPANDED;
@@ -46,8 +48,9 @@ public abstract class RuleNode {
         store = new Store();
     }
 
-    public RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> restOfGoals,
+    public RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals,
                     Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        this.query = query;
         children = new LinkedList<RuleNode>();
         this.assignments = assignments;
         this.store = store;
@@ -58,6 +61,7 @@ public abstract class RuleNode {
     }
 
     protected RuleNode() {
+        query = new LinkedList<IInferableInstance>();
         store = new Store();
         abductiveFramework = new AbductiveFramework();
         goals = new LinkedList<IInferableInstance>();
@@ -237,5 +241,13 @@ public abstract class RuleNode {
         json+="}";
 
         return json;
+    }
+
+    public List<IInferableInstance> getQuery() {
+        return query;
+    }
+
+    public void setQuery(List<IInferableInstance> query) {
+        this.query = query;
     }
 }

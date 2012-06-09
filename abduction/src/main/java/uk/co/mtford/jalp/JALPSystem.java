@@ -3,7 +3,6 @@ package uk.co.mtford.jalp;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.*;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
-import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
@@ -91,19 +90,19 @@ public class JALPSystem {
     }
 
     public List<Result> processQuery(List<IInferableInstance> query, Heuristic heuristic) throws Exception {
-        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(query),heuristic);
+        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(query),new LinkedList<IInferableInstance>(query),heuristic);
         return performDerivation(query, iterator);
     }
 
     public List<Result> processQuery(String query, Heuristic heuristic) throws Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
        LinkedList<IInferableInstance> queryList =  new
                 LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query));
-        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(queryList),heuristic);
+        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(queryList),new LinkedList<IInferableInstance>(queryList),heuristic);
         return performDerivation(queryList,iterator);
     }
 
     public RuleNode processQuery(List<IInferableInstance> query, Heuristic heuristic, List<Result> results) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, Exception {
-        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(query),heuristic);
+        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(query),new LinkedList<IInferableInstance>(query),heuristic);
         RuleNode root = iterator.getCurrentNode();
         results.addAll(performDerivation(query,iterator));
         return root;
@@ -174,8 +173,8 @@ public class JALPSystem {
     }
 
 
-        public RuleNodeIterator getRuleNodeIterator(List<IInferableInstance> query, Heuristic heuristic) throws Exception {
-        return new RuleNodeIterator(query,heuristic);
+    public RuleNodeIterator getRuleNodeIterator(List<IInferableInstance> query, Heuristic heuristic) throws Exception {
+        return new RuleNodeIterator(query,new LinkedList<IInferableInstance>(query),heuristic);
     }
 
     public class RuleNodeIterator implements Iterator<RuleNode> {
@@ -191,10 +190,10 @@ public class JALPSystem {
             this.currentNode = currentNode;
         }
 
-        private RuleNodeIterator(List<IInferableInstance> goals, Heuristic heuristic) throws Exception {
+        private RuleNodeIterator(List<IInferableInstance> goals, List<IInferableInstance> query, Heuristic heuristic) throws Exception {
             switch (heuristic) {
                 case NONE:
-                    currentNode = goals.get(0).getPositiveRootRuleNode(framework,goals);
+                    currentNode = goals.get(0).getPositiveRootRuleNode(framework, query, goals);
                     nodeVisitor = new FifoRuleNodeVisitor(currentNode);
                     break;
                 default: throw new JALPException("No such heuristic exists.");

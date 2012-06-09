@@ -25,8 +25,8 @@ public abstract class InListConstraintInstance extends ConstraintInstance {
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework,  List<IInferableInstance> goals) {
-        return left.getNegativeRootRuleNode(abductiveFramework,goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
+        return left.getNegativeRootRuleNode(abductiveFramework, query,goals);
     }
 
 }

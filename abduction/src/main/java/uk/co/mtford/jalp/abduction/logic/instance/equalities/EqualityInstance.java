@@ -63,13 +63,13 @@ public class EqualityInstance implements IEqualityInstance {
 
 
     @Override
-    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        return new E1RuleNode(abductiveFramework, goals);
+    public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
+        return new E1RuleNode(abductiveFramework, query, goals);
     }
 
     @Override
-    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> goals) {
-        return new E2RuleNode(abductiveFramework, goals);
+    public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
+        return new E2RuleNode(abductiveFramework, query, goals);
     }
 
     @Override
