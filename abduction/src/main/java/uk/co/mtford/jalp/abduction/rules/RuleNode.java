@@ -5,10 +5,7 @@ import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualitySolver;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualitySolver;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.*;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
@@ -118,21 +115,6 @@ public abstract class RuleNode {
         this.goals = goals;
     }
 
-    public Map<VariableInstance, IUnifiableAtomInstance> equalitySolve()  {
-        throw new UnsupportedOperationException();
-        /*
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments
-                = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
-
-        List<EqualityInstance> equalities = new LinkedList<EqualityInstance>(this.getStore().equalities);
-
-        IEqualitySolver solver = new EqualitySolver();
-        boolean equalitySolveSuccess = solver.execute(newAssignments,equalities); // TODO
-
-        if (equalitySolveSuccess) return newAssignments;
-        else return null; // TODO: Null...?   */
-    }
-
     public List<Map<VariableInstance, IUnifiableAtomInstance>> constraintSolve() {
         throw new UnsupportedOperationException();    // TODO
 
@@ -166,8 +148,8 @@ public abstract class RuleNode {
                 "assignments = " + assignments + "\n\n" +
                 "delta = " + store.abducibles + "\n" +
                 "delta* = " + store.denials + "\n" +
-                "epsilon = " + store.equalities + "\n" +
-                "fd = " + store.constraints + "\n\n" +
+                        "epsilon = " + store.equalities + " "+store.inequalities+"\n" +
+                        "fd = " + store.constraints + "\n\n" +
                 "nodeType = " + this.getClass() + "\n" +
                 "nodeMark = " + this.getNodeMark() + "\n" +
                 "numChildren = " + this.getChildren().size();
@@ -222,6 +204,9 @@ public abstract class RuleNode {
 
         json+="\\\"equalities\\\""+":[ ";
         for (IEqualityInstance equalities:store.equalities) {
+            json+="\\\""+equalities+"\\\",";
+        }
+        for (InEqualityInstance equalities:store.inequalities) {
             json+="\\\""+equalities+"\\\",";
         }
         json=json.substring(0,json.length()-1);

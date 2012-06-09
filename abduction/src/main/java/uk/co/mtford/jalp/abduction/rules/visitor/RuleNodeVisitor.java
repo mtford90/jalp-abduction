@@ -8,8 +8,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.InListConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.NegativeConstraintInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.*;
 import uk.co.mtford.jalp.abduction.logic.instance.term.ListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.ConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
@@ -229,7 +228,7 @@ public abstract class RuleNodeVisitor {
         InEqualityInstance currentGoal = (InEqualityInstance) newRestOfGoals.remove(0);
 
         childNode = constructChildNode(newRestOfGoals, ruleNode);
-        childNode.getStore().equalities.add(currentGoal);
+        childNode.getStore().inequalities.add(currentGoal);
         expandNode(ruleNode,childNode);
     }
 
@@ -328,7 +327,7 @@ public abstract class RuleNodeVisitor {
                     // Branch 1
                     InEqualityInstance inEqualityInstance = new InEqualityInstance(equalityDenialHead);
                     childNode = constructChildNode(newGoals,ruleNode);
-                    childNode.getStore().equalities.add(inEqualityInstance);
+                    childNode.getStore().inequalities.add(inEqualityInstance);
                     newChildNodes.add(childNode);
                     // Branch 2
                     newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
@@ -571,39 +570,18 @@ public abstract class RuleNodeVisitor {
 
     // Expands a leaf node using the constraint solver.
     public void visit(LeafRuleNode ruleNode) {
-        //ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
-        if (ruleNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
+        ruleNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
+       /* if (ruleNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Found a leaf node to expand:\n"+ruleNode);
             ruleNode.getParentNode().getChildren().remove(ruleNode);
             executeConstraintSolver(ruleNode.getParentNode(),ruleNode);
             currentRuleNode = ruleNode.getParentNode();
-        }
+        } */
     }
 
 
     private void executeConstraintSolver(RuleNode parentNode,RuleNode childNode) {
-        List<Map<VariableInstance,IUnifiableAtomInstance>> possibleAssignments = childNode.constraintSolve();
-        if (possibleAssignments.isEmpty()) {
-            parentNode.setNodeMark(RuleNode.NodeMark.FAILED);
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver failed on\n"+childNode);
-        }
-        else { // Constraint solver succeeded. Generate possible children.
-            parentNode.setNodeMark(RuleNode.NodeMark.EXPANDED);
-            for (Map<VariableInstance,IUnifiableAtomInstance> assignment:possibleAssignments) {
-                RuleNode newLeafNode = childNode.shallowClone();
-                newLeafNode.setAssignments(assignment);
-                Map<VariableInstance, IUnifiableAtomInstance> n = newLeafNode.equalitySolve();
-                if (n==null) {
-                    newLeafNode.setNodeMark(RuleNode.NodeMark.FAILED);
-                    if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality solver failed on\n"+newLeafNode);
-                }
-                else {
-                    newLeafNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
-                }
-                childNode.setAssignments(n);
-                parentNode.getChildren().add(newLeafNode);
-            }
-        }
+        throw new UnsupportedOperationException(); // TODO
     }
 
     private void expandNode(RuleNode parent, RuleNode child) {
@@ -618,26 +596,43 @@ public abstract class RuleNodeVisitor {
     }
 
     private boolean applyEqualitySolver(RuleNode node) {
-        Map<VariableInstance,IUnifiableAtomInstance> assignments = node.equalitySolve();
-        if (assignments == null) {
-            node.setNodeMark(RuleNode.NodeMark.FAILED);
-            return false;
-        }
-        else {
+        Map<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(node.getAssignments());
+        List<EqualityInstance> equalities = new LinkedList<EqualityInstance>(node.getStore().equalities);
+
+        IEqualitySolver solver = new EqualitySolver();
+        boolean equalitySolveSuccess = solver.execute(assignments,equalities);
+
+        if (equalitySolveSuccess) {
             node.setAssignments(assignments);
             return true;
         }
+
+        else {
+            node.setNodeMark(RuleNode.NodeMark.FAILED);
+            return false;
+        }
+    }
+
+    private boolean applyInEqualitySolver(RuleNode node) throws JALPException {
+        List<InEqualityInstance> inequalities = node.getStore().inequalities;
+        InEqualitySolver solver = new InEqualitySolver();
+        List<IInferableInstance> newInferables = solver.execute(inequalities);
+
+        node.getGoals().addAll(newInferables); // TODO Add them to the end of the goals...? Probs the best thing to do to avoid repeatedly evaluating same inequalities.
+        node.getStore().inequalities.removeAll(inequalities); // Clear inequalities.
+
+        return true; // Always true as falsity is dealt with via empty denial.
     }
 
     public static void applyRule(RuleNode r) throws Exception {
         RuleNodeVisitor v = new RuleNodeVisitor() {
             @Override
             protected RuleNode chooseNextNode() {
-                throw new UnsupportedOperationException(); // TODO
+                throw new UnsupportedOperationException();
             }
             @Override
             public boolean hasNextNode() {
-                throw new UnsupportedOperationException(); // TODO
+                throw new UnsupportedOperationException();
             }
         };
         r.acceptVisitor(v);
@@ -646,6 +641,7 @@ public abstract class RuleNodeVisitor {
     public RuleNode stateRewrite() throws Exception {
         for (RuleNode r:currentRuleNode.getChildren()) {
             applyEqualitySolver(r);
+            applyInEqualitySolver(r);
         }
         currentRuleNode = chooseNextNode();
         if (currentRuleNode==null) return null;

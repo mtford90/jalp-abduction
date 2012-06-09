@@ -5,6 +5,7 @@ import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.LinkedList;
@@ -39,7 +40,7 @@ public abstract class NegativeRuleNode extends RuleNode {
                 "assignments = " + assignments + "\n\n" +
                 "delta = " + store.abducibles + "\n" +
                 "delta* = " + store.denials + "\n" +
-                        "epsilon = " + store.equalities + "\n" +
+                        "epsilon = " + store.equalities + " "+store.inequalities+"\n" +
                         "fd = " + store.constraints + "\n\n" +
 
                         "nodeType = " + this.getClass() + "\n" +
@@ -98,6 +99,9 @@ public abstract class NegativeRuleNode extends RuleNode {
 
         json+="\\\"equalities\\\""+":[ ";
         for (IEqualityInstance equalities:store.equalities) {
+            json+="\\\""+equalities+"\\\",";
+        }
+        for (InEqualityInstance equalities:store.inequalities) {
             json+="\\\""+equalities+"\\\",";
         }
         json=json.substring(0,json.length()-1);
