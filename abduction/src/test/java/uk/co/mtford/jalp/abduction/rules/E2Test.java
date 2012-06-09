@@ -81,7 +81,7 @@ public class E2Test {
         ruleNode.getGoals().add(d);
 
         JALP.applyRule(ruleNode);
-        JALP.getVisualizer("debug/rules/E2/Test1",ruleNode);
+        JALP.getVisualizer("debug/rules/E2/Test4",ruleNode);
     }
 
     @Test
@@ -94,6 +94,6 @@ public class E2Test {
         ruleNode.getGoals().add(d);
 
         JALP.applyRule(ruleNode);
-        JALP.getVisualizer("debug/rules/E2/Test1",ruleNode);
+        JALP.getVisualizer("debug/rules/E2/Test5",ruleNode);
     }
 }
