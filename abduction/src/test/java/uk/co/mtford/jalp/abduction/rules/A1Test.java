@@ -49,7 +49,6 @@ public class A1Test {
     and Delta = {ab(a,b,c), ab(d,e,f},ab(X,Y,Z)}
 
      */
-    /*
     @Test
     public void test1() {
         UniqueIdGenerator.reset();
@@ -73,7 +72,7 @@ public class A1Test {
         A1RuleNode A1Node = new A1RuleNode();
         A1Node.getStore().abducibles.add(ab2);
         A1Node.getStore().abducibles.add(ab3);
-        A1Node.currentGoal=ab1;
+        A1Node.getGoals().add(ab1);
 
         try {
             JALP.applyRule(A1Node);
@@ -97,7 +96,7 @@ public class A1Test {
    Delta* = {ic :- ab(g,h,i), p(N)}
 
     */
-    /*
+
     @Test
     public void test2() {
         UniqueIdGenerator.reset();
@@ -151,7 +150,7 @@ public class A1Test {
         A1Node.getStore().abducibles.add(ab2);
         A1Node.getStore().abducibles.add(ab3);
         A1Node.getStore().abducibles.add(ba);
-        A1Node.currentGoal=ab1;
+        A1Node.getGoals().add(ab1);
         A1Node.getGoals().add(p1);
         A1Node.getStore().denials.add(denial1);
         A1Node.getStore().denials.add(denial2);
@@ -170,7 +169,7 @@ public class A1Test {
         }
 
     }
-    */
+
 
 
 
