@@ -68,6 +68,7 @@ public class Result {
                         "Abducibles = " + store.abducibles + "\n" +
                         "Integrity Constraints = " + store.denials + "\n" +
                         "Equalities = " + store.equalities + "\n" +
+                        "InEqualities = " + store.inequalities +"\n" +
                         "fd = " + store.constraints;
         return message;
     }
