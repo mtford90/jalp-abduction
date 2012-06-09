@@ -2,6 +2,13 @@ package uk.co.mtford.jalp.abduction.rules;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
+import uk.co.mtford.jalp.JALP;
+import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
+import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,5 +30,17 @@ public class F2Test {
     @After
     public void noTearDown() {
 
+    }
+
+    @Test
+    public void test1() throws Exception {
+        F2RuleNode ruleNode = new F2RuleNode();
+        List<IInferableInstance> goals = JALPQueryParser.readFromString("X<Y, p(X)");
+
+        DenialInstance d = new DenialInstance(goals);
+        ruleNode.getGoals().add(d);
+
+        JALP.applyRule(ruleNode);
+        JALP.getVisualizer("debug/rules/F2/Test1",ruleNode);
     }
 }
