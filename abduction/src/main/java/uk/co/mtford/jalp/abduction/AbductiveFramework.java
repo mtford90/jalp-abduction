@@ -100,10 +100,65 @@ public class AbductiveFramework implements Cloneable {
 
     @Override
     public String toString() {
-        return
-                "P  = " + P + "\n" +
-                "A  = " + A + "\n" +
-                "IC = " + IC;
+        String message = "";
+
+        message += "P:\n";
+
+        for (Definition d:P) {
+            message += d + "\n";
+        }
+
+        message += "\nA:{";
+
+        for (String name:A.keySet()){
+            message+=name+"/"+A.get(name)+",";
+        }
+
+        message = message.substring(0,message.length()-1) + "}\n\n";
+
+        message += "IC:\n";
+
+        for (DenialInstance d:IC) {
+            message+=d+"\n";
+        }
+
+        message = message.substring(0,message.length()-1);
+
+        return message;
     }
+
+    public String toJSON() {
+        String json="{";
+
+        json+="\\\"rules\\\""+":[ ";
+        for (Definition d:P) {
+            json+="\\\""+d+"\\\",";
+        }
+        json=json.substring(0,json.length()-1);
+        json+="]";
+
+        json+=",";
+
+        json+="\\\"abducibles\\\""+":[ ";
+        for (String name:A.keySet()){
+            json+="\\\""+name+"/"+A.get(name)+"\\\",";
+        }
+        json=json.substring(0,json.length()-1);
+        json+="]";
+
+        json+=",";
+
+        json+="\\\"constraints\\\""+":[ ";
+        for (DenialInstance d:IC) {
+            json+="\\\""+d+"\\\",";
+        }
+        json=json.substring(0,json.length()-1);
+        json+="]";
+
+        json+="}";
+        return json;
+
+    }
+
 
 }

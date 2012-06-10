@@ -148,12 +148,13 @@ public abstract class RuleNode {
     @Override
     public String toString() {
         String message =
+                "query = " + query + "\n" +
                 "goals = " + goals + "\n" +
                 "assignments = " + assignments + "\n\n" +
                 "delta = " + store.abducibles + "\n" +
                 "delta* = " + store.denials + "\n" +
-                        "epsilon = " + store.equalities + " "+store.inequalities+"\n" +
-                        "fd = " + store.constraints + "\n\n" +
+                "epsilon = " + store.equalities + " "+store.inequalities+"\n" +
+                "fd = " + store.constraints + "\n\n" +
                 "nodeType = " + this.getClass() + "\n" +
                 "nodeMark = " + this.getNodeMark() + "\n" +
                 "numChildren = " + this.getChildren().size();
@@ -164,6 +165,14 @@ public abstract class RuleNode {
         String type[] = this.getClass().toString().split("\\.");
 
         String json="{";
+
+        json+="\\\"query\\\":"+"\\\""+query+"\\\"";
+
+        json+=",";
+
+        json+="\\\"framework\\\":"+abductiveFramework.toJSON();
+
+        json+=",";
 
         json+="\\\"type\\\":"+"\\\""+type[type.length-1]+"\\\"";
 
@@ -177,7 +186,6 @@ public abstract class RuleNode {
         json+="]";
 
         json+=",";
-
 
         json+="\\\"assignments\\\""+":{ ";
         for (VariableInstance v:assignments.keySet()) {

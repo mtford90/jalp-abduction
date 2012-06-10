@@ -16,15 +16,14 @@ var rootNode = null;
 var myTree = null;
 var nodeArray = [];
 var query = null;
+var af = null;
 
 $(document).ready(init);
 
 function init() {
 	rootNode = $.parseJSON(data);
-	query = "'"+rootNode.currentGoal+"'";
-	for (var goal in rootNode.goals) {
-		query += ", '"+rootNode.goals[goal]+"'";
-	}
+	query = rootNode.query;
+	af = rootNode.framework;
 	nodeArray[1]=rootNode;
 	fillInfo();
 	createTableTemplate();
@@ -33,6 +32,10 @@ function init() {
 
 function fillInfo() {
 	$("#query").text(query);
+	$("#program").text(af.rules);
+	$("#abducible").text(af.abducibles);
+	$("#constraints").text(af.constraints);
+
 }
 
 function createTableTemplate () {
@@ -85,6 +88,7 @@ function openInfoWindow(id) {
 
 function fillNode(node,dialogId) {
 	fillType(node.type,dialogId);
+	fillQuery(node.query,dialogId);
 	fillNextGoals(node.goals,dialogId);
 	fillAssignments(node.assignments,dialogId);
 	fillAbducibles(node.abducibles,dialogId);
@@ -96,6 +100,10 @@ function fillNode(node,dialogId) {
 
 function fillType(type,dialogId) {
 	$("#"+dialogId+" #dataTable #type").text(type);
+}
+
+function fillQuery(query,dialogId) {
+	$("#"+dialogId+" #dataTable #query").text(query);
 }
 
 function fillNextGoals(goalArray, dialogId) {
@@ -181,13 +189,17 @@ function fillNodeMark(nodeMark, dialogId) {
 	<div class="header-border"></div>
 </div>
 <div id="info">
-Query: <span id="query"></span>
+Query: <span id="query"></span><br>
+P: <span id="program"></span><br>
+A: <span id="abducible"></span><br>
+IC: <span id="constraints"></span><br>
 </div>
 <div id="tree">
 </div>
 <div id="dialogs">
-	<table id="dataTable">
+	<table id="dataTable">	
 		<tr><td>R</td><td class="data" id="type"></td></tr>
+		<tr><td>Q</td><td class="data" id="query"></td></tr>
 		<tr><td>G</td><td  class="data" id="next-goals"></td></tr>
 		<tr><td>&theta;</td><td  class="data" id="assignments"></td></tr>
 		<tr><td>&Delta;</td><td  class="data" id="abducibles"></td></tr>

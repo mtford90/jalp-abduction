@@ -62,6 +62,7 @@ public class LeafRuleNode extends PositiveRuleNode {
     @Override
     public String toString() {
         String message =
+                "query = " + query + "\n" +
                         "assignments = " + assignments + "\n\n"+
                         "delta = " + store.abducibles + "\n" +
                         "delta* = " + store.denials + "\n" +

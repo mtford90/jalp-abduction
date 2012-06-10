@@ -36,6 +36,7 @@ public abstract class NegativeRuleNode extends RuleNode {
     @Override
     public String toString() {
         String message=
+                "query = " + query + "\n" +
                 "goals = " + goals + "\n" +
                 "assignments = " + assignments + "\n\n" +
                 "delta = " + store.abducibles + "\n" +
@@ -55,6 +56,14 @@ public abstract class NegativeRuleNode extends RuleNode {
         String type[] = this.getClass().toString().split("\\.");
 
         String json="{";
+
+        json+="\\\"query\\\":"+"\\\""+query+"\\\"";
+
+        json+=",";
+
+        json+="\\\"framework\\\":"+abductiveFramework.toJSON();
+
+        json+=",";
 
         json+="\\\"type\\\":"+"\\\""+type[type.length-1]+"\\\"";
 
