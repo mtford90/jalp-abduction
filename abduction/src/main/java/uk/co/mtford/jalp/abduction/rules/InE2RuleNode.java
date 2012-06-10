@@ -42,6 +42,8 @@ public class InE2RuleNode extends NegativeRuleNode {
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
         newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
+        newRuleNode.query = query;
+        newRuleNode.nodeMark = nodeMark;
         return newRuleNode;
     }
 

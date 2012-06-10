@@ -5,11 +5,13 @@ import org.apache.log4j.*;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
-import uk.co.mtford.jalp.abduction.rules.visitor.FifoRuleNodeVisitor;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
 import java.io.*;
@@ -25,7 +27,6 @@ import java.util.*;
 public class JALPSystem {
 
     private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
-    private static final int MAX_EXPANSIONS = Integer.MAX_VALUE;
 
     private AbductiveFramework framework;
 
@@ -38,7 +39,7 @@ public class JALPSystem {
     }
 
     public JALPSystem(String[] fileNames) throws FileNotFoundException, ParseException {
-            setFramework(fileNames);
+        setFramework(fileNames);
     }
 
     public JALPSystem() {
@@ -85,49 +86,8 @@ public class JALPSystem {
         }
     }
 
-    public List<Result> processQuery(List<IInferableInstance> query, Heuristic heuristic) throws Exception {
-        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(query),new LinkedList<IInferableInstance>(query),heuristic);
-        return performDerivation(query, iterator);
-    }
-
-    public List<Result> processQuery(String query, Heuristic heuristic) throws Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-       LinkedList<IInferableInstance> queryList =  new
-                LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query));
-        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(queryList),new LinkedList<IInferableInstance>(queryList),heuristic);
-        return performDerivation(queryList,iterator);
-    }
-
-    public RuleNode processQuery(List<IInferableInstance> query, Heuristic heuristic, List<Result> results) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, Exception {
-        RuleNodeIterator iterator = new RuleNodeIterator(new LinkedList<IInferableInstance>(query),new LinkedList<IInferableInstance>(query),heuristic);
-        RuleNode root = iterator.getCurrentNode();
-        results.addAll(performDerivation(query,iterator));
-        return root;
-    }
-
-    private List<Result> performDerivation(List<IInferableInstance> query, RuleNodeIterator iterator) {
-        LinkedList<Result> resultList = new LinkedList<Result>();
-        RuleNode currentNode = iterator.getCurrentNode();
-        RuleNode rootNode = currentNode;
-
-        int expansions = 0;
-
-        while (iterator.hasNext()) {
-            expansions++;
-            if (expansions>=MAX_EXPANSIONS) {
-                System.err.println("ERROR: Reached max number of expansions.");
-                System.err.flush();
-                break;
-            }
-            if (currentNode.getNodeMark()==RuleNode.NodeMark.SUCCEEDED) {
-                Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query,rootNode);
-                resultList.add(result);
-            }
-                currentNode = iterator.next();
-
-
-        }
-
-        return resultList;
+    public List<Result> generateDebugFiles(String query, String folderName) throws IOException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        return generateDebugFiles(new LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query)),folderName);
     }
 
     public List<Result> generateDebugFiles(List<IInferableInstance> query, String folderName) throws Exception, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
@@ -145,7 +105,7 @@ public class JALPSystem {
         LOGGER.info("Abductive framework is:\n"+framework);
         LOGGER.info("Query is:" + query);
         List<Result> results = new LinkedList<Result>();
-        RuleNode root = processQuery(query,Heuristic.NONE,results);
+        RuleNode root = query(query, results);
         JALP.getVisualizer(folderName + "/visualizer", root);
         int rNum = 1;
         LOGGER.info("Found "+results.size()+" results");
@@ -160,57 +120,106 @@ public class JALPSystem {
         return results;
     }
 
-    public List<Result> generateDebugFiles(String query, String folderName) throws IOException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        return generateDebugFiles(new LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query)),folderName);
+    public List<Result> query(String query) throws uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        List<Result> results = new LinkedList<Result>();
+        query(query, results);
+        return results;
     }
 
-
-    public RuleNodeIterator getRuleNodeIterator(List<IInferableInstance> query, Heuristic heuristic) throws Exception {
-        return new RuleNodeIterator(query,new LinkedList<IInferableInstance>(query),heuristic);
+    public List<Result> query(List<IInferableInstance> query) {
+        List<Result> results = new LinkedList<Result>();
+        query(query, results);
+        return results;
     }
 
-    public class RuleNodeIterator implements Iterator<RuleNode> {
+    public RuleNode query(String query, List<Result> results) throws uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        List<IInferableInstance> queryList = JALPQueryParser.readFromString(query);
+        return query(queryList, results);
+    }
 
-        private RuleNode currentNode;
-        private RuleNodeVisitor nodeVisitor;
+    public RuleNode query(List<IInferableInstance> query, List<Result> results) {
 
-        public RuleNode getCurrentNode() {
-            return currentNode;
-        }
+        RuleNodeVisitor visitor = new RuleNodeVisitor();
+        Stack<RuleNode> nodeStack = new Stack<RuleNode>();
 
-        public void setCurrentNode(RuleNode currentNode) {
-            this.currentNode = currentNode;
-        }
+        List<IInferableInstance> goals = new LinkedList<IInferableInstance>(query);
+        goals.addAll(framework.getIC());
+        RuleNode rootNode = goals.get(0).getPositiveRootRuleNode(framework,query,goals);
 
-        private RuleNodeIterator(List<IInferableInstance> goals, List<IInferableInstance> query, Heuristic heuristic) throws Exception {
-            switch (heuristic) {
-                case NONE:
-                    currentNode = goals.get(0).getPositiveRootRuleNode(framework, query, goals);
-                    nodeVisitor = new FifoRuleNodeVisitor(currentNode);
-                    break;
-                default: throw new JALPException("No such heuristic exists.");
+        RuleNode currentNode;
+        nodeStack.add(rootNode);
+
+        while (!nodeStack.isEmpty()) {
+            currentNode = nodeStack.pop();
+            if (currentNode.getGoals().isEmpty()) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Found a leaf node!");
+                }
+                List<RuleNode> successNodes = applyConstraintSolver(currentNode);
+                for (RuleNode successNode:successNodes) {
+                    generateResult(successNode,results,rootNode);
+                }
+            }
+            else if (currentNode.getNodeMark()==RuleNode.NodeMark.FAILED) {
+                LOGGER.debug("Found a failed node:\n"+currentNode);
+            }
+            else if (currentNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
+                currentNode.acceptVisitor(visitor);
+                nodeStack.addAll(currentNode.getChildren());
+            }
+            else {
+                throw new JALPException("Expanded node on the node stack?\n"+currentNode); // Sanity check.
             }
         }
 
-        @Override
-        public boolean hasNext() {
-            return nodeVisitor.hasNextNode();
-        }
+        return rootNode;
 
-        @Override
-        public RuleNode next() {
-                currentNode=nodeVisitor.stateRewrite();
-
-            return currentNode;
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
     }
 
-    public enum Heuristic { // TODO
-        NONE
+    private void generateResult(RuleNode currentNode, List<Result> results, RuleNode root) {
+        Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),currentNode.getQuery(),root);
+        results.add(result);
     }
+
+    private List<RuleNode> applyConstraintSolver(RuleNode node) {
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying constraint solver to ruleNode:\n"+node);
+        List<Map<VariableInstance,IUnifiableAtomInstance>> possibleAssignments;
+        if (node.getStore().constraints.isEmpty()) {
+            possibleAssignments
+                    = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
+            possibleAssignments.add(node.getAssignments());
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("No need to apply constraint solver. Returning unmodified node.");
+        }
+        else {
+            LinkedList<IConstraintInstance> constraints = new LinkedList<IConstraintInstance>();
+            for (IConstraintInstance d:node.getStore().constraints) {
+                IConstraintInstance newConstraint = (IConstraintInstance) d.shallowClone();
+                newConstraint = (IConstraintInstance) newConstraint.performSubstitutions(node.getAssignments()); // TODO Substitute elsewhere i.e. at each state rewrite.
+                constraints.add(newConstraint);
+            }
+            ChocoConstraintSolverFacade constraintSolver = new ChocoConstraintSolverFacade();
+            possibleAssignments
+                    = constraintSolver.execute(new HashMap<VariableInstance,IUnifiableAtomInstance>(node.getAssignments()),constraints);
+        }
+
+        if (possibleAssignments.isEmpty()) {
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver failed on rulenode:\n"+node);
+            node.setNodeMark(RuleNode.NodeMark.FAILED);
+            return new LinkedList<RuleNode>();
+        }
+        else { // Constraint solver succeeded. Generate possible children.
+            List<RuleNode> results = new LinkedList<RuleNode>();
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver returned "+possibleAssignments.size()+" results.");
+            node.setNodeMark(RuleNode.NodeMark.EXPANDED);
+            for (Map<VariableInstance,IUnifiableAtomInstance> assignment:possibleAssignments) {
+                RuleNode newLeafNode =node.shallowClone();
+                newLeafNode.setAssignments(assignment);
+                newLeafNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
+                results.add(newLeafNode);
+            }
+            return results;
+        }
+
+    }
+
 }

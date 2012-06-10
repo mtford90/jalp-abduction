@@ -28,8 +28,6 @@ public class InEqualitySolver implements IInEqualitySolver {
     @Override
     public List<Pair<List<EqualityInstance>,List<InEqualityInstance>>> execute(InEqualityInstance inEquality) throws JALPException {
 
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Executing inequality solver on "+inEquality);
-
             List<Pair<List<EqualityInstance>,List<InEqualityInstance>>> result = new LinkedList<Pair<List<EqualityInstance>, List<InEqualityInstance>>>();
 
             IUnifiableAtomInstance left;
@@ -50,7 +48,6 @@ public class InEqualitySolver implements IInEqualitySolver {
                 }
                 reducedEqualities = newEqualities;
             }
-
 
             int numSolved = 0;
             LinkedList<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
@@ -90,11 +87,6 @@ public class InEqualitySolver implements IInEqualitySolver {
                 }
                 result.add(new Pair<List<EqualityInstance>, List<InEqualityInstance>>(newEqualities,newInequalities));
             }
-
-
-
-
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Inequality solver computed: "+result);
 
          return result;
 

@@ -95,7 +95,7 @@ public class Main {
         else {
             if (query!=null) {
                 try {
-                    List<Result> results = system.processQuery(query, JALPSystem.Heuristic.NONE);
+                    List<Result> results = system.query(query);
                     if (results.isEmpty()) {
                         System.out.println("Found no explanation.");
                     }
@@ -109,8 +109,6 @@ public class Main {
                     System.out.println("Exiting...");
                 } catch (JALPException e) {
                     printError("JALP encountered a problem.",e);
-                } catch (uk.co.mtford.jalp.abduction.parse.query.ParseException e) {
-                    printError("Error parsing query.",e);
                 }
             }
             else {

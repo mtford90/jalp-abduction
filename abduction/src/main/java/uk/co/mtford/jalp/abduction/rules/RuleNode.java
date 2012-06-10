@@ -119,27 +119,6 @@ public abstract class RuleNode {
         this.goals = goals;
     }
 
-    public List<Map<VariableInstance, IUnifiableAtomInstance>> constraintSolve() {
-        throw new UnsupportedOperationException();    // TODO
-
-        /*if (store.constraints.isEmpty()) {
-            List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst
-                    = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
-            possSubst.add(assignments);
-            return possSubst;
-        }
-        LinkedList<IConstraintInstance> constraints = new LinkedList<IConstraintInstance>();
-        for (IConstraintInstance d:store.constraints) {
-            IConstraintInstance newConstraint = (IConstraintInstance) d.shallowClone();
-            newConstraint = (IConstraintInstance) newConstraint.performSubstitutions(assignments);
-            constraints.add(newConstraint);
-        }
-        ChocoConstraintSolverFacade constraintSolver = new ChocoConstraintSolverFacade();
-        List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst
-                = constraintSolver.execute(new HashMap<VariableInstance,IUnifiableAtomInstance>(assignments),constraints);
-        return possSubst;    */
-    }
-
 
     public abstract RuleNode shallowClone();
 

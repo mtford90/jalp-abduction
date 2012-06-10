@@ -9,7 +9,6 @@ import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -80,7 +79,7 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,on);
         query.add(output);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.query(query);
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -133,7 +132,7 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,off);
         query.add(output);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.query(query);
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -187,7 +186,7 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,on);
         query.add(output);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.query(query);
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -244,7 +243,7 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,off);
         query.add(output);
-        List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
+        List<Result> result = system.query(query);
         assertTrue(result.size()==4);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);

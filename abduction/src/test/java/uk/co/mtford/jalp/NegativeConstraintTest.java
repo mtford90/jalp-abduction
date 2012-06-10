@@ -61,14 +61,20 @@ public class NegativeConstraintTest {
         query.add(q);
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/in-integer-1");
         assertTrue(result.size()==2);
-        Result resultOne = result.get(0);
-        Result resultTwo = result.get(1);
-        JALP.reduceResult(resultOne);
-        JALP.reduceResult(resultTwo);
-        assertTrue(resultOne.getAssignments().get(X).equals(new IntegerConstantInstance(3)));
-        assertTrue(resultOne.getAssignments().get(Y).equals(new IntegerConstantInstance(2)));
-        assertTrue(resultTwo.getAssignments().get(X).equals(new IntegerConstantInstance(3)));
-        assertTrue(resultTwo.getAssignments().get(Y).equals(new IntegerConstantInstance(1)));
+        boolean one = false;
+        boolean two = false;
+        for (Result r:result) {
+            JALP.reduceResult(r);
+            if (r.getAssignments().get(X).equals(new IntegerConstantInstance(3)) &&
+                    r.getAssignments().get(Y).equals(new IntegerConstantInstance(2))) {
+                one = true;
+            }
+            if (r.getAssignments().get(X).equals(new IntegerConstantInstance(3)) &&
+                    r.getAssignments().get(Y).equals(new IntegerConstantInstance(1))) {
+                two = true;
+            }
+        }
+        assertTrue(one && two);
 
     }
 

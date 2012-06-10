@@ -30,13 +30,14 @@ public class JALP {
         File destination = new File(folderName);
         FileUtils.copyDirectory(visualizer, destination);
         String js = "var data=\""+root.toJSON()+"\"";
-        FileUtils.writeStringToFile(new File(folderName+"/output.js"),js);
+        FileUtils.writeStringToFile(new File(folderName + "/output.js"), js);
     }
+
 
     public static void applyRule(RuleNode node) throws Exception {
-        RuleNodeVisitor.applyRule(node);
+        RuleNodeVisitor visitor = new RuleNodeVisitor();
+        node.acceptVisitor(visitor);
     }
-
 
 
     public static void reduceResult(Result result) {

@@ -58,15 +58,22 @@ public class ConstraintTest {
         query.add(q);
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/constant-list-1");
         assertTrue(result.size()==3);
-        Result resultOne = result.get(0);
-        Result resultTwo = result.get(1);
-        Result resultThree = result.get(2);
-        JALP.reduceResult(resultOne);
-        JALP.reduceResult(resultTwo);
-        JALP.reduceResult(resultThree);
-        assertTrue(resultOne.getAssignments().get(X).equals(new CharConstantInstance("mary")));
-        assertTrue(resultTwo.getAssignments().get(X).equals(new CharConstantInstance("bob")));
-        assertTrue(resultThree.getAssignments().get(X).equals(new CharConstantInstance("john")));
+        boolean mary = false;
+        boolean bob = false;
+        boolean john = false;
+        for (Result r:result) {
+            JALP.reduceResult(r);
+            if (r.getAssignments().get(X).equals(new CharConstantInstance("mary"))) {
+                mary = true;
+            }
+            if (r.getAssignments().get(X).equals(new CharConstantInstance("mary"))) {
+                bob = true;
+            }
+            if (r.getAssignments().get(X).equals(new CharConstantInstance("mary"))) {
+                john = true;
+            }
+        }
+        assertTrue(mary && bob && john);
     }
 
     /*
@@ -410,13 +417,19 @@ public class ConstraintTest {
         PredicateInstance p = new PredicateInstance("p",one,Y);
         query.add(p);
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-eq-2");
-        assertTrue(result.size()==2);
-        Result resultOne = result.get(0);
-        Result resultTwo = result.get(1);
-        JALP.reduceResult(resultOne);
-        JALP.reduceResult(resultTwo);
-        assertTrue(resultOne.getAssignments().get(Y).equals(new IntegerConstantInstance(2)));
-        assertTrue(resultTwo.getAssignments().get(Y).equals(new IntegerConstantInstance(1)));
+        boolean resultOne = false;
+        boolean resultTwo = false;
+        for (Result r:result) {
+            JALP.reduceResult(r);
+            if (r.getAssignments().get(Y).equals(new IntegerConstantInstance(2))) {
+                resultOne=true;
+            }
+            else if (r.getAssignments().get(Y).equals(new IntegerConstantInstance(1))) {
+                resultTwo = true;
+            }
+
+    }
+        assertTrue(resultOne && resultTwo);
 
     }
 

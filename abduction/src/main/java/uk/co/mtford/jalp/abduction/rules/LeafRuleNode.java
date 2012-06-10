@@ -45,6 +45,8 @@ public class LeafRuleNode extends PositiveRuleNode {
         newRuleNode.store = store.shallowClone();
         newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         newRuleNode.parentNode = parentNode;
+        newRuleNode.nodeMark=nodeMark;
+        newRuleNode.nodeMark = nodeMark;
         return newRuleNode;
     }
 

@@ -85,7 +85,7 @@ public class JALPInterpreter {
 
     private void executeQuery(String next) throws Exception {
         try {
-            List<Result> results = system.processQuery(next.substring(2,next.length()-1), JALPSystem.Heuristic.NONE);
+            List<Result> results = system.query(next.substring(2, next.length() - 1));
             if (results.isEmpty()) {
                 System.out.println("No explanations available.");
             }
@@ -105,9 +105,6 @@ public class JALPInterpreter {
 
         } catch (JALPException e) {
             System.err.println("JALP encountered an error.");
-            System.err.println(e);
-        } catch (uk.co.mtford.jalp.abduction.parse.query.ParseException e) {
-            System.err.println("Parse error.");
             System.err.println(e);
         }
     }

@@ -49,7 +49,7 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
     }
 
     @Override
-    public List<Map<VariableInstance, IUnifiableAtomInstance>> executeSolver(Map<VariableInstance, IUnifiableAtomInstance> subst, List<IConstraintInstance> listConstraints) {
+    public List<Map<VariableInstance, IUnifiableAtomInstance>> execute(Map<VariableInstance, IUnifiableAtomInstance> subst, List<IConstraintInstance> listConstraints) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Executing constraint solver");
             LOGGER.debug("Received "+listConstraints);

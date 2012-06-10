@@ -40,6 +40,9 @@ public class E1RuleNode extends PositiveRuleNode {
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
         newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
+        newRuleNode.nodeMark = nodeMark;
+        newRuleNode.query = query;
+        newRuleNode.nodeMark = nodeMark;
         return newRuleNode;
     }
 
