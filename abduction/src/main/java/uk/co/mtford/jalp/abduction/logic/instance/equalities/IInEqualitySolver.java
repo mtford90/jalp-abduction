@@ -17,5 +17,5 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface IInEqualitySolver {
-    public List<IInferableInstance> execute(List<InEqualityInstance> inEqualities) throws JALPException;
+    public List<Pair<List<EqualityInstance>,List<InEqualityInstance>>> execute(InEqualityInstance inEquality) throws JALPException;
 }

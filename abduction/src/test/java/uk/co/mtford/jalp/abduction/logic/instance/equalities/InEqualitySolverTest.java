@@ -1,6 +1,7 @@
 package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
 import org.apache.log4j.Logger;
+import org.javatuples.Pair;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,100 +47,79 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
 
     }
 
-    // c =/= c |-> ic :- TRUE.
+    // c =/= c |-> fail
     @Test
     public void equalConstantTest() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         CharConstantInstance c = new CharConstantInstance("c");
-        inequalities.add(new InEqualityInstance(c,c));
 
-        List<IInferableInstance> n = solver.execute(inequalities);
-        assertTrue(n.size()==1);
-        DenialInstance d = new DenialInstance();
-        d.getBody().add(new TrueInstance());
-        assertTrue(n.remove(0).equals(d));
+        List<Pair<List<EqualityInstance>,List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(c,c));
+        assertTrue(n==null);
     }
 
-    // c =/= d  |-> TRUE.
+    // c =/= d  |-> {}
     @Test
     public void unequalConstantTest1() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         CharConstantInstance c = new CharConstantInstance("c");
         CharConstantInstance d = new CharConstantInstance("d");
 
-        inequalities.add(new InEqualityInstance(c,d));
-
-        List<IInferableInstance> n = solver.execute(inequalities);
-        assertTrue(n.size()==1);
-        assertTrue(n.remove(0).equals(new TrueInstance()));
+        List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(c,d));
+        assertTrue(n.size()==0);
     }
 
-    // d =/= c  |-> TRUE.
+    // d =/= c  |-> {}
     @Test
     public void unequalConstantTest2() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         CharConstantInstance c = new CharConstantInstance("c");
         CharConstantInstance d = new CharConstantInstance("d");
 
-        inequalities.add(new InEqualityInstance(d,c));
+        List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(d,c));
+        assertTrue(n.size()==0);
 
-        List<IInferableInstance> n = solver.execute(inequalities);
-        assertTrue(n.size()==1);
-        assertTrue(n.remove(0).equals(new TrueInstance()));
     }
 
-    // X =/= a |-> ic :- X=a.
+    // X =/= a |-> { {{},{X=/=a}} }
     @Test
     public void variableTest1() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         VariableInstance X = new VariableInstance("X");
         CharConstantInstance a = new CharConstantInstance("a");
-        inequalities.add(new InEqualityInstance(X,a));
 
-        List<IInferableInstance> n = solver.execute(inequalities);
+        List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(X,a));
+
         assertTrue(n.size()==1);
-        DenialInstance d = new DenialInstance();
-        d.getBody().add(new EqualityInstance(X,a));
-        assertTrue(n.remove(0).equals(d));
+        assertTrue(n.get(0).getValue0().isEmpty());
+        assertTrue(n.get(0).getValue1().contains(new InEqualityInstance(X,a)));
     }
 
-    // X =/= Y |-> ic :- X=Y.
+    // X =/= Y |-> { {{},{X=/=Y}} }
     @Test
     public void variableTest2() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y= new VariableInstance("Y");
-        inequalities.add(new InEqualityInstance(X,Y));
 
-        List<IInferableInstance> n = solver.execute(inequalities);
+        List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(X,Y));
         assertTrue(n.size()==1);
-        DenialInstance d = new DenialInstance();
-        d.getBody().add(new EqualityInstance(X,Y));
-        assertTrue(n.remove(0).equals(d));
+        assertTrue(n.get(0).getValue0().isEmpty());
+        assertTrue(n.get(0).getValue1().contains(new InEqualityInstance(X, Y)));
     }
 
-    // X =/= p(Z,Y) |-> ic :- X = p(Z,Y)
+    // X =/= p(Z,Y) |-> { {{},{X=/=P(Z/Y)}} }
     @Test
     public void variableTest3() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y= new VariableInstance("Y");
         VariableInstance Z = new VariableInstance("Z");
 
         PredicateInstance p = new PredicateInstance("p",Z,Y);
-        inequalities.add(new InEqualityInstance(X,p));
 
-        List<IInferableInstance> n = solver.execute(inequalities);
+        List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(X,p));
         assertTrue(n.size()==1);
-        DenialInstance d = new DenialInstance();
-        d.getBody().add(new EqualityInstance(X,p));
-        assertTrue(n.remove(0).equals(d));
+        assertTrue(n.get(0).getValue0().isEmpty());
+        assertTrue(n.get(0).getValue1().contains(new InEqualityInstance(X, p)));
     }
 
-    // p(X,Y) =/= p(a,b) :-> ic:- X=a, Y=b
+    // p(X,Y) =/= p(a,b) :-> { {{},{X=/=a}}, {{X==a},{Y=/=b}} }
     @Test
     public void predicateTest1() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y= new VariableInstance("Y");
         CharConstantInstance a = new CharConstantInstance("a");
@@ -148,60 +128,46 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
         PredicateInstance p1 = new PredicateInstance("p",X,Y);
         PredicateInstance p2 = new PredicateInstance("p",a,b);
 
-        inequalities.add(new InEqualityInstance(p1,p2));
-
-        List<IInferableInstance> n = solver.execute(inequalities);
-        assertTrue(n.size()==1);
-        DenialInstance d = new DenialInstance();
-        d.getBody().add(new EqualityInstance(X,a));
-        d.getBody().add(new EqualityInstance(Y,b));
-        assertTrue(n.remove(0).equals(d));
+        List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(p1,p2));
+        assertTrue(n.size()==2);
+        assertTrue(n.get(0).getValue0().isEmpty());
+        assertTrue(n.get(0).getValue1().contains(new InEqualityInstance(X, a)));
+        assertTrue(n.get(1).getValue0().contains(new EqualityInstance(X,a)));
+        assertTrue(n.get(1).getValue1().contains(new InEqualityInstance(Y,b)));
     }
 
 
-    // p(a,b) =/= p(a,b) |-> ic :- TRUE, TRUE.
+    // p(a,b) =/= p(a,b) |-> fail
     @Test
     public void predicateTest2() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         CharConstantInstance a = new CharConstantInstance("a");
         CharConstantInstance b = new CharConstantInstance("b");
 
         PredicateInstance p1 = new PredicateInstance("p",a,b);
         PredicateInstance p2 = new PredicateInstance("p",a,b);
 
-        inequalities.add(new InEqualityInstance(p1,p2));
+        List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(p1,p2));
+        assertTrue(n==null);
 
-        List<IInferableInstance> n = solver.execute(inequalities);
-        assertTrue(n.size()==1);
-        DenialInstance d = new DenialInstance();
-        d.getBody().add(new TrueInstance());
-        d.getBody().add(new TrueInstance());
-        assertTrue(n.remove(0).equals(d));
     }
 
-    // p(a,c) =/= p(a,b) |-> TRUE.
+    // p(a,c) =/= p(a,b) |-> { }
     @Test
     public void predicateTest3() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         CharConstantInstance a = new CharConstantInstance("a");
         CharConstantInstance b = new CharConstantInstance("b");
         CharConstantInstance c = new CharConstantInstance("c");
 
-
         PredicateInstance p1 = new PredicateInstance("p",a,c);
         PredicateInstance p2 = new PredicateInstance("p",a,b);
 
-        inequalities.add(new InEqualityInstance(p1,p2));
-
-        List<IInferableInstance> n = solver.execute(inequalities);
-        assertTrue(n.size()==1);
-        assertTrue(n.remove(0).equals(new TrueInstance()));
+        List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(p1,p2));
+        assertTrue(n.size()==0);
     }
 
-    // p(c,b) =/= p(a,b)
+    // p(c,b) =/= p(a,b) |-> {  }
     @Test
     public void predicateTest4() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         CharConstantInstance a = new CharConstantInstance("a");
         CharConstantInstance b = new CharConstantInstance("b");
         CharConstantInstance c = new CharConstantInstance("c");
@@ -210,17 +176,13 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
         PredicateInstance p1 = new PredicateInstance("p",c,b);
         PredicateInstance p2 = new PredicateInstance("p",a,b);
 
-        inequalities.add(new InEqualityInstance(p1,p2));
-
-        List<IInferableInstance> n = solver.execute(inequalities);
-        assertTrue(n.size()==1);
-        assertTrue(n.remove(0).equals(new TrueInstance()));
+        List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(p1,p2));
+        assertTrue(n.size()==0);
     }
 
-    // p(X,Y) =/= q(a,b)
+    // p(X,Y) =/= q(a,b)  |-> { }
     @Test
     public void differentNamePredicateTest() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         CharConstantInstance a = new CharConstantInstance("a");
         CharConstantInstance b = new CharConstantInstance("b");
         VariableInstance X = new VariableInstance("X");
@@ -229,17 +191,13 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
         PredicateInstance p = new PredicateInstance("p",X,Y);
         PredicateInstance q = new PredicateInstance("q",a,b);
 
-        inequalities.add(new InEqualityInstance(p,q));
-
-        List<IInferableInstance> n = solver.execute(inequalities);
-        assertTrue(n.size()==1);
-        assertTrue(n.remove(0).equals(new TrueInstance()));
+        List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(p,q));
+        assertTrue(n.size()==0);
     }
 
-    // p(X,Y) =/= p(a,q(b))
+    // p(X,Y) =/= p(a,q(b)) |-> { {{},{X=/=a}}, {{X==a},{Y=/=q(b)}}  }
     @Test
     public void nestedPredicateTest() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y= new VariableInstance("Y");
         CharConstantInstance a = new CharConstantInstance("a");
@@ -249,85 +207,12 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
         PredicateInstance q = new PredicateInstance("q",b);
         PredicateInstance p2 = new PredicateInstance("p",a,q);
 
-        inequalities.add(new InEqualityInstance(p1,p2));
-
-        List<IInferableInstance> n = solver.execute(inequalities);
-        assertTrue(n.size()==1);
-        DenialInstance d = new DenialInstance();
-        d.getBody().add(new EqualityInstance(X,a));
-        d.getBody().add(new EqualityInstance(Y,q));
-        assertTrue(n.remove(0).equals(d));
+        List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> n = solver.execute(new InEqualityInstance(p1,p2));
+        assertTrue(n.size()==2);
+        assertTrue(n.get(0).getValue0().isEmpty());
+        assertTrue(n.get(0).getValue1().contains(new InEqualityInstance(X, a)));
+        assertTrue(n.get(1).getValue0().contains(new EqualityInstance(X,a)));
+        assertTrue(n.get(1).getValue1().contains(new InEqualityInstance(Y,q)));
     }
-
-    // p(X,Y) =/= p(a,q(b)), Z =/= b
-    @Test
-    public void multipleTest1()
-        throws JALPException {
-            List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
-            VariableInstance X = new VariableInstance("X");
-            VariableInstance Y= new VariableInstance("Y");
-            VariableInstance Z= new VariableInstance("Z");
-            CharConstantInstance a = new CharConstantInstance("a");
-            CharConstantInstance b = new CharConstantInstance("b");
-
-            PredicateInstance p1 = new PredicateInstance("p",X,Y);
-            PredicateInstance q = new PredicateInstance("q",b);
-            PredicateInstance p2 = new PredicateInstance("p",a,q);
-
-            inequalities.add(new InEqualityInstance(p1,p2));
-            inequalities.add(new InEqualityInstance(Z,b));
-
-            List<IInferableInstance> n = solver.execute(inequalities);
-            assertTrue(n.size()==2);
-            DenialInstance d1 = new DenialInstance();
-            d1.getBody().add(new EqualityInstance(X,a));
-            d1.getBody().add(new EqualityInstance(Y,q));
-            assertTrue(n.remove(0).equals(d1));
-            DenialInstance d2 = new DenialInstance();
-            d2.getBody().add(new EqualityInstance(Z,b));
-            assertTrue(n.remove(0).equals(d2));
-        }
-
-
-
-    // p(X,Y) =/= p(a,q(b)), Z =/= b, q(A) =/= D
-    @Test
-    public void multipleTest2() throws JALPException {
-        List<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
-        VariableInstance X = new VariableInstance("X");
-        VariableInstance Y= new VariableInstance("Y");
-        VariableInstance Z= new VariableInstance("Z");
-        VariableInstance A= new VariableInstance("A");
-        VariableInstance D= new VariableInstance("D");
-
-        CharConstantInstance a = new CharConstantInstance("a");
-        CharConstantInstance b = new CharConstantInstance("b");
-
-        PredicateInstance p1 = new PredicateInstance("p",X,Y);
-        PredicateInstance q1 = new PredicateInstance("q",b);
-        PredicateInstance p2 = new PredicateInstance("p",a,q1);
-        PredicateInstance q2 = new PredicateInstance("q",A);
-
-        inequalities.add(new InEqualityInstance(p1,p2));
-        inequalities.add(new InEqualityInstance(Z,b));
-        inequalities.add(new InEqualityInstance(q2,D));
-
-
-        List<IInferableInstance> n = solver.execute(inequalities);
-        assertTrue(n.size()==3);
-        DenialInstance d1 = new DenialInstance();
-        d1.getBody().add(new EqualityInstance(X,a));
-        d1.getBody().add(new EqualityInstance(Y,q1));
-        assertTrue(n.remove(0).equals(d1));
-        DenialInstance d2 = new DenialInstance();
-        d2.getBody().add(new EqualityInstance(Z,b));
-        assertTrue(n.remove(0).equals(d2));
-        DenialInstance d3 = new DenialInstance();
-        d3.getBody().add(new EqualityInstance(q2,D));
-        assertTrue(n.remove(0).equals(d3));
-    }
-
-
-
 
 }

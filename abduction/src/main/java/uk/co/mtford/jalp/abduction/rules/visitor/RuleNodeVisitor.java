@@ -1,6 +1,7 @@
 package uk.co.mtford.jalp.abduction.rules.visitor;
 
 import org.apache.log4j.Logger;
+import org.javatuples.Pair;
 import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
@@ -261,11 +262,11 @@ public abstract class RuleNodeVisitor {
             if (unificationSuccess) {
                 currentGoal.performSubstitutions(newAssignments);
                 newGoals.add(0,currentGoal);
-                currentGoal.getBody().add(0,new TrueInstance());
+                currentGoal.getBody().add(0, new TrueInstance());
             }
             else {
                 newGoals.add(0,currentGoal);
-                currentGoal.getBody().add(0,new FalseInstance());
+                currentGoal.getBody().add(0, new FalseInstance());
             }
             childNode = constructChildNode(newGoals,ruleNode);
             newAssignments.putAll(ruleNode.getAssignments());
@@ -344,7 +345,11 @@ public abstract class RuleNodeVisitor {
                         newChildNodes.add(childNode);
                     }
                     else {
-                        throw new JALPException("Equality solver failed in E2b. Should this happen? RuleNode:\n"+ruleNode);
+                        currentGoal.getBody().add(0, new FalseInstance());
+                        newGoals.add(0,currentGoal);
+                        childNode = constructChildNode(newGoals,ruleNode);
+                        newChildNodes.add(childNode);
+                        //throw new JALPException("Equality solver failed in E2b. Should this happen? RuleNode:\n"+ruleNode);
                     }
                 }
             }
@@ -621,12 +626,42 @@ public abstract class RuleNodeVisitor {
 
     private boolean applyInEqualitySolver(RuleNode node) throws JALPException {
         List<InEqualityInstance> inequalities = node.getStore().inequalities;
+        for (InEqualityInstance e:inequalities){
+            e.performSubstitutions(node.getAssignments()); // TODO: Do this somewhere else.
+        }
         if (!inequalities.isEmpty() && !(node instanceof LeafRuleNode)) { // TODO LeafRuleNode
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Executing equality solver on ruleNode:\n"+node);
             InEqualitySolver solver = new InEqualitySolver();
-            List<IInferableInstance> newInferables = solver.execute(inequalities);
 
-            node.getGoals().addAll(newInferables); // TODO Add them to the end of the goals...? Probs the best thing to do to avoid repeatedly evaluating same inequalities.
-            node.getStore().inequalities.removeAll(inequalities); // Clear inequalities.
+            List<List<Pair<List<EqualityInstance>,List<InEqualityInstance>>>> possCombinations = new LinkedList<List<Pair<List<EqualityInstance>,List<InEqualityInstance>>>>();
+
+            for (InEqualityInstance inEquality:inequalities) {
+                List<List<Pair<EqualityInstance,InEqualityInstance>>> newCombinations = new LinkedList<List<Pair<EqualityInstance,InEqualityInstance>>>();
+                List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> inequalitySolved = solver.execute(inEquality);
+                if (inequalitySolved==null) return false; // Failed.
+                if (possCombinations.isEmpty()) {
+                    possCombinations.add(inequalitySolved);
+                }
+                else {
+                    for (List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> poss:possCombinations) {
+                        LinkedList<Pair<List<EqualityInstance>, List<InEqualityInstance>>> newPoss = new LinkedList<Pair<List<EqualityInstance>, List<InEqualityInstance>>>();
+                        for (Pair<List<EqualityInstance>, List<InEqualityInstance>> solved:inequalitySolved) {
+                            Pair<List<EqualityInstance>, List<InEqualityInstance>> newSolved = new Pair<List<EqualityInstance>, List<InEqualityInstance>>(new LinkedList<EqualityInstance>(),new LinkedList<InEqualityInstance>());
+                            for (Pair<List<EqualityInstance>, List<InEqualityInstance>> comb:poss) {
+                                newSolved.getValue0().addAll(solved.getValue0());
+                                newSolved.getValue0().addAll(comb.getValue0());
+                                newSolved.getValue1().addAll(solved.getValue1());
+                                newSolved.getValue1().addAll(comb.getValue1());
+                            }
+                            newPoss.add(newSolved);
+                        }
+                        possCombinations.add(newPoss);
+                    }
+                }
+            }
+
+
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Node is now "+node);
         }
 
 

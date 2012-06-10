@@ -1,6 +1,7 @@
 package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
 import org.apache.log4j.Logger;
+import org.javatuples.Pair;
 import sun.tools.tree.ReturnStatement;
 import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
@@ -24,20 +25,17 @@ public class InEqualitySolver implements IInEqualitySolver {
 
     private static Logger LOGGER = Logger.getLogger(InEqualitySolver.class);
 
-
     @Override
-    public List<IInferableInstance> execute(List<InEqualityInstance> inEqualities) throws JALPException {
+    public List<Pair<List<EqualityInstance>,List<InEqualityInstance>>> execute(InEqualityInstance inEquality) throws JALPException {
 
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Executing inequality solver on "+inEqualities);
+        if (LOGGER.isDebugEnabled()) LOGGER.debug("Executing inequality solver on "+inEquality);
 
-        List<IInferableInstance> result = new LinkedList<IInferableInstance>();
+            List<Pair<List<EqualityInstance>,List<InEqualityInstance>>> result = new LinkedList<Pair<List<EqualityInstance>, List<InEqualityInstance>>>();
 
-        for (InEqualityInstance inequality:inEqualities) {
-
-            IUnifiableAtomInstance left = inequality.getEqualityInstance().getLeft();
-            IUnifiableAtomInstance right = inequality.getEqualityInstance().getRight();
+            IUnifiableAtomInstance left;
+            IUnifiableAtomInstance right;
             List<EqualityInstance> reducedEqualities = new LinkedList<EqualityInstance>();
-            reducedEqualities.add(inequality.getEqualityInstance());
+            reducedEqualities.add(inEquality.getEqualityInstance());
 
             int previousNumReducedEqualities = 0;
             while (reducedEqualities.size()>previousNumReducedEqualities) {
@@ -53,34 +51,52 @@ public class InEqualitySolver implements IInEqualitySolver {
                 reducedEqualities = newEqualities;
             }
 
-            IInferableInstance inferable = new DenialInstance();
+
+            int numSolved = 0;
+            LinkedList<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
+            LinkedList<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
             for (EqualityInstance reducedEquality:reducedEqualities) {
-                DenialInstance denial = (DenialInstance) inferable;
                 HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance,IUnifiableAtomInstance>();
                 boolean unificationSuccess = reducedEquality.equalitySolve(subst);
 
                 if (subst.size()>1) throw new JALPException("Reduce not working properly."); // Sanity check: Should be in reduced form, so only one substitution could occur.
 
                 if (subst.size()==1) { // X=u or u=X
-                    denial.getBody().add(reducedEquality);
+                    inequalities.add(new InEqualityInstance(reducedEquality));
                 }
                 else {
                     if (unificationSuccess) { // c=c and hence must carry on.
-                        denial.getBody().add(new TrueInstance());
                     }
                     else { // d=c and hence this equality succeeds.
-                        inferable = new TrueInstance();
+                        inequalities = new LinkedList<InEqualityInstance>();
                         break;
                     }
                 }
+                numSolved++;
             }
-            result.add(inferable);
 
-        }
+            if (numSolved == reducedEqualities.size()) {
+                if (inequalities.isEmpty()) return null; // Failed.
+            }
+
+            for (int i=0;i<inequalities.size();i++) {
+                LinkedList<EqualityInstance> newEqualities = new LinkedList<EqualityInstance>();
+                LinkedList<InEqualityInstance> newInequalities = new LinkedList<InEqualityInstance>();
+                for (int j=0;j<i;j++) {
+                    newEqualities.add(inequalities.get(j).getEqualityInstance());
+                }
+                for(int j=i;j<inequalities.size();j++) {
+                    newInequalities.add(inequalities.get(j));
+                }
+                result.add(new Pair<List<EqualityInstance>, List<InEqualityInstance>>(newEqualities,newInequalities));
+            }
+
+
+
 
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Inequality solver computed: "+result);
 
-        return result;
+         return result;
 
     }
 }
