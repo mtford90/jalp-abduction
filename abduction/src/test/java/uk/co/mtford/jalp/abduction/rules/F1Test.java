@@ -4,9 +4,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import uk.co.mtford.jalp.JALP;
+import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.LessThanConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -34,7 +40,16 @@ public class F1Test {
     @Test
     public void test1() throws Exception {
         F1RuleNode ruleNode = new F1RuleNode();
-        List<IInferableInstance> goals = JALPQueryParser.readFromString("X<Y, p(X)");
+        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+
+        VariableInstance X = new VariableInstance("X");
+        VariableInstance Y = new VariableInstance("Y");
+
+        PredicateInstance p = new PredicateInstance("p",X);
+        LessThanConstraintInstance c = new LessThanConstraintInstance(X,Y);
+
+        goals.add(c);
+        goals.add(p);
 
         ruleNode.setGoals(goals);
 

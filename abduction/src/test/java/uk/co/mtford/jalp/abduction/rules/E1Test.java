@@ -7,12 +7,14 @@ import uk.co.mtford.jalp.JALP;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -42,7 +44,13 @@ public class E1Test {
     @Test
     public void test1() throws Exception {
         E1RuleNode ruleNode = new E1RuleNode();
-        List<IInferableInstance> goals = JALPQueryParser.readFromString("X=Y");
+
+        List<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+
+        VariableInstance X = new VariableInstance("X");
+        VariableInstance Y = new VariableInstance("Y");
+        EqualityInstance e = new EqualityInstance(X,Y);
+        goals.add(e);
 
         ruleNode.setGoals(goals);
 

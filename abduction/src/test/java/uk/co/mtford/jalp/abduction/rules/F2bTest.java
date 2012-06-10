@@ -6,8 +6,14 @@ import org.junit.Test;
 import uk.co.mtford.jalp.JALP;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.InIntegerListConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantListInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -35,10 +41,20 @@ public class F2bTest {
     @Test
     public void test1() throws Exception {
         F2bRuleNode ruleNode = new F2bRuleNode();
-        List<IInferableInstance> goals = JALPQueryParser.readFromString("Y in [1,2,3], p(Y)");
+        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+
+        VariableInstance Y = new VariableInstance("Y");
+
+        PredicateInstance p = new PredicateInstance("p",Y);
+
+        IntegerConstantListInstance list = new IntegerConstantListInstance(1,2,3);
+        InIntegerListConstraintInstance i = new InIntegerListConstraintInstance(Y,list);
+
+        goals.add(i);
+        goals.add(p);
 
         DenialInstance d = new DenialInstance(goals);
-        d.getUniversalVariables().addAll(goals.get(0).getVariables());
+        d.getUniversalVariables().add(Y);
         ruleNode.getGoals().add(d);
 
         JALP.applyRule(ruleNode);

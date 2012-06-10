@@ -6,7 +6,9 @@ import org.junit.Test;
 import uk.co.mtford.jalp.JALP;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 
 import java.util.List;
@@ -38,9 +40,15 @@ public class E2cTest {
         E2RuleNode ruleNode = new E2RuleNode();
         List<IInferableInstance> goals = JALPQueryParser.readFromString("X=Y, q(Y)");
 
+        VariableInstance X = new VariableInstance("X");
+        VariableInstance Y = new VariableInstance("Y");
+        EqualityInstance e = new EqualityInstance(X,Y);
+        PredicateInstance q = new PredicateInstance("q",Y);
+        goals.add(e);
+        goals.add(q);
+
         DenialInstance d = new DenialInstance(goals);
-        EqualityInstance e = (EqualityInstance) goals.get(0);
-        d.getUniversalVariables().addAll(e.getRight().getVariables());
+        d.getUniversalVariables().add(Y);
         ruleNode.getGoals().add(d);
 
         JALP.applyRule(ruleNode);

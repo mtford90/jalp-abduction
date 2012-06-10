@@ -12,7 +12,7 @@ Inferable -> PosInferable | NegInferable
 PosInferable -> Predicate | Equality | InEquality | Constraint
 NegInferable -> NOT PosInferable
 
-Predicate -> LCASENAME (LBRACKET ParameterList RBRACKET)?
+Predicate -> LCASENAME LBRACKET ParameterList? RBRACKET
 Equality -> Parameter EQUALS Parameter
 InEquality -> Parameter NOTEQUALS Parameter
 Constraint -> LessThanConstraint | LessThanEqConstraint | GreaterThanConstraint | GreaterThanEqConstraint | InConstraint
@@ -287,11 +287,9 @@ PredicateInstance Predicate(HashMap<String, VariableInstance> variablesSoFar):
 {
 	t = <LCASENAME>
     { name = t.image; }
-	[	
-		<LBRACKET>
-		parameters = ParameterList(variablesSoFar)
-		<RBRACKET>
-	]
+	<LBRACKET>
+	parameters = ParameterList(variablesSoFar)
+	<RBRACKET>
     { return new PredicateInstance(name,parameters); }
 }
 
@@ -438,12 +436,13 @@ IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFa
 }
 {
 	(
+		unifiable = Predicate(variablesSoFar)
+        { return unifiable; } |
 		unifiable = Variable(variablesSoFar)
         { return unifiable; } |
 		unifiable = Constant()
-        { return unifiable; } |
-		unifiable = Predicate(variablesSoFar)
         { return unifiable; }
+
 	)
 
 }

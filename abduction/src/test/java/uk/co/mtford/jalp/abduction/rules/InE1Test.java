@@ -6,8 +6,13 @@ import org.junit.Test;
 import uk.co.mtford.jalp.JALP;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.LessThanConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -35,7 +40,15 @@ public class InE1Test {
     @Test
     public void test1() throws Exception {
         InE1RuleNode ruleNode = new InE1RuleNode();
-        List<IInferableInstance> goals = JALPQueryParser.readFromString("X!=Y");
+
+        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+
+        VariableInstance X = new VariableInstance("X");
+        VariableInstance Y = new VariableInstance("Y");
+
+        InEqualityInstance e = new InEqualityInstance(X,Y);
+
+        goals.add(e);
 
         ruleNode.setGoals(goals);
 

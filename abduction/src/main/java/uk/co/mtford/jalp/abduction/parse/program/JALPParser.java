@@ -203,13 +203,9 @@ public class JALPParser implements JALPParserConstants {
     List<IUnifiableAtomInstance> parameters = new LinkedList<IUnifiableAtomInstance>();
     t = jj_consume_token(LCASENAME);
       name = t.image;
-    if (jj_2_14(2)) {
-      jj_consume_token(LBRACKET);
-      parameters = ParameterList(variablesSoFar);
-      jj_consume_token(RBRACKET);
-    } else {
-      ;
-    }
+    jj_consume_token(LBRACKET);
+    parameters = ParameterList(variablesSoFar);
+    jj_consume_token(RBRACKET);
       {if (true) return new PredicateInstance(name,parameters);}
     throw new Error("Missing return statement in function");
   }
@@ -236,19 +232,19 @@ public class JALPParser implements JALPParserConstants {
 
   final public IConstraintInstance Constraint(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     IConstraintInstance instance;
-    if (jj_2_15(2)) {
+    if (jj_2_14(2)) {
       instance = LessThanConstraint(variablesSoFar);
       {if (true) return instance;}
-    } else if (jj_2_16(2)) {
+    } else if (jj_2_15(2)) {
       instance = LessThanEqConstraint(variablesSoFar);
       {if (true) return instance;}
-    } else if (jj_2_17(2)) {
+    } else if (jj_2_16(2)) {
       instance = GreaterThanConstraint(variablesSoFar);
       {if (true) return instance;}
-    } else if (jj_2_18(2)) {
+    } else if (jj_2_17(2)) {
       instance = GreaterThanEqConstraint(variablesSoFar);
       {if (true) return instance;}
-    } else if (jj_2_19(2)) {
+    } else if (jj_2_18(2)) {
       instance = InListConstraint(variablesSoFar);
       {if (true) return instance;}
     } else {
@@ -303,10 +299,10 @@ public class JALPParser implements JALPParserConstants {
     ITermInstance right;
     left = Term(variablesSoFar);
     jj_consume_token(IN);
-    if (jj_2_20(2)) {
+    if (jj_2_19(2)) {
       right = CharConstantList(variablesSoFar);
       {if (true) return new InConstantListConstraintInstance(left,(CharConstantListInstance)right);}
-    } else if (jj_2_21(2)) {
+    } else if (jj_2_20(2)) {
       right = IntegerConstantList(variablesSoFar);
       {if (true) return new InIntegerListConstraintInstance(left,(IntegerConstantListInstance)right);}
     } else {
@@ -318,13 +314,13 @@ public class JALPParser implements JALPParserConstants {
 
   final public ITermInstance Term(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     ITermInstance term;
-    if (jj_2_22(2)) {
+    if (jj_2_21(2)) {
       term = Variable(variablesSoFar);
       {if (true) return term;}
-    } else if (jj_2_23(2)) {
+    } else if (jj_2_22(2)) {
       term = Constant();
       {if (true) return term;}
-    } else if (jj_2_24(2)) {
+    } else if (jj_2_23(2)) {
       term = List(variablesSoFar);
       {if (true) return term;}
     } else {
@@ -337,12 +333,12 @@ public class JALPParser implements JALPParserConstants {
   final public List<IUnifiableAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     LinkedList<IUnifiableAtomInstance> params = new LinkedList<IUnifiableAtomInstance>();
     IUnifiableAtomInstance param;
-    if (jj_2_26(2)) {
+    if (jj_2_25(2)) {
       param = Parameter(variablesSoFar);
           params.add(param);
       label_4:
       while (true) {
-        if (jj_2_25(2)) {
+        if (jj_2_24(2)) {
           ;
         } else {
           break label_4;
@@ -360,14 +356,14 @@ public class JALPParser implements JALPParserConstants {
 
   final public IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     IUnifiableAtomInstance unifiable;
-    if (jj_2_27(2)) {
+    if (jj_2_26(2)) {
+      unifiable = Predicate(variablesSoFar);
+          {if (true) return unifiable;}
+    } else if (jj_2_27(2)) {
       unifiable = Variable(variablesSoFar);
           {if (true) return unifiable;}
     } else if (jj_2_28(2)) {
       unifiable = Constant();
-          {if (true) return unifiable;}
-    } else if (jj_2_29(2)) {
-      unifiable = Predicate(variablesSoFar);
           {if (true) return unifiable;}
     } else {
       jj_consume_token(-1);
@@ -378,10 +374,10 @@ public class JALPParser implements JALPParserConstants {
 
   final public ListInstance List(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
    ListInstance listInstance;
-    if (jj_2_30(2)) {
+    if (jj_2_29(2)) {
       listInstance = IntegerConstantList(variablesSoFar);
       {if (true) return listInstance;}
-    } else if (jj_2_31(2)) {
+    } else if (jj_2_30(2)) {
       listInstance = CharConstantList(variablesSoFar);
       {if (true) return listInstance;}
     } else {
@@ -399,7 +395,7 @@ public class JALPParser implements JALPParserConstants {
         listInstance.getList().add(constantInstance);
     label_5:
     while (true) {
-      if (jj_2_32(2)) {
+      if (jj_2_31(2)) {
         ;
       } else {
         break label_5;
@@ -421,7 +417,7 @@ public class JALPParser implements JALPParserConstants {
         listInstance.getList().add(constantInstance);
     label_6:
     while (true) {
-      if (jj_2_33(2)) {
+      if (jj_2_32(2)) {
         ;
       } else {
         break label_6;
@@ -453,10 +449,10 @@ public class JALPParser implements JALPParserConstants {
 
   final public ConstantInstance Constant() throws ParseException {
     ConstantInstance constantInstance;
-    if (jj_2_34(2)) {
+    if (jj_2_33(2)) {
       constantInstance = IntegerConstant();
       {if (true) return constantInstance;}
-    } else if (jj_2_35(2)) {
+    } else if (jj_2_34(2)) {
       constantInstance = CharConstant();
       {if (true) return constantInstance;}
     } else {
@@ -722,31 +718,14 @@ public class JALPParser implements JALPParserConstants {
     finally { jj_save(33, xla); }
   }
 
-  private boolean jj_2_35(int xla) {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_35(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(34, xla); }
-  }
-
-  private boolean jj_3R_25() {
+  private boolean jj_3R_24() {
     if (jj_scan_token(LSQBRACKET)) return true;
-    if (jj_3R_30()) return true;
+    if (jj_3R_29()) return true;
     return false;
   }
 
   private boolean jj_3R_7() {
     if (jj_3R_12()) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_5()) jj_scanpos = xsp;
-    if (jj_scan_token(DOT)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_21() {
-    if (jj_3R_32()) return true;
-    if (jj_scan_token(GREATERTHAN)) return true;
     return false;
   }
 
@@ -756,28 +735,19 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_31() {
+  private boolean jj_3R_20() {
+    if (jj_3R_31()) return true;
+    if (jj_scan_token(GREATERTHAN)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_30() {
     if (jj_scan_token(LCASENAME)) return true;
     return false;
   }
 
-  private boolean jj_3_31() {
-    if (jj_3R_24()) return true;
-    return false;
-  }
-
-  private boolean jj_3_29() {
-    if (jj_3R_12()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_28() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_30()) {
-    jj_scanpos = xsp;
-    if (jj_3_31()) return true;
-    }
+  private boolean jj_3_30() {
+    if (jj_3R_23()) return true;
     return false;
   }
 
@@ -786,13 +756,23 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_30() {
-    if (jj_3R_25()) return true;
+  private boolean jj_3R_27() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_29()) {
+    jj_scanpos = xsp;
+    if (jj_3_30()) return true;
+    }
     return false;
   }
 
   private boolean jj_3_28() {
-    if (jj_3R_27()) return true;
+    if (jj_3R_26()) return true;
+    return false;
+  }
+
+  private boolean jj_3_29() {
+    if (jj_3R_24()) return true;
     return false;
   }
 
@@ -801,19 +781,24 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_20() {
-    if (jj_3R_32()) return true;
-    if (jj_scan_token(LESSTHANEQ)) return true;
-    return false;
-  }
-
   private boolean jj_3_27() {
-    if (jj_3R_26()) return true;
+    if (jj_3R_25()) return true;
     return false;
   }
 
   private boolean jj_3_11() {
     if (jj_3R_15()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_19() {
+    if (jj_3R_31()) return true;
+    if (jj_scan_token(LESSTHANEQ)) return true;
+    return false;
+  }
+
+  private boolean jj_3_26() {
+    if (jj_3R_12()) return true;
     return false;
   }
 
@@ -838,11 +823,6 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_30() {
-    if (jj_scan_token(INTEGER)) return true;
-    return false;
-  }
-
   private boolean jj_3_1() {
     Token xsp;
     xsp = jj_scanpos;
@@ -861,9 +841,8 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_25() {
-    if (jj_scan_token(COMMA)) return true;
-    if (jj_3R_29()) return true;
+  private boolean jj_3R_29() {
+    if (jj_scan_token(INTEGER)) return true;
     return false;
   }
 
@@ -872,16 +851,9 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_29() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_27()) {
-    jj_scanpos = xsp;
-    if (jj_3_28()) {
-    jj_scanpos = xsp;
-    if (jj_3_29()) return true;
-    }
-    }
+  private boolean jj_3_24() {
+    if (jj_scan_token(COMMA)) return true;
+    if (jj_3R_28()) return true;
     return false;
   }
 
@@ -890,14 +862,21 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_9() {
-    if (jj_3R_14()) return true;
+  private boolean jj_3R_28() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_26()) {
+    jj_scanpos = xsp;
+    if (jj_3_27()) {
+    jj_scanpos = xsp;
+    if (jj_3_28()) return true;
+    }
+    }
     return false;
   }
 
-  private boolean jj_3R_19() {
-    if (jj_3R_32()) return true;
-    if (jj_scan_token(LESSTHAN)) return true;
+  private boolean jj_3_9() {
+    if (jj_3R_14()) return true;
     return false;
   }
 
@@ -916,28 +895,9 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_35() {
+  private boolean jj_3R_18() {
     if (jj_3R_31()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_27() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_34()) {
-    jj_scanpos = xsp;
-    if (jj_3_35()) return true;
-    }
-    return false;
-  }
-
-  private boolean jj_3_26() {
-    if (jj_3R_29()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_25()) { jj_scanpos = xsp; break; }
-    }
+    if (jj_scan_token(LESSTHAN)) return true;
     return false;
   }
 
@@ -946,8 +906,28 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_19() {
-    if (jj_3R_23()) return true;
+  private boolean jj_3R_26() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_33()) {
+    jj_scanpos = xsp;
+    if (jj_3_34()) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3_33() {
+    if (jj_3R_29()) return true;
+    return false;
+  }
+
+  private boolean jj_3_25() {
+    if (jj_3R_28()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_24()) { jj_scanpos = xsp; break; }
+    }
     return false;
   }
 
@@ -962,13 +942,6 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_18() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_26()) jj_scanpos = xsp;
-    return false;
-  }
-
   private boolean jj_3_17() {
     if (jj_3R_21()) return true;
     return false;
@@ -979,27 +952,27 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
+  private boolean jj_3_15() {
+    if (jj_3R_19()) return true;
+    return false;
+  }
+
   private boolean jj_3R_17() {
     Token xsp;
     xsp = jj_scanpos;
+    if (jj_3_14()) {
+    jj_scanpos = xsp;
     if (jj_3_15()) {
     jj_scanpos = xsp;
     if (jj_3_16()) {
     jj_scanpos = xsp;
     if (jj_3_17()) {
     jj_scanpos = xsp;
-    if (jj_3_18()) {
-    jj_scanpos = xsp;
-    if (jj_3_19()) return true;
+    if (jj_3_18()) return true;
     }
     }
     }
     }
-    return false;
-  }
-
-  private boolean jj_3_15() {
-    if (jj_3R_19()) return true;
     return false;
   }
 
@@ -1009,43 +982,30 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
+  private boolean jj_3_14() {
+    if (jj_3R_18()) return true;
+    return false;
+  }
+
   private boolean jj_3_6() {
     if (jj_scan_token(COMMA)) return true;
     if (jj_3R_11()) return true;
     return false;
   }
 
-  private boolean jj_3R_26() {
+  private boolean jj_3R_25() {
     if (jj_scan_token(UCASENAME)) return true;
     return false;
   }
 
   private boolean jj_3R_16() {
-    if (jj_3R_29()) return true;
-    if (jj_scan_token(NOTEQUALS)) return true;
-    return false;
-  }
-
-  private boolean jj_3_24() {
     if (jj_3R_28()) return true;
+    if (jj_scan_token(NOTEQUALS)) return true;
     return false;
   }
 
   private boolean jj_3_23() {
     if (jj_3R_27()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_32() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_22()) {
-    jj_scanpos = xsp;
-    if (jj_3_23()) {
-    jj_scanpos = xsp;
-    if (jj_3_24()) return true;
-    }
-    }
     return false;
   }
 
@@ -1059,15 +1019,16 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_33() {
-    if (jj_scan_token(COMMA)) return true;
-    if (jj_3R_31()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_15() {
-    if (jj_3R_29()) return true;
-    if (jj_scan_token(EQUALS)) return true;
+  private boolean jj_3R_31() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_21()) {
+    jj_scanpos = xsp;
+    if (jj_3_22()) {
+    jj_scanpos = xsp;
+    if (jj_3_23()) return true;
+    }
+    }
     return false;
   }
 
@@ -1076,27 +1037,37 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
+  private boolean jj_3_32() {
+    if (jj_scan_token(COMMA)) return true;
+    if (jj_3R_30()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_15() {
+    if (jj_3R_28()) return true;
+    if (jj_scan_token(EQUALS)) return true;
+    return false;
+  }
+
   private boolean jj_3_20() {
     if (jj_3R_24()) return true;
     return false;
   }
 
-  private boolean jj_3_14() {
-    if (jj_scan_token(LBRACKET)) return true;
-    if (jj_3R_18()) return true;
-    if (jj_scan_token(RBRACKET)) return true;
+  private boolean jj_3_19() {
+    if (jj_3R_23()) return true;
     return false;
   }
 
   private boolean jj_3R_23() {
-    if (jj_3R_32()) return true;
-    if (jj_scan_token(IN)) return true;
+    if (jj_scan_token(LSQBRACKET)) return true;
+    if (jj_3R_30()) return true;
     return false;
   }
 
-  private boolean jj_3R_24() {
-    if (jj_scan_token(LSQBRACKET)) return true;
+  private boolean jj_3R_22() {
     if (jj_3R_31()) return true;
+    if (jj_scan_token(IN)) return true;
     return false;
   }
 
@@ -1108,15 +1079,7 @@ public class JALPParser implements JALPParserConstants {
 
   private boolean jj_3R_12() {
     if (jj_scan_token(LCASENAME)) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_14()) jj_scanpos = xsp;
-    return false;
-  }
-
-  private boolean jj_3R_22() {
-    if (jj_3R_32()) return true;
-    if (jj_scan_token(GREATERTHANEQ)) return true;
+    if (jj_scan_token(LBRACKET)) return true;
     return false;
   }
 
@@ -1126,9 +1089,15 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3_32() {
+  private boolean jj_3R_21() {
+    if (jj_3R_31()) return true;
+    if (jj_scan_token(GREATERTHANEQ)) return true;
+    return false;
+  }
+
+  private boolean jj_3_31() {
     if (jj_scan_token(COMMA)) return true;
-    if (jj_3R_30()) return true;
+    if (jj_3R_29()) return true;
     return false;
   }
 
@@ -1151,7 +1120,7 @@ public class JALPParser implements JALPParserConstants {
    private static void jj_la1_init_0() {
       jj_la1_0 = new int[] {};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[35];
+  final private JJCalls[] jj_2_rtns = new JJCalls[34];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -1376,7 +1345,7 @@ public class JALPParser implements JALPParserConstants {
 
   private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 35; i++) {
+    for (int i = 0; i < 34; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -1417,7 +1386,6 @@ public class JALPParser implements JALPParserConstants {
             case 31: jj_3_32(); break;
             case 32: jj_3_33(); break;
             case 33: jj_3_34(); break;
-            case 34: jj_3_35(); break;
           }
         }
         p = p.next;

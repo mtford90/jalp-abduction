@@ -5,9 +5,14 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.co.mtford.jalp.JALP;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.NegationInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 import uk.co.mtford.jalp.abduction.parse.query.ParseException;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -35,7 +40,17 @@ public class N1Test {
     @Test
     public void test1() throws Exception {
         N1RuleNode ruleNode = new N1RuleNode();
-        List<IInferableInstance> goals = JALPQueryParser.readFromString("not p(X,Y,Z)");
+        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+
+        VariableInstance X = new VariableInstance("X");
+        VariableInstance Y = new VariableInstance("Y");
+        VariableInstance Z = new VariableInstance("Z");
+
+        PredicateInstance p = new PredicateInstance("P",X,Y,Z);
+
+        NegationInstance n = new NegationInstance(p);
+
+        goals.add(n);
         ruleNode.setGoals(goals);
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/N1/Test1",ruleNode);

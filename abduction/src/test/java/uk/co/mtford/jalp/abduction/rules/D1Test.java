@@ -50,7 +50,12 @@ public class D1Test {
     public void test1() throws Exception, ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException { // TODO D1.alp
 
         AbductiveFramework framework = JALPParser.readFromFile("examples/inference-rules/D1.alp");
-        List<IInferableInstance> goals = JALPQueryParser.readFromString("p(t,s)");
+        List<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+
+        CharConstantInstance t = new CharConstantInstance("t");
+        CharConstantInstance s = new CharConstantInstance("s");
+        PredicateInstance p = new PredicateInstance("p",t,s);
+        goals.add(p);
 
         D1RuleNode ruleNode = new D1RuleNode(framework,new LinkedList<IInferableInstance>(goals),goals);
         JALP.applyRule(ruleNode);
