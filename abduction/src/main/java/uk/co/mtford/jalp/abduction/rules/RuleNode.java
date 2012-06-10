@@ -30,6 +30,7 @@ public abstract class RuleNode {
         EXPANDED
     };
 
+
     protected List<IInferableInstance> query;
     protected List<IInferableInstance> goals; // G - {currentGoal}
     protected Store store; // ST

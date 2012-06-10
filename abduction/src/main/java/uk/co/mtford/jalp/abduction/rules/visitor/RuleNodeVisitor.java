@@ -605,6 +605,22 @@ public class RuleNodeVisitor {
 
             if (equalitySolveSuccess) {
                 if (LOGGER.isDebugEnabled()) LOGGER.debug("Equality solver succeeded.");
+                // TODO: Apply equality solver to whole state?
+                // TODO Query.
+                /*List<IInferableInstance> newQuery = new LinkedList<IInferableInstance>();
+                for (IInferableInstance inferable:node.getQuery()) {
+                    IInferableInstance newInferable = (IInferableInstance) inferable.shallowClone();
+                    newInferable.performSubstitutions(assignments);
+                    newQuery.add(newInferable);
+                }
+                node.setQuery(newQuery); */
+                List<IConstraintInstance> newConstraints = new LinkedList<IConstraintInstance>();
+                for (IConstraintInstance constraint:node.getStore().constraints) {
+                    IConstraintInstance newConstraint = (IConstraintInstance) constraint.shallowClone();
+                    newConstraint.performSubstitutions(assignments);
+                    newConstraints.add(newConstraint);
+                }
+                node.getStore().constraints=newConstraints;
                 node.setAssignments(assignments);
                 node.getStore().equalities=new LinkedList<EqualityInstance>();
                 return true;

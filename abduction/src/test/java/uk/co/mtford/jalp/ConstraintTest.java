@@ -66,10 +66,10 @@ public class ConstraintTest {
             if (r.getAssignments().get(X).equals(new CharConstantInstance("mary"))) {
                 mary = true;
             }
-            if (r.getAssignments().get(X).equals(new CharConstantInstance("mary"))) {
+            if (r.getAssignments().get(X).equals(new CharConstantInstance("bob"))) {
                 bob = true;
             }
-            if (r.getAssignments().get(X).equals(new CharConstantInstance("mary"))) {
+            if (r.getAssignments().get(X).equals(new CharConstantInstance("john"))) {
                 john = true;
             }
         }
