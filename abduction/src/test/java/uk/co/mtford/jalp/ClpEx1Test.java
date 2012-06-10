@@ -58,13 +58,13 @@ public class ClpEx1Test {
      */
     @Test
     public void clpEx1Test1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/jiefei/clp-ex1.alp");
+        system = new JALPSystem("examples/full/jiefei/clp-ex1.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance p = new PredicateInstance("p",X,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/clp-ex1");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/clp-ex1");
         assertTrue(result.size()==3);
 
         //TODO Check results.

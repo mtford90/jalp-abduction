@@ -117,6 +117,6 @@ public class AbducibleTest {
         assertTrue(resultOne.getStore().abducibles.size()==1);
         IUnifiableAtomInstance XAssignment = resultOne.getAssignments().get(X);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("a",XAssignment)));
-        assertTrue(resultOne.getStore().equalities.contains(new InEqualityInstance(XAssignment,new IntegerConstantInstance(1))));
+        assertTrue(resultOne.getStore().inequalities.contains(new InEqualityInstance(XAssignment,new IntegerConstantInstance(1))));
     }
 }

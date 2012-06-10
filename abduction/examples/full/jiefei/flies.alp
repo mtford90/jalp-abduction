@@ -1,9 +1,0 @@
-flies(X) :- bird(X), not abnormal(X).
-
-abnormal(X) :- penguin(X).
-
-bird(X) :- penguin(X).
-bird(X) :- eagle(X).
-
-penguin(tweety).
-eagle(sam).

@@ -1,5 +1,0 @@
-boy(john).
-girl(jane).
-girl(mary).
-
-likes(X,Y) :- boy(X),girl(Y).

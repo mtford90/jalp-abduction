@@ -53,12 +53,12 @@ public class DefinitionTest {
      */
     @Test
     public void definitionTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/definition/definition.alp");
+        system = new JALPSystem("examples/basic/definition/definition.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance likes = new PredicateInstance("likes",new CharConstantInstance("john"),Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/definition/definition");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/definition/definition");
         assertTrue(result.size()==2);
         Result resultOne = result.remove(0);
         Result resultTwo = result.remove(0);

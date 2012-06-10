@@ -1,1 +1,0 @@
-p(X) :- X in [bob,mary,john], not X in [mary,john].

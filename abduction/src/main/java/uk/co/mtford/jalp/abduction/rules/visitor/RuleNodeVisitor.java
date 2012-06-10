@@ -261,11 +261,11 @@ public abstract class RuleNodeVisitor {
             if (unificationSuccess) {
                 currentGoal.performSubstitutions(newAssignments);
                 newGoals.add(0,currentGoal);
-                newGoals.add(0,new TrueInstance());
+                currentGoal.getBody().add(0,new TrueInstance());
             }
             else {
                 newGoals.add(0,currentGoal);
-                newGoals.add(0,new FalseInstance());
+                currentGoal.getBody().add(0,new FalseInstance());
             }
             childNode = constructChildNode(newGoals,ruleNode);
             newAssignments.putAll(ruleNode.getAssignments());
@@ -621,11 +621,14 @@ public abstract class RuleNodeVisitor {
 
     private boolean applyInEqualitySolver(RuleNode node) throws JALPException {
         List<InEqualityInstance> inequalities = node.getStore().inequalities;
-        InEqualitySolver solver = new InEqualitySolver();
-        List<IInferableInstance> newInferables = solver.execute(inequalities);
+        if (!inequalities.isEmpty() && !(node instanceof LeafRuleNode)) { // TODO LeafRuleNode
+            InEqualitySolver solver = new InEqualitySolver();
+            List<IInferableInstance> newInferables = solver.execute(inequalities);
 
-        node.getGoals().addAll(newInferables); // TODO Add them to the end of the goals...? Probs the best thing to do to avoid repeatedly evaluating same inequalities.
-        node.getStore().inequalities.removeAll(inequalities); // Clear inequalities.
+            node.getGoals().addAll(newInferables); // TODO Add them to the end of the goals...? Probs the best thing to do to avoid repeatedly evaluating same inequalities.
+            node.getStore().inequalities.removeAll(inequalities); // Clear inequalities.
+        }
+
 
         return true; // Always true as falsity is dealt with via empty denial.
     }

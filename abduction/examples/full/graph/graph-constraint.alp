@@ -1,8 +1,0 @@
-edge(node1,node2).
-edge(node2,node1).
-
-colour(X) :- X in [red,blue].
-
-ic :- colour(C), edge(N,M), has_colour(N,C), has_colour(M,C).
-
-abducible(has_colour(N,C)).

@@ -58,12 +58,12 @@ public class FliesTest {
      */
     @Test
     public void fliesX() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/jiefei/flies.alp");
+        system = new JALPSystem("examples/full/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         PredicateInstance likes = new PredicateInstance("flies",X);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/flies/flies-X");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/flies/flies-X");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALP.reduceResult(resultOne);
@@ -87,11 +87,11 @@ public class FliesTest {
     */
     @Test
     public void fliesTweety() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/jiefei/flies.alp");
+        system = new JALPSystem("examples/full/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance likes = new PredicateInstance("flies",new CharConstantInstance("tweety"));
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/flies/flies-tweety");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/flies/flies-tweety");
         assertTrue(result.size()==0);
     }
 
@@ -112,12 +112,12 @@ public class FliesTest {
     */
     @Test
     public void fliesSam() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/jiefei/flies.alp");
+        system = new JALPSystem("examples/full/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         PredicateInstance likes = new PredicateInstance("flies",new CharConstantInstance("sam"));
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/flies/flies-sam");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/flies/flies-sam");
         assertTrue(result.size()==1);
     }
 
@@ -138,12 +138,12 @@ public class FliesTest {
     */
     @Test
     public void fliesAbnormalX() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/jiefei/flies.alp");
+        system = new JALPSystem("examples/full/jiefei/flies.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         PredicateInstance abnormal = new PredicateInstance("abnormal",X);
         query.add(abnormal);
-        List<Result> result = system.generateDebugFiles(query, "debug/flies/abnormal-X");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/flies/abnormal-X");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALP.reduceResult(resultOne);

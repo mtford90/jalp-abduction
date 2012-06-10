@@ -51,12 +51,12 @@ public class ConstraintTest {
      */
     @Test
     public void constantListTest1() throws Exception, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/constant-list.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/constant-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance q = new PredicateInstance("q",X);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/constant-list-1");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/constant-list-1");
         assertTrue(result.size()==3);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -77,12 +77,12 @@ public class ConstraintTest {
     */
     @Test
     public void constantListTest2() throws Exception, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/constant-list.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/constant-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance mike = new CharConstantInstance("mike");
         PredicateInstance q = new PredicateInstance("q",mike);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/constant-list-2");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/constant-list-2");
         assertTrue(result.size()==0);
     }
 
@@ -94,12 +94,12 @@ public class ConstraintTest {
     */
     @Test
     public void constantListTest3() throws Exception, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/constant-list.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/constant-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance bob = new CharConstantInstance("bob");
         PredicateInstance q = new PredicateInstance("q",bob);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/constant-list-3");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/constant-list-3");
         assertTrue(result.size()==1);
     }
 
@@ -111,12 +111,12 @@ public class ConstraintTest {
      */
     @Test
     public void integerListTest1() throws Exception, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/integer-list.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/integer-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance three = new IntegerConstantInstance(3);
         PredicateInstance q = new PredicateInstance("q",three);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/integer-list-1");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/integer-list-1");
         assertTrue(result.size()==1);
     }
 
@@ -129,12 +129,12 @@ public class ConstraintTest {
     */
     @Test
     public void integerListTest2() throws Exception, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/integer-list.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/integer-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance three = new IntegerConstantInstance(5);
         PredicateInstance q = new PredicateInstance("q",three);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/integer-list-2");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/integer-list-2");
         assertTrue(result.size()==0);
     }
 
@@ -147,12 +147,12 @@ public class ConstraintTest {
     */
     @Test
     public void integerListTest3() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/integer-list.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/integer-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance q = new PredicateInstance("q",X);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/integer-list-3");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/integer-list-3");
         assertTrue(result.size()==3);
     }
 
@@ -164,12 +164,12 @@ public class ConstraintTest {
      */
     @Test
     public void lessThanTest1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/less-than.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/less-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance p = new PredicateInstance("p",X);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-test-1");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-1");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALP.reduceResult(resultOne);
@@ -184,11 +184,11 @@ public class ConstraintTest {
     */
     @Test
     public void lessThanTest2() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/less-than.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/less-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(1));
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-test-2");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-2");
         assertTrue(result.size()==1);
     }
 
@@ -200,11 +200,11 @@ public class ConstraintTest {
     */
     @Test
     public void lessThanTest3() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/less-than.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/less-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(2));
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-test-3");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-3");
         assertTrue(result.size()==0);
     }
 
@@ -216,11 +216,11 @@ public class ConstraintTest {
     */
     @Test
     public void lessThanTest4() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/less-than.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/less-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(3));
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-test-4");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-4");
         assertTrue(result.size()==0);
     }
 
@@ -232,11 +232,11 @@ public class ConstraintTest {
     */
     @Test
     public void lessThanTest5() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/less-than.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/less-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(4));
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-test-5");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-5");
         assertTrue(result.size()==0);
     }
 
@@ -248,13 +248,13 @@ public class ConstraintTest {
     */
     @Test
     public void greaterThanTest1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/greater-than.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/greater-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",X,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/greater-than-1");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-1");
         assertTrue(result.size()==3);
     }
 
@@ -266,14 +266,14 @@ public class ConstraintTest {
     */
     @Test
     public void greaterThanTest2() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/greater-than.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/greater-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance one = new IntegerConstantInstance(1);
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",one,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/greater-than-2");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-2");
         assertTrue(result.size()==0);
     }
 
@@ -285,14 +285,14 @@ public class ConstraintTest {
     */
     @Test
     public void greaterThanTest3() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/greater-than.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/greater-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance four = new IntegerConstantInstance(4);
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",four,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/greater-than-3");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-3");
         assertTrue(result.size()==0);
     }
 
@@ -304,13 +304,13 @@ public class ConstraintTest {
     */
     @Test
     public void greaterThanTest4() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/greater-than.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/greater-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance two = new IntegerConstantInstance(2);
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",two,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/greater-than-4");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-4");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALP.reduceResult(resultOne);
@@ -325,13 +325,13 @@ public class ConstraintTest {
     */
     @Test
     public void greaterThanEqTest1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/greater-than-eq.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/greater-than-eq.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",X,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/greater-than-eq-1");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-eq-1");
         assertTrue(result.size()==5);
     }
 
@@ -343,14 +343,14 @@ public class ConstraintTest {
     */
     @Test
     public void greaterThanEqTest2() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/greater-than-eq.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/greater-than-eq.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance one = new IntegerConstantInstance(1);
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",one,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/greater-than-eq-2");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-eq-2");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALP.reduceResult(resultOne);
@@ -365,14 +365,14 @@ public class ConstraintTest {
     */
     @Test
     public void greaterThanEqTest3() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/greater-than-eq.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/greater-than-eq.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance four = new IntegerConstantInstance(4);
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",four,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/greater-than-eq-3");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-eq-3");
         assertTrue(result.size()==0);
     }
 
@@ -384,13 +384,13 @@ public class ConstraintTest {
     */
     @Test
     public void lessThanEqTest1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/less-than-eq.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/less-than-eq.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",X,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-eq-1");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-eq-1");
         assertTrue(result.size()==3);
     }
 
@@ -402,14 +402,14 @@ public class ConstraintTest {
     */
     @Test
     public void lessThanEqTest2() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/less-than-eq.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/less-than-eq.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance one = new IntegerConstantInstance(1);
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",one,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-eq-2");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-eq-2");
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -427,14 +427,14 @@ public class ConstraintTest {
     */
     @Test
     public void lessThanEqTest3() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/less-than-eq.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/less-than-eq.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance four = new IntegerConstantInstance(4);
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",four,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-eq-3");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-eq-3");
         assertTrue(result.size()==0);
     }
 
@@ -478,12 +478,12 @@ public class ConstraintTest {
     */
     @Test
     public void lessThanInfDomTest1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/constraint/individual/less-than-inf-dom.alp");
+        system = new JALPSystem("examples/basic/constraint/individual/less-than-inf-dom.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance p = new PredicateInstance("p",X);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/constraint/less-than-inf-dom-test-1");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-inf-dom-test-1");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALP.reduceResult(resultOne);

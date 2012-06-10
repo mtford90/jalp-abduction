@@ -1,9 +1,0 @@
-abducible(a(V)).
-abducible(b(V)).
-
-p(X, Y) :- a(X), q(Y).
-
-q(Y) :- Y in [1,2,3,4], b(Y).
-
-ic :- a(X), not X in [2,3].
-ic :- a(X), b(Y), X >= Y.

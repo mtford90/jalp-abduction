@@ -63,12 +63,12 @@ public class MedicalTest {
      */
     @Test
     public void medicalHeadacheTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/jiefei/medical.alp");
+        system = new JALPSystem("examples/full/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");
         PredicateInstance headache = new PredicateInstance("headache",john);
         query.add(headache);
-        List<Result> result = system.generateDebugFiles(query, "debug/medical/medical-headache");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/medical/medical-headache");
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -104,12 +104,12 @@ public class MedicalTest {
     */
     @Test
     public void medicalDizzinessTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/jiefei/medical.alp");
+        system = new JALPSystem("examples/full/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");
         PredicateInstance dizziness = new PredicateInstance("dizziness",john);
         query.add(dizziness);
-        List<Result> result = system.generateDebugFiles(query, "debug/medical/medical-dizziness");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/medical/medical-dizziness");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALP.reduceResult(resultOne);
@@ -140,12 +140,12 @@ public class MedicalTest {
     */
     @Test
     public void medicalSicknessTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/jiefei/medical.alp");
+        system = new JALPSystem("examples/full/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");
         PredicateInstance sickness = new PredicateInstance("sickness",john);
         query.add(sickness);
-        List<Result> result = system.generateDebugFiles(query, "debug/medical/medical-sickness");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/medical/medical-sickness");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALP.reduceResult(resultOne);

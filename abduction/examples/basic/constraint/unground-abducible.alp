@@ -1,4 +1,0 @@
-p(X) :- a(X), not q(X).
-q(X) :- X in [1].
-
-abducible(a(X)).

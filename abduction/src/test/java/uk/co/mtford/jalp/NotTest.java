@@ -53,13 +53,13 @@ public class NotTest {
      */
     @Test
     public void notTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/negation/not.alp");
+        system = new JALPSystem("examples/basic/negation/not.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
-        CharConstantInstance john = new CharConstantInstance(("john"));
+        CharConstantInstance john = new CharConstantInstance("john");
         CharConstantInstance jane = new CharConstantInstance("jane");
         PredicateInstance likes = new PredicateInstance("likes",john,jane);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/negation/not");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/negation/not");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALP.reduceResult(resultOne);

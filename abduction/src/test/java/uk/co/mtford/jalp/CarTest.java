@@ -60,12 +60,12 @@ public class CarTest {
      */
     @Test
     public void carDoesntStartTest() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/jiefei/cars.alp");
+        system = new JALPSystem("examples/full/jiefei/cars.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance mycar = new CharConstantInstance("mycar");
         PredicateInstance car_doesnt_start = new PredicateInstance("car_doesnt_start",mycar);
         query.add(car_doesnt_start);
-        List<Result> result = system.generateDebugFiles(query, "debug/cars");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/cars");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALP.reduceResult(resultOne);

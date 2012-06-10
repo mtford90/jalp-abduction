@@ -60,13 +60,13 @@ public class InsaneTest {
      */
     @Test
     public void insaneTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/insane/insane.alp");
+        system = new JALPSystem("examples/full/insane/insane.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/insane/insane-1");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/insane/insane-1");
         assertTrue(result.size()==9);
     }
 
@@ -89,13 +89,13 @@ public class InsaneTest {
     */
     @Test
     public void insaneTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/insane/insane.alp");
+        system = new JALPSystem("examples/full/insane/insane.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance bob = new CharConstantInstance("bob");
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",bob,Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/insane/insane-2");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/insane/insane-2");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALP.reduceResult(resultOne);
@@ -117,13 +117,13 @@ public class InsaneTest {
     */
     @Test
     public void insaneConstraintTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/insane/insane-constraint.alp");
+        system = new JALPSystem("examples/full/insane/insane-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/insane/insane-constraint-1");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/insane/insane-constraint-1");
         assertTrue(result.size()==9);
     }
 
@@ -142,13 +142,13 @@ public class InsaneTest {
     */
     @Test
     public void insaneConstraintTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/insane/insane-constraint.alp");
+        system = new JALPSystem("examples/full/insane/insane-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance bob = new CharConstantInstance("bob");
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",bob,Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/insane/insane-constraint-2");
+        List<Result> result = system.generateDebugFiles(query, "debug/full/insane/insane-constraint-2");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALP.reduceResult(resultOne);

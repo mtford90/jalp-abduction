@@ -52,14 +52,14 @@ public class FactTest {
      */
     @Test
     public void oneFactTest() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/fact/one-fact.alp");
+        system = new JALPSystem("examples/basic/fact/one-fact.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
         //List<Result> result = system.processQuery(query, JALPSystem.Heuristic.NONE);
-        List<Result> result = system.generateDebugFiles(query,"debug/fact/one-fact");
+        List<Result> result = system.generateDebugFiles(query,"debug/basic/fact/one-fact");
         assertTrue(result.size() == 1);
         Result onlyResult = result.remove(0);
         JALP.reduceResult(onlyResult);
@@ -79,13 +79,13 @@ public class FactTest {
     */
     @Test
     public void twoFactTest() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/fact/two-fact.alp");
+        system = new JALPSystem("examples/basic/fact/two-fact.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/fact/two-fact");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/fact/two-fact");
         assertTrue(result.size()==2);
         Result resultOne = result.remove(0);
         Result resultTwo = result.remove(0);
