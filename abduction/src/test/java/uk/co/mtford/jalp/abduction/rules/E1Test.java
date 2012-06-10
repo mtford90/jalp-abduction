@@ -53,6 +53,8 @@ public class E1Test {
         goals.add(e);
 
         ruleNode.setGoals(goals);
+        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
+
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/E1/Test1",ruleNode);

@@ -5,12 +5,14 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.co.mtford.jalp.JALP;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 import static org.junit.Assert.assertTrue;
 
@@ -73,6 +75,7 @@ public class A1Test {
         A1Node.getStore().abducibles.add(ab2);
         A1Node.getStore().abducibles.add(ab3);
         A1Node.getGoals().add(ab1);
+        A1Node.setQuery(new LinkedList<IInferableInstance>(A1Node.getGoals()));
 
         try {
             JALP.applyRule(A1Node);

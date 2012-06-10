@@ -11,6 +11,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -50,6 +51,8 @@ public class E2cTest {
         DenialInstance d = new DenialInstance(goals);
         d.getUniversalVariables().add(Y);
         ruleNode.getGoals().add(d);
+        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
+
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/E2c/Test1",ruleNode);

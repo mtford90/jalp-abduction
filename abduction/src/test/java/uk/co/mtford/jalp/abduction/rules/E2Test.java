@@ -148,6 +148,8 @@ public class E2Test {
         d.getUniversalVariables().add(X);
         d.getUniversalVariables().add(Y);
         ruleNode.getGoals().add(d);
+        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
+
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/E2/Test5",ruleNode);

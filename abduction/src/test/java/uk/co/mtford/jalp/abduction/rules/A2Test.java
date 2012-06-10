@@ -5,11 +5,13 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.co.mtford.jalp.JALP;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -79,7 +81,10 @@ public class A2Test {
         A2Node.getStore().abducibles.add(ab3);
         A2Node.getStore().abducibles.add(ba);
 
+
         A2Node.getGoals().add(denial);
+        A2Node.setQuery(new LinkedList<IInferableInstance>(A2Node.getGoals()));
+
 
         try {
             JALP.applyRule(A2Node);

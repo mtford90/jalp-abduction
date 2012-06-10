@@ -59,6 +59,8 @@ public class D2Test {
         denial.getBody().add(p);
 
         ruleNode.getGoals().add(denial);
+        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
+
 
 
         JALP.applyRule(ruleNode);

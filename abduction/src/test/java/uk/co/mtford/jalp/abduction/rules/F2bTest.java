@@ -56,6 +56,8 @@ public class F2bTest {
         DenialInstance d = new DenialInstance(goals);
         d.getUniversalVariables().add(Y);
         ruleNode.getGoals().add(d);
+        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
+
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/F2b/Test1",ruleNode);

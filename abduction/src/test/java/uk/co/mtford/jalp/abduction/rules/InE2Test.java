@@ -49,6 +49,8 @@ public class InE2Test {
 
         DenialInstance d = new DenialInstance(goals);
         ruleNode.getGoals().add(d);
+        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
+
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/InE2/Test1",ruleNode);
