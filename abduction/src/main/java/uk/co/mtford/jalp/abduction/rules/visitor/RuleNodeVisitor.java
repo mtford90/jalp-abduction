@@ -621,6 +621,16 @@ public class RuleNodeVisitor {
                     newConstraints.add(newConstraint);
                 }
                 node.getStore().constraints=newConstraints;
+
+                LinkedList<IInferableInstance> newGoals = new LinkedList<IInferableInstance>();
+                for (IInferableInstance inferable:node.getGoals()) {
+                    IInferableInstance newGoal = (IInferableInstance) inferable.shallowClone();
+                    newGoal.performSubstitutions(assignments);
+                    newGoals.add(newGoal);
+                }
+
+                node.setGoals(newGoals);
+
                 node.setAssignments(assignments);
                 node.getStore().equalities=new LinkedList<EqualityInstance>();
                 return true;
