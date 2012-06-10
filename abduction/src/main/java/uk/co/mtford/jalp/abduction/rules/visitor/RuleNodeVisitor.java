@@ -394,7 +394,7 @@ public abstract class RuleNodeVisitor {
 
     public void visit(N2RuleNode ruleNode) throws JALPException {
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying N2 to node.");
-
+        // Branch 1:
         List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
         DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
         NegationInstance negationDenialHead = (NegationInstance) currentGoal.getBody().remove(0);
@@ -408,15 +408,16 @@ public abstract class RuleNodeVisitor {
             }
         }
 
-        List<IInferableInstance> goals = new LinkedList<IInferableInstance>(newGoals);
-        DenialInstance goal = currentGoal.shallowClone();
-
-        goals.add(0,negationDenialHead.getSubFormula());
+        newGoals.add(0,negationDenialHead.getSubFormula());
         childNode = constructChildNode(newGoals,ruleNode);
         childNodes.add(childNode);
         // OR
+
         newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
-        newGoals.add(0, goal);
+        currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        negationDenialHead = (NegationInstance) currentGoal.getBody().remove(0);
+
+        newGoals.add(0, currentGoal);
         newGoals.add(0, negationDenialHead);
         childNode = constructChildNode(newGoals,ruleNode);
 
@@ -451,13 +452,14 @@ public abstract class RuleNodeVisitor {
 
         // Branch 1
         NegativeConstraintInstance negativeConstraintInstance = new NegativeConstraintInstance(constraintDenialHead);
-
         childNode = constructChildNode(newGoals, ruleNode); // TODO: Rule doesn't say anything about new goals in the child node?
         childNode.getStore().constraints.add(negativeConstraintInstance);
-
         newChildNodes.add(childNode);
         // Branch 2
         newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        constraintDenialHead = (ConstraintInstance) currentGoal.getBody().remove(0);
+
         newGoals.add(0,currentGoal);
 
         childNode = constructChildNode(newGoals,ruleNode);
