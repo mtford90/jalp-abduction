@@ -12,6 +12,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class D2Test {
     */
     @Test
     public void test1() throws Exception, ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException { // TODO D1.alp
+        UniqueIdGenerator.reset();
 
         AbductiveFramework framework = JALPParser.readFromFile("examples/inference-rules/D1.alp");
 

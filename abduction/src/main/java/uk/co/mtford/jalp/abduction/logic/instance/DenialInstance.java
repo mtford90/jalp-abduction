@@ -92,7 +92,11 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         if (this.getBody().size()==0) {
-            return new FalseInstance().getPositiveRootRuleNode(abductiveFramework, query, goals);
+            FalseInstance f = new FalseInstance();
+            RuleNode n = f.getPositiveRootRuleNode(abductiveFramework,query,goals);
+            goals.remove(0);
+            goals.add(0,f);
+            return n;
         }
         return this.getBody().get(0).getNegativeRootRuleNode(abductiveFramework, query, goals);
     }

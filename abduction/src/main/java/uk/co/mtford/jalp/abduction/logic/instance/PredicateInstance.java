@@ -87,6 +87,7 @@ public class PredicateInstance implements IUnifiableAtomInstance, IInferableInst
                 newEqualities.add(new EqualityInstance(parameters[i],other.getParameter(i)));
             }
         }
+
         return newEqualities;
     }
 

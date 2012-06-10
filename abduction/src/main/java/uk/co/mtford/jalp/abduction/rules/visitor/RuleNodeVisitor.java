@@ -287,7 +287,7 @@ public abstract class RuleNodeVisitor {
                 HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                 boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments);
 
-                newGoals.add(0,currentGoal);
+                currentGoal.performSubstitutions(newAssignments);
 
                 if (unificationSuccess) {
                     newGoal = new TrueInstance();
@@ -297,7 +297,8 @@ public abstract class RuleNodeVisitor {
 
                 }
 
-                newGoals.add(0,newGoal);
+                currentGoal.getBody().add(0,newGoal);
+                newGoals.add(0,currentGoal);
 
                 childNode = constructChildNode(newGoals,ruleNode);
 
@@ -332,6 +333,7 @@ public abstract class RuleNodeVisitor {
                     // Branch 2
                     newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
                     currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+                    equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
                     HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
                     boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments);
                     if (unificationSuccess) {
@@ -370,6 +372,8 @@ public abstract class RuleNodeVisitor {
         // Branch 2
         newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
         currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        inEqualityDenialHead = (InEqualityInstance) currentGoal.getBody().remove(0);
+
         newGoals.add(0,currentGoal);
         newGoals.add(inEqualityDenialHead);
         childNode = constructChildNode(newGoals,ruleNode);
@@ -474,7 +478,7 @@ public abstract class RuleNodeVisitor {
 
         List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
         DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
-        InListConstraintInstance constraintDenialHead = (InListConstraintInstance) currentGoal.getBody().remove(0);
+        InListConstraintInstance constraintDenialHead = (InListConstraintInstance) currentGoal.getBody().get(0);
 
         IInferableInstance newGoal;
         RuleNode childNode;

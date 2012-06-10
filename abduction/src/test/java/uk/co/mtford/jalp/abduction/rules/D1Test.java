@@ -14,6 +14,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,6 +49,7 @@ public class D1Test {
      */
     @Test
     public void test1() throws Exception, ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException { // TODO D1.alp
+        UniqueIdGenerator.reset();
 
         AbductiveFramework framework = JALPParser.readFromFile("examples/inference-rules/D1.alp");
         List<IInferableInstance> goals = new LinkedList<IInferableInstance>();

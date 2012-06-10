@@ -11,6 +11,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +40,8 @@ public class E2Test {
 
     @Test
     public void test1() throws Exception {
+        UniqueIdGenerator.reset();
+
         E2RuleNode ruleNode = new E2RuleNode();
         LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
 
@@ -59,6 +62,8 @@ public class E2Test {
 
     @Test
     public void test2() throws Exception {
+        UniqueIdGenerator.reset();
+
         E2RuleNode ruleNode = new E2RuleNode();
         LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
 
@@ -77,6 +82,7 @@ public class E2Test {
         JALP.getVisualizer("debug/rules/E2/Test2",ruleNode);
     }
 
+    /*
     @Test
     public void test3() throws Exception {
         E2RuleNode ruleNode = new E2RuleNode();
@@ -104,9 +110,12 @@ public class E2Test {
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/E2/Test3",ruleNode);
     }
+    */
 
     @Test
     public void test4() throws Exception {
+        UniqueIdGenerator.reset();
+
         E2RuleNode ruleNode = new E2RuleNode();
         LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
 
@@ -129,6 +138,7 @@ public class E2Test {
         JALP.getVisualizer("debug/rules/E2/Test4",ruleNode);
     }
 
+    /*
     @Test
     public void test5() throws Exception {
         E2RuleNode ruleNode = new E2RuleNode();
@@ -153,5 +163,5 @@ public class E2Test {
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/E2/Test5",ruleNode);
-    }
+    }  */
 }

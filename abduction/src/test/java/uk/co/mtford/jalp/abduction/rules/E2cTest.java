@@ -10,6 +10,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +39,8 @@ public class E2cTest {
 
     @Test
     public void test1() throws Exception {
+        UniqueIdGenerator.reset();
+
         E2RuleNode ruleNode = new E2RuleNode();
         List<IInferableInstance> goals = JALPQueryParser.readFromString("X=Y, q(Y)");
 

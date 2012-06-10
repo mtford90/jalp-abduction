@@ -10,6 +10,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.NegationInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +39,8 @@ public class N2Test {
 
     @Test
     public void test1() throws Exception {
+        UniqueIdGenerator.reset();
+
         N2RuleNode ruleNode = new N2RuleNode();
         LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
 

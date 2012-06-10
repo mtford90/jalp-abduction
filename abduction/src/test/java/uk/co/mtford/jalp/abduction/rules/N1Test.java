@@ -11,6 +11,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 import uk.co.mtford.jalp.abduction.parse.query.ParseException;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +40,8 @@ public class N1Test {
 
     @Test
     public void test1() throws Exception {
+        UniqueIdGenerator.reset();
+
         N1RuleNode ruleNode = new N1RuleNode();
         LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
 

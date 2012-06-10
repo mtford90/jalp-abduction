@@ -12,6 +12,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,6 +41,8 @@ public class F2bTest {
 
     @Test
     public void test1() throws Exception {
+        UniqueIdGenerator.reset();
+
         F2bRuleNode ruleNode = new F2bRuleNode();
         LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
 

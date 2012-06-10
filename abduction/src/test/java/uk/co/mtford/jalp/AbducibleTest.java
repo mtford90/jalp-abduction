@@ -55,12 +55,12 @@ public class AbducibleTest {
      */
     @Test
     public void abducibleTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/abducible/abducible.alp");
+        system = new JALPSystem("examples/basic/abducible/abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance likes = new PredicateInstance("likes",new CharConstantInstance("john"),Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/abducible/abducible-test-1");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/abducible/abducible-test-1");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALP.reduceResult(resultOne);
@@ -79,13 +79,13 @@ public class AbducibleTest {
     */
     @Test
     public void abducibleTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/abducible/abducible.alp");
+        system = new JALPSystem("examples/basic/abducible/abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance(("john"));
         CharConstantInstance jane = new CharConstantInstance("jane");
         PredicateInstance likes = new PredicateInstance("likes",john,jane);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/abducible/abducible-test-2");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/abducible/abducible-test-2");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         JALP.reduceResult(resultOne);
@@ -105,12 +105,12 @@ public class AbducibleTest {
     */
     @Test
     public void ungroundAbducible() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
-        system = new JALPSystem("examples/abducible/unground-abducible.alp");
+        system = new JALPSystem("examples/basic/abducible/unground-abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
         PredicateInstance a = new PredicateInstance("p",X);
         query.add(a);
-        List<Result> result = system.generateDebugFiles(query, "debug/abducible/unground-abducible");
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/abducible/unground-abducible");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         JALP.reduceResult(resultOne);
