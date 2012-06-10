@@ -39,6 +39,8 @@ public class LeafRuleNode extends PositiveRuleNode {
     public RuleNode shallowClone() {
         LeafRuleNode newRuleNode = new LeafRuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
+        newRuleNode.query = query;
+        newRuleNode.assignments = assignments;
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
         newRuleNode.goals = new LinkedList<IInferableInstance>(goals);

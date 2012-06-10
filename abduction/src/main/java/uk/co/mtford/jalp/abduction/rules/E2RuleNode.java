@@ -45,7 +45,7 @@ public class E2RuleNode extends NegativeRuleNode {
     }
 
     @Override
-    public void acceptVisitor(RuleNodeVisitor v) throws Exception {
+    public void acceptVisitor(RuleNodeVisitor v)  {
         v.visit(this);
     }
 }

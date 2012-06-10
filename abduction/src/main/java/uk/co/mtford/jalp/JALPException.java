@@ -7,7 +7,7 @@ package uk.co.mtford.jalp;
  * Time: 08:38
  * To change this template use File | Settings | File Templates.
  */
-public class JALPException extends Exception {
+public class JALPException extends RuntimeException {
     public JALPException() {
     }
 

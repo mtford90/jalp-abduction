@@ -233,7 +233,7 @@ public abstract class RuleNodeVisitor {
         expandNode(ruleNode,childNode);
     }
 
-    public void visit(E2RuleNode ruleNode) throws Exception {
+    public void visit(E2RuleNode ruleNode) {
         List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
         DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
         EqualityInstance equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
@@ -624,48 +624,67 @@ public abstract class RuleNodeVisitor {
         }
     }
 
-    private boolean applyInEqualitySolver(RuleNode node) throws JALPException {
+    private List<RuleNode> applyInEqualitySolver(RuleNode node) throws JALPException {
         List<InEqualityInstance> inequalities = node.getStore().inequalities;
+        LinkedList<RuleNode> ruleNodes = new LinkedList<RuleNode>();
         for (InEqualityInstance e:inequalities){
-            e.performSubstitutions(node.getAssignments()); // TODO: Do this somewhere else.
+            e.performSubstitutions(node.getAssignments()); // TODO: Do this somewhere else i.e. when applying to whole state.
         }
-        if (!inequalities.isEmpty() && !(node instanceof LeafRuleNode)) { // TODO LeafRuleNode
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Executing equality solver on ruleNode:\n"+node);
+        if (!inequalities.isEmpty()) {
             InEqualitySolver solver = new InEqualitySolver();
 
-            List<List<Pair<List<EqualityInstance>,List<InEqualityInstance>>>> possCombinations = new LinkedList<List<Pair<List<EqualityInstance>,List<InEqualityInstance>>>>();
+            List<Pair<List<EqualityInstance>,List<InEqualityInstance>>> possibleEDECombinations = new LinkedList<Pair<List<EqualityInstance>,List<InEqualityInstance>>>();
 
             for (InEqualityInstance inEquality:inequalities) {
-                List<List<Pair<EqualityInstance,InEqualityInstance>>> newCombinations = new LinkedList<List<Pair<EqualityInstance,InEqualityInstance>>>();
-                List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> inequalitySolved = solver.execute(inEquality);
-                if (inequalitySolved==null) return false; // Failed.
-                if (possCombinations.isEmpty()) {
-                    possCombinations.add(inequalitySolved);
+                List<Pair<List<EqualityInstance>,List<InEqualityInstance>>> inequalitySolved = solver.execute(inEquality);
+                if (inequalitySolved==null) return null;
+                if (possibleEDECombinations.isEmpty()) {
+                    possibleEDECombinations.addAll(inequalitySolved);
                 }
                 else {
-                    for (List<Pair<List<EqualityInstance>, List<InEqualityInstance>>> poss:possCombinations) {
-                        LinkedList<Pair<List<EqualityInstance>, List<InEqualityInstance>>> newPoss = new LinkedList<Pair<List<EqualityInstance>, List<InEqualityInstance>>>();
-                        for (Pair<List<EqualityInstance>, List<InEqualityInstance>> solved:inequalitySolved) {
-                            Pair<List<EqualityInstance>, List<InEqualityInstance>> newSolved = new Pair<List<EqualityInstance>, List<InEqualityInstance>>(new LinkedList<EqualityInstance>(),new LinkedList<InEqualityInstance>());
-                            for (Pair<List<EqualityInstance>, List<InEqualityInstance>> comb:poss) {
-                                newSolved.getValue0().addAll(solved.getValue0());
-                                newSolved.getValue0().addAll(comb.getValue0());
-                                newSolved.getValue1().addAll(solved.getValue1());
-                                newSolved.getValue1().addAll(comb.getValue1());
-                            }
-                            newPoss.add(newSolved);
-                        }
-                        possCombinations.add(newPoss);
+                    List<Pair<List<EqualityInstance>,List<InEqualityInstance>>> newPossibleEDECombinations = new LinkedList<Pair<List<EqualityInstance>,List<InEqualityInstance>>>();
+                    for (Pair<List<EqualityInstance>, List<InEqualityInstance>> newPair:inequalitySolved) {
+                         for (Pair<List<EqualityInstance>, List<InEqualityInstance>> oldPair:possibleEDECombinations) {
+                             List<EqualityInstance> newEqualities = new LinkedList<EqualityInstance>();
+                             List<InEqualityInstance> newInEqualities = new LinkedList<InEqualityInstance>();
+                             newEqualities.addAll(newPair.getValue0());
+                             newEqualities.addAll(newPair.getValue0());
+                             newInEqualities.addAll(newPair.getValue1());
+                             newInEqualities.addAll(newPair.getValue1());
+                             newPossibleEDECombinations.add(new Pair<List<EqualityInstance>, List<InEqualityInstance>>(newEqualities,newInEqualities));
+                         }
                     }
+                    possibleEDECombinations = newPossibleEDECombinations;
+                }
+            }
+
+            if (possibleEDECombinations.isEmpty()) {
+                node.getStore().inequalities=new LinkedList<InEqualityInstance>();
+                node.getStore().equalities=new LinkedList<EqualityInstance>();
+                ruleNodes.add(node);
+
+            }
+
+            else {
+                for (Pair<List<EqualityInstance>, List<InEqualityInstance>> combinations:possibleEDECombinations) {
+                    RuleNode newNode = node.shallowClone();
+                    newNode.getStore().equalities=combinations.getValue0();
+                    newNode.getStore().inequalities=combinations.getValue1();
+                    ruleNodes.add(newNode);
                 }
             }
 
 
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Node is now "+node);
+
         }
 
+        else {
 
-        return true; // Always true as falsity is dealt with via empty denial.
+            ruleNodes.add(node);
+
+        }
+
+        return ruleNodes;
     }
 
     public static void applyRule(RuleNode r) throws Exception {
@@ -682,11 +701,19 @@ public abstract class RuleNodeVisitor {
         r.acceptVisitor(v);
     }
 
-    public RuleNode stateRewrite() throws Exception {
+    public RuleNode stateRewrite() throws JALPException {
+        List<RuleNode> newChildren = new LinkedList<RuleNode>();
         for (RuleNode r:currentRuleNode.getChildren()) {
-            applyEqualitySolver(r);
-            applyInEqualitySolver(r);
+            List<RuleNode> n = applyInEqualitySolver(r);
+            if (n==null) {
+                r.setNodeMark(RuleNode.NodeMark.FAILED);
+                newChildren.add(r);
+            }
+            else {
+                newChildren.addAll(n);
+            }
         }
+        currentRuleNode.setChildren(newChildren);
         currentRuleNode = chooseNextNode();
         if (currentRuleNode==null) return null;
         currentRuleNode.acceptVisitor(this);

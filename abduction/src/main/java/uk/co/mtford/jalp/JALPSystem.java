@@ -37,12 +37,8 @@ public class JALPSystem {
         framework = JALPParser.readFromFile(fileName);
     }
 
-    public JALPSystem(String[] fileNames) {
-        try {
+    public JALPSystem(String[] fileNames) throws FileNotFoundException, ParseException {
             setFramework(fileNames);
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
     }
 
     public JALPSystem() {
@@ -126,12 +122,8 @@ public class JALPSystem {
                 Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),query,rootNode);
                 resultList.add(result);
             }
-            try {
                 currentNode = iterator.next();
-            } catch (Exception e) {
-               System.err.println("Encounted an exception. Returning results collected so far...");
-               e.printStackTrace();
-            }
+
 
         }
 
@@ -207,11 +199,8 @@ public class JALPSystem {
 
         @Override
         public RuleNode next() {
-            try {
                 currentNode=nodeVisitor.stateRewrite();
-            } catch (Exception e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
+
             return currentNode;
         }
 

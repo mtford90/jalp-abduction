@@ -143,7 +143,7 @@ public abstract class RuleNode {
 
     public abstract RuleNode shallowClone();
 
-    public abstract void acceptVisitor(RuleNodeVisitor v) throws Exception;
+    public abstract void acceptVisitor(RuleNodeVisitor v);
 
     @Override
     public String toString() {
