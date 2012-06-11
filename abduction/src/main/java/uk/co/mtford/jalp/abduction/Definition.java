@@ -95,14 +95,14 @@ public class Definition {
             for (int i=0;i<newParameters.length;i++){
                 newEqualities.add(new EqualityInstance(newParameters[i],clonedHead.getParameter(i)));
             }
-            unfold.addAll(newEqualities);
+            unfold.addAll(0,newEqualities);
         }
         else {
             List<EqualityInstance> newEqualities = new LinkedList<EqualityInstance>();
             for (int i=0;i<newParameters.length;i++){
                 newEqualities.add(new EqualityInstance(newParameters[i],head.getParameter(i)));
             }
-            unfold.addAll(newEqualities);
+            unfold.addAll(0,newEqualities);
 
         }
 
