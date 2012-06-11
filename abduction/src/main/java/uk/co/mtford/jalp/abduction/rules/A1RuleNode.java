@@ -21,17 +21,27 @@ import java.util.Map;
  */
 public class A1RuleNode extends PositiveRuleNode {
 
-    public A1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+    public A1RuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, parent, query, restOfGoals);
+    }
+
+    public A1RuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, parent, query, restOfGoals, store, assignments);
+    }
+
+    public A1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
         super(abductiveFramework, query, restOfGoals);
     }
 
-    public A1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public A1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
     protected A1RuleNode() {
         super();
     }
+
+
 
     @Override
     public RuleNode shallowClone() {
@@ -43,6 +53,7 @@ public class A1RuleNode extends PositiveRuleNode {
         newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         newRuleNode.query = query;
         newRuleNode.nodeMark = nodeMark;
+        newRuleNode.parent = parent;
         return newRuleNode;
     }
 

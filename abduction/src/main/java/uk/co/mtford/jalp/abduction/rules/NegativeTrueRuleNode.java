@@ -21,11 +21,19 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class NegativeTrueRuleNode extends NegativeRuleNode {
-    public NegativeTrueRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+    public NegativeTrueRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, parent,query, restOfGoals);
+    }
+
+    public NegativeTrueRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, parent,query, restOfGoals, store, assignments);
+    }
+
+    public NegativeTrueRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
         super(abductiveFramework, query, restOfGoals);
     }
 
-    public NegativeTrueRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public NegativeTrueRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
@@ -44,6 +52,8 @@ public class NegativeTrueRuleNode extends NegativeRuleNode {
         newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         newRuleNode.query = query;
         newRuleNode.nodeMark = nodeMark;
+        newRuleNode.parent = parent;
+
         return newRuleNode;
     }
 

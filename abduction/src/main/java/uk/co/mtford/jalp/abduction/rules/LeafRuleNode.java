@@ -25,10 +25,10 @@ public class LeafRuleNode extends PositiveRuleNode {
 
     private static Logger LOGGER = Logger.getLogger(LeafRuleNode.class);
 
-    public LeafRuleNode(AbductiveFramework framework, List<IInferableInstance> query,Store store, Map<VariableInstance,
-            IUnifiableAtomInstance> assignments, RuleNode parentNode) {
-        super(framework, query, new LinkedList<IInferableInstance>(), store, assignments);
-        this.parentNode = parentNode;
+    public LeafRuleNode(AbductiveFramework framework, RuleNode parent,List<IInferableInstance> query,Store store, Map<VariableInstance,
+            IUnifiableAtomInstance> assignments) {
+        super(framework, parent, query, new LinkedList<IInferableInstance>(), store, assignments);
+        this.parentNode = parent;
     }
 
     protected LeafRuleNode() {
@@ -47,6 +47,8 @@ public class LeafRuleNode extends PositiveRuleNode {
         newRuleNode.parentNode = parentNode;
         newRuleNode.nodeMark=nodeMark;
         newRuleNode.nodeMark = nodeMark;
+        newRuleNode.parent = parent;
+
         return newRuleNode;
     }
 

@@ -21,11 +21,19 @@ import java.util.Map;
  */
 public abstract class NegativeRuleNode extends RuleNode {
 
-    public NegativeRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
+    public NegativeRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, parent, query, restOfGoals);
+    }
+
+    public NegativeRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, parent, query, restOfGoals, store, assignments);
+    }
+
+    protected NegativeRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
         super(abductiveFramework, query, restOfGoals);
     }
 
-    public NegativeRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    protected NegativeRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 

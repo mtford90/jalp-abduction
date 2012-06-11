@@ -20,12 +20,20 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class E2bRuleNode extends NegativeRuleNode {
+    public E2bRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, parent,query, restOfGoals);
+    }
+
+    public E2bRuleNode(AbductiveFramework abductiveFramework,RuleNode parent, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework,parent,query,restOfGoals, store, assignments);
+    }
+
     public E2bRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
         super(abductiveFramework, query, restOfGoals);
     }
 
     public E2bRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
-        super(abductiveFramework,query,restOfGoals, store, assignments);
+        super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
     protected E2bRuleNode() {
@@ -42,6 +50,8 @@ public class E2bRuleNode extends NegativeRuleNode {
         newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         newRuleNode.query = query;
         newRuleNode.nodeMark = nodeMark;
+        newRuleNode.parent = parent;
+
         return newRuleNode;
     }
 

@@ -20,12 +20,20 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class E1RuleNode extends PositiveRuleNode {
-    public E1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+    public E1RuleNode(AbductiveFramework abductiveFramework,RuleNode parent, List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, parent,query, restOfGoals);
+    }
+
+    public E1RuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, parent,query ,restOfGoals, store, assignments);
+    }
+
+    public E1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
         super(abductiveFramework, query, restOfGoals);
     }
 
-    public E1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
-        super(abductiveFramework, query ,restOfGoals, store, assignments);
+    public E1RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
     protected E1RuleNode() {
@@ -43,6 +51,8 @@ public class E1RuleNode extends PositiveRuleNode {
         newRuleNode.nodeMark = nodeMark;
         newRuleNode.query = query;
         newRuleNode.nodeMark = nodeMark;
+        newRuleNode.parent = parent;
+
         return newRuleNode;
     }
 

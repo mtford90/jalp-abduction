@@ -36,9 +36,10 @@ public class RuleNodeVisitor {
             newRuleNode = newGoals.get(0).getPositiveRootRuleNode(previousNode.getAbductiveFramework(), new LinkedList<IInferableInstance>(previousNode.getQuery()), newGoals);
             newRuleNode.setStore(previousNode.getStore().shallowClone());
             newRuleNode.setAssignments(new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
+            newRuleNode.setParent(previousNode);
         }
         else {
-            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),new LinkedList<IInferableInstance>(previousNode.getQuery()),previousNode.getStore().shallowClone(),new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()),previousNode);
+            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode,new LinkedList<IInferableInstance>(previousNode.getQuery()),previousNode.getStore().shallowClone(),new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
         }
 
         return newRuleNode;
@@ -223,6 +224,11 @@ public class RuleNodeVisitor {
 
         List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
         DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+
+        if (!(currentGoal.getBody().get(0) instanceof EqualityInstance)) { // Sanity check.
+           throw new JALPException("Was expecting an equality instance at denial head at E2 node, but got "+currentGoal.getBody().get(0)+" instead");
+        }
+
         EqualityInstance equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
 
         IInferableInstance newGoal = null;
@@ -413,7 +419,7 @@ public class RuleNodeVisitor {
         NegationInstance goal = (NegationInstance) newGoals.remove(0);
 
         DenialInstance denial = new DenialInstance(goal.getSubFormula());
-        newGoals.add(denial);
+        newGoals.add(0,denial);
 
         RuleNode childNode = constructChildNode(newGoals, ruleNode);
         expandNode(ruleNode,childNode);

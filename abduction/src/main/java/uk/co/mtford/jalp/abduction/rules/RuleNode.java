@@ -30,6 +30,7 @@ public abstract class RuleNode {
         EXPANDED
     };
 
+    protected RuleNode parent;
     protected List<IInferableInstance> query;
     protected List<IInferableInstance> goals; // G - {currentGoal}
     protected Store store; // ST
@@ -37,6 +38,31 @@ public abstract class RuleNode {
     protected AbductiveFramework abductiveFramework; // (P,A,IC),Theta
     protected NodeMark nodeMark; // Defines whether or not leaf node or search node.
     protected List<RuleNode> children; // Next states.
+
+    public RuleNode(AbductiveFramework abductiveFramework, RuleNode parent, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
+        this.parent = parent;
+        this.query = query;
+        children = new LinkedList<RuleNode>();
+        assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        nodeMark = nodeMark.UNEXPANDED;
+        this.abductiveFramework = abductiveFramework;
+        this.goals = restOfGoals;
+        store = new Store();
+    }
+
+    public RuleNode(AbductiveFramework abductiveFramework, RuleNode parent, List<IInferableInstance> query, List<IInferableInstance> restOfGoals,
+                    Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+
+        this.parent = parent;
+        this.query = query;
+        children = new LinkedList<RuleNode>();
+        this.assignments = assignments;
+        this.store = store;
+        this.abductiveFramework = abductiveFramework;
+        this.goals = restOfGoals;
+        this.nodeMark = nodeMark.UNEXPANDED;
+
+    }
 
     public RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
         this.query = query;
@@ -119,6 +145,13 @@ public abstract class RuleNode {
         this.goals = goals;
     }
 
+    public RuleNode getParent() {
+        return parent;
+    }
+
+    public void setParent(RuleNode parent) {
+        this.parent = parent;
+    }
 
     public abstract RuleNode shallowClone();
 

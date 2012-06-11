@@ -139,7 +139,7 @@ public class CircuitsTest {
         query.add(output);
         List<Result> result;
         if (GENERATE_DEBUG) {
-            result = system.generateDebugFiles(query,"debug/full/jiefei/circuits1-1");
+            result = system.generateDebugFiles(query,"debug/full/jiefei/circuits1-2");
         }
         else {
             result = system.query(query);
@@ -196,7 +196,7 @@ public class CircuitsTest {
         query.add(output);
         List<Result> result;
         if (GENERATE_DEBUG) {
-            result = system.generateDebugFiles(query,"debug/full/jiefei/circuits1-1");
+            result = system.generateDebugFiles(query,"debug/full/jiefei/circuits2-1");
         }
         else {
             result = system.query(query);
@@ -256,7 +256,7 @@ public class CircuitsTest {
         query.add(output);
         List<Result> result;
         if (GENERATE_DEBUG) {
-            result = system.generateDebugFiles(query,"debug/full/jiefei/circuits1-1");
+            result = system.generateDebugFiles(query,"debug/full/jiefei/circuits2-2");
         }
         else {
             result = system.query(query);

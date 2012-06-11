@@ -22,11 +22,19 @@ import java.util.Map;
  */
 public class InE2RuleNode extends NegativeRuleNode {
 
-    public InE2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
-        super(abductiveFramework,query, restOfGoals);
+    public InE2RuleNode(AbductiveFramework abductiveFramework,RuleNode parent, List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework,parent,query, restOfGoals);
     }
 
-    public InE2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public InE2RuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, parent,query, restOfGoals, store, assignments);
+    }
+
+    public InE2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, query, restOfGoals);
+    }
+
+    public InE2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
@@ -36,7 +44,7 @@ public class InE2RuleNode extends NegativeRuleNode {
 
     @Override
     public RuleNode shallowClone() {
-        E2RuleNode newRuleNode = new E2RuleNode();
+        InE2RuleNode newRuleNode = new InE2RuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
         newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
         newRuleNode.abductiveFramework = abductiveFramework;
@@ -44,6 +52,8 @@ public class InE2RuleNode extends NegativeRuleNode {
         newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         newRuleNode.query = query;
         newRuleNode.nodeMark = nodeMark;
+        newRuleNode.parent = parent;
+
         return newRuleNode;
     }
 

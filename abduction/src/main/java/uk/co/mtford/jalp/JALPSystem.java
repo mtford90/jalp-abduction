@@ -110,6 +110,7 @@ public class JALPSystem {
         LOGGER.info("Query is:" + query);
         List<Result> results = new LinkedList<Result>();
         RuleNode root = query(query, results);
+
         JALP.getVisualizer(folderName + "/visualizer", root);
         int rNum = 1;
         LOGGER.info("Found "+results.size()+" results");
@@ -171,7 +172,13 @@ public class JALPSystem {
                 LOGGER.debug("Found a failed node:\n"+currentNode);
             }
             else if (currentNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
-                currentNode.acceptVisitor(visitor);
+                try {
+                    currentNode.acceptVisitor(visitor);
+                }
+                catch (Exception e) {
+                    LOGGER.fatal("Encountered an error whilst state rewriting. Returning what have so far.",e);
+                    return rootNode;
+                }
                 nodeStack.addAll(currentNode.getChildren());
             }
             else {

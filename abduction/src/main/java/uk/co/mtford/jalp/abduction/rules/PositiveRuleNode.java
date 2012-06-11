@@ -19,13 +19,22 @@ import java.util.Map;
  */
 public abstract class PositiveRuleNode extends RuleNode {
 
-    public PositiveRuleNode(AbductiveFramework abductiveFramework,List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
+    public PositiveRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
+        super(abductiveFramework, parent, query, restOfGoals);
+    }
+
+    public PositiveRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+        super(abductiveFramework, parent, query, restOfGoals, store, assignments);
+    }
+
+    protected PositiveRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
         super(abductiveFramework, query, restOfGoals);
     }
 
-    public PositiveRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    protected PositiveRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         super(abductiveFramework, query, restOfGoals, store, assignments);
     }
+
 
     protected PositiveRuleNode() {
         super();

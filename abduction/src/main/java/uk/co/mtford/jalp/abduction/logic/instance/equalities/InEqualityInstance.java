@@ -1,5 +1,6 @@
 package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
+import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
@@ -17,7 +18,7 @@ import java.util.Set;
  * Time: 13:00
  * To change this template use File | Settings | File Templates.
  */
-public class InEqualityInstance implements IEqualityInstance {
+public class InEqualityInstance implements IInferableInstance {
 
     private EqualityInstance equalityInstance;
 
@@ -44,14 +45,23 @@ public class InEqualityInstance implements IEqualityInstance {
 
     @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
+        if (!goals.get(0).equals(this)) {  // Sanity check.
+            throw new JALPException("Was expecting "+this+" to be at head of goals but have got "+goals.get(0));
+        }
         return new InE1RuleNode(abductiveFramework, query, goals);
 
     }
 
     @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
+        if (!(goals.get(0) instanceof DenialInstance)) { // Sanity check.
+            throw new JALPException("Was expecting a denial at goal head for creation of negative node, but it isnt!");
+        }
+        DenialInstance d = (DenialInstance) goals.get(0);
+        if (!d.getBody().get(0).equals(this)) {
+            throw new JALPException("Was expecting "+this+" at head of denial but got "+d.getBody().get(0));
+        }
         return new InE2RuleNode(abductiveFramework, query, goals);
-
     }
 
     @Override
@@ -75,21 +85,7 @@ public class InEqualityInstance implements IEqualityInstance {
         return equalityInstance.getVariables();
     }
 
-    @Override
-    public boolean equalitySolve(Map<VariableInstance, IUnifiableAtomInstance> equalitySolverAssignments) {
-        HashMap<VariableInstance, IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(equalitySolverAssignments);
-        boolean success
-                = equalityInstance.equalitySolve(newAssignments);
 
-        if (success) {
-            if (newAssignments.size()>equalitySolverAssignments.size()) return true;
-            else return false;
-        }
-        else {
-            return true;
-        }
-
-    }
 
     @Override
     public boolean equals(Object o) {
