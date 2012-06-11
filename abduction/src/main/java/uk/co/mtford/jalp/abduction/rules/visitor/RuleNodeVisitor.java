@@ -331,6 +331,7 @@ public class RuleNodeVisitor {
             newGoals.add(0,currentGoal);
             childNode = constructChildNode(newGoals,ruleNode);
             childNode.setAssignments(newAssignments);
+            childNode.applySubstitutions(); // TODO Generate an equality instead? And get the equality solver to do this?
             newChildNodes.add(childNode);
         }
         else {

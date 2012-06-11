@@ -103,7 +103,7 @@ public class AbducibleTest {
     We expect to collect an inequality X!=1
     */
     @Test
-    public void ungroundAbducible() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void ungroundAbducibleTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/basic/abducible/unground-abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -116,5 +116,64 @@ public class AbducibleTest {
         IUnifiableAtomInstance XAssignment = resultOne.getAssignments().get(X);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("a",XAssignment)));
         assertTrue(resultOne.getStore().inequalities.contains(new InEqualityInstance(XAssignment,new IntegerConstantInstance(1))));
+    }
+
+    /*
+    p(X,Y,Z) :- a(X,Y,Z), not q(X,Y,Z).
+
+    q(1,2,3).
+
+    abducible(a(X,Y,Z)).
+
+
+    We expect 3 results: X!=1, Y!=2 or Z!=3.
+    */
+    @Test
+    public void ungroundAbducibleTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        system = new JALPSystem("examples/basic/abducible/unground-abducible-2.alp");
+        List<IInferableInstance> query = new LinkedList<IInferableInstance>();
+        VariableInstance X = new VariableInstance("X");
+        VariableInstance Y = new VariableInstance("Y");
+        VariableInstance Z = new VariableInstance("Z");
+        PredicateInstance a = new PredicateInstance("p",X,Y,Z);
+        query.add(a);
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/abducible/unground-abducible-2");
+        assertTrue(result.size()==3);
+        boolean one = false;
+        boolean two = false;
+        boolean three = false;
+
+        for (Result r:result) {
+            IUnifiableAtomInstance XAssignment = r.getAssignments().get(X);
+            IUnifiableAtomInstance YAssignment = r.getAssignments().get(Y);
+            IUnifiableAtomInstance ZAssignment = r.getAssignments().get(Z);
+
+            assertTrue(r.getStore().abducibles.size()==1);
+            if (r.getStore().inequalities.contains(new InEqualityInstance(XAssignment, new IntegerConstantInstance(1)))) {
+                if (r.getStore().abducibles.get(0).equals(new PredicateInstance("a",XAssignment,YAssignment,ZAssignment)))
+                     {
+
+                             one = true;
+
+                    }
+            }
+            if (r.getStore().inequalities.contains(new InEqualityInstance(YAssignment,new IntegerConstantInstance(2))))  {
+                if (
+                    r.getStore().abducibles.get(0).equals(new PredicateInstance("a",new IntegerConstantInstance(1),YAssignment,ZAssignment))) {
+                    two = true;
+
+                }
+            }
+
+            if (r.getStore().inequalities.contains(new InEqualityInstance(ZAssignment,new IntegerConstantInstance(3)))) {
+                if ( r.getStore().abducibles.get(0).equals(new PredicateInstance("a",new IntegerConstantInstance(1),new IntegerConstantInstance(2),ZAssignment))) {
+                    three = true;
+                }
+            }
+
+        }
+        assertTrue(one);
+        assertTrue(two);
+        assertTrue(three);
     }
 }

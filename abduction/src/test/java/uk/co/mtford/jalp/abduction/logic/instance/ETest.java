@@ -100,6 +100,25 @@ public class ETest {
 
     }
 
+    // <- Z = c should produce an E2b node.
+    @Test
+    public void test10() {
+
+        AbductiveFramework f = new AbductiveFramework();
+        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+
+        VariableInstance Z = new VariableInstance("Z");
+        CharConstantInstance c = new CharConstantInstance("c");
+        EqualityInstance E = new EqualityInstance(Z,c);
+
+        DenialInstance d = new DenialInstance(E);
+
+        goals.add(d);
+
+        assertTrue(d.getPositiveRootRuleNode(f,null,goals) instanceof E2bRuleNode);
+
+    }
+
     //  <- Z = p(X) should produce an E2b node.
     @Test
     public void test4() {
