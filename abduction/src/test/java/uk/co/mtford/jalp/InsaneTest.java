@@ -9,6 +9,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -60,6 +61,8 @@ public class InsaneTest {
      */
     @Test
     public void insaneTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/insane/insane.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
@@ -89,6 +92,8 @@ public class InsaneTest {
     */
     @Test
     public void insaneTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/insane/insane.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance bob = new CharConstantInstance("bob");
@@ -116,6 +121,8 @@ public class InsaneTest {
     */
     @Test
     public void insaneConstraintTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/insane/insane-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));
@@ -141,6 +148,8 @@ public class InsaneTest {
     */
     @Test
     public void insaneConstraintTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/insane/insane-constraint.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance bob = new CharConstantInstance("bob");

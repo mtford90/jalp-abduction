@@ -9,6 +9,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -44,6 +45,7 @@ public class ConstraintSolverTest {
 
     @Test
     public void blockWorldResultTest() {
+        UniqueIdGenerator.reset();
 
         VariableInstance T = new VariableInstance("T");
         VariableInstance E1 = new VariableInstance("E1");

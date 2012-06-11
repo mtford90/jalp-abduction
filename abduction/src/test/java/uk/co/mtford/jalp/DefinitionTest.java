@@ -9,6 +9,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -53,6 +54,8 @@ public class DefinitionTest {
      */
     @Test
     public void definitionTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/basic/definition/definition.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance Y = new VariableInstance("Y");

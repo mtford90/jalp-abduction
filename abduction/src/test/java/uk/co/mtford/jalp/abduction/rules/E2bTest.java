@@ -61,6 +61,8 @@ public class E2bTest {
 
     @Test
     public void test2() throws Exception {
+        UniqueIdGenerator.reset();
+
         E2bRuleNode ruleNode = new E2bRuleNode();
 
         List<IInferableInstance> goals = new LinkedList<IInferableInstance>();

@@ -12,6 +12,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.ConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -53,6 +54,8 @@ public class NegativeConstraintTest {
     */
     @Test
     public void inIntegerTest1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/basic/constraint/negative/in-integer.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -84,6 +87,8 @@ public class NegativeConstraintTest {
     */
     @Test
     public void inIntegerTest2() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/basic/constraint/negative/in-integer.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance two = new IntegerConstantInstance(2);
@@ -97,6 +102,8 @@ public class NegativeConstraintTest {
 
     @Test
     public void inConstantListTest1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/basic/constraint/negative/in-constant-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -110,6 +117,8 @@ public class NegativeConstraintTest {
 
     @Test
     public void inConstantListTest2() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/basic/constraint/negative/in-constant-list.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance q = new PredicateInstance("p",new CharConstantInstance("mary"));
@@ -120,6 +129,8 @@ public class NegativeConstraintTest {
 
     @Test
       public void lessThanTest1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/basic/constraint/negative/less-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -137,6 +148,8 @@ public class NegativeConstraintTest {
 
     @Test
     public void lessThanEqTest1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/basic/constraint/negative/less-than-eq.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -154,6 +167,8 @@ public class NegativeConstraintTest {
 
     @Test
     public void greaterThanTest1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/basic/constraint/negative/greater-than.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -171,6 +186,8 @@ public class NegativeConstraintTest {
 
     @Test
     public void greaterThanEqTest1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/basic/constraint/negative/greater-than-eq.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");

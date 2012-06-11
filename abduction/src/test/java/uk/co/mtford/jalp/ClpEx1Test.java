@@ -8,6 +8,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -58,6 +59,8 @@ public class ClpEx1Test {
      */
     @Test
     public void clpEx1Test1() throws IOException, ParseException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/jiefei/clp-ex1.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance(("X"));

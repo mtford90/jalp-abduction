@@ -8,6 +8,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -63,6 +64,8 @@ public class MedicalTest {
      */
     @Test
     public void medicalHeadacheTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");
@@ -102,6 +105,8 @@ public class MedicalTest {
     */
     @Test
     public void medicalDizzinessTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");
@@ -137,6 +142,8 @@ public class MedicalTest {
     */
     @Test
     public void medicalSicknessTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/jiefei/medical.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance john = new CharConstantInstance("john");

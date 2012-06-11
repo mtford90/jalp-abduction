@@ -12,6 +12,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.LeafRuleNode;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -59,6 +60,8 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
     // c =/= d  |-> {}
     @Test
     public void unequalConstantTest1() throws JALPException {
+        UniqueIdGenerator.reset();
+
         CharConstantInstance c = new CharConstantInstance("c");
         CharConstantInstance d = new CharConstantInstance("d");
 
@@ -69,6 +72,8 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
     // d =/= c  |-> {}
     @Test
     public void unequalConstantTest2() throws JALPException {
+        UniqueIdGenerator.reset();
+
         CharConstantInstance c = new CharConstantInstance("c");
         CharConstantInstance d = new CharConstantInstance("d");
 
@@ -80,6 +85,8 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
     // X =/= a |-> { {{},{X=/=a}} }
     @Test
     public void variableTest1() throws JALPException {
+        UniqueIdGenerator.reset();
+
         VariableInstance X = new VariableInstance("X");
         CharConstantInstance a = new CharConstantInstance("a");
 
@@ -93,6 +100,8 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
     // X =/= Y |-> { {{},{X=/=Y}} }
     @Test
     public void variableTest2() throws JALPException {
+        UniqueIdGenerator.reset();
+
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y= new VariableInstance("Y");
 
@@ -105,6 +114,8 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
     // X =/= p(Z,Y) |-> { {{},{X=/=P(Z/Y)}} }
     @Test
     public void variableTest3() throws JALPException {
+        UniqueIdGenerator.reset();
+
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y= new VariableInstance("Y");
         VariableInstance Z = new VariableInstance("Z");
@@ -120,6 +131,8 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
     // p(X,Y) =/= p(a,b) :-> { {{},{X=/=a}}, {{X==a},{Y=/=b}} }
     @Test
     public void predicateTest1() throws JALPException {
+        UniqueIdGenerator.reset();
+
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y= new VariableInstance("Y");
         CharConstantInstance a = new CharConstantInstance("a");
@@ -140,6 +153,8 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
     // p(a,b) =/= p(a,b) |-> fail
     @Test
     public void predicateTest2() throws JALPException {
+        UniqueIdGenerator.reset();
+
         CharConstantInstance a = new CharConstantInstance("a");
         CharConstantInstance b = new CharConstantInstance("b");
 
@@ -154,6 +169,8 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
     // p(a,c) =/= p(a,b) |-> { }
     @Test
     public void predicateTest3() throws JALPException {
+        UniqueIdGenerator.reset();
+
         CharConstantInstance a = new CharConstantInstance("a");
         CharConstantInstance b = new CharConstantInstance("b");
         CharConstantInstance c = new CharConstantInstance("c");
@@ -168,6 +185,8 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
     // p(c,b) =/= p(a,b) |-> {  }
     @Test
     public void predicateTest4() throws JALPException {
+        UniqueIdGenerator.reset();
+
         CharConstantInstance a = new CharConstantInstance("a");
         CharConstantInstance b = new CharConstantInstance("b");
         CharConstantInstance c = new CharConstantInstance("c");
@@ -183,6 +202,8 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
     // p(X,Y) =/= q(a,b)  |-> { }
     @Test
     public void differentNamePredicateTest() throws JALPException {
+        UniqueIdGenerator.reset();
+
         CharConstantInstance a = new CharConstantInstance("a");
         CharConstantInstance b = new CharConstantInstance("b");
         VariableInstance X = new VariableInstance("X");
@@ -198,6 +219,8 @@ public class InEqualitySolverTest { // TODO fix up. i.e. equality solver now sep
     // p(X,Y) =/= p(a,q(b)) |-> { {{},{X=/=a}}, {{X==a},{Y=/=q(b)}}  }
     @Test
     public void nestedPredicateTest() throws JALPException {
+        UniqueIdGenerator.reset();
+
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y= new VariableInstance("Y");
         CharConstantInstance a = new CharConstantInstance("a");

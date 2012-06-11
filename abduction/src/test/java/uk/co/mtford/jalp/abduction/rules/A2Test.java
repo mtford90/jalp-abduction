@@ -9,6 +9,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -44,6 +45,7 @@ public class A2Test {
 
     @Test
     public void test1() {
+        UniqueIdGenerator.reset();
 
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");

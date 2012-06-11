@@ -8,6 +8,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -72,6 +73,8 @@ public class CircuitsTest {
      */
     @Test
     public void circuitTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/jiefei/circuits1.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance g1 = new CharConstantInstance("g1");
@@ -129,6 +132,8 @@ public class CircuitsTest {
     */
     @Test
     public void circuitTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/jiefei/circuits1.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance g1 = new CharConstantInstance("g1");
@@ -186,6 +191,8 @@ public class CircuitsTest {
     */
     @Test
     public void circuitTest3() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/jiefei/circuits2.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance g1 = new CharConstantInstance("g1");
@@ -245,6 +252,8 @@ public class CircuitsTest {
     */
     @Test
     public void circuitTest4() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
         system = new JALPSystem("examples/full/jiefei/circuits2.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         CharConstantInstance g1 = new CharConstantInstance("g1");

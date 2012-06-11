@@ -13,6 +13,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.LeafRuleNode;
+import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -64,6 +65,8 @@ public class EqualitySolverTest {
     // Theta = {Y/bob}, Equalities = {B==Y}
     @Test
     public void simpleEqualityTest1() {
+        UniqueIdGenerator.reset();
+
         HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         assignments.put(Y,bob);
         List<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
@@ -76,6 +79,7 @@ public class EqualitySolverTest {
 
     @Test
     public void simpleEqualityTest2() {
+        UniqueIdGenerator.reset();
         HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
         assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         assignments.put(Y,bob);
@@ -90,6 +94,7 @@ public class EqualitySolverTest {
     // theta = {Y/bob}, equalities = {john=X, B=Y}
     @Test
     public void simpleEqualityTest3() {
+        UniqueIdGenerator.reset();
         HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
         assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         assignments.put(Y,bob);
@@ -106,6 +111,7 @@ public class EqualitySolverTest {
     // theta = {Y/bob}, equalities = {john=X, B=Y, X=B}
     @Test
     public void simpleEqualityTest4() {
+        UniqueIdGenerator.reset();
         HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
         assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         assignments.put(Y,bob);
