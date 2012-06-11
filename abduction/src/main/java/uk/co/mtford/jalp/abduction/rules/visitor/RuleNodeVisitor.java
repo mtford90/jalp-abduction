@@ -220,6 +220,7 @@ public class RuleNodeVisitor {
     }
 
     public void visit(E2RuleNode ruleNode) {
+
         List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
         DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
         EqualityInstance equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
@@ -248,7 +249,6 @@ public class RuleNodeVisitor {
             if (unificationSuccess) {
                 currentGoal.performSubstitutions(newAssignments);
                 newGoals.add(0,currentGoal);
-                currentGoal.getBody().add(0, new TrueInstance());
             }
             else {
                 newGoals.add(0,currentGoal);
@@ -266,6 +266,10 @@ public class RuleNodeVisitor {
             if (currentGoal.getUniversalVariables().contains(left)) {
                 if (equalityDenialHead.getRight() instanceof VariableInstance) {
                     if (!currentGoal.getUniversalVariables().contains(equalityDenialHead.getRight())) {
+                        if (!currentGoal.getUniversalVariables().contains(equalityDenialHead.getLeft())) {
+                            throw new JALPException("WE have a '<- Y = Z,Q' as goal where Z and Y is existentially quantified? How to handle this? Should this even occur?rule node:\n" +
+                                    ruleNode );   // Sanity check.
+                        }
                         throw new JALPException("WE have a '<- Y = Z,Q' as goal where Z is existentially quantified? How to handle this? Should this even occur?rule node:\n" +
                                 ruleNode );   // Sanity check.
                     }
@@ -276,15 +280,11 @@ public class RuleNodeVisitor {
 
                 currentGoal.performSubstitutions(newAssignments);
 
-                if (unificationSuccess) {
-                    newGoal = new TrueInstance();
-                }
-                else {
-                    newGoal = new FalseInstance();
-
+                if (!unificationSuccess) {
+                    currentGoal.getBody().add(0,new FalseInstance());
                 }
 
-                currentGoal.getBody().add(0,newGoal);
+
                 newGoals.add(0,currentGoal);
 
                 childNode = constructChildNode(newGoals,ruleNode);
@@ -342,6 +342,12 @@ public class RuleNodeVisitor {
         }
 
         expandNode(ruleNode,newChildNodes);
+    }
+
+    public void visit(E2cRuleNode e2cRuleNode) {
+    }
+
+    public void visit(E2bRuleNode e2bRuleNode) {
     }
 
     public void visit(InE2RuleNode ruleNode) {
@@ -557,7 +563,6 @@ public class RuleNodeVisitor {
 
         List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
         newGoals.remove(0); // Remove succeeded denial.
-        newGoals.add(0, new TrueInstance());
         RuleNode childNode = constructChildNode(newGoals,ruleNode);
         expandNode(ruleNode,childNode);
 
@@ -688,5 +693,6 @@ public class RuleNodeVisitor {
         }
         return ruleNodes;
     }
+
 
 }

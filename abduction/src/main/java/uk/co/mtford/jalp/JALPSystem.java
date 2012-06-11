@@ -203,8 +203,6 @@ public class JALPSystem {
         results.add(result);
     }
 
-
-
     private List<RuleNode> applyConstraintSolver(RuleNode node) {
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying constraint solver to ruleNode:\n"+node);
         List<Map<VariableInstance,IUnifiableAtomInstance>> possibleAssignments;
