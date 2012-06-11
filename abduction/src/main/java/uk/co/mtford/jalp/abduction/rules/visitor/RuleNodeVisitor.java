@@ -230,20 +230,54 @@ public class RuleNodeVisitor {
         RuleNode childNode;
         List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
 
-        List<EqualityInstance> reductionResult = reductionResult = equalityDenialHead.reduceLeftRight();
+        IUnifiableAtomInstance left = equalityDenialHead.getLeft();
+        IUnifiableAtomInstance right = equalityDenialHead.getRight();
+
+        List<EqualityInstance> reductionResult = left.reduce(right);
 
         while (!reductionResult.isEmpty()) {
             currentGoal.getBody().addAll(0,reductionResult);
             equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
+            left = equalityDenialHead.getLeft();
+            right = equalityDenialHead.getRight();
+            reductionResult = left.reduce(right);
         }
 
-        if (equalityDenialHead.getLeft() instanceof ConstantInstance) {  // c=c or for all X c=X
-            if (equalityDenialHead.getRight() instanceof VariableInstance) {
-                if (!currentGoal.getUniversalVariables().contains(equalityDenialHead.getRight())) {
-                    throw new JALPException("WE have a '<- c = Z,Q' as goal where Z is existentially quantified? How to handle this? Should this even occur?rule node:\n" +
-                            ruleNode );   // Sanity check.
-                }
+        if (currentGoal.getUniversalVariables().contains(left)) { // For all X = u
+            HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
+            boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments);
+            currentGoal.performSubstitutions(newAssignments);
+            if (!unificationSuccess) {
+                currentGoal.getBody().add(0,new FalseInstance());
+                throw new JALPException("E2 had failed unification. I dont think this should ever occur."); // Sanity check.
             }
+            newGoals.add(0,currentGoal);
+            childNode = constructChildNode(newGoals,ruleNode);
+            newChildNodes.add(childNode);
+        }
+
+        else if (!(left instanceof VariableInstance) && currentGoal.getUniversalVariables().contains(right)) {  // For all u = X where u is not an existentially quantified variable.
+            HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
+            boolean unificationSuccess = equalityDenialHead.unifyRightLeft(newAssignments);
+            currentGoal.performSubstitutions(newAssignments);
+            if (!unificationSuccess) {
+                currentGoal.getBody().add(0,new FalseInstance());
+                throw new JALPException("E2 had failed unification. I dont think this should ever occur."); // Sanity check.
+            }
+            newGoals.add(0,currentGoal);
+            childNode = constructChildNode(newGoals,ruleNode);
+            newChildNodes.add(childNode);
+        }
+
+        else if ((left instanceof VariableInstance) && currentGoal.getUniversalVariables().contains(right)) {  // E2c: Z = Y Z is existentially quantified and Y is unversally quantified.
+            performE2C(ruleNode,newGoals,currentGoal,equalityDenialHead,newChildNodes);
+        }
+
+        else if (left instanceof VariableInstance) {  // E2b: Z = u, where Z is existentially quantified, and u could be anything but a universally quantified variable.
+            performE2b(ruleNode,newGoals,equalityDenialHead,newChildNodes);
+        }
+
+        else { // c==d
             HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments); // Blank assignments as should be just constants.
             if (unificationSuccess) {
@@ -258,49 +292,6 @@ public class RuleNodeVisitor {
             newAssignments.putAll(ruleNode.getAssignments());
             childNode.setAssignments(newAssignments);
             newChildNodes.add(childNode);
-
-        }
-
-        else if (equalityDenialHead.getLeft() instanceof VariableInstance) {
-            VariableInstance left = (VariableInstance) equalityDenialHead.getLeft();
-            if (currentGoal.getUniversalVariables().contains(left)) {
-                if (equalityDenialHead.getRight() instanceof VariableInstance) {
-                    if (!currentGoal.getUniversalVariables().contains(equalityDenialHead.getRight())) {
-                        if (!currentGoal.getUniversalVariables().contains(equalityDenialHead.getLeft())) {
-                            throw new JALPException("WE have a '<- Y = Z,Q' as goal where Z and Y is existentially quantified? How to handle this? Should this even occur?rule node:\n" +
-                                    ruleNode );   // Sanity check.
-                        }
-                        throw new JALPException("WE have a '<- Y = Z,Q' as goal where Z is existentially quantified? How to handle this? Should this even occur?rule node:\n" +
-                                ruleNode );   // Sanity check.
-                    }
-                }
-
-                HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
-                boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments);
-
-                currentGoal.performSubstitutions(newAssignments);
-
-                if (!unificationSuccess) {
-                    currentGoal.getBody().add(0,new FalseInstance());
-                }
-
-
-                newGoals.add(0,currentGoal);
-
-                childNode = constructChildNode(newGoals,ruleNode);
-
-                newChildNodes.add(childNode);
-            }
-
-            else { // Now in equational solved form.
-                if (equalityDenialHead.getRight() instanceof VariableInstance) { // E2c
-                    performE2C(ruleNode, newGoals, currentGoal, equalityDenialHead, newChildNodes);
-
-                }
-                else { // E2b
-                    performE2b(ruleNode, newGoals, equalityDenialHead, newChildNodes);
-                }
-            }
         }
 
         expandNode(ruleNode,newChildNodes);
@@ -350,7 +341,7 @@ public class RuleNodeVisitor {
             newGoals.add(0,currentGoal);
             childNode = constructChildNode(newGoals,ruleNode);
             newChildNodes.add(childNode);
-            //throw new JALPException("Equality solver failed in E2b. Should this happen? RuleNode:\n"+ruleNode);
+            throw new JALPException("Equality solver failed in E2b. Should this happen? RuleNode:\n"+ruleNode);
         }
     }
 
