@@ -69,7 +69,7 @@ public class EqualityInstance implements IEqualityInstance {
 
     @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
-        return new E2RuleNode(abductiveFramework, query, goals);
+            return new E2RuleNode(abductiveFramework, query, goals);
     }
 
     @Override
