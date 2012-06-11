@@ -10,7 +10,6 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 

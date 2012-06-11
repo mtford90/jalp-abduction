@@ -2,13 +2,11 @@
 
 LL(2) grammar for JALP in prolog style.
 
-Comment -> %
-
 ALP -> ((Rule | Denial | Abducible))* EOF
 Rule -> Predicate (DEFINES Body)? DOT
 Denial -> IC DEFINES Body DOT
 Body -> Inferable (COMMA Inferable)*
-Abducible -> ABDUCIBLE LBRACKET Predicate (COMMA Predicate)* RBRACKET DOT
+Abducible -> ABDUCIBLE LBRACKET UCASENAME SLASH INTEGER RBRACKET DOT
 
 Inferable -> PosInferable | NegInferable
 PosInferable -> Predicate | Equality | InEquality | Constraint
@@ -40,7 +38,7 @@ CharConstant -> LCASENAME
 */
 
 options {
-  LOOKAHEAD = 2;
+  LOOKAHEAD = 3;
   CHOICE_AMBIGUITY_CHECK = 2;
   OTHER_AMBIGUITY_CHECK = 1;
   STATIC = false;
@@ -66,6 +64,7 @@ package uk.co.mtford.jalp.abduction.parse.program;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -113,10 +112,8 @@ SKIP :
    <"%" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
 }
 
-
 TOKEN :
 {
-  <COMMENT: "%"> |
   <LBRACKET: "("> |
   <RBRACKET: ")"> |
   <DEFINES: ":-"> |
@@ -133,6 +130,7 @@ TOKEN :
   <NOT: "not"> |
   <IC: "ic"> |
   <IN: "in"> |
+  <FSLASH: "/"> |
   <ABDUCIBLE: "abducible"> |
   <INTEGER: (["0"-"9"])+> |
   <LCASENAME: ["a"-"z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
@@ -149,7 +147,7 @@ AbductiveFramework AbductiveLogicProgram():
 
     Definition r;
     DenialInstance d;
-    List<PredicateInstance> newAbducibles;
+    Map<String, Integer> newAbducibles;
 }
 {
 	(
@@ -161,9 +159,7 @@ AbductiveFramework AbductiveLogicProgram():
         { listConstraints.add(d); } |
         newAbducibles = Abducible()
         {
-            for (PredicateInstance p:newAbducibles) {
-                abducibles.put(p.getName(),p.getNumParams());
-            }
+            abducibles.putAll(newAbducibles);
         }
 	)*
 	<EOF>
@@ -226,24 +222,24 @@ List<IInferableInstance> Body(HashMap<String, VariableInstance> variablesSoFar):
     { return body; }
 }
 
-List<PredicateInstance> Abducible():
+Map<String, Integer> Abducible():
 {
-    LinkedList<PredicateInstance> predicateList = new LinkedList<PredicateInstance>();
-    PredicateInstance p;
+    HashMap<String, Integer> abducibleList = new HashMap<String,Integer>();
+    Token t;
+    String name;
+    Integer n;
 }
 {
     <ABDUCIBLE>
     <LBRACKET>
-    p = Predicate(new HashMap<String, VariableInstance>())
-    { predicateList.add(p); }
-    (
-        <COMMA>
-        p = Predicate(new HashMap<String, VariableInstance>())
-        { predicateList.add(p); }
-    )*
+    t = <LCASENAME>
+    { name = t.image; }
+    <FSLASH>
+    t = <INTEGER>
+    { n = Integer.parseInt(t.image); }
     <RBRACKET>
     <DOT>
-    { return predicateList; }
+    { abducibleList.put(name,n); return abducibleList; }
 }
 
 IInferableInstance Inferable(HashMap<String, VariableInstance> variablesSoFar):

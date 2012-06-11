@@ -11,45 +11,47 @@ public interface JALPParserConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int LBRACKET = 5;
+  int LBRACKET = 6;
   /** RegularExpression Id. */
-  int RBRACKET = 6;
+  int RBRACKET = 7;
   /** RegularExpression Id. */
-  int DEFINES = 7;
+  int DEFINES = 8;
   /** RegularExpression Id. */
-  int COMMA = 8;
+  int COMMA = 9;
   /** RegularExpression Id. */
-  int DOT = 9;
+  int DOT = 10;
   /** RegularExpression Id. */
-  int EQUALS = 10;
+  int EQUALS = 11;
   /** RegularExpression Id. */
-  int NOTEQUALS = 11;
+  int NOTEQUALS = 12;
   /** RegularExpression Id. */
-  int LESSTHAN = 12;
+  int LESSTHAN = 13;
   /** RegularExpression Id. */
-  int LESSTHANEQ = 13;
+  int LESSTHANEQ = 14;
   /** RegularExpression Id. */
-  int GREATERTHAN = 14;
+  int GREATERTHAN = 15;
   /** RegularExpression Id. */
-  int GREATERTHANEQ = 15;
+  int GREATERTHANEQ = 16;
   /** RegularExpression Id. */
-  int LSQBRACKET = 16;
+  int LSQBRACKET = 17;
   /** RegularExpression Id. */
-  int RSQBRACKET = 17;
+  int RSQBRACKET = 18;
   /** RegularExpression Id. */
-  int NOT = 18;
+  int NOT = 19;
   /** RegularExpression Id. */
-  int IC = 19;
+  int IC = 20;
   /** RegularExpression Id. */
-  int IN = 20;
+  int IN = 21;
   /** RegularExpression Id. */
-  int ABDUCIBLE = 21;
+  int FSLASH = 22;
   /** RegularExpression Id. */
-  int INTEGER = 22;
+  int ABDUCIBLE = 23;
   /** RegularExpression Id. */
-  int LCASENAME = 23;
+  int INTEGER = 24;
   /** RegularExpression Id. */
-  int UCASENAME = 24;
+  int LCASENAME = 25;
+  /** RegularExpression Id. */
+  int UCASENAME = 26;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -61,6 +63,7 @@ public interface JALPParserConstants {
     "\"\\t\"",
     "\"\\n\"",
     "\"\\r\"",
+    "<token of kind 5>",
     "\"(\"",
     "\")\"",
     "\":-\"",
@@ -77,6 +80,7 @@ public interface JALPParserConstants {
     "\"not\"",
     "\"ic\"",
     "\"in\"",
+    "\"/\"",
     "\"abducible\"",
     "<INTEGER>",
     "<LCASENAME>",
