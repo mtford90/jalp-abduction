@@ -404,7 +404,7 @@ public class RuleNodeVisitor {
         inEqualityDenialHead = (InEqualityInstance) currentGoal.getBody().remove(0);
 
         newGoals.add(0,currentGoal);
-        newGoals.add(inEqualityDenialHead);
+        newGoals.add(0,inEqualityDenialHead);
         childNode = constructChildNode(newGoals,ruleNode);
 
         newChildNodes.add(childNode);
@@ -659,8 +659,6 @@ public class RuleNodeVisitor {
         return true;
 
     }
-
-
 
     private List<RuleNode> applyInEqualitySolver(RuleNode node) throws JALPException {
         List<InEqualityInstance> inequalities = node.getStore().inequalities;
