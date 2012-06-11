@@ -30,7 +30,6 @@ public abstract class RuleNode {
         EXPANDED
     };
 
-
     protected List<IInferableInstance> query;
     protected List<IInferableInstance> goals; // G - {currentGoal}
     protected Store store; // ST
@@ -139,6 +138,60 @@ public abstract class RuleNode {
                 "nodeMark = " + this.getNodeMark() + "\n" +
                 "numChildren = " + this.getChildren().size();
         return message;
+    }
+
+    public void applySubstitutions() {
+        List<IInferableInstance> newQuery = new LinkedList<IInferableInstance>();
+        for (IInferableInstance inferable:query) {
+            IInferableInstance newInferable = (IInferableInstance) inferable.shallowClone();
+            newInferable.performSubstitutions(assignments);
+            newQuery.add(newInferable);
+        }
+        query=newQuery;
+        List<IConstraintInstance> newConstraints = new LinkedList<IConstraintInstance>();
+        for (IConstraintInstance constraint:store.constraints) {
+            IConstraintInstance newConstraint = (IConstraintInstance) constraint.shallowClone();
+            newConstraint.performSubstitutions(assignments);
+            newConstraints.add(newConstraint);
+        }
+        store.constraints=newConstraints;
+
+        LinkedList<IInferableInstance> newGoals = new LinkedList<IInferableInstance>();
+        for (IInferableInstance inferable:goals) {
+            IInferableInstance newGoal = (IInferableInstance) inferable.shallowClone();
+            newGoal.performSubstitutions(assignments);
+            newGoals.add(newGoal);
+        }
+
+        goals=newGoals;
+
+        LinkedList<DenialInstance> newDenials = new LinkedList<DenialInstance>();
+        for (DenialInstance d:store.denials) {
+            DenialInstance newDenial = (DenialInstance) d.shallowClone();
+            d.performSubstitutions(assignments);
+            newDenials.add(newDenial);
+        }
+
+        store.denials=newDenials;
+
+        LinkedList<PredicateInstance> newAbducibles= new LinkedList<PredicateInstance>();
+        for (PredicateInstance p:store.abducibles) {
+            PredicateInstance newAbducible = (PredicateInstance) p.shallowClone();
+            newAbducible.performSubstitutions(assignments);
+            newAbducibles.add(newAbducible);
+        }
+
+        store.abducibles=newAbducibles;
+
+        LinkedList<InEqualityInstance> newInequalities = new LinkedList<InEqualityInstance>();
+        for (InEqualityInstance ie:store.inequalities) {
+            InEqualityInstance newInEquality = (InEqualityInstance) ie.shallowClone();
+            newInEquality.performSubstitutions(assignments);
+            newInequalities.add(newInEquality);
+        }
+
+        store.inequalities = newInequalities;
+        assignments = new HashMap<VariableInstance,IUnifiableAtomInstance>();
     }
 
     public String toJSON()  {

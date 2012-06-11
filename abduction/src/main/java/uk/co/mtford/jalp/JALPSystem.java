@@ -203,59 +203,7 @@ public class JALPSystem {
         results.add(result);
     }
 
-    private void applySubstitutions(RuleNode node) {
-        List<IInferableInstance> newQuery = new LinkedList<IInferableInstance>();
-        for (IInferableInstance inferable:node.getQuery()) {
-            IInferableInstance newInferable = (IInferableInstance) inferable.shallowClone();
-            newInferable.performSubstitutions(node.getAssignments());
-            newQuery.add(newInferable);
-        }
-        node.setQuery(newQuery);
-        List<IConstraintInstance> newConstraints = new LinkedList<IConstraintInstance>();
-        for (IConstraintInstance constraint:node.getStore().constraints) {
-            IConstraintInstance newConstraint = (IConstraintInstance) constraint.shallowClone();
-            newConstraint.performSubstitutions(node.getAssignments());
-            newConstraints.add(newConstraint);
-        }
-        node.getStore().constraints=newConstraints;
 
-        LinkedList<IInferableInstance> newGoals = new LinkedList<IInferableInstance>();
-        for (IInferableInstance inferable:node.getGoals()) {
-            IInferableInstance newGoal = (IInferableInstance) inferable.shallowClone();
-            newGoal.performSubstitutions(node.getAssignments());
-            newGoals.add(newGoal);
-        }
-
-        node.setGoals(newGoals);
-
-        LinkedList<DenialInstance> newDenials = new LinkedList<DenialInstance>();
-        for (DenialInstance d:node.getStore().denials) {
-            DenialInstance newDenial = (DenialInstance) d.shallowClone();
-            d.performSubstitutions(node.getAssignments());
-            newDenials.add(newDenial);
-        }
-
-        node.getStore().denials=newDenials;
-
-        LinkedList<PredicateInstance> newAbducibles= new LinkedList<PredicateInstance>();
-        for (PredicateInstance p:node.getStore().abducibles) {
-            PredicateInstance newAbducible = (PredicateInstance) p.shallowClone();
-            newAbducible.performSubstitutions(node.getAssignments());
-            newAbducibles.add(newAbducible);
-        }
-
-        node.getStore().abducibles=newAbducibles;
-
-        LinkedList<InEqualityInstance> newInequalities = new LinkedList<InEqualityInstance>();
-        for (InEqualityInstance ie:node.getStore().inequalities) {
-            InEqualityInstance newInEquality = (InEqualityInstance) ie.shallowClone();
-            newInEquality.performSubstitutions(node.getAssignments());
-            newInequalities.add(newInEquality);
-        }
-
-        node.getStore().inequalities = newInequalities;
-        node.getStore().equalities=new LinkedList<EqualityInstance>();
-    }
 
     private List<RuleNode> applyConstraintSolver(RuleNode node) {
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying constraint solver to ruleNode:\n"+node);
@@ -290,7 +238,7 @@ public class JALPSystem {
             for (Map<VariableInstance,IUnifiableAtomInstance> assignment:possibleAssignments) {
                 RuleNode newLeafNode =node.shallowClone();
                 newLeafNode.setAssignments(assignment);
-                applySubstitutions(newLeafNode);
+                newLeafNode.applySubstitutions();
                 newLeafNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
                 results.add(newLeafNode);
             }
