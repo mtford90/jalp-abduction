@@ -221,6 +221,10 @@ public class RuleNodeVisitor {
 
     public void visit(E2RuleNode ruleNode) {
 
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("At E2 node. Working out which case to apply.");
+        }
+
         List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
         DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
         EqualityInstance equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
@@ -244,6 +248,8 @@ public class RuleNodeVisitor {
         }
 
         if (currentGoal.getUniversalVariables().contains(left)) { // For all X = u
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Current goal is of the form For All X. <- X=u");
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying E2 to rulenode.");
             HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments);
             currentGoal.performSubstitutions(newAssignments);
@@ -257,6 +263,8 @@ public class RuleNodeVisitor {
         }
 
         else if (!(left instanceof VariableInstance) && currentGoal.getUniversalVariables().contains(right)) {  // For all u = X where u is not an existentially quantified variable.
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Current goal is of the form For All X. <- u=X, where u is not existentially quanitifed variable.");
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying E2 to rulenode.");
             HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = equalityDenialHead.unifyRightLeft(newAssignments);
             currentGoal.performSubstitutions(newAssignments);
@@ -270,14 +278,18 @@ public class RuleNodeVisitor {
         }
 
         else if ((left instanceof VariableInstance) && currentGoal.getUniversalVariables().contains(right)) {  // E2c: Z = Y Z is existentially quantified and Y is unversally quantified.
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Current goal is of the form For All Y. <- Z=Y");
             performE2C(ruleNode,newGoals,currentGoal,equalityDenialHead,newChildNodes);
         }
 
         else if (left instanceof VariableInstance) {  // E2b: Z = u, where Z is existentially quantified, and u could be anything but a universally quantified variable.
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Current goal is of the form For All X. <- Z=u, where u is anything but a universally quantified variable.");
             performE2b(ruleNode,newGoals,equalityDenialHead,newChildNodes);
         }
 
         else { // c==d
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Current goal is of the form For All X. <- c=d, where d could be c.");
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying E2 to rulenode.");
             HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments); // Blank assignments as should be just constants.
             if (unificationSuccess) {
