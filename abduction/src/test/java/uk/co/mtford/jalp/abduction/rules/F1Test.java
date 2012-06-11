@@ -55,8 +55,6 @@ public class F1Test {
         goals.add(p);
 
         ruleNode.setGoals(goals);
-        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
-
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/F1/Test1",ruleNode);

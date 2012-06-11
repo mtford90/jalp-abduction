@@ -109,7 +109,7 @@ TOKEN :
   <RSQBRACKET: "]"> |
   <NOT: "not"> |
   <IN: "in"> |
-  <INTEGER: ["0"-"9"]> |
+  <INTEGER: (["0"-"9"])+> |
   <LCASENAME: ["a"-"z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
   <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*>
 

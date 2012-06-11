@@ -75,8 +75,6 @@ public class E2bTest {
 
         DenialInstance d = new DenialInstance(goals);
         ruleNode.getGoals().add(d);
-        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
-
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/E2b/Test2",ruleNode);

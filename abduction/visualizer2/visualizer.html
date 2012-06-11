@@ -1,213 +1,223 @@
 <html>
 <head>
-<title>Visualizer</title>
-<script type="text/javascript" src="js/ECOTree.js"></script>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.8.20.custom.min.js"></script>
-<script type="text/javascript" src="output.js"></script>
-<link type="text/css" href="css/smoothness/jquery-ui-1.8.20.custom.css" rel="stylesheet" />
-<link type="text/css" rel="stylesheet" href="css/ECOTree.css" />
-<link type="text/css" rel="stylesheet" href="css/style.css">
-<script type="text/javascript">
-var tableTemplate;
-var currentDialogId = 1; 
+    <title>Visualizer</title>
+    <script type="text/javascript" src="js/ECOTree.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.20.custom.min.js"></script>
+    <script type="text/javascript" src="output.js"></script>
+    <link type="text/css" href="css/smoothness/jquery-ui-1.8.20.custom.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="css/ECOTree.css" />
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <script type="text/javascript">
+        var tableTemplate;
+        var currentDialogId = 1;
 
-var rootNode = null;
-var myTree = null;
-var nodeArray = [];
-var query = null;
-var af = null;
+        var rootNode = null;
+        var myTree = null;
+        var nodeArray = [];
+        var query = null;
+        var af = null;
 
-$(document).ready(init);
+        $(document).ready(init);
 
-function init() {
-	rootNode = $.parseJSON(data);
-	query = rootNode.query;
-	af = rootNode.framework;
-	nodeArray[1]=rootNode;
-	fillInfo();
-	createTableTemplate();
-	createDerivationTree();
-}
+        function init() {
+        rootNode = $.parseJSON(data);
+        query = rootNode.query;
+        af = rootNode.framework;
+        nodeArray[1]=rootNode;
+        fillInfo();
+        createTableTemplate();
+        createDerivationTree();
+        }
 
-function fillInfo() {
-	$("#query").text(query);
-	$("#program").text(af.rules);
-	$("#abducible").text(af.abducibles);
-	$("#constraints").text(af.constraints);
+        function fillInfo() {
+        $("#original-query").text(query.substring(1,query.length-1));
+        for (var n in af.rules) {
+        var br = document.createElement('br');
+        $("#rules").append(af.rules[n]);
+        $("#rules").append(br);
+        }
+        for (var n in af.abducibles) {
+        $("#abducible-predicates").append(af.abducibles[n]);
+        $("#abducible-predicates").append(br);
+        }
+        for (var n in af.constraints) {
+        $("#integrity-constraints").append(af.constraints[n]);
+        $("#integrity-constraints").append(br);
+        }
 
-}
+        }
 
-function createTableTemplate () {
-	tableTemplate = $('#dialogs').html();
-	$('#dialogs').html("");
-}
+        function createTableTemplate () {
+        tableTemplate = $('#dialogs').html();
+        $('#dialogs').html("");
+        }
 
-function createDerivationTree() {
-	myTree = new ECOTree('myTree','tree');	
-	myTree.config.useTarget = true;
-	myTree.config.selectMode = ECOTree.SL_NONE;
-	myTree.config.defaultNodeWidth = 150;
-	myTree.config.defaultNodeHeight = 30;
-	myTree.config.iSubtreeSeparation = 20;
-	myTree.config.iSiblingSeparation = 15;
-	myTree.config.iLevelSeparation = 30;
-	
-	var nodeStack = new Array();
-	var currentNodeId = 2;	
-				
-	myTree.add(1,-1,rootNode.type,null,null,null,null,"Javascript:openInfoWindow(1)");
-	
-	for (var child in rootNode.children) {
-		nodeStack.push({'node':rootNode.children[child],'parentId':1});
-	}
-	
-	while (nodeStack.length>0) {
-		var currentNode = nodeStack.pop();
-		myTree.add(currentNodeId,currentNode.parentId,currentNode.node.type,null,null,null,null,"Javascript:openInfoWindow("+currentNodeId+")");
-		for (var child in currentNode.node.children) {
-			nodeStack.push({'node':currentNode.node.children[child],'parentId':currentNodeId});
-		}
-		nodeArray[currentNodeId]=currentNode.node;
-		currentNodeId++;
-	}
-	myTree.UpdateTree();
-	myTree.collapseAll();
-}
+        function createDerivationTree() {
+        myTree = new ECOTree('myTree','tree');
+        myTree.config.useTarget = true;
+        myTree.config.selectMode = ECOTree.SL_NONE;
+        myTree.config.defaultNodeWidth = 150;
+        myTree.config.defaultNodeHeight = 30;
+        myTree.config.iSubtreeSeparation = 20;
+        myTree.config.iSiblingSeparation = 15;
+        myTree.config.iLevelSeparation = 30;
 
-function openInfoWindow(id) {
-	var div = document.createElement('div');
-	var dialogId = "dialog"+currentDialogId;
-	$(div).attr("id",dialogId);
-	currentDialogId++;
-	$(div).html(tableTemplate);
-	$("#dialogs").append(div);
-	fillNode(nodeArray[id],dialogId);
-	$("#"+dialogId).dialog({'height':'auto','width':'auto','resizable':false});
-}
+        var nodeStack = new Array();
+        var currentNodeId = 2;
 
-function fillNode(node,dialogId) {
-	fillType(node.type,dialogId);
-	fillQuery(node.query,dialogId);
-	fillNextGoals(node.goals,dialogId);
-	fillAssignments(node.assignments,dialogId);
-	fillAbducibles(node.abducibles,dialogId);
-	fillDenials(node.denials,dialogId);
-	fillEqualities(node.equalities,dialogId);
-	fillConstraints(node.constraints,dialogId);
-	fillNodeMark(node.mark,dialogId);
-}	
+        myTree.add(1,-1,rootNode.type,null,null,null,null,"Javascript:openInfoWindow(1)");
 
-function fillType(type,dialogId) {
-	$("#"+dialogId+" #dataTable #type").text(type);
-}
+        for (var child in rootNode.children) {
+        nodeStack.push({'node':rootNode.children[child],'parentId':1});
+        }
 
-function fillQuery(query,dialogId) {
-	$("#"+dialogId+" #dataTable #query").text(query);
-}
+        while (nodeStack.length>0) {
+        var currentNode = nodeStack.pop();
+        myTree.add(currentNodeId,currentNode.parentId,currentNode.node.type,null,null,null,null,"Javascript:openInfoWindow("+currentNodeId+")");
+        for (var child in currentNode.node.children) {
+        nodeStack.push({'node':currentNode.node.children[child],'parentId':currentNodeId});
+        }
+        nodeArray[currentNodeId]=currentNode.node;
+        currentNodeId++;
+        }
+        myTree.UpdateTree();
+        myTree.collapseAll();
+        }
 
-function fillNextGoals(goalArray, dialogId) {
-	var ul,li;
+        function openInfoWindow(id) {
+        var div = document.createElement('div');
+        var dialogId = "dialog"+currentDialogId;
+        $(div).attr("id",dialogId);
+        currentDialogId++;
+        $(div).html(tableTemplate);
+        $("#dialogs").append(div);
+        fillNode(nodeArray[id],dialogId);
+        $("#"+dialogId).dialog({'height':'auto','width':'auto','resizable':false});
+        }
 
-	ul = document.createElement('ul');
-	for (var goal in goalArray) {
-		li = document.createElement('li');
-		$(li).text(goalArray[goal]);
-		ul.appendChild(li);
-	}
-	$("#"+dialogId+" #dataTable #next-goals").html(ul);
-}
+        function fillNode(node,dialogId) {
+        fillType(node.type,dialogId);
+        fillQuery(node.query,dialogId);
+        fillNextGoals(node.goals,dialogId);
+        fillAssignments(node.assignments,dialogId);
+        fillAbducibles(node.abducibles,dialogId);
+        fillDenials(node.denials,dialogId);
+        fillEqualities(node.equalities,dialogId);
+        fillConstraints(node.constraints,dialogId);
+        fillNodeMark(node.mark,dialogId);
+        }
 
-function fillAssignments(assignments, dialogId) {
-	var ul,li;
+        function fillType(type,dialogId) {
+        $("#"+dialogId+" #dataTable #type").text(type);
+        }
 
-	ul = document.createElement('ul');
-	for (var assignment in assignments) {
-		li = document.createElement('li');
-		$(li).text(assignment+"/"+assignments[assignment]);
-		ul.appendChild(li);
-	}
-	$("#"+dialogId+" #dataTable #assignments").html(ul);
-}
+        function fillQuery(query,dialogId) {
+        $("#"+dialogId+" #dataTable #query").text(query);
+        }
 
-function fillAbducibles(abducibleArray, dialogId) {
-	var ul,li;
+        function fillNextGoals(goalArray, dialogId) {
+        var ul,li;
 
-	ul = document.createElement('ul');
-	for (var abducible in abducibleArray) {
-		li = document.createElement('li');
-		$(li).text(abducibleArray[abducible]);
-		ul.appendChild(li);
-	}
-	$("#"+dialogId+" #dataTable #abducibles").html(ul);
-}
+        ul = document.createElement('ul');
+        for (var goal in goalArray) {
+        li = document.createElement('li');
+        $(li).text(goalArray[goal]);
+        ul.appendChild(li);
+        }
+        $("#"+dialogId+" #dataTable #next-goals").html(ul);
+        }
 
-function fillDenials(denialArray, dialogId) {
-	var ul,li;
+        function fillAssignments(assignments, dialogId) {
+        var ul,li;
 
-	ul = document.createElement('ul');
-	for (var denial in denialArray) {
-		li = document.createElement('li');
-		$(li).text(denialArray[denial]);
-		ul.appendChild(li);
-	}
-	$("#"+dialogId+" #dataTable #denials").html(ul);
-}
+        ul = document.createElement('ul');
+        for (var assignment in assignments) {
+        li = document.createElement('li');
+        $(li).text(assignment+"/"+assignments[assignment]);
+        ul.appendChild(li);
+        }
+        $("#"+dialogId+" #dataTable #assignments").html(ul);
+        }
 
-function fillEqualities(equalityArray, dialogId) {
-	var ul,li;
+        function fillAbducibles(abducibleArray, dialogId) {
+        var ul,li;
 
-	ul = document.createElement('ul');
-	for (var equality in equalityArray) {
-		li = document.createElement('li');
-		$(li).text(equalityArray[equality]);
-		ul.appendChild(li);
-	}
-	$("#"+dialogId+" #dataTable #equalities").html(ul);
-}
+        ul = document.createElement('ul');
+        for (var abducible in abducibleArray) {
+        li = document.createElement('li');
+        $(li).text(abducibleArray[abducible]);
+        ul.appendChild(li);
+        }
+        $("#"+dialogId+" #dataTable #abducibles").html(ul);
+        }
 
-function fillConstraints(constraintArray, dialogId) {
-	var ul,li;
+        function fillDenials(denialArray, dialogId) {
+        var ul,li;
 
-	ul = document.createElement('ul');
-	for (var constraint in constraintArray) {
-		li = document.createElement('li');
-		$(li).text(constraintArray[constraint]);
-		ul.appendChild(li);
-	}
-	$("#"+dialogId+" #dataTable #listConstraints").html(ul);
-}
+        ul = document.createElement('ul');
+        for (var denial in denialArray) {
+        li = document.createElement('li');
+        $(li).text(denialArray[denial]);
+        ul.appendChild(li);
+        }
+        $("#"+dialogId+" #dataTable #denials").html(ul);
+        }
 
-function fillNodeMark(nodeMark, dialogId) {
-	$("#"+dialogId+" #dataTable #mark").text(nodeMark);
-}
-</script>			
+        function fillEqualities(equalityArray, dialogId) {
+        var ul,li;
+
+        ul = document.createElement('ul');
+        for (var equality in equalityArray) {
+        li = document.createElement('li');
+        $(li).text(equalityArray[equality]);
+        ul.appendChild(li);
+        }
+        $("#"+dialogId+" #dataTable #equalities").html(ul);
+        }
+
+        function fillConstraints(constraintArray, dialogId) {
+        var ul,li;
+
+        ul = document.createElement('ul');
+        for (var constraint in constraintArray) {
+        li = document.createElement('li');
+        $(li).text(constraintArray[constraint]);
+        ul.appendChild(li);
+        }
+        $("#"+dialogId+" #dataTable #listConstraints").html(ul);
+        }
+
+        function fillNodeMark(nodeMark, dialogId) {
+        $("#"+dialogId+" #dataTable #mark").text(nodeMark);
+        }
+    </script>
 </head>
 <body>
 <div id="heading">
-	<h1>JALP Visual Debugger</h1>
-	<div class="header-border"></div>
+    <h1>JALP Visual Debugger</h1>
+    <div class="header-border"></div>
 </div>
-<div id="info">
-Query: <span id="query"></span><br>
-P: <span id="program"></span><br>
-A: <span id="abducible"></span><br>
-IC: <span id="constraints"></span><br>
-</div>
+<table id="info">
+    <tr><td>Query</td><td class="data" id="original-query"></tr>
+    <tr><td>P</td><td class="data" id="rules"></tr>
+    <tr><td>A</td><td class="data" id="abducible-predicates"></tr>
+    <tr><td>IC</td><td class="data" id="integrity-constraints"></tr>
+</table>
 <div id="tree">
 </div>
 <div id="dialogs">
-	<table id="dataTable">	
-		<tr><td>R</td><td class="data" id="type"></td></tr>
-		<tr><td>Q</td><td class="data" id="query"></td></tr>
-		<tr><td>G</td><td  class="data" id="next-goals"></td></tr>
-		<tr><td>&theta;</td><td  class="data" id="assignments"></td></tr>
-		<tr><td>&Delta;</td><td  class="data" id="abducibles"></td></tr>
-		<tr><td>&Delta;*</td><td  class="data" id="denials"></td></tr>
-		<tr><td>&epsilon;</td><td  class="data" id="equalities"></td></tr>
-		<tr><td>FD</td><td  class="data" id="listConstraints"></td></tr>
-		<tr><td>M</td><td  class="data" id="mark"></td></tr>
-	</table>
+    <table id="dataTable">
+        <tr><td>R</td><td class="data" id="type"></td></tr>
+        <tr><td>Q</td><td class="data" id="query"></td></tr>
+        <tr><td>G</td><td  class="data" id="next-goals"></td></tr>
+        <tr><td>&theta;</td><td  class="data" id="assignments"></td></tr>
+        <tr><td>&Delta;</td><td  class="data" id="abducibles"></td></tr>
+        <tr><td>&Delta;*</td><td  class="data" id="denials"></td></tr>
+        <tr><td>&epsilon;</td><td  class="data" id="equalities"></td></tr>
+        <tr><td>FD</td><td  class="data" id="listConstraints"></td></tr>
+        <tr><td>M</td><td  class="data" id="mark"></td></tr>
+    </table>
 </div>
 </body>
 </html>

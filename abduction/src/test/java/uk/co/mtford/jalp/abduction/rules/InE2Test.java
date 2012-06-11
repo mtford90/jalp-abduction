@@ -53,8 +53,6 @@ public class InE2Test {
 
         DenialInstance d = new DenialInstance(goals);
         ruleNode.getGoals().add(d);
-        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
-
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/InE2/Test1",ruleNode);
@@ -77,8 +75,6 @@ public class InE2Test {
 
         DenialInstance d = new DenialInstance(goals);
         ruleNode.getGoals().add(d);
-        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
-
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/InE2/Test2",ruleNode);
@@ -102,8 +98,6 @@ public class InE2Test {
         DenialInstance d = new DenialInstance(goals);
         ruleNode.getGoals().add(d);
         ruleNode.getGoals().add(new PredicateInstance("q",Y));
-        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
-
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/InE2/Test3",ruleNode);

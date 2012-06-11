@@ -129,7 +129,7 @@ TOKEN :
   <IC: "ic"> |
   <IN: "in"> |
   <ABDUCIBLE: "abducible"> |
-  <INTEGER: ["0"-"9"]> |
+  <INTEGER: (["0"-"9"])+> |
   <LCASENAME: ["a"-"z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*> |
   <UCASENAME: ["A"-"Z"] ( ["a"-"z","A"-"Z","_","0"-"9"] )*>
 

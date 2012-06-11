@@ -75,7 +75,6 @@ public class A1Test {
         A1Node.getStore().abducibles.add(ab2);
         A1Node.getStore().abducibles.add(ab3);
         A1Node.getGoals().add(ab1);
-        A1Node.setQuery(new LinkedList<IInferableInstance>(A1Node.getGoals()));
 
         try {
             JALP.applyRule(A1Node);
