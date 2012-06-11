@@ -82,8 +82,8 @@ public class SubstitutionTest {
         subst.put(x, d);
         assertTrue(denial.performSubstitutions(subst) == denial);
         assertTrue(denial.getBody().size() == 2);
-        assertTrue(denial.getBody().get(0) != p);
-        assertTrue(denial.getBody().get(1) != q);
+        assertTrue(denial.getBody().get(0) == p);
+        assertTrue(denial.getBody().get(1) == q);
         assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(0) == d);  // p(d,Y)
         assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(1) == y);  // p(d,Y)
         assertTrue(((PredicateInstance) denial.getBody().get(1)).getParameter(0) == z);  // p(Z)
@@ -102,8 +102,8 @@ public class SubstitutionTest {
         assertTrue(neg.getSubFormula().equals(denial));
 
         assertTrue(denial.getBody().size() == 2);
-        assertTrue(denial.getBody().get(0) != p);
-        assertTrue(denial.getBody().get(1) != q);
+        assertTrue(denial.getBody().get(0) == p);
+        assertTrue(denial.getBody().get(1) == q);
         assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(0) == d);  // p(d,Y)
         assertTrue(((PredicateInstance) denial.getBody().get(0)).getParameter(1) == y);  // p(d,Y)
         assertTrue(((PredicateInstance) denial.getBody().get(1)).getParameter(0) == z);  // p(Z)
