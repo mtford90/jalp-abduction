@@ -38,10 +38,12 @@
         $("#rules").append(br);
         }
         for (var n in af.abducibles) {
+        var br = document.createElement('br');
         $("#abducible-predicates").append(af.abducibles[n]);
         $("#abducible-predicates").append(br);
         }
         for (var n in af.constraints) {
+        var br = document.createElement('br');
         $("#integrity-constraints").append(af.constraints[n]);
         $("#integrity-constraints").append(br);
         }
