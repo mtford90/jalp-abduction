@@ -2,7 +2,6 @@ package uk.co.mtford.jalp.abduction.rules;
 
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Store;
-import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
@@ -20,22 +19,22 @@ import java.util.Map;
  * Time: 06:47
  * To change this template use File | Settings | File Templates.
  */
-public class E2RuleNode extends NegativeRuleNode {
-    public E2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {
+public class E2bRuleNode extends NegativeRuleNode {
+    public E2bRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
         super(abductiveFramework, query, restOfGoals);
     }
 
-    public E2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public E2bRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
         super(abductiveFramework,query,restOfGoals, store, assignments);
     }
 
-    public E2RuleNode() {
+    protected E2bRuleNode() {
         super();
     }
 
     @Override
     public RuleNode shallowClone() {
-        E2RuleNode newRuleNode = new E2RuleNode();
+        E2bRuleNode newRuleNode = new E2bRuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
         newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
         newRuleNode.abductiveFramework = abductiveFramework;

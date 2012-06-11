@@ -5,12 +5,11 @@
 package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
 import org.apache.log4j.Logger;
+import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
-import uk.co.mtford.jalp.abduction.rules.E1RuleNode;
-import uk.co.mtford.jalp.abduction.rules.E2RuleNode;
-import uk.co.mtford.jalp.abduction.rules.RuleNode;
+import uk.co.mtford.jalp.abduction.rules.*;
 
 import java.util.*;
 
@@ -69,7 +68,46 @@ public class EqualityInstance implements IEqualityInstance {
 
     @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
-            return new E2RuleNode(abductiveFramework, query, goals);
+
+        List<EqualityInstance> reductionResult = left.reduce(right);
+        DenialInstance currentGoal = (DenialInstance) goals.remove(0).shallowClone();
+        EqualityInstance equalityDenialHead;
+        goals.add(0,currentGoal);
+
+        if (!currentGoal.getBody().get(0).equals(this)) { // Sanity check.
+            throw new JALPException("Head of the denial isnt the object creating the root node!");
+        }
+
+        do {
+            equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
+            reductionResult = left.reduce(right);
+            if (reductionResult.isEmpty()) currentGoal.getBody().add(0,equalityDenialHead);
+            else {
+                currentGoal.getBody().addAll(0,reductionResult);
+            }
+        }   while (!reductionResult.isEmpty());
+
+
+        if (currentGoal.getUniversalVariables().contains(left)) { // For all X = u
+            return new E2RuleNode(abductiveFramework,query,goals);
+        }
+
+        else if (!(left instanceof VariableInstance) && currentGoal.getUniversalVariables().contains(right)) {  // For all u = X where u is not an existentially quantified variable.
+            return new E2RuleNode(abductiveFramework,query,goals);
+        }
+
+        else if ((left instanceof VariableInstance) && currentGoal.getUniversalVariables().contains(right)) {  // E2c: Z = Y Z is existentially quantified and Y is unversally quantified.
+            return new E2cRuleNode(abductiveFramework,query,goals);
+        }
+
+        else if (left instanceof VariableInstance) {  // E2b: Z = u, where Z is existentially quantified, and u could be anything but a universally quantified variable.
+            return new E2bRuleNode(abductiveFramework,query,goals);
+        }
+
+        else { // c==d
+            return new E2RuleNode(abductiveFramework,query,goals);
+        }
+
     }
 
     @Override

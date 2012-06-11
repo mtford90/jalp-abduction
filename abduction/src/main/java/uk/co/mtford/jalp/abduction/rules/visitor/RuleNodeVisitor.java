@@ -221,10 +221,6 @@ public class RuleNodeVisitor {
 
     public void visit(E2RuleNode ruleNode) {
 
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("At E2 node. Working out which case to apply.");
-        }
-
         List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
         DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
         EqualityInstance equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
@@ -279,12 +275,11 @@ public class RuleNodeVisitor {
 
         else if ((left instanceof VariableInstance) && currentGoal.getUniversalVariables().contains(right)) {  // E2c: Z = Y Z is existentially quantified and Y is unversally quantified.
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Current goal is of the form For All Y. <- Z=Y");
-            performE2C(ruleNode,newGoals,currentGoal,equalityDenialHead,newChildNodes);
+            throw new JALPException("This should be E2c? Rulenode:\n"+ruleNode);
         }
 
         else if (left instanceof VariableInstance) {  // E2b: Z = u, where Z is existentially quantified, and u could be anything but a universally quantified variable.
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Current goal is of the form For All X. <- Z=u, where u is anything but a universally quantified variable.");
-            performE2b(ruleNode,newGoals,equalityDenialHead,newChildNodes);
+            throw new JALPException("This should be E2b? Rulenode:\n"+ruleNode);
         }
 
         else { // c==d
@@ -309,26 +304,16 @@ public class RuleNodeVisitor {
         expandNode(ruleNode,newChildNodes);
     }
 
-    private void performE2C(E2RuleNode ruleNode, List<IInferableInstance> newGoals, DenialInstance currentGoal, EqualityInstance equalityDenialHead, List<RuleNode> newChildNodes) {
+    public void visit(E2bRuleNode ruleNode) {
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        EqualityInstance equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
+
+        IInferableInstance newGoal = null;
+
         RuleNode childNode;
-        if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2c to node.");
-        HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
-        boolean unificationSuccess = equalityDenialHead.unifyRightLeft(newAssignments);
-        if (!unificationSuccess) {
-            throw new JALPException("Error in JALP. E2c failed unification on rule node:\n"+ruleNode);  // Sanity check.
-        }
-        else  {
-            currentGoal = currentGoal.shallowClone();
-            currentGoal = (DenialInstance)currentGoal.performSubstitutions(newAssignments);
-            newGoals.add(0,currentGoal);
-            childNode = constructChildNode(newGoals,ruleNode);
-        }
+        List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
 
-        newChildNodes.add(childNode);
-    }
-
-    private void performE2b(E2RuleNode ruleNode, List<IInferableInstance> newGoals, EqualityInstance equalityDenialHead, List<RuleNode> newChildNodes) {
-        RuleNode childNode;DenialInstance currentGoal;
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2b to node.");
         // Branch 1
         InEqualityInstance inEqualityInstance = new InEqualityInstance(equalityDenialHead);
@@ -355,6 +340,39 @@ public class RuleNodeVisitor {
             newChildNodes.add(childNode);
             throw new JALPException("Equality solver failed in E2b. Should this happen? RuleNode:\n"+ruleNode);
         }
+
+        expandNode(ruleNode,newChildNodes);
+
+    }
+
+
+    public void visit(E2cRuleNode ruleNode) {
+        List<IInferableInstance> newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
+        DenialInstance currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
+        EqualityInstance equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
+
+        IInferableInstance newGoal = null;
+
+        RuleNode childNode;
+        List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
+
+        if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2c to node.");
+        HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
+        boolean unificationSuccess = equalityDenialHead.unifyRightLeft(newAssignments);
+        if (!unificationSuccess) {
+            throw new JALPException("Error in JALP. E2c failed unification on rule node:\n"+ruleNode);  // Sanity check.
+        }
+        else  {
+            currentGoal = currentGoal.shallowClone();
+            currentGoal = (DenialInstance)currentGoal.performSubstitutions(newAssignments);
+            newGoals.add(0,currentGoal);
+            childNode = constructChildNode(newGoals,ruleNode);
+        }
+
+        newChildNodes.add(childNode);
+
+        expandNode(ruleNode,newChildNodes);
+
     }
 
     public void visit(InE2RuleNode ruleNode) {
@@ -700,6 +718,5 @@ public class RuleNodeVisitor {
         }
         return ruleNodes;
     }
-
 
 }

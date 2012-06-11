@@ -1,4 +1,4 @@
-package uk.co.mtford.jalp.abduction.rules;
+package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,6 +11,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
+import uk.co.mtford.jalp.abduction.rules.E2RuleNode;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.LinkedList;
@@ -82,36 +83,6 @@ public class E2Test {
         JALP.getVisualizer("debug/rules/E2/Test2",ruleNode);
     }
 
-    /*
-    @Test
-    public void test3() throws Exception {
-        E2RuleNode ruleNode = new E2RuleNode();
-        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
-
-        VariableInstance X = new VariableInstance("X");
-        VariableInstance Y = new VariableInstance("Y");
-        VariableInstance D = new VariableInstance("D");
-
-        PredicateInstance p = new PredicateInstance("p",X);
-        PredicateInstance q = new PredicateInstance("q",Y);
-        PredicateInstance e = new PredicateInstance("e",D);
-
-        EqualityInstance eq = new EqualityInstance(p,q);
-        goals.add(eq);
-        goals.add(e);
-
-        DenialInstance d = new DenialInstance(goals);
-        d.getUniversalVariables().add(X);
-        d.getUniversalVariables().add(Y);
-        d.getUniversalVariables().add(D);
-
-        ruleNode.getGoals().add(d);
-
-        JALP.applyRule(ruleNode);
-        JALP.getVisualizer("debug/rules/E2/Test3",ruleNode);
-    }
-    */
-
     @Test
     public void test4() throws Exception {
         UniqueIdGenerator.reset();
@@ -138,30 +109,4 @@ public class E2Test {
         JALP.getVisualizer("debug/rules/E2/Test4",ruleNode);
     }
 
-    /*
-    @Test
-    public void test5() throws Exception {
-        E2RuleNode ruleNode = new E2RuleNode();
-        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
-
-        VariableInstance X = new VariableInstance("X");
-        VariableInstance Y = new VariableInstance("Y");
-
-        PredicateInstance p = new PredicateInstance("p",Y);
-        PredicateInstance q = new PredicateInstance("q",X);
-
-        EqualityInstance eq = new EqualityInstance(p,X);
-        goals.add(eq);
-        goals.add(q);
-
-        DenialInstance d = new DenialInstance(goals);
-        d.getUniversalVariables().add(X);
-        d.getUniversalVariables().add(Y);
-        ruleNode.getGoals().add(d);
-        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
-
-
-        JALP.applyRule(ruleNode);
-        JALP.getVisualizer("debug/rules/E2/Test5",ruleNode);
-    }  */
 }

@@ -41,8 +41,8 @@ public class E2cTest {
     public void test1() throws Exception {
         UniqueIdGenerator.reset();
 
-        E2RuleNode ruleNode = new E2RuleNode();
-        List<IInferableInstance> goals = JALPQueryParser.readFromString("X=Y, q(Y)");
+        E2cRuleNode ruleNode = new E2cRuleNode();
+        List<IInferableInstance> goals = new LinkedList<IInferableInstance>();
 
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
@@ -54,8 +54,6 @@ public class E2cTest {
         DenialInstance d = new DenialInstance(goals);
         d.getUniversalVariables().add(Y);
         ruleNode.getGoals().add(d);
-        ruleNode.setQuery(new LinkedList<IInferableInstance>(ruleNode.getGoals()));
-
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/E2c/Test1",ruleNode);

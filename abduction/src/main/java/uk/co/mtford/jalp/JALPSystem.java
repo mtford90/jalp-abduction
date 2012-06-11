@@ -30,7 +30,7 @@ public class JALPSystem {
 
     private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
 
-    private static int MAX_EXPANSIONS = 5000;
+    private static int MAX_EXPANSIONS = 500;
 
     private AbductiveFramework framework;
 

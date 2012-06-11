@@ -42,7 +42,7 @@ public class E2bTest {
     public void test1() throws Exception {
         UniqueIdGenerator.reset();
 
-        E2RuleNode ruleNode = new E2RuleNode();
+        E2bRuleNode ruleNode = new E2bRuleNode();
         List<IInferableInstance> goals = new LinkedList<IInferableInstance>();
 
         VariableInstance X = new VariableInstance("X");
@@ -61,7 +61,7 @@ public class E2bTest {
 
     @Test
     public void test2() throws Exception {
-        E2RuleNode ruleNode = new E2RuleNode();
+        E2bRuleNode ruleNode = new E2bRuleNode();
 
         List<IInferableInstance> goals = new LinkedList<IInferableInstance>();
 
