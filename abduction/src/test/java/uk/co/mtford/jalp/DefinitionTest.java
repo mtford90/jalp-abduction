@@ -60,11 +60,7 @@ public class DefinitionTest {
         query.add(likes);
         List<Result> result = system.generateDebugFiles(query, "debug/basic/definition/definition");
         assertTrue(result.size()==2);
-        Result resultOne = result.remove(0);
-        Result resultTwo = result.remove(0);
-        JALP.reduceResult(resultOne);
-        JALP.reduceResult(resultTwo);
-        assertTrue(resultOne.getAssignments().get(Y).equals(new CharConstantInstance("mary")));
-        assertTrue(resultTwo.getAssignments().get(Y).equals(new CharConstantInstance("jane")));
+        assertTrue(result.get(0).getAssignments().get(Y).equals(new CharConstantInstance("mary")));
+        assertTrue(result.get(1).getAssignments().get(Y).equals(new CharConstantInstance("jane")));
     }
 }

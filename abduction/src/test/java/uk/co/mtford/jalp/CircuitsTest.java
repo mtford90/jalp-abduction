@@ -83,8 +83,6 @@ public class CircuitsTest {
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
-        JALP.reduceResult(resultOne);
-        JALP.reduceResult(resultTwo);
         assertTrue(resultOne.getStore().abducibles.size() == 2);
         assertTrue(resultOne.getStore().abducibles.contains(new PredicateInstance("broken", g1)));
         assertTrue(resultOne.getStore().abducibles.contains(new PredicateInstance("broken",g2)));
@@ -136,8 +134,6 @@ public class CircuitsTest {
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
-        JALP.reduceResult(resultOne);
-        JALP.reduceResult(resultTwo);
         assertTrue(resultOne.getStore().abducibles.size() == 1);
         assertTrue(resultOne.getStore().abducibles.contains(new PredicateInstance("broken",g2)));
         assertTrue(resultTwo.getStore().abducibles.size() == 1);
@@ -190,8 +186,6 @@ public class CircuitsTest {
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
-        JALP.reduceResult(resultOne);
-        JALP.reduceResult(resultTwo);
         assertTrue(resultOne.getStore().abducibles.size() == 2);
         assertTrue(resultOne.getStore().abducibles.contains(new PredicateInstance("broken",g1)));
         assertTrue(resultOne.getStore().abducibles.contains(new PredicateInstance("broken",g2)));
@@ -249,10 +243,6 @@ public class CircuitsTest {
         Result resultTwo = result.get(1);
         Result resultThree = result.get(2);
         Result resultFour = result.get(3);
-        JALP.reduceResult(resultOne);
-        JALP.reduceResult(resultTwo);
-        JALP.reduceResult(resultThree);
-        JALP.reduceResult(resultFour);
         assertTrue(resultOne.getStore().abducibles.size() == 1);
         assertTrue(resultOne.getStore().abducibles.contains(new PredicateInstance("broken",g2)));
         assertTrue(resultTwo.getStore().abducibles.size() == 2);

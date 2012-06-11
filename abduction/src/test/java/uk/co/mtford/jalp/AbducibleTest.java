@@ -63,7 +63,6 @@ public class AbducibleTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/abducible/abducible-test-1");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().abducibles.size()==1);
         assertTrue(resultOne.getStore().abducibles.get(0).isSameFunction(new PredicateInstance("girl",Y)));
     }
@@ -88,7 +87,7 @@ public class AbducibleTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/abducible/abducible-test-2");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
-        JALP.reduceResult(resultOne);
+
         assertTrue(resultOne.getStore().abducibles.size()==1);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("girl", jane)));
     }
@@ -113,7 +112,6 @@ public class AbducibleTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/abducible/unground-abducible");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().abducibles.size()==1);
         IUnifiableAtomInstance XAssignment = resultOne.getAssignments().get(X);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("a",XAssignment)));

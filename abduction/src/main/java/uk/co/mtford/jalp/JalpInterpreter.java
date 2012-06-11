@@ -93,7 +93,6 @@ public class JALPInterpreter {
                 System.out.println("Found "+results.size()+" explanations.");
                 int rNum = 1;
                 for (Result r:results) {
-                    JALP.reduceResult(r);
                     String text = "Explanation "+rNum+" for query "+r.getQuery();
                     printDashes(text.length());
                     System.out.println(text);

@@ -7,6 +7,8 @@ import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
@@ -112,7 +114,6 @@ public class JALPSystem {
         int rNum = 1;
         LOGGER.info("Found "+results.size()+" results");
         for (Result r:results) {
-            JALP.reduceResult(r);
             LOGGER.info("Result "+rNum+" is\n"+r);
             rNum++;
         }
@@ -146,7 +147,7 @@ public class JALPSystem {
 
         List<IInferableInstance> goals = new LinkedList<IInferableInstance>(query);
         goals.addAll(framework.getIC());
-        RuleNode rootNode = goals.get(0).getPositiveRootRuleNode(framework,query,goals);
+        RuleNode rootNode = goals.get(0).getPositiveRootRuleNode(framework,new LinkedList<IInferableInstance>(query),goals);
 
         RuleNode currentNode;
         nodeStack.add(rootNode);
@@ -164,10 +165,7 @@ public class JALPSystem {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("Found a leaf node!");
                 }
-                List<RuleNode> successNodes = applyConstraintSolver(currentNode);
-                for (RuleNode successNode:successNodes) {
-                    generateResult(successNode,results,rootNode);
-                }
+                generateResults(rootNode, currentNode, query, results);
             }
             else if (currentNode.getNodeMark()==RuleNode.NodeMark.FAILED) {
                 LOGGER.debug("Found a failed node:\n"+currentNode);
@@ -185,9 +183,78 @@ public class JALPSystem {
 
     }
 
-    private void generateResult(RuleNode currentNode, List<Result> results, RuleNode root) {
-        Result result = new Result(currentNode.getStore(),currentNode.getAssignments(),currentNode.getQuery(),root);
+    private void generateResults(RuleNode rootNode, RuleNode successNode, List<IInferableInstance> originalQuery, List<Result> results) {
+        List<RuleNode> newSuccessNodes = applyConstraintSolver(successNode);
+        for (RuleNode node:newSuccessNodes) {
+            generateResult(rootNode,node,originalQuery,results);
+        }
+    }
+
+    private void generateResult(RuleNode rootNode, RuleNode successNode, List<IInferableInstance> originalQuery, List<Result> results) {
+        HashMap<VariableInstance,IUnifiableAtomInstance> resultAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>();
+        for (IInferableInstance queryInferable:originalQuery) {
+            for (IInferableInstance finalQuery:successNode.getQuery()) { // TODO: Should be IUnifiable, not Inferable.
+                IUnifiableAtomInstance atom1 = (IUnifiableAtomInstance) queryInferable;
+                IUnifiableAtomInstance atom2 = (IUnifiableAtomInstance) finalQuery;
+                atom1.unify(atom2,resultAssignments);
+            }
+        }
+        Result result = new Result(successNode.getStore(),resultAssignments,successNode.getQuery(),rootNode);
         results.add(result);
+    }
+
+    private void applySubstitutions(RuleNode node) {
+        List<IInferableInstance> newQuery = new LinkedList<IInferableInstance>();
+        for (IInferableInstance inferable:node.getQuery()) {
+            IInferableInstance newInferable = (IInferableInstance) inferable.shallowClone();
+            newInferable.performSubstitutions(node.getAssignments());
+            newQuery.add(newInferable);
+        }
+        node.setQuery(newQuery);
+        List<IConstraintInstance> newConstraints = new LinkedList<IConstraintInstance>();
+        for (IConstraintInstance constraint:node.getStore().constraints) {
+            IConstraintInstance newConstraint = (IConstraintInstance) constraint.shallowClone();
+            newConstraint.performSubstitutions(node.getAssignments());
+            newConstraints.add(newConstraint);
+        }
+        node.getStore().constraints=newConstraints;
+
+        LinkedList<IInferableInstance> newGoals = new LinkedList<IInferableInstance>();
+        for (IInferableInstance inferable:node.getGoals()) {
+            IInferableInstance newGoal = (IInferableInstance) inferable.shallowClone();
+            newGoal.performSubstitutions(node.getAssignments());
+            newGoals.add(newGoal);
+        }
+
+        node.setGoals(newGoals);
+
+        LinkedList<DenialInstance> newDenials = new LinkedList<DenialInstance>();
+        for (DenialInstance d:node.getStore().denials) {
+            DenialInstance newDenial = (DenialInstance) d.shallowClone();
+            d.performSubstitutions(node.getAssignments());
+            newDenials.add(newDenial);
+        }
+
+        node.getStore().denials=newDenials;
+
+        LinkedList<PredicateInstance> newAbducibles= new LinkedList<PredicateInstance>();
+        for (PredicateInstance p:node.getStore().abducibles) {
+            PredicateInstance newAbducible = (PredicateInstance) p.shallowClone();
+            newAbducible.performSubstitutions(node.getAssignments());
+            newAbducibles.add(newAbducible);
+        }
+
+        node.getStore().abducibles=newAbducibles;
+
+        LinkedList<InEqualityInstance> newInequalities = new LinkedList<InEqualityInstance>();
+        for (InEqualityInstance ie:node.getStore().inequalities) {
+            InEqualityInstance newInEquality = (InEqualityInstance) ie.shallowClone();
+            newInEquality.performSubstitutions(node.getAssignments());
+            newInequalities.add(newInEquality);
+        }
+
+        node.getStore().inequalities = newInequalities;
+        node.getStore().equalities=new LinkedList<EqualityInstance>();
     }
 
     private List<RuleNode> applyConstraintSolver(RuleNode node) {
@@ -223,6 +290,7 @@ public class JALPSystem {
             for (Map<VariableInstance,IUnifiableAtomInstance> assignment:possibleAssignments) {
                 RuleNode newLeafNode =node.shallowClone();
                 newLeafNode.setAssignments(assignment);
+                applySubstitutions(newLeafNode);
                 newLeafNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
                 results.add(newLeafNode);
             }

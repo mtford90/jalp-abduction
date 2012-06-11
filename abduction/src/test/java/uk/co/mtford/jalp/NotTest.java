@@ -62,7 +62,6 @@ public class NotTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/negation/not");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().denials.size()==1);
         assertTrue(resultOne.getStore().denials.get(0).getBody().size()==1);
         assertTrue(resultOne.getStore().denials.get(0).getBody().get(0).equals(new PredicateInstance("girl",jane)));

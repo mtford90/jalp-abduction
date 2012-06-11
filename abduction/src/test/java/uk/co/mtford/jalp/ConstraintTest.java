@@ -62,7 +62,6 @@ public class ConstraintTest {
         boolean bob = false;
         boolean john = false;
         for (Result r:result) {
-            JALP.reduceResult(r);
             if (r.getAssignments().get(X).equals(new CharConstantInstance("mary"))) {
                 mary = true;
             }
@@ -179,7 +178,6 @@ public class ConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-1");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getAssignments().get(X).equals(new IntegerConstantInstance(1)));
     }
 
@@ -320,7 +318,6 @@ public class ConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-4");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getAssignments().get(Y).equals(new IntegerConstantInstance(1)));
     }
 
@@ -360,7 +357,6 @@ public class ConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-eq-2");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getAssignments().get(Y).equals(new IntegerConstantInstance(1)));
     }
 
@@ -420,7 +416,6 @@ public class ConstraintTest {
         boolean resultOne = false;
         boolean resultTwo = false;
         for (Result r:result) {
-            JALP.reduceResult(r);
             if (r.getAssignments().get(Y).equals(new IntegerConstantInstance(2))) {
                 resultOne=true;
             }
@@ -499,7 +494,6 @@ public class ConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-inf-dom-test-1");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getAssignments().get(X).equals(new IntegerConstantInstance(1)));
     }
 

@@ -62,7 +62,6 @@ public class FactTest {
         List<Result> result = system.generateDebugFiles(query,"debug/basic/fact/one-fact");
         assertTrue(result.size() == 1);
         Result onlyResult = result.remove(0);
-        JALP.reduceResult(onlyResult);
         assertTrue(onlyResult.getAssignments().get(Y).equals(new CharConstantInstance("jane")));
         assertTrue(onlyResult.getAssignments().get(X).equals(new CharConstantInstance("john")));
     }
@@ -89,8 +88,6 @@ public class FactTest {
         assertTrue(result.size()==2);
         Result resultOne = result.remove(0);
         Result resultTwo = result.remove(0);
-        JALP.reduceResult(resultOne);
-        JALP.reduceResult(resultTwo);
         assertTrue(resultOne.getAssignments().get(X).equals(new CharConstantInstance("bob")));
         assertTrue(resultOne.getAssignments().get(Y).equals(new CharConstantInstance("jane")));
         assertTrue(resultTwo.getAssignments().get(X).equals(new CharConstantInstance("john")));

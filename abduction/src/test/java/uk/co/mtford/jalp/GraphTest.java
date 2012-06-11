@@ -72,7 +72,6 @@ public class GraphTest {
         List<Result> result = system.generateDebugFiles(query, "debug/full/graph/graph-1");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().abducibles.size()==1);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(has_colour));
         DenialInstance denial = new DenialInstance(new PredicateInstance("has_colour",node2,red));
@@ -148,7 +147,6 @@ public class GraphTest {
         List<Result> result = system.generateDebugFiles(query, "debug/full/graph/graph2-1");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().abducibles.size()==1);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(has_colour));
         DenialInstance denial1 = new DenialInstance(new PredicateInstance("has_colour",node2,red));
@@ -185,7 +183,6 @@ public class GraphTest {
         List<Result> result = system.generateDebugFiles(query, "debug/full/graph/graph-constraint-1");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().abducibles.size()==1);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(has_colour));
         DenialInstance denial = new DenialInstance(new PredicateInstance("has_colour",node2,red));

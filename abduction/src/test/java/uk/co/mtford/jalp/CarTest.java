@@ -68,7 +68,6 @@ public class CarTest {
         List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/cars");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().abducibles.size() == 1);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("has_no_fuel",mycar)));
     }

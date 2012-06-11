@@ -102,7 +102,6 @@ public class Main {
                     else {
                         int n = 1;
                         for (Result r:results) {
-                            if (reduce) JALP.reduceResult(r);
                             System.out.println("Result 1:\n"+r);
                         }
                     }

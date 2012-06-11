@@ -72,8 +72,6 @@ public class MedicalTest {
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
-        JALP.reduceResult(resultOne);
-        JALP.reduceResult(resultTwo);
         assertTrue(resultOne.getStore().abducibles.size()==1);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("migraine",john)));
         assertTrue(resultTwo.getStore().abducibles.size()==2);
@@ -112,7 +110,6 @@ public class MedicalTest {
         List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/medical/medical-dizziness");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().abducibles.size()==1);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("migraine",john)));
     }
@@ -148,7 +145,6 @@ public class MedicalTest {
         List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/medical/medical-sickness");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
-        JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().abducibles.size()==1);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("stomachBug",john)));
     }
