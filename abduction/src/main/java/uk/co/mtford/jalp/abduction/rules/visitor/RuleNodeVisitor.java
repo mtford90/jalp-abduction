@@ -631,6 +631,33 @@ public class RuleNodeVisitor {
 
                 node.setGoals(newGoals);
 
+                LinkedList<DenialInstance> newDenials = new LinkedList<DenialInstance>();
+                for (DenialInstance d:node.getStore().denials) {
+                    DenialInstance newDenial = (DenialInstance) d.shallowClone();
+                    d.performSubstitutions(assignments);
+                    newDenials.add(newDenial);
+                }
+
+                node.getStore().denials=newDenials;
+
+                LinkedList<PredicateInstance> newAbducibles= new LinkedList<PredicateInstance>();
+                for (PredicateInstance p:node.getStore().abducibles) {
+                    PredicateInstance newAbducible = (PredicateInstance) p.shallowClone();
+                    newAbducible.performSubstitutions(assignments);
+                    newAbducibles.add(newAbducible);
+                }
+
+                node.getStore().abducibles=newAbducibles;
+
+                LinkedList<InEqualityInstance> newInequalities = new LinkedList<InEqualityInstance>();
+                for (InEqualityInstance ie:node.getStore().inequalities) {
+                    InEqualityInstance newInEquality = (InEqualityInstance) ie.shallowClone();
+                    newInEquality.performSubstitutions(assignments);
+                    newInequalities.add(newInEquality);
+                }
+
+                node.getStore().inequalities = newInequalities;
+
                 node.setAssignments(assignments);
                 node.getStore().equalities=new LinkedList<EqualityInstance>();
                 return true;

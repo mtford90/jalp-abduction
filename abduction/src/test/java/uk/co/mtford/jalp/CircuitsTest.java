@@ -79,7 +79,7 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,on);
         query.add(output);
-        List<Result> result = system.query(query);
+        List<Result> result = system.generateDebugFiles(query,"debug/full/jiefei/circuits1-1");
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -132,7 +132,7 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,off);
         query.add(output);
-        List<Result> result = system.query(query);
+        List<Result> result = system.generateDebugFiles(query,"debug/full/jiefei/circuits1-2");
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -186,7 +186,7 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,on);
         query.add(output);
-        List<Result> result = system.query(query);
+        List<Result> result = system.generateDebugFiles(query,"debug/full/jiefei/circuits2-1");
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -243,7 +243,7 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,off);
         query.add(output);
-        List<Result> result = system.query(query);
+        List<Result> result = system.generateDebugFiles(query,"debug/full/jiefei/circuits2-2");
         assertTrue(result.size()==4);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
