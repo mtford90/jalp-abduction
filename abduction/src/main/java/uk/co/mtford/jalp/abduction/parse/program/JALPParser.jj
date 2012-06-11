@@ -2,6 +2,8 @@
 
 LL(2) grammar for JALP in prolog style.
 
+Comment -> %
+
 ALP -> ((Rule | Denial | Abducible))* EOF
 Rule -> Predicate (DEFINES Body)? DOT
 Denial -> IC DEFINES Body DOT
@@ -107,11 +109,14 @@ SKIP :
   " " |
   "\t" |
   "\n" |
-  "\r"  
+  "\r" |
+   <"%" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
 }
+
 
 TOKEN :
 {
+  <COMMENT: "%"> |
   <LBRACKET: "("> |
   <RBRACKET: ")"> |
   <DEFINES: ":-"> |
