@@ -204,7 +204,7 @@ public class JALPSystem {
                 atom1.unify(atom2,resultAssignments);
             }
         }
-        Result result = new Result(successNode.getStore(),resultAssignments,successNode.getQuery(),rootNode);
+        Result result = new Result(successNode.getStore(),resultAssignments,originalQuery,rootNode);
         results.add(result);
     }
 

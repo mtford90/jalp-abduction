@@ -50,18 +50,18 @@ public class JALPParser implements JALPParserConstants {
     Map<String, Integer> newAbducibles;
     label_1:
     while (true) {
-      if (jj_2_1(3)) {
+      if (jj_2_1(2)) {
         ;
       } else {
         break label_1;
       }
-      if (jj_2_2(3)) {
+      if (jj_2_2(2)) {
         r = Rule();
             program.add(r);
-      } else if (jj_2_3(3)) {
+      } else if (jj_2_3(2)) {
         d = Denial();
           listConstraints.add(d);
-      } else if (jj_2_4(3)) {
+      } else if (jj_2_4(2)) {
         newAbducibles = Abducible();
             abducibles.putAll(newAbducibles);
       } else {
@@ -80,7 +80,7 @@ public class JALPParser implements JALPParserConstants {
     PredicateInstance head;
     List<IInferableInstance> body = null;
     head = Predicate(variablesSoFar);
-    if (jj_2_5(3)) {
+    if (jj_2_5(2)) {
       jj_consume_token(DEFINES);
       body = Body(variablesSoFar);
     } else {
@@ -115,7 +115,7 @@ public class JALPParser implements JALPParserConstants {
       body.add(inferable);
     label_2:
     while (true) {
-      if (jj_2_6(3)) {
+      if (jj_2_6(2)) {
         ;
       } else {
         break label_2;
@@ -148,10 +148,10 @@ public class JALPParser implements JALPParserConstants {
 
   final public IInferableInstance Inferable(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     IInferableInstance inferable;
-    if (jj_2_7(3)) {
+    if (jj_2_7(2)) {
       inferable = PositiveInferable(variablesSoFar);
       {if (true) return inferable;}
-    } else if (jj_2_8(3)) {
+    } else if (jj_2_8(2)) {
       inferable = NegativeInferable(variablesSoFar);
       {if (true) return inferable;}
     } else {
@@ -163,16 +163,16 @@ public class JALPParser implements JALPParserConstants {
 
   final public IInferableInstance PositiveInferable(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     IInferableInstance inferable;
-    if (jj_2_9(3)) {
+    if (jj_2_9(2)) {
       inferable = Predicate(variablesSoFar);
       {if (true) return inferable;}
-    } else if (jj_2_10(3)) {
+    } else if (jj_2_10(2)) {
       inferable = Equality(variablesSoFar);
       {if (true) return inferable;}
-    } else if (jj_2_11(3)) {
+    } else if (jj_2_11(2)) {
       inferable = InEquality(variablesSoFar);
       {if (true) return inferable;}
-    } else if (jj_2_12(3)) {
+    } else if (jj_2_12(2)) {
       inferable = Constraint(variablesSoFar);
       {if (true) return inferable;}
     } else {
@@ -225,19 +225,19 @@ public class JALPParser implements JALPParserConstants {
 
   final public IConstraintInstance Constraint(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     IConstraintInstance instance;
-    if (jj_2_13(3)) {
+    if (jj_2_13(2)) {
       instance = LessThanConstraint(variablesSoFar);
       {if (true) return instance;}
-    } else if (jj_2_14(3)) {
+    } else if (jj_2_14(2)) {
       instance = LessThanEqConstraint(variablesSoFar);
       {if (true) return instance;}
-    } else if (jj_2_15(3)) {
+    } else if (jj_2_15(2)) {
       instance = GreaterThanConstraint(variablesSoFar);
       {if (true) return instance;}
-    } else if (jj_2_16(3)) {
+    } else if (jj_2_16(2)) {
       instance = GreaterThanEqConstraint(variablesSoFar);
       {if (true) return instance;}
-    } else if (jj_2_17(3)) {
+    } else if (jj_2_17(2)) {
       instance = InListConstraint(variablesSoFar);
       {if (true) return instance;}
     } else {
@@ -292,10 +292,10 @@ public class JALPParser implements JALPParserConstants {
     ITermInstance right;
     left = Term(variablesSoFar);
     jj_consume_token(IN);
-    if (jj_2_18(3)) {
+    if (jj_2_18(2)) {
       right = CharConstantList(variablesSoFar);
       {if (true) return new InConstantListConstraintInstance(left,(CharConstantListInstance)right);}
-    } else if (jj_2_19(3)) {
+    } else if (jj_2_19(2)) {
       right = IntegerConstantList(variablesSoFar);
       {if (true) return new InIntegerListConstraintInstance(left,(IntegerConstantListInstance)right);}
     } else {
@@ -307,13 +307,13 @@ public class JALPParser implements JALPParserConstants {
 
   final public ITermInstance Term(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     ITermInstance term;
-    if (jj_2_20(3)) {
+    if (jj_2_20(2)) {
       term = Variable(variablesSoFar);
       {if (true) return term;}
-    } else if (jj_2_21(3)) {
+    } else if (jj_2_21(2)) {
       term = Constant();
       {if (true) return term;}
-    } else if (jj_2_22(3)) {
+    } else if (jj_2_22(2)) {
       term = List(variablesSoFar);
       {if (true) return term;}
     } else {
@@ -326,12 +326,12 @@ public class JALPParser implements JALPParserConstants {
   final public List<IUnifiableAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     LinkedList<IUnifiableAtomInstance> params = new LinkedList<IUnifiableAtomInstance>();
     IUnifiableAtomInstance param;
-    if (jj_2_24(3)) {
+    if (jj_2_24(2)) {
       param = Parameter(variablesSoFar);
           params.add(param);
       label_3:
       while (true) {
-        if (jj_2_23(3)) {
+        if (jj_2_23(2)) {
           ;
         } else {
           break label_3;
@@ -349,13 +349,13 @@ public class JALPParser implements JALPParserConstants {
 
   final public IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     IUnifiableAtomInstance unifiable;
-    if (jj_2_25(3)) {
+    if (jj_2_25(2)) {
       unifiable = Predicate(variablesSoFar);
           {if (true) return unifiable;}
-    } else if (jj_2_26(3)) {
+    } else if (jj_2_26(2)) {
       unifiable = Variable(variablesSoFar);
           {if (true) return unifiable;}
-    } else if (jj_2_27(3)) {
+    } else if (jj_2_27(2)) {
       unifiable = Constant();
           {if (true) return unifiable;}
     } else {
@@ -367,10 +367,10 @@ public class JALPParser implements JALPParserConstants {
 
   final public ListInstance List(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
    ListInstance listInstance;
-    if (jj_2_28(3)) {
+    if (jj_2_28(2)) {
       listInstance = IntegerConstantList(variablesSoFar);
       {if (true) return listInstance;}
-    } else if (jj_2_29(3)) {
+    } else if (jj_2_29(2)) {
       listInstance = CharConstantList(variablesSoFar);
       {if (true) return listInstance;}
     } else {
@@ -388,7 +388,7 @@ public class JALPParser implements JALPParserConstants {
         listInstance.getList().add(constantInstance);
     label_4:
     while (true) {
-      if (jj_2_30(3)) {
+      if (jj_2_30(2)) {
         ;
       } else {
         break label_4;
@@ -410,7 +410,7 @@ public class JALPParser implements JALPParserConstants {
         listInstance.getList().add(constantInstance);
     label_5:
     while (true) {
-      if (jj_2_31(3)) {
+      if (jj_2_31(2)) {
         ;
       } else {
         break label_5;
@@ -442,10 +442,10 @@ public class JALPParser implements JALPParserConstants {
 
   final public ConstantInstance Constant() throws ParseException {
     ConstantInstance constantInstance;
-    if (jj_2_32(3)) {
+    if (jj_2_32(2)) {
       constantInstance = IntegerConstant();
       {if (true) return constantInstance;}
-    } else if (jj_2_33(3)) {
+    } else if (jj_2_33(2)) {
       constantInstance = CharConstant();
       {if (true) return constantInstance;}
     } else {
@@ -707,12 +707,6 @@ public class JALPParser implements JALPParserConstants {
   private boolean jj_3R_23() {
     if (jj_scan_token(LSQBRACKET)) return true;
     if (jj_3R_28()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_30()) { jj_scanpos = xsp; break; }
-    }
-    if (jj_scan_token(RSQBRACKET)) return true;
     return false;
   }
 
@@ -728,9 +722,8 @@ public class JALPParser implements JALPParserConstants {
   }
 
   private boolean jj_3R_19() {
-    if (jj_3R_31()) return true;
+    if (jj_3R_30()) return true;
     if (jj_scan_token(GREATERTHAN)) return true;
-    if (jj_3R_31()) return true;
     return false;
   }
 
@@ -785,9 +778,8 @@ public class JALPParser implements JALPParserConstants {
   }
 
   private boolean jj_3R_18() {
-    if (jj_3R_31()) return true;
+    if (jj_3R_30()) return true;
     if (jj_scan_token(LESSTHANEQ)) return true;
-    if (jj_3R_31()) return true;
     return false;
   }
 
@@ -890,9 +882,8 @@ public class JALPParser implements JALPParserConstants {
   }
 
   private boolean jj_3R_17() {
-    if (jj_3R_31()) return true;
+    if (jj_3R_30()) return true;
     if (jj_scan_token(LESSTHAN)) return true;
-    if (jj_3R_31()) return true;
     return false;
   }
 
@@ -936,13 +927,6 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_30() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_24()) jj_scanpos = xsp;
-    return false;
-  }
-
   private boolean jj_3_15() {
     if (jj_3R_19()) return true;
     return false;
@@ -951,7 +935,6 @@ public class JALPParser implements JALPParserConstants {
   private boolean jj_3R_8() {
     if (jj_scan_token(ABDUCIBLE)) return true;
     if (jj_scan_token(LBRACKET)) return true;
-    if (jj_scan_token(LCASENAME)) return true;
     return false;
   }
 
@@ -998,7 +981,6 @@ public class JALPParser implements JALPParserConstants {
   private boolean jj_3R_15() {
     if (jj_3R_27()) return true;
     if (jj_scan_token(NOTEQUALS)) return true;
-    if (jj_3R_27()) return true;
     return false;
   }
 
@@ -1017,7 +999,7 @@ public class JALPParser implements JALPParserConstants {
     return false;
   }
 
-  private boolean jj_3R_31() {
+  private boolean jj_3R_30() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3_20()) {
@@ -1044,7 +1026,6 @@ public class JALPParser implements JALPParserConstants {
   private boolean jj_3R_14() {
     if (jj_3R_27()) return true;
     if (jj_scan_token(EQUALS)) return true;
-    if (jj_3R_27()) return true;
     return false;
   }
 
@@ -1061,39 +1042,24 @@ public class JALPParser implements JALPParserConstants {
   private boolean jj_3R_22() {
     if (jj_scan_token(LSQBRACKET)) return true;
     if (jj_3R_29()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_31()) { jj_scanpos = xsp; break; }
-    }
-    if (jj_scan_token(RSQBRACKET)) return true;
     return false;
   }
 
   private boolean jj_3R_21() {
-    if (jj_3R_31()) return true;
+    if (jj_3R_30()) return true;
     if (jj_scan_token(IN)) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_18()) {
-    jj_scanpos = xsp;
-    if (jj_3_19()) return true;
-    }
     return false;
   }
 
   private boolean jj_3R_7() {
     if (jj_scan_token(IC)) return true;
     if (jj_scan_token(DEFINES)) return true;
-    if (jj_3R_9()) return true;
     return false;
   }
 
   private boolean jj_3R_13() {
     if (jj_scan_token(LCASENAME)) return true;
     if (jj_scan_token(LBRACKET)) return true;
-    if (jj_3R_30()) return true;
-    if (jj_scan_token(RBRACKET)) return true;
     return false;
   }
 
@@ -1104,9 +1070,8 @@ public class JALPParser implements JALPParserConstants {
   }
 
   private boolean jj_3R_20() {
-    if (jj_3R_31()) return true;
+    if (jj_3R_30()) return true;
     if (jj_scan_token(GREATERTHANEQ)) return true;
-    if (jj_3R_31()) return true;
     return false;
   }
 

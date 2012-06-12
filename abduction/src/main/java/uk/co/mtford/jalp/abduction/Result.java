@@ -1,11 +1,17 @@
 package uk.co.mtford.jalp.abduction;
 
+import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
+import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,16 +67,103 @@ public class Result {
         this.store = store;
     }
 
+    public void reduce(List<VariableInstance> relevantVariables) {
+        // Remove irrelevant assignments.
+        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        for (VariableInstance v:assignments.keySet()) {
+            if (relevantVariables.contains(v)) {
+                newAssignments.put(v,assignments.get(v));
+            }
+        }
+        assignments = newAssignments;
+        // Remove irrelevant denials
+        List<DenialInstance> newDenials = new LinkedList<DenialInstance>();
+        for (DenialInstance d:store.denials) {
+         //   for (VariableInstance v:d.getVariables()) {
+               // if (relevantVariables.contains(v)) {
+                    if (!newDenials.contains(d)) { // Remove repeats.
+                        newDenials.add(d);
+                    }
+             //   }
+           // }
+        }
+
+        store.denials=newDenials;
+        // Remove irrelevant equalities + repeat equalities.
+        List<EqualityInstance> newEqualities = new LinkedList<EqualityInstance>();
+        for (EqualityInstance e:store.equalities) {
+            for (VariableInstance v:e.getVariables()) {
+                if (relevantVariables.contains(v)) {
+                    if (!newEqualities.contains(e)) {
+                        newEqualities.add(e);
+                    }
+                    break;
+                }
+            }
+        }
+        store.equalities=newEqualities;
+        // Remove irrelevant inEqualities + repeat inequalities.
+        List<InEqualityInstance> newInEqualities = new LinkedList<InEqualityInstance>();
+        for (InEqualityInstance e:store.inequalities) {
+            for (VariableInstance v:e.getVariables()) {
+                if (relevantVariables.contains(v)) {
+                    if (!newInEqualities.contains(e)) {
+                        newInEqualities.add(e);
+                    }
+                    break;
+                }
+            }
+        }
+        store.inequalities=newInEqualities;
+        // Remove irrelevant constraints + repeat constraints
+        List<IConstraintInstance> newConstraints = new LinkedList<IConstraintInstance>();
+        for (IConstraintInstance e:store.constraints) {
+            for (VariableInstance v:e.getVariables()) {
+                if (relevantVariables.contains(v)) {
+                    if (!newConstraints.contains(e)) {
+                        newConstraints.add(e);
+                    }
+                    break;
+                }
+            }
+        }
+        store.constraints=newConstraints;
+    }
 
     public String toString() {
-        String message =
-                        "Assignments = " + assignments + "\n\n" +
-                        "Abducibles = " + store.abducibles + "\n" +
-                        "Integrity Constraints = " + store.denials + "\n" +
-                        "Equalities = " + store.equalities + "\n" +
-                        "InEqualities = " + store.inequalities +"\n" +
-                        "fd = " + store.constraints;
-        return message;
+
+        List epsilon = new LinkedList();
+
+        for (InEqualityInstance e:store.inequalities) {
+            epsilon.add(e);
+        }
+
+        for (EqualityInstance e:store.equalities) {
+            epsilon.add(e);
+        }
+
+        boolean assignmentsEmpty = assignments.isEmpty();
+        boolean abduciblesEmpty = store.abducibles.isEmpty();
+        boolean constraintsEmpty = store.denials.isEmpty();
+        boolean equalitiesEmpty = epsilon.isEmpty();
+        boolean finiteDomainConstraintsEmpty = store.constraints.isEmpty();
+        boolean allEmpty = assignmentsEmpty && constraintsEmpty && abduciblesEmpty && equalitiesEmpty &&
+                           finiteDomainConstraintsEmpty;
+
+        if (allEmpty) {
+            return "Yes.";
+        }
+        else {
+            String message = "";
+            if (!assignmentsEmpty) message+="Subst:" + assignments + "\n";
+            if (!abduciblesEmpty) message+="Delta:" + store.abducibles + "\n";
+            if (!constraintsEmpty) message+="Delta*:" + store.denials + "\n";
+            if (!equalitiesEmpty) message+="Epsilon:" + epsilon + "\n";
+            if (!finiteDomainConstraintsEmpty) message+="FD:" + store.constraints +"\n";
+
+            return message.substring(0,message.length()-1);
+        }
+
     }
 
 }

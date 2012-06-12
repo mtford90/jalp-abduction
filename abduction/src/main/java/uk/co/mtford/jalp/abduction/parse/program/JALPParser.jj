@@ -38,7 +38,7 @@ CharConstant -> LCASENAME
 */
 
 options {
-  LOOKAHEAD = 3;
+  LOOKAHEAD = 2;
   CHOICE_AMBIGUITY_CHECK = 2;
   OTHER_AMBIGUITY_CHECK = 1;
   STATIC = false;
@@ -109,7 +109,7 @@ SKIP :
   "\t" |
   "\n" |
   "\r" |
-   <"%" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
+  <"%" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
 }
 
 TOKEN :

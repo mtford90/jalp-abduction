@@ -85,8 +85,6 @@ public class InEqualityInstance implements IInferableInstance {
         return equalityInstance.getVariables();
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
