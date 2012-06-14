@@ -149,23 +149,23 @@ public class JALP {
         return new DenialInstance();
     }
 
-    public static Definition makeFact(String headPredicateName, ConstantInstance[] headParameters) {
+    public static Definition makeFact(String headPredicateName, IUnifiableAtomInstance[] headParameters) {
         return new Definition(new PredicateInstance(headPredicateName,headParameters), (List<IInferableInstance>) null,null);
     }
-    public static Definition makeFact(String headPredicateName, List<ConstantInstance> headParameters) {
+    public static Definition makeFact(String headPredicateName, List<IUnifiableAtomInstance> headParameters) {
         return new Definition(new PredicateInstance(headPredicateName,new LinkedList<IUnifiableAtomInstance>(headParameters)), (List<IInferableInstance>) null,null);
     }
 
-    public static Definition makeRule(String headPredicateName, VariableInstance[] headParameters, IInferableInstance[] body) {
+    public static Definition makeRule(String headPredicateName, IUnifiableAtomInstance[] headParameters, IInferableInstance[] body) {
         return new Definition(new PredicateInstance(headPredicateName,headParameters),body,null);
     }
-    public static Definition makeRule(String headPredicateName, List<ConstantInstance> headParameters, IInferableInstance[] body) {
+    public static Definition makeRule(String headPredicateName, List<IUnifiableAtomInstance> headParameters, IInferableInstance[] body) {
         return new Definition(new PredicateInstance(headPredicateName,new LinkedList<IUnifiableAtomInstance>(headParameters)),body,null);
     }
-    public static Definition makeRule(String headPredicateName, VariableInstance[] headParameters, List<IInferableInstance> body) {
+    public static Definition makeRule(String headPredicateName, IUnifiableAtomInstance[] headParameters, List<IInferableInstance> body) {
         return new Definition(new PredicateInstance(headPredicateName,headParameters),body,null);
     }
-    public static Definition makeRule(String headPredicateName, List<ConstantInstance> headParameters, List<IInferableInstance> body) {
+    public static Definition makeRule(String headPredicateName, List<IUnifiableAtomInstance> headParameters, List<IInferableInstance> body) {
         return new Definition(new PredicateInstance(headPredicateName,new LinkedList<IUnifiableAtomInstance>(headParameters)),body,null);
     }
 
