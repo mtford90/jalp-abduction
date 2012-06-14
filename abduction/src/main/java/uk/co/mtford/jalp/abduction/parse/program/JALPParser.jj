@@ -9,10 +9,13 @@ Body -> Inferable (COMMA Inferable)*
 Abducible -> ABDUCIBLE LBRACKET UCASENAME SLASH INTEGER RBRACKET DOT
 
 Inferable -> PosInferable | NegInferable
-PosInferable -> Predicate | Equality | InEquality | Constraint
+PosInferable -> PredOrEqualOrInequal | EqualOrInequal | Constraint
 NegInferable -> NOT PosInferable
 
-Predicate -> LCASENAME LBRACKET ParameterList? RBRACKET
+PredicateOrEqualOrInequal -> Predicate (EQUALS Parameter | NOTEQUALS Parameter)?
+EqualOrInequal -> (Variable | Constant) (EQUALS Parameter | NOTEQUALS Parameter)
+
+Predicate -> LCASENAME LBRACKET ParameterList RBRACKET
 Equality -> Parameter EQUALS Parameter
 InEquality -> Parameter NOTEQUALS Parameter
 Constraint -> LessThanConstraint | LessThanEqConstraint | GreaterThanConstraint | GreaterThanEqConstraint | InConstraint
@@ -258,15 +261,58 @@ IInferableInstance PositiveInferable(HashMap<String, VariableInstance> variables
     IInferableInstance inferable;
 }
 {
-    inferable = Predicate(variablesSoFar) 
+    inferable = PredicateOrEqualOrInequal(variablesSoFar)
     { return inferable; } |
-    inferable = Equality(variablesSoFar)
-    { return inferable; } |
-    inferable = InEquality(variablesSoFar)
+    inferable = EqualOrInequal(variablesSoFar)
     { return inferable; } |
     inferable = Constraint(variablesSoFar)
     { return inferable; }
 }
+
+IInferableInstance PredicateOrEqualOrInequal(HashMap<String, VariableInstance> variablesSoFar):
+{
+    PredicateInstance left;
+    IUnifiableAtomInstance right;
+}
+{
+    left = Predicate(variablesSoFar)
+    [
+        (
+        <EQUALS>
+        right = Parameter(variablesSoFar)
+        {return new EqualityInstance(left,right);}
+        ) |
+        (
+        <NOTEQUALS>
+        right = Parameter(variablesSoFar)
+        {return new InEqualityInstance(left,right);}
+        )
+    ]
+    {return left;}
+}
+
+IInferableInstance EqualOrInequal(HashMap<String, VariableInstance> variablesSoFar):
+{
+    IUnifiableAtomInstance left = null;
+    IUnifiableAtomInstance right;
+}
+{
+    (left = Variable(variablesSoFar) |
+    left = Constant() )
+    (
+    <EQUALS>
+    right = Parameter(variablesSoFar)
+    {return new EqualityInstance(left,right);}
+    ) |
+    (
+    <NOTEQUALS>
+    right = Parameter(variablesSoFar)
+    {return new InEqualityInstance(left,right);}
+    )
+}
+
+
+
 
 NegationInstance NegativeInferable(HashMap<String, VariableInstance> variablesSoFar):
 {

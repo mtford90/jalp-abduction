@@ -61,12 +61,10 @@ public class EqualityInstance implements IEqualityInstance {
     }
 
 
-    @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         return new E1RuleNode(abductiveFramework, query, goals);
     }
 
-    @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
 
         List<EqualityInstance> reductionResult = left.reduce(right);
@@ -110,7 +108,6 @@ public class EqualityInstance implements IEqualityInstance {
 
     }
 
-    @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         IUnifiableAtomInstance newLeft = (IUnifiableAtomInstance) left.performSubstitutions(substitutions);
         IUnifiableAtomInstance newRight = (IUnifiableAtomInstance) right.performSubstitutions(substitutions);
@@ -119,19 +116,16 @@ public class EqualityInstance implements IEqualityInstance {
         return this;
     }
 
-    @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         IUnifiableAtomInstance newLeft = (IUnifiableAtomInstance) left.deepClone(substitutions);
         IUnifiableAtomInstance newRight = (IUnifiableAtomInstance) right.deepClone(substitutions);
         return new EqualityInstance(newLeft, newRight);
     }
 
-    @Override
     public IFirstOrderLogicInstance shallowClone() {
         return new EqualityInstance((IUnifiableAtomInstance)left.shallowClone(), (IUnifiableAtomInstance) right.shallowClone());
     }
 
-    @Override
     public Set<VariableInstance> getVariables() {
         HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
         variables.addAll(left.getVariables());
@@ -168,7 +162,6 @@ public class EqualityInstance implements IEqualityInstance {
         return right.unify(left,assignments);
     }
 
-    @Override
     public boolean equalitySolve(Map<VariableInstance, IUnifiableAtomInstance> equalitySolverAssignments) {
         return left.unify(right,equalitySolverAssignments);
     }

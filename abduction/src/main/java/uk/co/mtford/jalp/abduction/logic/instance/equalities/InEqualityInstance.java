@@ -43,7 +43,6 @@ public class InEqualityInstance implements IInferableInstance {
         return equalityInstance.getLeft()+"!="+equalityInstance.getRight();
     }
 
-    @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         if (!goals.get(0).equals(this)) {  // Sanity check.
             throw new JALPException("Was expecting "+this+" to be at head of goals but have got "+goals.get(0));
@@ -52,7 +51,6 @@ public class InEqualityInstance implements IInferableInstance {
 
     }
 
-    @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         if (!(goals.get(0) instanceof DenialInstance)) { // Sanity check.
             throw new JALPException("Was expecting a denial at goal head for creation of negative node, but it isnt!");
@@ -64,23 +62,19 @@ public class InEqualityInstance implements IInferableInstance {
         return new InE2RuleNode(abductiveFramework, query, goals);
     }
 
-    @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
        equalityInstance = ((EqualityInstance) equalityInstance.performSubstitutions(substitutions));
        return this;
     }
 
-    @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         return new InEqualityInstance((EqualityInstance) equalityInstance.deepClone(substitutions));
     }
 
-    @Override
     public IFirstOrderLogicInstance shallowClone() {
         return new InEqualityInstance((EqualityInstance) equalityInstance.shallowClone());
     }
 
-    @Override
     public Set<VariableInstance> getVariables() {
         return equalityInstance.getVariables();
     }
