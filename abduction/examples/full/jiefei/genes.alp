@@ -1,0 +1,33 @@
+%Theory, T
+
+produce(Enz) :- code(Gene,Enz), express(Gene).
+
+express(Gene) :- on(Gene,Operon),bind(polymerase,Operon), not bind(repressor,Operon).
+
+bind(polymerase,operon) :- bind(activator,operon).
+bind(activator,operon) :- bind(cAMP,activator).
+bind(cAMP,activator) :- highconcentration(cAMP), not present(sugar).
+bind(repressor,operon) :- not highconcentration(allolactose), present(sugar).
+
+highconcentration(cAMP) :- present(lactose), absent(sugar).
+highconcentration(allolactose) :- absent(glucose).
+highconcentration(allolactose) :- not present(allosugar).
+
+code(lac(z),galactosidase).
+code(lac(y),permease).
+
+on(lac(X),operon).
+
+%Abducibles, H
+
+abducible(present/1).
+abducible(absent/1).
+
+%Integrity Constraints, IC
+
+ic:- present(X), absent(X).
+
+% ic:- absent(sugar), absent(glucose).
+
+%?- query([produce(permease)],(Hypotheses, _, _)).
+

@@ -1,0 +1,5 @@
+abducible(girl/1).
+
+boy(john).
+
+likes(X,Y) :- boy(X), not girl(Y).

@@ -1,0 +1,6 @@
+child(Person) :- age(Person,Age), Age>=0, Age<=12.
+teenager(Person) :- age(Person,Age), Age>=13, Age>=19.
+adult(Person) :- age(Person,Age), Age>=20, Age<=100.
+elderly(Person) :- age(Person,Age), Age>=70, Age<=100.
+
+abducible(age/2).

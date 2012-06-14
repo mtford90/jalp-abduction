@@ -1,0 +1,5 @@
+p(X,Y,Z) :- a(X,Y,Z), not q(X,Y,Z).
+
+q(1,2,3).
+
+abducible(a/3).

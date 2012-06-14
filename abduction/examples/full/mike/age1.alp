@@ -1,0 +1,10 @@
+age(sam,12).
+age(bob,1).
+age(liam,15).
+age(mary,40).
+age(edith,91).
+
+child(Person) :- age(Person,Age), Age>=0, Age<=12.
+teenager(Person) :- age(Person,Age), Age>=13, Age>=19.
+adult(Person) :- age(Person,Age), Age>=20, Age<=100.
+elderly(Person) :- age(Person,Age), Age>=70, Age<=100.

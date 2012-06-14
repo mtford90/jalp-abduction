@@ -1,0 +1,27 @@
+initially(1,2).
+initially(2,3).
+initially(3,0).
+
+ablock(X) :- X in [1,2,3].
+location(X) :- X in [0,1,2,3].
+time(X) :- X in [1,2,3,4,5,6].
+
+on(X,Y,T) :- initially(X,Y), not moved(X,Y,0,T).
+on(X,Y,T) :- move(X,Y,E), E<T, not moved(X,Y,E,T).
+moved(X,Y,E,T) :- move(X,Z,C), Z!=Y, between(C,E,T).
+between(C,E,T) :- E <= C, C < T.
+
+succeeds_move(X,Y,E) :- ablock(X), location(Y), time(E), X!=Y, clear_block(X,E), clear_location(Y,E).
+
+clear_block(X,E) :- not something_on(X,E).
+something_on(X,E) :- on(Y,X,E).
+
+clear_location(0,E).
+clear_location(Y,E) :- Y!=0, clear_block(Y,E).
+
+ic :- move(X,Y,E), not succeeds_move(X,Y,E).
+
+ic :- move(X,Y1,T), move(X,Y2,T), Y1!=Y2.
+ic :- move(X1,Y,T), move(X2,Y,T), X1!=X2.
+
+abducible(move/3).

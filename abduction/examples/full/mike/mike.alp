@@ -1,0 +1,21 @@
+table(table1).
+table(table2).
+block(block1).
+block(block2).
+
+initially(block1,block2).
+initially(block2,table1).
+
+time(X) :- X in [0,1,2].
+location(X) :- X in [table1,table2,block1,block2].
+
+on(Block,Location,Time) :- block(Block), location(Location), initially(Block,Location),
+					       not moved(Block,Location,0,Time).
+on(Block,Location,Time) :- move(Block,Location,Time), Time1<Time, 
+						   not moved(Block,Location,Time1,Time).
+moved(Block,Location,Time1,Time) :- move(Block,Location2,Time2), Location2!=Location, between(Time2,Time1,Time).
+between(Time2,Time1,Time) :- Time1 <= Time2, Time2 < Time.
+
+clear(Location,Time) :- not on(X,Location,Time).
+
+

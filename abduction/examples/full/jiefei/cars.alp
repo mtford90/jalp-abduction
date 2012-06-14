@@ -1,0 +1,12 @@
+abducible(battery_flat/1).
+abducible(has_no_fuel/1).
+abducible(broken_indicator/1).
+
+car_doesnt_start(X) :- battery_flat(X).
+car_doesnt_start(X) :- has_no_fuel(X).
+
+lights_go_on(mycar).
+fuel_indicator_empty(mycar).
+
+ic :- battery_flat(X), lights_go_on(X).
+ic :- has_no_fuel(X), not fuel_indicator_empty(X), not broken_indicator(X).
