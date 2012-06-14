@@ -49,9 +49,9 @@ public class ConstraintSolverTest {
 
         VariableInstance T = new VariableInstance("T");
         VariableInstance E1 = new VariableInstance("E1");
-        VariableInstance E2 = new VariableInstance("E1");
-        VariableInstance E3 = new VariableInstance("E1");
-        VariableInstance E4 = new VariableInstance("E1");
+        VariableInstance E2 = new VariableInstance("E2");
+        VariableInstance E3 = new VariableInstance("E3");
+        VariableInstance E4 = new VariableInstance("E4");
 
         IntegerConstantListInstance list = new IntegerConstantListInstance(1,2,3,4,5,6);
 
@@ -89,11 +89,13 @@ public class ConstraintSolverTest {
 
         List<Map<VariableInstance,IUnifiableAtomInstance>> solutions = solver.execute(new HashMap<VariableInstance, IUnifiableAtomInstance>(), constraints);
 
-        assertTrue(solutions.size()==6);
-
         for (Map<VariableInstance, IUnifiableAtomInstance> s:solutions) {
             LOGGER.info("Possible Solution: "+s);
         }
+
+        assertTrue(solutions.size()==6);
+
+
 
     }
 }

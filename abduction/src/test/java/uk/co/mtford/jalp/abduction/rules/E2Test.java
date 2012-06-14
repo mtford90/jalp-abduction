@@ -1,4 +1,4 @@
-package uk.co.mtford.jalp.abduction.logic.instance.equalities;
+package uk.co.mtford.jalp.abduction.rules;
 
 import org.junit.After;
 import org.junit.Before;
@@ -84,7 +84,53 @@ public class E2Test {
     }
 
     @Test
+    public void test3() throws Exception {
+        UniqueIdGenerator.reset();
+
+        E2RuleNode ruleNode = new E2RuleNode();
+        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+
+        VariableInstance X = new VariableInstance("X");
+        VariableInstance Y = new VariableInstance("Y");
+        PredicateInstance p1 = new PredicateInstance("p",X);
+        PredicateInstance p2 = new PredicateInstance("p",Y);
+        EqualityInstance e = new EqualityInstance(p1,p2);
+        goals.add(e);
+
+        DenialInstance d = new DenialInstance(goals);
+        d.getUniversalVariables().add(Y);
+        ruleNode.getGoals().add(d);
+
+        JALP.applyRule(ruleNode);
+        JALP.getVisualizer("debug/rules/E2/Test3",ruleNode);
+    }
+
+    @Test
     public void test4() throws Exception {
+        UniqueIdGenerator.reset();
+
+        E2RuleNode ruleNode = new E2RuleNode();
+        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+
+        VariableInstance X = new VariableInstance("X");
+        VariableInstance Y = new VariableInstance("Y");
+        VariableInstance Z = new VariableInstance("Z");
+        PredicateInstance p1 = new PredicateInstance("p",X);
+        PredicateInstance q = new PredicateInstance("q",Z);
+        PredicateInstance p2 = new PredicateInstance("p",q);
+        EqualityInstance e = new EqualityInstance(p1,p2);
+        goals.add(e);
+
+        DenialInstance d = new DenialInstance(goals);
+        ruleNode.getGoals().add(d);
+
+        JALP.applyRule(ruleNode);
+        JALP.getVisualizer("debug/rules/E2/Test4",ruleNode);
+    }
+
+
+    @Test
+    public void test6() throws Exception {
         UniqueIdGenerator.reset();
 
         E2RuleNode ruleNode = new E2RuleNode();
@@ -106,7 +152,7 @@ public class E2Test {
         ruleNode.getGoals().add(d);
 
         JALP.applyRule(ruleNode);
-        JALP.getVisualizer("debug/rules/E2/Test4",ruleNode);
+        JALP.getVisualizer("debug/rules/E2/Test6",ruleNode);
     }
 
 }

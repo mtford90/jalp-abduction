@@ -280,12 +280,21 @@ public class RuleNodeVisitor {
         }
 
         else if ((left instanceof VariableInstance) && currentGoal.getUniversalVariables().contains(right)) {  // E2c: Z = Y Z is existentially quantified and Y is unversally quantified.
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Current goal is of the form For All Y. <- Z=Y");
-            throw new JALPException("This should be E2c? Rulenode:\n"+ruleNode);
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("E2 reduced head to equational solved form. E2c will now handle it.");
+            currentGoal.getBody().add(0, new EqualityInstance(left,right));
+            newGoals.add(0,currentGoal);
+            childNode = constructChildNode(newGoals,ruleNode);
+            newChildNodes.add(childNode);
+            //throw new JALPException("This should be E2c? Rulenode:\n"+ruleNode);
         }
 
         else if (left instanceof VariableInstance) {  // E2b: Z = u, where Z is existentially quantified, and u could be anything but a universally quantified variable.
-            throw new JALPException("This should be E2b? Rulenode:\n"+ruleNode);
+            if (LOGGER.isDebugEnabled()) LOGGER.debug("E2 reduced head to equational solved form. E2b will now handle it.");
+            currentGoal.getBody().add(0, new EqualityInstance(left,right));
+            newGoals.add(0,currentGoal);
+            childNode = constructChildNode(newGoals,ruleNode);
+            newChildNodes.add(childNode);
+//            throw new JALPException("This should be E2b? Rulenode:\n"+ruleNode);
         }
 
         else { // c==d
