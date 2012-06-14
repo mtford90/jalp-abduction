@@ -38,44 +38,54 @@ public class E2bTest {
 
     }
 
+    /*
+    G = {ic :- X=c, q(X).}
+
+    Expect two nodes, G = {ic :- q(c).} and G = {}, E = {X!=c}
+     */
     @Test
     public void test1() throws Exception {
         UniqueIdGenerator.reset();
 
         E2bRuleNode ruleNode = new E2bRuleNode();
-        List<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+        List<IInferableInstance> denialBody = new LinkedList<IInferableInstance>();
 
         VariableInstance X = new VariableInstance("X");
         CharConstantInstance c = new CharConstantInstance("c");
         EqualityInstance e = new EqualityInstance(X,c);
         PredicateInstance q = new PredicateInstance("q",X);
-        goals.add(e);
-        goals.add(q);
+        denialBody.add(e);
+        denialBody.add(q);
 
-        DenialInstance d = new DenialInstance(goals);
+        DenialInstance d = new DenialInstance(denialBody);
         ruleNode.getGoals().add(d);
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/E2b/Test1",ruleNode);
     }
 
+    /*
+    G = {ic :- X=c, q(X).}
+
+    Expect two nodes, G = {ic :- q(p(Y)).} and G = {}, E = {X!=p(Y)}
+     */
     @Test
     public void test2() throws Exception {
         UniqueIdGenerator.reset();
 
         E2bRuleNode ruleNode = new E2bRuleNode();
 
-        List<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+        List<IInferableInstance> denialBody = new LinkedList<IInferableInstance>();
 
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",Y);
         EqualityInstance e = new EqualityInstance(X,p);
         PredicateInstance q = new PredicateInstance("q",X);
-        goals.add(e);
-        goals.add(q);
+        denialBody.add(e);
+        denialBody.add(q);
 
-        DenialInstance d = new DenialInstance(goals);
+        DenialInstance d = new DenialInstance(denialBody);
         ruleNode.getGoals().add(d);
 
         JALP.applyRule(ruleNode);

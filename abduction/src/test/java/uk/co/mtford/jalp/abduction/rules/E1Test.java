@@ -42,6 +42,12 @@ public class E1Test {
 
     }
 
+    /*
+    G = {X=Y}
+
+    Expect assignment of Y to X.
+
+     */
     @Test
     public void test1() throws Exception {
         UniqueIdGenerator.reset();

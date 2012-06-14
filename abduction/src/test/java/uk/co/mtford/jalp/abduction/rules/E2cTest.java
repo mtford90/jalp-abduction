@@ -37,21 +37,27 @@ public class E2cTest {
 
     }
 
+
+    /*
+   G = {ic(Y) :- X=Y, q(Y).}
+
+   Expect two nodes, G = {ic :- q(Y).}
+    */
     @Test
     public void test1() throws Exception {
         UniqueIdGenerator.reset();
 
         E2cRuleNode ruleNode = new E2cRuleNode();
-        List<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+        List<IInferableInstance> denialBody = new LinkedList<IInferableInstance>();
 
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         EqualityInstance e = new EqualityInstance(X,Y);
         PredicateInstance q = new PredicateInstance("q",Y);
-        goals.add(e);
-        goals.add(q);
+        denialBody.add(e);
+        denialBody.add(q);
 
-        DenialInstance d = new DenialInstance(goals);
+        DenialInstance d = new DenialInstance(denialBody);
         d.getUniversalVariables().add(Y);
         ruleNode.getGoals().add(d);
 
