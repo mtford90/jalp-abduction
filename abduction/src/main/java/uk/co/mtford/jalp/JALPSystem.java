@@ -62,8 +62,8 @@ public class JALPSystem {
         mergeFramework(JALPParser.readFromFile(file.getPath()));
     }
 
-    public void mergeFramework(String query) throws ParseException {
-        mergeFramework(JALPParser.readFromString(query));
+    public void mergeFramework(String program) throws ParseException {
+        mergeFramework(JALPParser.readFromString(program));
     }
 
     private void reset() {
@@ -160,14 +160,14 @@ public class JALPSystem {
             }
             n++;
             currentNode = nodeStack.pop();
-            if (currentNode.getGoals().isEmpty()) {
+            if (currentNode.getGoals().isEmpty()&&!currentNode.getNodeMark().equals(RuleNode.NodeMark.FAILED)) {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("Found a leaf node!");
                 }
                 generateResults(rootNode, currentNode, query, results);
             }
             else if (currentNode.getNodeMark()==RuleNode.NodeMark.FAILED) {
-                LOGGER.debug("Found a failed node:\n"+currentNode);
+                LOGGER.debug("Found a failed node:\n" + currentNode);
             }
             else if (currentNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
                 try {

@@ -623,6 +623,7 @@ public class RuleNodeVisitor {
             }
             else {
                 newChildren.addAll(newConstraintChildren);
+                parent.setNodeMark(RuleNode.NodeMark.EXPANDED);
             }
         }
         else {
@@ -630,7 +631,6 @@ public class RuleNodeVisitor {
             newChildren.add(child);
         }
         parent.getChildren().addAll(newChildren);
-        parent.setNodeMark(RuleNode.NodeMark.EXPANDED);
     }
 
     private void expandNode(RuleNode parent, List<RuleNode> children) {
