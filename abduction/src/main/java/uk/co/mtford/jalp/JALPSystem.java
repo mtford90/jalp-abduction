@@ -160,7 +160,7 @@ public class JALPSystem {
             }
             n++;
             currentNode = nodeStack.pop();
-            if (currentNode.getGoals().isEmpty()&&currentNode.getNodeMark().equals(RuleNode.NodeMark.FAILED)) {
+            if (currentNode.getGoals().isEmpty()&&!currentNode.getNodeMark().equals(RuleNode.NodeMark.FAILED)) {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("Found a leaf node!");
                 }

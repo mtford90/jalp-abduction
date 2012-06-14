@@ -134,11 +134,9 @@ public class JALPInterpreter {
                 System.out.println("No explanations available.");
             }
             else {
-                System.out.println("Found "+results.size()+" explanations for "+query);
                 int rNum = 1;
                 for (Result r:results) {
                     if (reduceMode) r.reduce(queryVariables);
-                    System.out.println();
                     System.out.println(r.toString());
                     rNum++;
                 }

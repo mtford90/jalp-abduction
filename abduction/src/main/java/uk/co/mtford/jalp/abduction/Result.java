@@ -3,6 +3,7 @@ package uk.co.mtford.jalp.abduction;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
@@ -156,13 +157,38 @@ public class Result {
         }
         else {
             String message = "";
-            if (!assignmentsEmpty) message+="Subst:" + assignments + "\n";
-            if (!abduciblesEmpty) message+="Delta:" + store.abducibles + "\n";
-            if (!constraintsEmpty) message+="Delta*:" + store.denials + "\n";
-            if (!equalitiesEmpty) message+="Epsilon:" + epsilon + "\n";
-            if (!finiteDomainConstraintsEmpty) message+="FD:" + store.constraints +"\n";
+            if (!assignmentsEmpty) {
+                message+="Substitutions\n";
+                for (VariableInstance v:assignments.keySet()) {
+                    message+="  "+v+"/"+assignments.get(v)+"\n";
+                }
+            }
+            if (!abduciblesEmpty) {
+                message+="Abducibles\n";
+                for (PredicateInstance p:store.abducibles) {
+                    message+="  "+p+"\n";
+                }
+            }
+            if (!constraintsEmpty) {
+                message+="Denials\n";
+                for (DenialInstance d:store.denials) {
+                    message+="  "+d+"\n";
+                }
+            }
+            if (!equalitiesEmpty) {
+                message+="(In-)Equalities";
+                for (Object o:epsilon) {
+                    message+="  "+o+"\n";
+                }
+            }
+            if (!finiteDomainConstraintsEmpty) {
+                message+="Finite-Domain Constraints";
+                for (IConstraintInstance c:store.constraints) {
+                    message+="  "+c+"\n";
+                }
+            }
 
-            return message.substring(0,message.length()-1);
+            return message.substring(0,message.length()-1); // Get rid of extra new line.
         }
 
     }
