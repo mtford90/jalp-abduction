@@ -196,15 +196,7 @@ public class JALPSystem {
     }
 
     private void generateResult(RuleNode rootNode, RuleNode successNode, List<IInferableInstance> originalQuery, List<Result> results) {
-        HashMap<VariableInstance,IUnifiableAtomInstance> resultAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>();
-        for (IInferableInstance queryInferable:originalQuery) {
-            for (IInferableInstance finalQuery:successNode.getQuery()) { // TODO: Should be IUnifiable, not Inferable.
-                IUnifiableAtomInstance atom1 = (IUnifiableAtomInstance) queryInferable;
-                IUnifiableAtomInstance atom2 = (IUnifiableAtomInstance) finalQuery;
-                atom1.unify(atom2,resultAssignments);
-            }
-        }
-        Result result = new Result(successNode.getStore(),resultAssignments,originalQuery,rootNode);
+        Result result = new Result(successNode.getStore(),successNode.getAssignments(),originalQuery,rootNode);
         results.add(result);
     }
 

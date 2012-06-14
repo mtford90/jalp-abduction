@@ -10,10 +10,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -67,12 +64,16 @@ public class Result {
         this.store = store;
     }
 
-    public void reduce(List<VariableInstance> relevantVariables) {
+    public void reduce(Collection<VariableInstance> relevantVariables) {
         // Remove irrelevant assignments.
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
         for (VariableInstance v:assignments.keySet()) {
-            if (relevantVariables.contains(v)) {
-                newAssignments.put(v,assignments.get(v));
+            IUnifiableAtomInstance newValue = v;
+            while (assignments.containsKey(newValue)) {
+                newValue = assignments.get(newValue);
+            }
+            if (v!=newValue) {
+                newAssignments.put(v,newValue);
             }
         }
         assignments = newAssignments;

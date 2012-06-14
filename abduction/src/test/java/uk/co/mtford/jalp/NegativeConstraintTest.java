@@ -64,7 +64,11 @@ public class NegativeConstraintTest {
         assertTrue(result.size()==2);
         boolean one = false;
         boolean two = false;
+        List<VariableInstance> relevantVariables = new LinkedList<VariableInstance>();
+        relevantVariables.add(X);
+        relevantVariables.add(Y);
         for (Result r:result) {
+            r.reduce(relevantVariables);
             if (r.getAssignments().get(X).equals(new IntegerConstantInstance(3)) &&
                     r.getAssignments().get(Y).equals(new IntegerConstantInstance(2))) {
                 one = true;
@@ -110,6 +114,7 @@ public class NegativeConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/in-constant-list-1");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
+        resultOne.reduce(q.getVariables());
         assertTrue(resultOne.getAssignments().get(X).equals(new CharConstantInstance("bob")));
     }
 
@@ -137,7 +142,11 @@ public class NegativeConstraintTest {
         query.add(q);
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/less-than-1");
         assertTrue(result.size()==6);
+        List<VariableInstance> relevantVariables = new LinkedList<VariableInstance>();
+        relevantVariables.add(X);
+        relevantVariables.add(Y);
         for (Result r:result) {
+            r.reduce(relevantVariables);
             IntegerConstantInstance XVal = (IntegerConstantInstance) r.getAssignments().get(X);
             IntegerConstantInstance YVal = (IntegerConstantInstance) r.getAssignments().get(Y);
             assertTrue(YVal.getValue()>=XVal.getValue());
@@ -157,6 +166,7 @@ public class NegativeConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/less-than-eq-1");
         assertTrue(result.size()==3);
         for (Result r:result) {
+            r.reduce(q.getVariables());
             IntegerConstantInstance XVal = (IntegerConstantInstance) r.getAssignments().get(X);
             IntegerConstantInstance YVal = (IntegerConstantInstance) r.getAssignments().get(Y);
             assertTrue(YVal.getValue()>XVal.getValue());
@@ -176,6 +186,7 @@ public class NegativeConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/greater-than-1");
         assertTrue(result.size()==6);
         for (Result r:result) {
+            r.reduce(q.getVariables());
             IntegerConstantInstance XVal = (IntegerConstantInstance) r.getAssignments().get(X);
             IntegerConstantInstance YVal = (IntegerConstantInstance) r.getAssignments().get(Y);
             assertTrue(YVal.getValue()<=XVal.getValue());
@@ -195,6 +206,7 @@ public class NegativeConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/greater-than-eq-1");
         assertTrue(result.size()==3);
         for (Result r:result) {
+            r.reduce(q.getVariables());
             IntegerConstantInstance XVal = (IntegerConstantInstance) r.getAssignments().get(X);
             IntegerConstantInstance YVal = (IntegerConstantInstance) r.getAssignments().get(Y);
             assertTrue(YVal.getValue()<XVal.getValue());

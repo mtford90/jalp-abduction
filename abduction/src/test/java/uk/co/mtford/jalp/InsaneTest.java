@@ -102,6 +102,7 @@ public class InsaneTest {
         List<Result> result = system.generateDebugFiles(query, "debug/full/insane/insane-2");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
+        resultOne.reduce(likes.getVariables());
         assertTrue(resultOne.getAssignments().get(Y).equals(new CharConstantInstance("jane")));
     }
 
@@ -158,6 +159,7 @@ public class InsaneTest {
         List<Result> result = system.generateDebugFiles(query, "debug/full/insane/insane-constraint-2");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
+        resultOne.reduce(likes.getVariables());
         assertTrue(resultOne.getAssignments().get(Y).equals(new CharConstantInstance("jane")));
     }
 

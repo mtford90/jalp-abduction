@@ -61,6 +61,9 @@ public class DefinitionTest {
         PredicateInstance likes = new PredicateInstance("likes",new CharConstantInstance("john"),Y);
         query.add(likes);
         List<Result> result = system.generateDebugFiles(query, "debug/basic/definition/definition");
+        for (Result r:result) {
+            r.reduce(likes.getVariables());
+        }
         assertTrue(result.size()==2);
         assertTrue(result.get(0).getAssignments().get(Y).equals(new CharConstantInstance("mary")));
         assertTrue(result.get(1).getAssignments().get(Y).equals(new CharConstantInstance("jane")));

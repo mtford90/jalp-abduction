@@ -62,6 +62,7 @@ public class ConstraintTest {
         boolean bob = false;
         boolean john = false;
         for (Result r:result) {
+            r.reduce(q.getVariables());
             if (r.getAssignments().get(X).equals(new CharConstantInstance("mary"))) {
                 mary = true;
             }
@@ -110,6 +111,7 @@ public class ConstraintTest {
         PredicateInstance q = new PredicateInstance("q",bob);
         query.add(q);
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/constant-list-3");
+
         assertTrue(result.size()==1);
     }
 
@@ -190,6 +192,7 @@ public class ConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-1");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
+        resultOne.reduce(p.getVariables());
         assertTrue(resultOne.getAssignments().get(X).equals(new IntegerConstantInstance(1)));
     }
 
@@ -346,6 +349,7 @@ public class ConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-4");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
+        resultOne.reduce(p.getVariables());
         assertTrue(resultOne.getAssignments().get(Y).equals(new IntegerConstantInstance(1)));
     }
 
@@ -389,6 +393,7 @@ public class ConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-eq-2");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
+        resultOne.reduce(p.getVariables());
         assertTrue(resultOne.getAssignments().get(Y).equals(new IntegerConstantInstance(1)));
     }
 
@@ -446,7 +451,6 @@ public class ConstraintTest {
         system = new JALPSystem("examples/basic/constraint/individual/less-than-eq.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         IntegerConstantInstance one = new IntegerConstantInstance(1);
-        VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",one,Y);
         query.add(p);
@@ -454,6 +458,7 @@ public class ConstraintTest {
         boolean resultOne = false;
         boolean resultTwo = false;
         for (Result r:result) {
+            r.reduce(p.getVariables());
             if (r.getAssignments().get(Y).equals(new IntegerConstantInstance(2))) {
                 resultOne=true;
             }
@@ -536,6 +541,7 @@ public class ConstraintTest {
         List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-inf-dom-test-1");
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
+        resultOne.reduce(p.getVariables());
         assertTrue(resultOne.getAssignments().get(X).equals(new IntegerConstantInstance(1)));
     }
 

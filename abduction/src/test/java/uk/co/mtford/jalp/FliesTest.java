@@ -68,6 +68,7 @@ public class FliesTest {
         List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/flies/flies-X");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
+        resultOne.reduce(likes.getVariables());
         assertTrue(resultOne.getAssignments().get(X).equals(new CharConstantInstance("sam")));
     }
 
@@ -153,6 +154,7 @@ public class FliesTest {
         List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/flies/abnormal-X");
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
+        resultOne.reduce(abnormal.getVariables());
         assertTrue(resultOne.getAssignments().get(X).equals(new CharConstantInstance("tweety")));
     }
 }
