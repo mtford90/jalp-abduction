@@ -47,7 +47,7 @@ public class JALPInterpreter {
         this.reduceMode = false;
     }
 
-    public void start() throws Exception {
+    public void start() {
         System.out.println("Welcome to JALP. Type :h for help.");
         String next = null;
         while(true) {
@@ -55,14 +55,42 @@ public class JALPInterpreter {
             next=scanner.nextLine();
             next = next.trim();
             if (next.length()==0) continue;
-            if (next.startsWith(LOAD_COMMAND)) loadFrameworkFromFile(next);
-            else if (next.startsWith(QUERY_COMMAND)) executeQuery(next);
+            if (next.startsWith(LOAD_COMMAND)) {
+                try {
+                    loadFrameworkFromFile(next);
+                } catch (FileNotFoundException e) {
+                    System.err.println("File "+next+" does not exist.");
+                    System.err.flush();
+                    continue;
+                } catch (ParseException e) {
+                    System.err.println("Parse error: "+e.getMessage().split("\n")[0]);
+                    System.err.flush();
+                    continue;
+                }
+            }
+            else if (next.startsWith(QUERY_COMMAND)) {
+                try {
+                    executeQuery(next);
+                } catch (uk.co.mtford.jalp.abduction.parse.query.ParseException e) {
+                    System.err.println("Parse error: "+e.getMessage().split("\n")[0]);
+                    System.err.flush();
+                    continue;
+                }
+            }
             else if (next.startsWith(PRINT_COMMAND)) printFramework();
             else if (next.startsWith(HELP_COMMAND)) printHelp();
             else if (next.startsWith(CLEAR_COMMAND)) resetSystem();
             else if (next.startsWith(REDUCE_COMMAND)) toggleReduceMode();
             else if (next.startsWith(QUIT_COMMAND)) quit();
-            else loadFrameworkFromString(next);
+            else {
+                try {
+                    loadFrameworkFromString(next);
+                } catch (ParseException e) {
+                    System.err.println("Parse error: "+e.getMessage().split("\n")[0]);
+                    System.err.flush();
+                    continue;
+                }
+            }
         }
     }
 
@@ -95,8 +123,7 @@ public class JALPInterpreter {
         System.out.print("-");
     }
 
-    private void executeQuery(String next) throws Exception {
-        try {
+    private void executeQuery(String next) throws uk.co.mtford.jalp.abduction.parse.query.ParseException {
             List<IInferableInstance> query = JALPQueryParser.readFromString(next.substring(2, next.length() - 1));
             List<VariableInstance> queryVariables = new LinkedList<VariableInstance>();
             for (IInferableInstance i:query) {
@@ -116,36 +143,19 @@ public class JALPInterpreter {
                     rNum++;
                 }
             }
-
-        } catch (JALPException e) {
-            System.err.println("JALP encountered an error.");
-            System.err.println(e);
-        }
     }
 
     private void printFramework() {
         System.out.println(system.getFramework());
     }
 
-    private void loadFrameworkFromFile(String next) {
+    private void loadFrameworkFromFile(String next) throws FileNotFoundException, ParseException {
         File file = new File(next.substring(2, next.length()).trim());
-        try {
-            system.mergeFramework(file);
-        } catch (ParseException e) {
-            System.err.println("Parse error.");
-            System.err.println(e);
-        } catch (FileNotFoundException e) {
-            System.err.println("Could not find file at "+file.getAbsolutePath());
-        }
+        system.mergeFramework(file);
     }
 
-    private void loadFrameworkFromString(String next) {
-        try {
-            system.mergeFramework(next);
-        } catch (ParseException e) {
-            System.err.println("Parse error.");
-            System.err.println(e);
-        }
+    private void loadFrameworkFromString(String next) throws ParseException {
+        system.mergeFramework(next);
     }
 
     private void toggleReduceMode() {
