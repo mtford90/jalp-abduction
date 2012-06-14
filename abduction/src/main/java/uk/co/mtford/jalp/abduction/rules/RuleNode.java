@@ -224,7 +224,6 @@ public abstract class RuleNode {
         }
 
         store.inequalities = newInequalities;
-        assignments = new HashMap<VariableInstance,IUnifiableAtomInstance>();
     }
 
     public String toJSON()  {
