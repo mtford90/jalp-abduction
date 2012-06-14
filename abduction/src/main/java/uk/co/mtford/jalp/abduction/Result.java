@@ -182,7 +182,7 @@ public class Result {
                 }
             }
             if (!finiteDomainConstraintsEmpty) {
-                message+="Finite-Domain Constraints";
+                message+="Finite-Domain Constraints\n";
                 for (IConstraintInstance c:store.constraints) {
                     message+="  "+c+"\n";
                 }
