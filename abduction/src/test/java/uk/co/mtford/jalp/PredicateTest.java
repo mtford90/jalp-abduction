@@ -87,8 +87,46 @@ public class PredicateTest {
 
         List<IInferableInstance> query = JALPQueryParser.readFromString("p(X,Y)");
 
+        PredicateInstance p = (PredicateInstance) query.get(0);
+
         List<Result> result = system.generateDebugFiles(query, "debug/basic/predicates/equality-test-4");
         assertTrue(result.size()==1);
+        result.get(0).reduce(p.getVariables());
+        assertTrue(result.get(0).getAssignments().get(p.getParameter(0)).equals(new CharConstantInstance("cat")));
+    }
+
+    @org.junit.Test
+    public void equalityTest5() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
+        system = new JALPSystem();
+        system.mergeFramework("p(X,Y) :- q(e(X))=q(e(cat)).");
+
+        List<IInferableInstance> query = JALPQueryParser.readFromString("p(X,Y)");
+
+        PredicateInstance p = (PredicateInstance) query.get(0);
+
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/predicates/equality-test-5");
+        assertTrue(result.size()==1);
+        result.get(0).reduce(p.getVariables());
+        assertTrue(result.get(0).getAssignments().get(p.getParameter(0)).equals(new CharConstantInstance("cat")));
+    }
+
+    @org.junit.Test
+    public void equalityTest6() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
+        system = new JALPSystem();
+        system.mergeFramework("p(X,Y) :- q(X)=q(e(cat)).");
+
+        List<IInferableInstance> query = JALPQueryParser.readFromString("p(X,Y)");
+
+        PredicateInstance p = (PredicateInstance) query.get(0);
+
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/predicates/equality-test-6");
+        assertTrue(result.size() == 1);
+        result.get(0).reduce(p.getVariables());
+        assertTrue(result.get(0).getAssignments().get(p.getParameter(0)).equals(new PredicateInstance("e", new CharConstantInstance("cat"))));
     }
 
 }
