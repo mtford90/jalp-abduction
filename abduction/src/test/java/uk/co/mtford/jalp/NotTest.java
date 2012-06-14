@@ -61,7 +61,7 @@ public class NotTest {
         CharConstantInstance jane = new CharConstantInstance("jane");
         PredicateInstance likes = new PredicateInstance("likes",john,jane);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/negation/not");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         assertTrue(resultOne.getStore().denials.size()==1);

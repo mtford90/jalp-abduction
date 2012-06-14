@@ -68,7 +68,7 @@ public class CarTest {
         CharConstantInstance mycar = new CharConstantInstance("mycar");
         PredicateInstance car_doesnt_start = new PredicateInstance("car_doesnt_start",mycar);
         query.add(car_doesnt_start);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/cars");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         assertTrue(resultOne.getStore().abducibles.size() == 1);

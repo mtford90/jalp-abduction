@@ -70,7 +70,7 @@ public class MedicalTest {
         CharConstantInstance john = new CharConstantInstance("john");
         PredicateInstance headache = new PredicateInstance("headache",john);
         query.add(headache);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/medical/medical-headache");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -111,7 +111,7 @@ public class MedicalTest {
         CharConstantInstance john = new CharConstantInstance("john");
         PredicateInstance dizziness = new PredicateInstance("dizziness",john);
         query.add(dizziness);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/medical/medical-dizziness");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         assertTrue(resultOne.getStore().abducibles.size()==1);
@@ -148,7 +148,7 @@ public class MedicalTest {
         CharConstantInstance john = new CharConstantInstance("john");
         PredicateInstance sickness = new PredicateInstance("sickness",john);
         query.add(sickness);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/medical/medical-sickness");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         assertTrue(resultOne.getStore().abducibles.size()==1);

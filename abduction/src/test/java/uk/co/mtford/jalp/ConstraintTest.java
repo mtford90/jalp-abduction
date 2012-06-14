@@ -56,7 +56,7 @@ public class ConstraintTest {
         VariableInstance X = new VariableInstance("X");
         PredicateInstance q = new PredicateInstance("q",X);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/constant-list-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==3);
         boolean mary = false;
         boolean bob = false;
@@ -91,7 +91,7 @@ public class ConstraintTest {
         CharConstantInstance mike = new CharConstantInstance("mike");
         PredicateInstance q = new PredicateInstance("q",mike);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/constant-list-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==0);
     }
 
@@ -110,7 +110,7 @@ public class ConstraintTest {
         CharConstantInstance bob = new CharConstantInstance("bob");
         PredicateInstance q = new PredicateInstance("q",bob);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/constant-list-3");
+        List<Result> result = system.query(query);
 
         assertTrue(result.size()==1);
     }
@@ -130,7 +130,7 @@ public class ConstraintTest {
         IntegerConstantInstance three = new IntegerConstantInstance(3);
         PredicateInstance q = new PredicateInstance("q",three);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/integer-list-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
     }
 
@@ -150,7 +150,7 @@ public class ConstraintTest {
         IntegerConstantInstance three = new IntegerConstantInstance(5);
         PredicateInstance q = new PredicateInstance("q",three);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/integer-list-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==0);
     }
 
@@ -170,7 +170,7 @@ public class ConstraintTest {
         VariableInstance X = new VariableInstance("X");
         PredicateInstance q = new PredicateInstance("q",X);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/integer-list-3");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==3);
     }
 
@@ -189,7 +189,7 @@ public class ConstraintTest {
         VariableInstance X = new VariableInstance("X");
         PredicateInstance p = new PredicateInstance("p",X);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         resultOne.reduce(p.getVariables());
@@ -210,7 +210,7 @@ public class ConstraintTest {
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(1));
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
     }
 
@@ -228,7 +228,7 @@ public class ConstraintTest {
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(2));
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-3");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==0);
     }
 
@@ -246,7 +246,7 @@ public class ConstraintTest {
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(3));
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-4");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==0);
     }
 
@@ -264,7 +264,7 @@ public class ConstraintTest {
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance p = new PredicateInstance("p",new IntegerConstantInstance(4));
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-test-5");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==0);
     }
 
@@ -284,7 +284,7 @@ public class ConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",X,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==3);
     }
 
@@ -305,7 +305,7 @@ public class ConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",one,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==0);
     }
 
@@ -326,7 +326,7 @@ public class ConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",four,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-3");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==0);
     }
 
@@ -346,7 +346,7 @@ public class ConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",two,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-4");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         resultOne.reduce(p.getVariables());
@@ -369,7 +369,7 @@ public class ConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",X,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-eq-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==5);
     }
 
@@ -390,7 +390,7 @@ public class ConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",one,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-eq-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         resultOne.reduce(p.getVariables());
@@ -414,7 +414,7 @@ public class ConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",four,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/greater-than-eq-3");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==0);
     }
 
@@ -434,7 +434,7 @@ public class ConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",X,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-eq-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==3);
     }
 
@@ -454,7 +454,7 @@ public class ConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",one,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-eq-2");
+        List<Result> result = system.query(query);
         boolean resultOne = false;
         boolean resultTwo = false;
         for (Result r:result) {
@@ -487,7 +487,7 @@ public class ConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance p = new PredicateInstance("p",four,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-eq-3");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==0);
     }
 
@@ -538,7 +538,7 @@ public class ConstraintTest {
         VariableInstance X = new VariableInstance("X");
         PredicateInstance p = new PredicateInstance("p",X);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/individual/less-than-inf-dom-test-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         resultOne.reduce(p.getVariables());

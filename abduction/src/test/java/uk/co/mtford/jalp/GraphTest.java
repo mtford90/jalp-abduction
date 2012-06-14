@@ -71,7 +71,7 @@ public class GraphTest {
         CharConstantInstance red = new CharConstantInstance("red");
         PredicateInstance has_colour = new PredicateInstance("has_colour",node1,red);
         query.add(has_colour);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/graph/graph-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         assertTrue(resultOne.getStore().abducibles.size()==1);
@@ -114,7 +114,7 @@ public class GraphTest {
         PredicateInstance has_colour2 = new PredicateInstance("has_colour",node2,D);
         query.add(has_colour1);
         query.add(has_colour2);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/graph/graph-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==7); // Matches jiefeis ASystem implementation.
     }
 
@@ -150,7 +150,7 @@ public class GraphTest {
         CharConstantInstance red = new CharConstantInstance("red");
         PredicateInstance has_colour = new PredicateInstance("has_colour",node1,red);
         query.add(has_colour);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/graph/graph2-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         assertTrue(resultOne.getStore().abducibles.size()==1);

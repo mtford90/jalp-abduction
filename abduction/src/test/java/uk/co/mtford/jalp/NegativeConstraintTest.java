@@ -60,7 +60,7 @@ public class NegativeConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance q = new PredicateInstance("p",X,Y);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/in-integer-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==2);
         boolean one = false;
         boolean two = false;
@@ -97,7 +97,7 @@ public class NegativeConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance q = new PredicateInstance("p",two,Y);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/in-integer-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==0);
 
     }
@@ -111,7 +111,7 @@ public class NegativeConstraintTest {
         VariableInstance X = new VariableInstance("X");
         PredicateInstance q = new PredicateInstance("p",X);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/in-constant-list-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         resultOne.reduce(q.getVariables());

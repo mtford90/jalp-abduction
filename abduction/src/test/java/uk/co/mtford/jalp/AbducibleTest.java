@@ -62,7 +62,7 @@ public class AbducibleTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance likes = new PredicateInstance("likes",new CharConstantInstance("john"),Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/abducible/abducible-test-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         assertTrue(resultOne.getStore().abducibles.size()==1);
@@ -88,7 +88,7 @@ public class AbducibleTest {
         CharConstantInstance jane = new CharConstantInstance("jane");
         PredicateInstance likes = new PredicateInstance("likes",john,jane);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/abducible/abducible-test-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
 
@@ -115,7 +115,7 @@ public class AbducibleTest {
         VariableInstance X = new VariableInstance("X");
         PredicateInstance a = new PredicateInstance("p",X);
         query.add(a);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/abducible/unground-abducible");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         assertTrue(resultOne.getStore().abducibles.size()==1);
@@ -145,7 +145,7 @@ public class AbducibleTest {
         VariableInstance Z = new VariableInstance("Z");
         PredicateInstance a = new PredicateInstance("p",X,Y,Z);
         query.add(a);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/abducible/unground-abducible-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==3);
         boolean one = false;
         boolean two = false;

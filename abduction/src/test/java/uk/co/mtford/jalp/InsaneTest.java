@@ -68,7 +68,7 @@ public class InsaneTest {
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/insane/insane-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==9);
     }
 
@@ -99,7 +99,7 @@ public class InsaneTest {
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",bob,Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/insane/insane-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         resultOne.reduce(likes.getVariables());
@@ -129,7 +129,7 @@ public class InsaneTest {
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/insane/insane-constraint-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==9);
     }
 
@@ -156,7 +156,7 @@ public class InsaneTest {
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance likes = new PredicateInstance("likes",bob,Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/insane/insane-constraint-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.remove(0);
         resultOne.reduce(likes.getVariables());

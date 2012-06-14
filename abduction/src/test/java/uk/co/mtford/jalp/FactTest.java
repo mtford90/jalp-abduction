@@ -62,7 +62,7 @@ public class FactTest {
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
         //List<Result> result = system.query(query, JALPSystem.Heuristic.NONE);
-        List<Result> result = system.generateDebugFiles(query,"debug/basic/fact/one-fact");
+        List<Result> result = system.query(query);
         assertTrue(result.size() == 1);
         Result onlyResult = result.remove(0);
         assertTrue(onlyResult.getAssignments().get(Y).equals(new CharConstantInstance("jane")));
@@ -89,7 +89,7 @@ public class FactTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance likes = new PredicateInstance("likes",X,Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/fact/two-fact");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==2);
         Result resultOne = result.remove(0);
         Result resultTwo = result.remove(0);

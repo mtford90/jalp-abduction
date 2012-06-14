@@ -60,7 +60,7 @@ public class DefinitionTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance likes = new PredicateInstance("likes",new CharConstantInstance("john"),Y);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/definition/definition");
+        List<Result> result = system.query(query);
         for (Result r:result) {
             r.reduce(likes.getVariables());
         }

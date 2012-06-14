@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
  * To change this template use File | Settings | File Templates.
  */
 public class CircuitsTest {
-    public static final boolean GENERATE_DEBUG = false;
     JALPSystem system;
 
     public CircuitsTest() {
@@ -83,13 +82,7 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,on);
         query.add(output);
-        List<Result> result;
-        if (GENERATE_DEBUG) {
-           result = system.generateDebugFiles(query,"debug/full/jiefei/circuits1-1");
-        }
-        else {
-           result = system.query(query);
-        }
+        List<Result> result = system.query(query);
         assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
@@ -142,13 +135,8 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,off);
         query.add(output);
-        List<Result> result;
-        if (GENERATE_DEBUG) {
-            result = system.generateDebugFiles(query,"debug/full/jiefei/circuits1-2");
-        }
-        else {
-            result = system.query(query);
-        }        assertTrue(result.size()==2);
+        List<Result> result = system.query(query);
+        assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
         assertTrue(resultOne.getStore().abducibles.size() == 1);
@@ -201,13 +189,8 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,on);
         query.add(output);
-        List<Result> result;
-        if (GENERATE_DEBUG) {
-            result = system.generateDebugFiles(query,"debug/full/jiefei/circuits2-1");
-        }
-        else {
-            result = system.query(query);
-        }        assertTrue(result.size()==2);
+        List<Result> result = system.query(query);
+        assertTrue(result.size()==2);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);
         assertTrue(resultOne.getStore().abducibles.size() == 2);
@@ -263,13 +246,8 @@ public class CircuitsTest {
         CharConstantInstance off = new CharConstantInstance("off");
         PredicateInstance output = new PredicateInstance("output",g2,off);
         query.add(output);
-        List<Result> result;
-        if (GENERATE_DEBUG) {
-            result = system.generateDebugFiles(query,"debug/full/jiefei/circuits2-2");
-        }
-        else {
-            result = system.query(query);
-        }
+        List<Result> result = system.query(query);
+
         assertTrue(result.size()==4);
         Result resultOne = result.get(0);
         Result resultTwo = result.get(1);

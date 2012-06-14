@@ -65,7 +65,7 @@ public class FliesTest {
         VariableInstance X = new VariableInstance(("X"));
         PredicateInstance likes = new PredicateInstance("flies",X);
         query.add(likes);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/flies/flies-X");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         resultOne.reduce(likes.getVariables());

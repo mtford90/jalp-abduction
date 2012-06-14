@@ -49,7 +49,7 @@ public class PredicateTest {
         system.mergeFramework("q(1).");
         system.mergeFramework("d(1).");
 
-        List<Result> result = system.generateDebugFiles("p(1,1)", "debug/basic/predicates/equality-test-1");
+        List<Result> result = system.query("p(1,1)");
         assertTrue(result.size()==0);
     }
 
@@ -61,7 +61,7 @@ public class PredicateTest {
         system.mergeFramework("p(X,Y) :- q(X)=q(Y).");
         system.mergeFramework("q(1).");
 
-        List<Result> result = system.generateDebugFiles("p(1,1)", "debug/basic/predicates/equality-test-2");
+        List<Result> result = system.query("p(1,1)");
         assertTrue(result.size()==1);
     }
 
@@ -74,7 +74,7 @@ public class PredicateTest {
         system.mergeFramework("q(1).");
         system.mergeFramework("d(1).");
 
-        List<Result> result = system.generateDebugFiles("p(1,2)", "debug/basic/predicates/equality-test-3");
+        List<Result> result = system.query("p(1,2)");
         assertTrue(result.size()==0);
     }
 
@@ -89,7 +89,7 @@ public class PredicateTest {
 
         PredicateInstance p = (PredicateInstance) query.get(0);
 
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/predicates/equality-test-4");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         result.get(0).reduce(p.getVariables());
         assertTrue(result.get(0).getAssignments().get(p.getParameter(0)).equals(new CharConstantInstance("cat")));
@@ -106,7 +106,7 @@ public class PredicateTest {
 
         PredicateInstance p = (PredicateInstance) query.get(0);
 
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/predicates/equality-test-5");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         result.get(0).reduce(p.getVariables());
         assertTrue(result.get(0).getAssignments().get(p.getParameter(0)).equals(new CharConstantInstance("cat")));
@@ -123,7 +123,7 @@ public class PredicateTest {
 
         PredicateInstance p = (PredicateInstance) query.get(0);
 
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/predicates/equality-test-6");
+        List<Result> result = system.query(query);
         assertTrue(result.size() == 1);
         result.get(0).reduce(p.getVariables());
         assertTrue(result.get(0).getAssignments().get(p.getParameter(0)).equals(new PredicateInstance("e", new CharConstantInstance("cat"))));
@@ -140,7 +140,7 @@ public class PredicateTest {
 
         PredicateInstance p = (PredicateInstance) query.get(0);
 
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/predicates/predicate-in-head-test-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size() == 1);
         result.get(0).reduce(p.getVariables());
         assertTrue(result.get(0).getAssignments().get(p.getParameter(0)).equals(new PredicateInstance("q",new CharConstantInstance("a"))));
@@ -161,7 +161,7 @@ public class PredicateTest {
         VariableInstance Y = (VariableInstance) q.getParameter(1);
         VariableInstance Z = (VariableInstance) q.getParameter(2);
 
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/predicates/predicate-in-head-test-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size() == 1);
         result.get(0).reduce(p.getVariables());
         assertTrue(result.get(0).getAssignments().get(X).equals(new CharConstantInstance("a")));

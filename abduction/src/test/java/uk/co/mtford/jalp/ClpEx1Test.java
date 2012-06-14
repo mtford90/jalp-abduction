@@ -67,7 +67,7 @@ public class ClpEx1Test {
         VariableInstance Y = new VariableInstance(("Y"));
         PredicateInstance p = new PredicateInstance("p",X,Y);
         query.add(p);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/jiefei/clp-ex1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==3);
 
         //TODO Check results.
