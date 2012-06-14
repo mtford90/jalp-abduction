@@ -202,6 +202,8 @@ IInferableInstance EqualOrInequal(HashMap<String, VariableInstance> variablesSoF
 }
 
 
+
+
 NegationInstance NegativeInferable(HashMap<String, VariableInstance> variablesSoFar):
 {
     IInferableInstance subformula;
@@ -222,11 +224,9 @@ PredicateInstance Predicate(HashMap<String, VariableInstance> variablesSoFar):
 {
 	t = <LCASENAME>
     { name = t.image; }
-	[
-		<LBRACKET>
-		parameters = ParameterList(variablesSoFar)
-		<RBRACKET>
-	]
+	<LBRACKET>
+	parameters = ParameterList(variablesSoFar)
+	<RBRACKET>
     { return new PredicateInstance(name,parameters); }
 }
 
@@ -373,12 +373,13 @@ IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFa
 }
 {
 	(
+		unifiable = Predicate(variablesSoFar)
+        { return unifiable; } |
 		unifiable = Variable(variablesSoFar)
         { return unifiable; } |
 		unifiable = Constant()
-        { return unifiable; } |
-		unifiable = Predicate(variablesSoFar)
         { return unifiable; }
+
 	)
 
 }

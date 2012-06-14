@@ -129,4 +129,48 @@ public class PredicateTest {
         assertTrue(result.get(0).getAssignments().get(p.getParameter(0)).equals(new PredicateInstance("e", new CharConstantInstance("cat"))));
     }
 
+    @org.junit.Test
+    public void predicateInHeadTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
+        system = new JALPSystem();
+        system.mergeFramework("p(q(a)).");
+
+        List<IInferableInstance> query = JALPQueryParser.readFromString("p(X)");
+
+        PredicateInstance p = (PredicateInstance) query.get(0);
+
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/predicates/predicate-in-head-test-1");
+        assertTrue(result.size() == 1);
+        result.get(0).reduce(p.getVariables());
+        assertTrue(result.get(0).getAssignments().get(p.getParameter(0)).equals(new PredicateInstance("q",new CharConstantInstance("a"))));
+    }
+
+    @org.junit.Test
+    public void predicateInHeadTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+        UniqueIdGenerator.reset();
+
+        system = new JALPSystem();
+        system.mergeFramework("p(q(a,b,c)).");
+
+        List<IInferableInstance> query = JALPQueryParser.readFromString("p(q(X,Y,Z))");
+
+        PredicateInstance p = (PredicateInstance) query.get(0);
+        PredicateInstance q = (PredicateInstance) p.getParameter(0);
+        VariableInstance X = (VariableInstance) q.getParameter(0);
+        VariableInstance Y = (VariableInstance) q.getParameter(1);
+        VariableInstance Z = (VariableInstance) q.getParameter(2);
+
+        List<Result> result = system.generateDebugFiles(query, "debug/basic/predicates/predicate-in-head-test-2");
+        assertTrue(result.size() == 1);
+        result.get(0).reduce(p.getVariables());
+        assertTrue(result.get(0).getAssignments().get(X).equals(new CharConstantInstance("a")));
+        assertTrue(result.get(0).getAssignments().get(Y).equals(new CharConstantInstance("b")));
+        assertTrue(result.get(0).getAssignments().get(Z).equals(new CharConstantInstance("c")));
+
+    }
+
+
+
+
 }
