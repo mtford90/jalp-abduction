@@ -8,6 +8,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
@@ -37,69 +38,83 @@ public class InE2Test {
 
     }
 
+    /*
+   G = {'<-X!=Y,p(X)',q(Y) }
+    */
     @Test
     public void test1() throws Exception {
         UniqueIdGenerator.reset();
 
         InE2RuleNode ruleNode = new InE2RuleNode();
-        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+        LinkedList<IInferableInstance> denialBody = new LinkedList<IInferableInstance>();
 
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
 
         InEqualityInstance e = new InEqualityInstance(X,Y);
 
-        goals.add(e);
+        denialBody.add(e);
+        denialBody.add(new PredicateInstance("p", X));
 
-        DenialInstance d = new DenialInstance(goals);
+        DenialInstance d = new DenialInstance(denialBody);
         ruleNode.getGoals().add(d);
+        ruleNode.getGoals().add(new PredicateInstance("q",Y));
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/InE2/Test1",ruleNode);
     }
 
+    /*
+   G = {'<-X!=c',q(Y) }
+    */
     @Test
     public void test2() throws Exception {
         UniqueIdGenerator.reset();
 
         InE2RuleNode ruleNode = new InE2RuleNode();
-        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+        LinkedList<IInferableInstance> denialBody = new LinkedList<IInferableInstance>();
 
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
+        CharConstantInstance c = new CharConstantInstance("c");
 
-        InEqualityInstance e = new InEqualityInstance(X,Y);
+        InEqualityInstance e = new InEqualityInstance(X,c);
 
-        goals.add(e);
-        goals.add(new PredicateInstance("p",X));
+        denialBody.add(e);
 
-        DenialInstance d = new DenialInstance(goals);
+        DenialInstance d = new DenialInstance(denialBody);
         ruleNode.getGoals().add(d);
+        ruleNode.getGoals().add(new PredicateInstance("q",Y));
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/InE2/Test2",ruleNode);
     }
 
+    /*
+   G = {'<-p(X)!=p(Y)' }
+    */
     @Test
     public void test3() throws Exception {
         UniqueIdGenerator.reset();
 
         InE2RuleNode ruleNode = new InE2RuleNode();
-        LinkedList<IInferableInstance> goals = new LinkedList<IInferableInstance>();
+        LinkedList<IInferableInstance> denialBody = new LinkedList<IInferableInstance>();
 
         VariableInstance X = new VariableInstance("X");
         VariableInstance Y = new VariableInstance("Y");
+        PredicateInstance p1 = new PredicateInstance("p",X);
+        PredicateInstance p2 = new PredicateInstance("p",Y);
 
-        InEqualityInstance e = new InEqualityInstance(X,Y);
+        InEqualityInstance e = new InEqualityInstance(p1,p2);
 
-        goals.add(e);
-        goals.add(new PredicateInstance("p",X));
+        denialBody.add(e);
 
-        DenialInstance d = new DenialInstance(goals);
+        DenialInstance d = new DenialInstance(denialBody);
         ruleNode.getGoals().add(d);
-        ruleNode.getGoals().add(new PredicateInstance("q",Y));
 
         JALP.applyRule(ruleNode);
         JALP.getVisualizer("debug/rules/InE2/Test3",ruleNode);
     }
+
+
 }
