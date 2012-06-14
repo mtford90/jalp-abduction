@@ -67,7 +67,7 @@ public class Result {
     public void reduce(Collection<VariableInstance> relevantVariables) {
         // Remove irrelevant assignments.
         Map<VariableInstance, IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        for (VariableInstance v:assignments.keySet()) {
+        for (VariableInstance v:relevantVariables) {
             IUnifiableAtomInstance newValue = v;
             while (assignments.containsKey(newValue)) {
                 newValue = assignments.get(newValue);
