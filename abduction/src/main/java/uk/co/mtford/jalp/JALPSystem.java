@@ -181,7 +181,7 @@ public class JALPSystem {
     public List<Result> efficientQuery(List<IInferableInstance> query) {
         List<Result> results = new LinkedList<Result>();
 
-        AbstractRuleNodeVisitor visitor = new EfficientRuleNodeVisitor();
+        AbstractRuleNodeVisitor visitor = new SimpleRuleNodeVisitor();
         Stack<RuleNode> nodeStack = new Stack<RuleNode>();
 
         List<IInferableInstance> goals = new LinkedList<IInferableInstance>(query);
