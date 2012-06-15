@@ -102,29 +102,36 @@ public class AbductiveFramework implements Cloneable {
     public String toString() {
         String message = "";
 
-        message += "P:\n";
+        if (!P.isEmpty()) {
+            message += "Program\n";
 
-        for (Definition d:P) {
-            message += d + "\n";
+            for (Definition d:P) {
+                message += "  " + d + "\n";
+            }
         }
 
-        message += "\nA:{";
+        if (!A.isEmpty()) {
+            message += "Abducibles\n";
 
-        for (String name:A.keySet()){
-            message+=name+"/"+A.get(name)+",";
+            for (String name:A.keySet()){
+                message+="  "+name+"/"+A.get(name)+"\n";
+            }
         }
 
-        message = message.substring(0,message.length()-1) + "}\n\n";
+        if (!IC.isEmpty()) {
+            message += "Integrity Constraints\n";
 
-        message += "IC:\n";
-
-        for (DenialInstance d:IC) {
-            message+=d+"\n";
+            for (DenialInstance d:IC) {
+                message+="  "+d+"\n";
+            }
         }
 
-        message = message.substring(0,message.length()-1);
+        if (message.length()>0) {
+            return message.substring(0,message.length()-1);
+        }
 
-        return message;
+        return "";
+
     }
 
     public String toJSON() {

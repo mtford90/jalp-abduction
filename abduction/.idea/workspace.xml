@@ -1,0 +1,2041 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/logic/instance/equalities/EqualityInstance.java" description="    public List&lt;ASystemState&gt; applyDenialInference..." line="26" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/logic/instance/PredicateInstance.java" description="public List&lt;ASystemState&gt; applyInferenceRule(Abduc..." line="60" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="73fa91bc-40b6-4c73-b550-dc80aa73cd81" name="Default" comment="Improved error handling in the interpreter.">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/mtford.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_10.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_16.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/abduction.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JalpInterpreter.java" afterPath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPInterpreter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/AbductiveFramework.java" afterPath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/AbductiveFramework.java" />
+    </list>
+    <ignored path="abduction.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="Commander">
+    <leftPanel />
+    <rightPanel />
+    <splitter proportion="0.5" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DebuggerManager">
+    <breakpoint_any>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </breakpoint_any>
+    <breakpoint_rules />
+    <ui_properties />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="abduction" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="AbductiveFramework.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/AbductiveFramework.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="129" column="59" selection-start="3715" selection-end="3715" vertical-scroll-proportion="0.83258593">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="LINE_SEPARATORS_CONVERSION" value="ASK" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="1c3c16a" />
+      </map>
+    </option>
+  </component>
+  <component name="GitLogSettings">
+    <option name="myStructureFilterPaths" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/rules/NegativeRuleNode.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ClpEx1Test.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ConstraintTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/DefinitionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FactTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FliesTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GraphTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/InsaneTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/MedicalTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NegativeConstraintTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NotTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/PredicateTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALP.java" />
+        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPSystem.java" />
+        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/Result.java" />
+        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPInterpreter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/AbductiveFramework.java" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+        <option name="keepSourceFolders" value="false" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+      </PATH>
+    </treeState>
+  </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="#JAVA_INTERNAL" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="22" />
+    <option name="width" value="1440" />
+    <option name="height" value="830" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages ProjectPane="true" />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType ProjectPane="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="130" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="139" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="recentsLimit" value="5" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="136" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="143" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="935" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="937" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="141" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="137" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="FullScreen" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="Downloaded.Files.Path" value="$PROJECT_DIR$/lib" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/logic/instance/equalities" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="options.lastSelected" value="preferences.pluginManager" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="uk.co.mtford.jalp.abduction.rules" />
+      <recent name="uk.co.mtford.jalp.abduction.logic.instance.equalities" />
+      <recent name="uk.co.mtford.alp.abduction.logic.instance" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/examples/inference-rules" />
+      <recent name="$PROJECT_DIR$/examples/mike" />
+      <recent name="$PROJECT_DIR$/examples/constraint/individual" />
+      <recent name="$PROJECT_DIR$/examples/constraint/negative" />
+      <recent name="$PROJECT_DIR$/examples/basic" />
+    </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="uk.co.mtford.jalp.JALP" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="uk.co.mtford.jalp.abduction.logic.instance.constraints" />
+      <recent name="uk.co.mtford.jalp.abduction.logic.instance.equalities" />
+      <recent name="uk.co.mtford.jalp" />
+      <recent name="uk.co.mtford.jalp.abduction.rules" />
+      <recent name="uk.co.mtford.jalp.abduction.logic.instance.term" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/examples" />
+      <recent name="$PROJECT_DIR$/examples/basic" />
+      <recent name="$PROJECT_DIR$/examples/basic/abducible" />
+      <recent name="$PROJECT_DIR$/examples/full" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.interpreter">
+    <configuration default="false" name="NegativeConstraintTest" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="abduction" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="uk.co.mtford.jalp" />
+      <option name="MAIN_CLASS_NAME" value="uk.co.mtford.jalp.NegativeConstraintTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$USER_HOME$/Desktop/working" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="PredicateTest" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="abduction" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="uk.co.mtford.jalp" />
+      <option name="MAIN_CLASS_NAME" value="uk.co.mtford.jalp.PredicateTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$USER_HOME$/Desktop/working" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="PredicateTest.equalityTest1" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="abduction" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="uk.co.mtford.jalp" />
+      <option name="MAIN_CLASS_NAME" value="uk.co.mtford.jalp.PredicateTest" />
+      <option name="METHOD_NAME" value="equalityTest1" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$USER_HOME$/Desktop/working" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="GenesTest" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="abduction" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="uk.co.mtford.jalp" />
+      <option name="MAIN_CLASS_NAME" value="uk.co.mtford.jalp.GenesTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$USER_HOME$/Desktop/working" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="AbducibleTest and 21 more" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="abduction" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="pattern" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns>
+        <pattern testClass="uk.co.mtford.jalp.AbducibleTest" />
+        <pattern testClass="uk.co.mtford.jalp.CarTest" />
+        <pattern testClass="uk.co.mtford.jalp.CircuitsTest" />
+        <pattern testClass="uk.co.mtford.jalp.ClpEx1Test" />
+        <pattern testClass="uk.co.mtford.jalp.ConstraintTest" />
+        <pattern testClass="uk.co.mtford.jalp.DefinitionTest" />
+        <pattern testClass="uk.co.mtford.jalp.FactTest" />
+        <pattern testClass="uk.co.mtford.jalp.FliesTest" />
+        <pattern testClass="uk.co.mtford.jalp.GenesTest" />
+        <pattern testClass="uk.co.mtford.jalp.GraphTest" />
+        <pattern testClass="uk.co.mtford.jalp.InsaneTest" />
+        <pattern testClass="uk.co.mtford.jalp.MedicalTest" />
+        <pattern testClass="uk.co.mtford.jalp.NegativeConstraintTest" />
+        <pattern testClass="uk.co.mtford.jalp.NotTest" />
+        <pattern testClass="uk.co.mtford.jalp.PredicateTest" />
+        <pattern testClass="uk.co.mtford.jalp.abduction.logic.instance.ETest" />
+        <pattern testClass="uk.co.mtford.jalp.abduction.logic.instance.GetVariablesTest" />
+        <pattern testClass="uk.co.mtford.jalp.abduction.logic.instance.SubstitutionTest" />
+        <pattern testClass="uk.co.mtford.jalp.abduction.logic.instance.UnificationTest" />
+        <pattern testClass="uk.co.mtford.jalp.abduction.logic.instance.constraints.ConstraintSolverTest" />
+        <pattern testClass="uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualitySolverTest" />
+        <pattern testClass="uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualitySolverTest" />
+      </patterns>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings">
+          <MavenGeneralSettings>
+            <option name="checksumPolicy" value="FAIL" />
+            <option name="failureBehavior" value="FAST" />
+            <option name="localRepository" value="" />
+            <option name="mavenHome" value="" />
+            <option name="nonRecursive" value="false" />
+            <option name="pluginUpdatePolicy" value="DO_NOT_UPDATE" />
+            <option name="printErrorStackTraces" value="false" />
+            <option name="snapshotUpdatePolicy" value="ALWAYS_UPDATE" />
+            <option name="usePluginRegistry" value="false" />
+            <option name="userSettingsFile" value="" />
+            <option name="workOffline" value="false" />
+          </MavenGeneralSettings>
+        </option>
+        <option name="myRunnerSettings">
+          <MavenRunnerSettings>
+            <option name="jreName" value="#JAVA_INTERNAL" />
+            <option name="mavenProperties">
+              <map />
+            </option>
+            <option name="runMavenInBackground" value="true" />
+            <option name="skipTests" value="false" />
+            <option name="vmOptions" value="" />
+          </MavenRunnerSettings>
+        </option>
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="workingDirPath" value="" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="uk.co.mtford.jalp.Main" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="-f examples/alp_exp/1.alp -d -q flies(D)" />
+      <option name="WORKING_DIRECTORY" value="file://$USER_HOME$/Desktop/working" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$USER_HOME$/Desktop/working" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="false" name="interpreter" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="uk.co.mtford.jalp.Main" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://examples" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="abduction" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="JProfiler" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="block world debug" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="uk.co.mtford.jalp.Main" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="examples/complex/nuffelen.alp -q time(T),on(2,0,T),on(1,2,T),on(3,1,T) -d debug/complex/block-world" />
+      <option name="WORKING_DIRECTORY" value="file://$USER_HOME$/Desktop/working" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="abduction" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="block world" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="uk.co.mtford.jalp.Main" />
+      <option name="VM_PARAMETERS" value="-Xms1500m -Xmx1500m" />
+      <option name="PROGRAM_PARAMETERS" value="examples/complex/nuffelen.alp -q time(T),on(2,0,T),on(1,2,T),on(3,1,T) " />
+      <option name="WORKING_DIRECTORY" value="file://$USER_HOME$/Desktop/working" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="abduction" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="room" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="uk.co.mtford.jalp.Main" />
+      <option name="VM_PARAMETERS" value="-Xms1500m -Xmx1500m" />
+      <option name="PROGRAM_PARAMETERS" value="examples/full/mike/rooms.alp -q time(T),inRoom(sam,bathroom,T)" />
+      <option name="WORKING_DIRECTORY" value="file://$USER_HOME$/Desktop/working" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="abduction" />
+      <envs />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="circuits2" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="uk.co.mtford.jalp.Main" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="examples/full/jiefei/circuits2.alp -q output(g2,off)" />
+      <option name="WORKING_DIRECTORY" value="file://$USER_HOME$/Desktop/working" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="abduction" />
+      <envs />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="JProfiler" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <list size="10">
+      <item index="0" class="java.lang.String" itemvalue="JUnit.NegativeConstraintTest" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.PredicateTest" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.PredicateTest.equalityTest1" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.GenesTest" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.AbducibleTest and 21 more" />
+      <item index="5" class="java.lang.String" itemvalue="Application.interpreter" />
+      <item index="6" class="java.lang.String" itemvalue="Application.block world debug" />
+      <item index="7" class="java.lang.String" itemvalue="Application.block world" />
+      <item index="8" class="java.lang.String" itemvalue="Application.room" />
+      <item index="9" class="java.lang.String" itemvalue="Application.circuits2" />
+    </list>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="DETECT_NESTED_COPIES" value="true" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <configuration useDefault="false">$USER_HOME$/.subversion_IDEA</configuration>
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="73fa91bc-40b6-4c73-b550-dc80aa73cd81" name="Default" comment="" />
+      <created>1332442350059</created>
+      <updated>1332442350059</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Initial commit after exams before I start changing things up.">
+      <created>1337246219165</created>
+      <updated>1337246219165</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added some files that were missing from the commit.&#10;&#10;">
+      <created>1337246288144</created>
+      <updated>1337246288144</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Cleaned up code somewhat. Removed clone() methods and cloneable interface implementations as they were pointless.">
+      <created>1337247693092</created>
+      <updated>1337247693092</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Cleaned up code a lot. Fixed all bugs except medical one. Also found source of bug in A1. Commiting before rewriting A1.">
+      <created>1337259745443</created>
+      <updated>1337259745443</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Haven't fixed A1. This is final commit before change structure to a visitor pattern to make life easier and also hopefully improve efficiency in the long run.">
+      <created>1337316520307</created>
+      <updated>1337316520307</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Setup and ready for writing of rules.">
+      <created>1337328506097</created>
+      <updated>1337328506097</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Lots of fixes to the data structures and added functionality to objects. Implemented basic inference rules. (true, false etc)">
+      <created>1337426556336</created>
+      <updated>1337426556336</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added get variables and perform substitutions functionality to the logic data structures for use in the inference rules.">
+      <created>1337431708237</created>
+      <updated>1337431708237</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Fixed substitutions and added clone feature to all logic instances. Performed some package reorganization also.">
+      <created>1337434309979</created>
+      <updated>1337434309979</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Added shallowClone and deepClone capability. Wrote unit tests for getvariables, substitutions, cloning and the equality solver and made any neccessary fixes along the way.">
+      <created>1337497413225</created>
+      <updated>1337497413225</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Implemented A1">
+      <created>1337501094874</created>
+      <updated>1337501094874</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Implemented A2">
+      <created>1337506916566</created>
+      <updated>1337506916566</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Implemented N1">
+      <created>1337510726574</created>
+      <updated>1337510726574</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Implemented N2">
+      <created>1337511784013</created>
+      <updated>1337511784013</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Implemented E1">
+      <created>1337518513199</created>
+      <updated>1337518513199</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Implemented definition unfolding again.">
+      <created>1337519804522</created>
+      <updated>1337519804522</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Implemented definition unfolding again.">
+      <created>1337520979226</created>
+      <updated>1337520979226</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Implemented D1. Fixed unfolding.">
+      <created>1337521455633</created>
+      <updated>1337521455633</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Implemented D2">
+      <created>1337523219033</created>
+      <updated>1337523219033</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Fixed many of the inference rules. Added a javascript visualizer.">
+      <created>1337668942985</created>
+      <updated>1337668942993</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Got medical example working at last!">
+      <created>1337676047815</created>
+      <updated>1337676047815</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Got car example working.">
+      <created>1337676781410</created>
+      <updated>1337676781410</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Tidied up main a bit. Renamed to JALP.">
+      <created>1337707160812</created>
+      <updated>1337707160812</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Fixed up the visual debugger a bit.">
+      <created>1337714107112</created>
+      <updated>1337714107112</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Added nuffelen example.">
+      <created>1337759717724</created>
+      <updated>1337759717724</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Reimplemented unification in a better manner. Deleted equality rules as they were wrong. Need reimplementing.">
+      <created>1337771456967</created>
+      <updated>1337771456967</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Reimplemented E1 for what must be the 1000th time.">
+      <created>1337772555484</created>
+      <updated>1337772555484</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Reimplemented E2. Fixed substitutions. Fixed D2. Fixed D1.">
+      <created>1337782628434</created>
+      <updated>1337782628434</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Fixed bug in visualizer.">
+      <created>1337786056152</created>
+      <updated>1337786056152</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Got rid of IReductionResultInstance which was no longer needed.">
+      <created>1337790085830</created>
+      <updated>1337790085830</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Organized logic hierarchy using terminology that is more correct.">
+      <created>1337793760975</created>
+      <updated>1337793760976</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Implemented scaffolding for equality solver. Now just equality solver to implement.">
+      <created>1337794946510</created>
+      <updated>1337794946510</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Fixed a bug where stores and assignments weren't being copied over during positive node construction.">
+      <created>1337798716914</created>
+      <updated>1337798716914</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Implemented equality solver.">
+      <created>1337846602848</created>
+      <updated>1337846602848</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Tidied up JALP program grammar + javacc to match current implementation.">
+      <created>1337849526315</created>
+      <updated>1337849526315</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Tidied up JALP query grammar + javacc to match current implementation.">
+      <created>1337849680328</created>
+      <updated>1337849680328</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Wrote out a new grammar that includes constraints and lists.">
+      <created>1337852177259</created>
+      <updated>1337852177259</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Renamed success node.">
+      <created>1337852303776</created>
+      <updated>1337852303776</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Renamed IASystemInferableInstance to IInferableInstance">
+      <created>1337852970182</created>
+      <updated>1337852970182</updated>
+    </task>
+    <task id="LOCAL-00040" summary="More renaming.">
+      <created>1337853157070</created>
+      <updated>1337853157070</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Fixed visualizer as was broken by refactoring rename.">
+      <created>1337853248639</created>
+      <updated>1337853248639</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Some reorganization. Added some scaffolding for constraints, constraint solver and lists ready for implementation.">
+      <created>1337856803818</created>
+      <updated>1337856803818</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Implemented grammar for constraints and lists.">
+      <created>1337867743721</created>
+      <updated>1337867743721</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Implemented grammar for constraints and lists.">
+      <created>1337867769356</created>
+      <updated>1337867769356</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Added a very simple constraint example for initial testing of rules that i'm about to implement.">
+      <created>1337868223849</created>
+      <updated>1337868223849</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Fixed bugs in program grammar.">
+      <created>1337869849891</created>
+      <updated>1337869849891</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Fixed bug in query grammar.">
+      <created>1337870164963</created>
+      <updated>1337870164963</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Implemented some methods for listinstances.">
+      <created>1337871315126</created>
+      <updated>1337871315126</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Implemented methods in constraint objects and constraint rule nodes.">
+      <created>1337873027804</created>
+      <updated>1337873027804</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Implemented F1 and F2.">
+      <created>1337874515778</created>
+      <updated>1337874515779</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Added constraints to the visualizer.">
+      <created>1337875310547</created>
+      <updated>1337875310547</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Added constraint field to the toString methid for rule nodes.&#10;">
+      <created>1337876018162</created>
+      <updated>1337876018162</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Fixed bug where constraints weren't been copied over into new node stores. Fixed nuffelen's aystem example so can use it for testing.">
+      <created>1337877642853</created>
+      <updated>1337877642853</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Fixed bug in F2 where child nodes and marks weren't being added.">
+      <created>1337878796086</created>
+      <updated>1337878796086</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Cleaned up visualizer">
+      <created>1337879673437</created>
+      <updated>1337879673437</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Created a graph example.">
+      <created>1337883660189</created>
+      <updated>1337883660189</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Fixed all inference rules except the problem with disequalities being produced by A1. Need to speak with ale about this.">
+      <created>1337947299752</created>
+      <updated>1337947299752</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Added a reduce option that trims the results to try and make them look more useful.">
+      <created>1337951212302</created>
+      <updated>1337951212302</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Added a new unground abducible example which unfortunately breaks the system. Fixed the proble with visualizer whereby inequalities were being displayed as equalities due to escape character.">
+      <created>1338042995889</created>
+      <updated>1338042995889</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Added a unit test for (in)equality solver. When this unit tests succeeds, should be fixed">
+      <created>1338046694970</created>
+      <updated>1338046694970</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Fixed inequality solver.">
+      <created>1338050595481</created>
+      <updated>1338050595481</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Implemented E1 inequality inference rule.">
+      <created>1338101339950</created>
+      <updated>1338101339951</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Implemented E2 inequality rule.">
+      <created>1338102391328</created>
+      <updated>1338102391328</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Implemented rulenode creation methods for inequalities&#10;">
+      <created>1338102636658</created>
+      <updated>1338102636659</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Fixed up main and fixed up bugs.">
+      <created>1338116248602</created>
+      <updated>1338116248602</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Fixed more bugs.">
+      <created>1338117402234</created>
+      <updated>1338117402234</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Made a new version of the visualizer using jquery and a tree widget.">
+      <created>1338147272470</created>
+      <updated>1338147272470</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Fixed bug in D2.">
+      <created>1338149920423</created>
+      <updated>1338149920423</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Modifed JALPSystem to allow independant usage in unit tests. Added one unit tests to check that the JALPSystem changes worked.">
+      <created>1338151555097</created>
+      <updated>1338151555097</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Fixed bug in visualizer where whole query wasnt being displayed.">
+      <created>1338151892874</created>
+      <updated>1338151892874</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Added a couple more example unit tests.">
+      <created>1338152230555</created>
+      <updated>1338152230555</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Added a couple more example unit tests.">
+      <created>1338185841455</created>
+      <updated>1338185841456</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Fixed up main to provide more information for queries">
+      <created>1338186078428</created>
+      <updated>1338186078428</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Added all examples as unit tests except the graph ones which aren't working again.">
+      <created>1338189547682</created>
+      <updated>1338189547682</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Fixed D2 for good this time...">
+      <created>1338190740364</created>
+      <updated>1338190740364</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Fixed substitution unit tests. Equality solver now performs substitutions to make traces clearer.">
+      <created>1338191125796</created>
+      <updated>1338191125796</updated>
+    </task>
+    <task id="LOCAL-00077" summary="DenialInstance now removes universal variables that it has substituted.">
+      <created>1338191198317</created>
+      <updated>1338191198318</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Added the two graph examples that now work as unit tests.">
+      <created>1338192657844</created>
+      <updated>1338192657844</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Fixed bug in A2. The last graph test still only half works though. Must be another bug somewhere.">
+      <created>1338195295324</created>
+      <updated>1338195295324</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Seem to have got everything working.">
+      <created>1338220204036</created>
+      <updated>1338220204036</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Added a few TODO's for clearing up, minimizing but everything seems to be working now, so won't be messing with for a while.">
+      <created>1338222782394</created>
+      <updated>1338222782395</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Reorganized examples folder. Added a proxy interface ready for integration of a constraint solver.">
+      <created>1338281630269</created>
+      <updated>1338281630270</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Added list constraint unit tests that obviously dont work yet. Added a concrete constraint solver in which I will implement the list InConstraint">
+      <created>1338301865323</created>
+      <updated>1338301865323</updated>
+    </task>
+    <task id="LOCAL-00084" summary="Commiting before making changes neccessary to integrating the Choco constraint solver.">
+      <created>1338366330320</created>
+      <updated>1338366330320</updated>
+    </task>
+    <task id="LOCAL-00085" summary="Implemented integer and char constant instances and integrated them into the grammar.">
+      <created>1338369231289</created>
+      <updated>1338369231289</updated>
+    </task>
+    <task id="LOCAL-00086" summary="Implemented integerlist and constantlist listinstance objects and integrated them into the grammar.">
+      <created>1338375807119</created>
+      <updated>1338375807119</updated>
+    </task>
+    <task id="LOCAL-00087" summary="Implemented InConstantListConstraint and InIntegerListConstraint and integrated them into the grammar.">
+      <created>1338377302473</created>
+      <updated>1338377302474</updated>
+    </task>
+    <task id="LOCAL-00088" summary="Implemented in constraint for non-numeric constants natively using linked lists.">
+      <created>1338385568361</created>
+      <updated>1338385568361</updated>
+    </task>
+    <task id="LOCAL-00089" summary="Implemented native in constraint for lists of constants and added 3 unit tests for them.">
+      <created>1338397288527</created>
+      <updated>1338397288527</updated>
+    </task>
+    <task id="LOCAL-00090" summary="Added a negative choco method. Added a negative example and unit tests that need to work for native constant lists.">
+      <created>1338398227264</created>
+      <updated>1338398227264</updated>
+    </task>
+    <task id="LOCAL-00091" summary="Got two negative list constraint unit tests working. The two graph list constraint unit tests still dont work though...">
+      <created>1338399634275</created>
+      <updated>1338399634275</updated>
+    </task>
+    <task id="LOCAL-00092" summary="Fixed bugs in D2 and E2">
+      <created>1338444766957</created>
+      <updated>1338444766957</updated>
+    </task>
+    <task id="LOCAL-00093" summary="Implemented F2b!">
+      <created>1338469027832</created>
+      <updated>1338469027832</updated>
+    </task>
+    <task id="LOCAL-00094" summary="Added a couple more unit tests that wont work as of yet.">
+      <created>1338471433100</created>
+      <updated>1338471433100</updated>
+    </task>
+    <task id="LOCAL-00095" summary="Removed the previous tests as they were wrong.">
+      <created>1338471693800</created>
+      <updated>1338471693800</updated>
+    </task>
+    <task id="LOCAL-00096" summary="Added another test that changes simpleExample.alp to use lists of names rather than facts.">
+      <created>1338472463366</created>
+      <updated>1338472463366</updated>
+    </task>
+    <task id="LOCAL-00097" summary="started changing to jacop...">
+      <created>1338484300518</created>
+      <updated>1338484300518</updated>
+    </task>
+    <task id="LOCAL-00098" summary="Got the constraint solver mostly working. Added lots of unit tests and examples etc.">
+      <created>1338554005269</created>
+      <updated>1338554005269</updated>
+    </task>
+    <task id="LOCAL-00099" summary="Made a few changes.">
+      <created>1338558155103</created>
+      <updated>1338558155103</updated>
+    </task>
+    <task id="LOCAL-00100" summary="Reorganized examples and unit tests to be more manageable.">
+      <created>1338621104799</created>
+      <updated>1338621104799</updated>
+    </task>
+    <task id="LOCAL-00101" summary="Added another unit test.">
+      <created>1338621361342</created>
+      <updated>1338621361343</updated>
+    </task>
+    <task id="LOCAL-00102" summary="Added auto generation of log files and visualizer for every single unit test.">
+      <created>1338629895447</created>
+      <updated>1338629895447</updated>
+    </task>
+    <task id="LOCAL-00103" summary="Created a JAVA API for the system.">
+      <created>1338639918401</created>
+      <updated>1338639918401</updated>
+    </task>
+    <task id="LOCAL-00104" summary="Recreated JALP command line.">
+      <created>1338644954216</created>
+      <updated>1338644954216</updated>
+    </task>
+    <task id="LOCAL-00105" summary="Recreated JALP Interpreter.">
+      <created>1338754059527</created>
+      <updated>1338754059527</updated>
+    </task>
+    <task id="LOCAL-00106" summary="Fixed a bug in JALP system">
+      <created>1338807422281</created>
+      <updated>1338807422281</updated>
+    </task>
+    <task id="LOCAL-00107" summary="Fixed a couple of bugs in the unit tests.">
+      <created>1338807788005</created>
+      <updated>1338807788005</updated>
+    </task>
+    <task id="LOCAL-00108" summary="Fixed another bug in the unit tests.">
+      <created>1338807934258</created>
+      <updated>1338807934258</updated>
+    </task>
+    <task id="LOCAL-00109" summary="Fixed some clone bugs. Fixed a bug in reduceToChoco in variableInstance where uniqueId wasnt being appended to the name of choco variable.">
+      <created>1338814956454</created>
+      <updated>1338814956454</updated>
+    </task>
+    <task id="LOCAL-00110" summary="Fixed some bugs, got all tests working.">
+      <created>1338817938797</created>
+      <updated>1338817938797</updated>
+    </task>
+    <task id="LOCAL-00111" summary="Fixed up the JALPInterpreter and JALPsystem somewhat to present easier to intrepret results. Fixed  a bug in the constraints.">
+      <created>1338823937627</created>
+      <updated>1338823937627</updated>
+    </task>
+    <task id="LOCAL-00112" summary="Fixed JALPSystem bug that broke some unit tests...&#10;">
+      <created>1338825214322</created>
+      <updated>1338825214322</updated>
+    </task>
+    <task id="LOCAL-00113" summary="Commit before start cleaning up code to get rid of excess equalities, assignments etc.">
+      <created>1338833430218</created>
+      <updated>1338833430218</updated>
+    </task>
+    <task id="LOCAL-00114" summary="Increased max number of expansions.">
+      <created>1338874133531</created>
+      <updated>1338874133531</updated>
+    </task>
+    <task id="LOCAL-00115" summary="Added optimization whereby E1 doesn't add any equalities to the store any longer. Only inequalities are now added to the store.">
+      <created>1338875720110</created>
+      <updated>1338875720110</updated>
+    </task>
+    <task id="LOCAL-00116" summary="Fixed bug in E2b whereby unification result was not being checked. Fixed bug in graph unit tests. Tested on circuit diagnosis and works fine.">
+      <created>1338880137884</created>
+      <updated>1338880137884</updated>
+    </task>
+    <task id="LOCAL-00117" summary="Added circuits2 example and added unit tests for both circuit examples.">
+      <created>1338882332847</created>
+      <updated>1338882332847</updated>
+    </task>
+    <task id="LOCAL-00118" summary="Added unit tests that do simple tests on each constraint operator.">
+      <created>1338962943404</created>
+      <updated>1338962943404</updated>
+    </task>
+    <task id="LOCAL-00119" summary="Fixed a bug in constraint solver causing failed child nodes not to be added to parents.">
+      <created>1338965876045</created>
+      <updated>1338965876045</updated>
+    </task>
+    <task id="LOCAL-00120" summary="Fixed bug where notMember wasn't working (notMember(int,set)) didnt seem to work as i thought it did, so used upper and lower bound instead.">
+      <created>1338972158040</created>
+      <updated>1338972158040</updated>
+    </task>
+    <task id="LOCAL-00121" summary="Made a lot of changes. Constraint solver now executes at the end. Found a massive bug in A2. Now in the position to fix it after getting constraint solver working 100%.">
+      <created>1339069509218</created>
+      <updated>1339069509218</updated>
+    </task>
+    <task id="LOCAL-00122" summary="Got rid of unneccessary assignments being collected by E2">
+      <created>1339074927886</created>
+      <updated>1339074927886</updated>
+    </task>
+    <task id="LOCAL-00123" summary="All tests passed for the first time...">
+      <created>1339080317116</created>
+      <updated>1339080317116</updated>
+    </task>
+    <task id="LOCAL-00124" summary="Fixed some cloning bugs. All tests work.">
+      <created>1339081599222</created>
+      <updated>1339081599223</updated>
+    </task>
+    <task id="LOCAL-00125" summary="Fixed cloning bug in F2b&#10;">
+      <created>1339081921814</created>
+      <updated>1339081921814</updated>
+    </task>
+    <task id="LOCAL-00126" summary="Fixed inequality inference rule. Added them to the parser.">
+      <created>1339092850539</created>
+      <updated>1339092850539</updated>
+    </task>
+    <task id="LOCAL-00127" summary="Fixed an example. Changed JALPSystem to reduce">
+      <created>1339094210719</created>
+      <updated>1339094210719</updated>
+    </task>
+    <task id="LOCAL-00128" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339135549671</created>
+      <updated>1339135549671</updated>
+    </task>
+    <task id="LOCAL-00129" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339135738774</created>
+      <updated>1339135738774</updated>
+    </task>
+    <task id="LOCAL-00130" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339135816916</created>
+      <updated>1339135816916</updated>
+    </task>
+    <task id="LOCAL-00131" summary="Made progress in fixing cloning/substitutions. Although this one was a bir weird - changed E2 - not sure if I really needed to do it though.">
+      <created>1339137087610</created>
+      <updated>1339137087610</updated>
+    </task>
+    <task id="LOCAL-00132" summary="Made progress in fixing cloning/substitutions. Although this one was a bir weird - changed E2 - not sure if I really needed to do it though.">
+      <created>1339137149894</created>
+      <updated>1339137149894</updated>
+    </task>
+    <task id="LOCAL-00133" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339137347994</created>
+      <updated>1339137347994</updated>
+    </task>
+    <task id="LOCAL-00134" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339137376618</created>
+      <updated>1339137376618</updated>
+    </task>
+    <task id="LOCAL-00135" summary="Made progress in fixing cloning/substitutions. Started modifying constraints.">
+      <created>1339137515473</created>
+      <updated>1339137515473</updated>
+    </task>
+    <task id="LOCAL-00136" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339137598836</created>
+      <updated>1339137598836</updated>
+    </task>
+    <task id="LOCAL-00137" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339137663538</created>
+      <updated>1339137663538</updated>
+    </task>
+    <task id="LOCAL-00138" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339137750967</created>
+      <updated>1339137750968</updated>
+    </task>
+    <task id="LOCAL-00139" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339137790629</created>
+      <updated>1339137790630</updated>
+    </task>
+    <task id="LOCAL-00140" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339137837444</created>
+      <updated>1339137837444</updated>
+    </task>
+    <task id="LOCAL-00141" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339137914603</created>
+      <updated>1339137914603</updated>
+    </task>
+    <task id="LOCAL-00142" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339138013349</created>
+      <updated>1339138013349</updated>
+    </task>
+    <task id="LOCAL-00143" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339138068743</created>
+      <updated>1339138068743</updated>
+    </task>
+    <task id="LOCAL-00144" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339138220323</created>
+      <updated>1339138220323</updated>
+    </task>
+    <task id="LOCAL-00145" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339138341079</created>
+      <updated>1339138341079</updated>
+    </task>
+    <task id="LOCAL-00146" summary="Made progress in fixing cloning/substitutions.">
+      <created>1339138470706</created>
+      <updated>1339138470707</updated>
+    </task>
+    <task id="LOCAL-00147" summary="Got rid of some substituting that was going on.">
+      <created>1339139811284</created>
+      <updated>1339139811284</updated>
+    </task>
+    <task id="LOCAL-00148" summary="Fixed some equality solver bugs.">
+      <created>1339140399527</created>
+      <updated>1339140399527</updated>
+    </task>
+    <task id="LOCAL-00149" summary="Made some optimizations to use of unification and substitution.">
+      <created>1339143873129</created>
+      <updated>1339143873129</updated>
+    </task>
+    <task id="LOCAL-00150" summary="Readded some substitutuons.&#10;">
+      <created>1339165360374</created>
+      <updated>1339165360375</updated>
+    </task>
+    <task id="LOCAL-00151" summary="Fixed inequality bug in A1">
+      <created>1339168224664</created>
+      <updated>1339168224664</updated>
+    </task>
+    <task id="LOCAL-00152" summary="Seperated equality solver from rule node.">
+      <created>1339169329194</created>
+      <updated>1339169329194</updated>
+    </task>
+    <task id="LOCAL-00153" summary="Created an InEqualitySolver ready to implement.">
+      <created>1339178963072</created>
+      <updated>1339178963072</updated>
+    </task>
+    <task id="LOCAL-00154" summary="Modifed RuleNodeVisitor so can use it for unit tests.">
+      <created>1339179998142</created>
+      <updated>1339179998142</updated>
+    </task>
+    <task id="LOCAL-00155" summary="Modifed RuleNodeVisitor so can use it for unit tests.">
+      <created>1339180253105</created>
+      <updated>1339180253106</updated>
+    </task>
+    <task id="LOCAL-00156" summary="Added A1 unit test">
+      <created>1339183862642</created>
+      <updated>1339183862642</updated>
+    </task>
+    <task id="LOCAL-00157" summary="Added A1 unit test">
+      <created>1339185377809</created>
+      <updated>1339185377810</updated>
+    </task>
+    <task id="LOCAL-00158" summary="Added some exceptions that break the unit tests, but they shouldnt...">
+      <created>1339226665279</created>
+      <updated>1339226665279</updated>
+    </task>
+    <task id="LOCAL-00159" summary="Undergone heavy modification to get rid of 'currentGoal' and 'nestedDenialList' concepts. Much simpler now. Unit tests breaking pending development of  a seperate inequality solver.">
+      <created>1339239849049</created>
+      <updated>1339239849049</updated>
+    </task>
+    <task id="LOCAL-00160" summary="Implemented working inequality solver and unit tests. Sorted out equality solver unit tests. Rearranged examples">
+      <created>1339258012476</created>
+      <updated>1339258012476</updated>
+    </task>
+    <task id="LOCAL-00161" summary="Seperated equality store into equalities and inequalities. State rewrite now executes both equality solver and inequality solver. Disabled use of constraint solver for now until all rule unit tests have been implemented.">
+      <created>1339263572622</created>
+      <updated>1339263572622</updated>
+    </task>
+    <task id="LOCAL-00162" summary="Extended query grammar to allow all other inferables. Fixed up the result structure to include equalities and inequalities.">
+      <created>1339264255797</created>
+      <updated>1339264255797</updated>
+    </task>
+    <task id="LOCAL-00163" summary="Added inequalities to the toString method of result.">
+      <created>1339264335602</created>
+      <updated>1339264335602</updated>
+    </task>
+    <task id="LOCAL-00164" summary="RuleNode now carries query too.">
+      <created>1339265485251</created>
+      <updated>1339265485251</updated>
+    </task>
+    <task id="LOCAL-00165" summary="Added A1 unit tests.">
+      <created>1339265877448</created>
+      <updated>1339265877448</updated>
+    </task>
+    <task id="LOCAL-00166" summary="Added A2 unit tests.">
+      <created>1339266128289</created>
+      <updated>1339266128289</updated>
+    </task>
+    <task id="LOCAL-00167" summary="Added unit tests for D1 and D2">
+      <created>1339267114550</created>
+      <updated>1339267114550</updated>
+    </task>
+    <task id="LOCAL-00168" summary="Added N1 unit test.">
+      <created>1339267577126</created>
+      <updated>1339267577126</updated>
+    </task>
+    <task id="LOCAL-00169" summary="Added F1 and F2">
+      <created>1339268592979</created>
+      <updated>1339268592979</updated>
+    </task>
+    <task id="LOCAL-00170" summary="Added E2 unit tests. They break hard because of the query parser atm...">
+      <created>1339269237103</created>
+      <updated>1339269237103</updated>
+    </task>
+    <task id="LOCAL-00171" summary="Added unit tests for E2b, E2c and E2.">
+      <created>1339269399494</created>
+      <updated>1339269399494</updated>
+    </task>
+    <task id="LOCAL-00172" summary="Bug fixed E2c unit test.">
+      <created>1339269607507</created>
+      <updated>1339269607507</updated>
+    </task>
+    <task id="LOCAL-00173" summary="Added rest of unit tests for rules.">
+      <created>1339270318958</created>
+      <updated>1339270318958</updated>
+    </task>
+    <task id="LOCAL-00174" summary="Fixed F2 and N2.">
+      <created>1339308122914</created>
+      <updated>1339308122914</updated>
+    </task>
+    <task id="LOCAL-00175" summary="Added query and framework to the visualizer and query to the tostring methods">
+      <created>1339310266878</created>
+      <updated>1339310266878</updated>
+    </task>
+    <task id="LOCAL-00176" summary="Bug fixed unit tests.">
+      <created>1339312851092</created>
+      <updated>1339312851092</updated>
+    </task>
+    <task id="LOCAL-00177" summary="Added query to the nodes used in the unit tests.">
+      <created>1339313604191</created>
+      <updated>1339313604191</updated>
+    </task>
+    <task id="LOCAL-00178" summary="Fixed all rules.">
+      <created>1339316821265</created>
+      <updated>1339316821265</updated>
+    </task>
+    <task id="LOCAL-00179" summary="Fixed bug in E2">
+      <created>1339321141791</created>
+      <updated>1339321141792</updated>
+    </task>
+    <task id="LOCAL-00180" summary="Redesigned inequality solver to respond with equalities and inequalities instead of denials to fix bug where state rewriting continues forever.">
+      <created>1339327699295</created>
+      <updated>1339327699295</updated>
+    </task>
+    <task id="LOCAL-00181" summary="Reintegrated inequality solver.">
+      <created>1339330229415</created>
+      <updated>1339330229415</updated>
+    </task>
+    <task id="LOCAL-00182" summary="All work except circuits. This is due to sanity checks. Need to apply substitutions to entire state.">
+      <created>1339343926192</created>
+      <updated>1339343926192</updated>
+    </task>
+    <task id="LOCAL-00183" summary="Perform substitutions on constraints at each state.">
+      <created>1339345329800</created>
+      <updated>1339345329801</updated>
+    </task>
+    <task id="LOCAL-00184" summary="Perform substitutions on goals at each state.">
+      <created>1339345675440</created>
+      <updated>1339345675440</updated>
+    </task>
+    <task id="LOCAL-00185" summary="Perform substitutions on goals at each state.">
+      <created>1339391283880</created>
+      <updated>1339391283881</updated>
+    </task>
+    <task id="LOCAL-00186" summary="Applied assignments now removed from the store.">
+      <created>1339393352835</created>
+      <updated>1339393352835</updated>
+    </task>
+    <task id="LOCAL-00187" summary="Added apply assignment function to rulenode.">
+      <created>1339393790325</created>
+      <updated>1339393790325</updated>
+    </task>
+    <task id="LOCAL-00188" summary="Made some efficiency adjustments.">
+      <created>1339395003829</created>
+      <updated>1339395003829</updated>
+    </task>
+    <task id="LOCAL-00189" summary="Abandoned idea of seperate E2b and E2c nodes for now. Extra complexity. Seperated out their implementations in ruleNodevisitor though.">
+      <created>1339396380982</created>
+      <updated>1339396380982</updated>
+    </task>
+    <task id="LOCAL-00190" summary="Bug fixed E2.">
+      <created>1339399153250</created>
+      <updated>1339399153250</updated>
+    </task>
+    <task id="LOCAL-00191" summary="Added some logging info to E2.">
+      <created>1339399555976</created>
+      <updated>1339399555976</updated>
+    </task>
+    <task id="LOCAL-00192" summary="Checked that all rule unit tests work as required.">
+      <created>1339403144757</created>
+      <updated>1339403144757</updated>
+    </task>
+    <task id="LOCAL-00193" summary="Added unit test to make sure correct varieties of E nodes are generated.">
+      <created>1339403997954</created>
+      <updated>1339403997954</updated>
+    </task>
+    <task id="LOCAL-00194" summary="Added new unit test.">
+      <created>1339407354904</created>
+      <updated>1339407354904</updated>
+    </task>
+    <task id="LOCAL-00195" summary="Fixed another bug in unfolding that I inadvertantly created fixing the previous bug. Equalities were getting added to the back instead of the front...">
+      <created>1339407828135</created>
+      <updated>1339407828136</updated>
+    </task>
+    <task id="LOCAL-00196" summary="Added constraint solver unit test.">
+      <created>1339408440901</created>
+      <updated>1339408440901</updated>
+    </task>
+    <task id="LOCAL-00197" summary="Circuit unit tests work!">
+      <created>1339415899931</created>
+      <updated>1339415899931</updated>
+    </task>
+    <task id="LOCAL-00198" summary="Upgraded the visualizer.">
+      <created>1339426677582</created>
+      <updated>1339426677582</updated>
+    </task>
+    <task id="LOCAL-00199" summary="All unit tests now reset the unique id generator.">
+      <created>1339427250000</created>
+      <updated>1339427250000</updated>
+    </task>
+    <task id="LOCAL-00200" summary="Fixed bug in visualizer.">
+      <created>1339427815147</created>
+      <updated>1339427815148</updated>
+    </task>
+    <task id="LOCAL-00201" summary="Made a change to InE2. != is now added to the front of goals rather than the back. Just makes more sense and probs more efficient.">
+      <created>1339428099021</created>
+      <updated>1339428099021</updated>
+    </task>
+    <task id="LOCAL-00202" summary="Cleaned up visualizer files. Removed cloning test as its pointless. Fixed substitution unit tests.">
+      <created>1339434185392</created>
+      <updated>1339434185393</updated>
+    </task>
+    <task id="LOCAL-00203" summary="Added comments to the grammar">
+      <created>1339435003033</created>
+      <updated>1339435003033</updated>
+    </task>
+    <task id="LOCAL-00204" summary="Modified grammar to change abducible(a(X,Y)) to abducible(a/2)">
+      <created>1339436477138</created>
+      <updated>1339436477138</updated>
+    </task>
+    <task id="LOCAL-00205" summary="Made improvements to the interpreter.">
+      <created>1339494228889</created>
+      <updated>1339494228889</updated>
+    </task>
+    <task id="LOCAL-00206" summary="Fixed bugs in E2 with regards to reducing to equational solved form.">
+      <created>1339679418286</created>
+      <updated>1339679418286</updated>
+    </task>
+    <task id="LOCAL-00207" summary="Added comments to unit tests.">
+      <created>1339680517847</created>
+      <updated>1339680517847</updated>
+    </task>
+    <task id="LOCAL-00208" summary="Added more comments. Added unit tests involving predicates.">
+      <created>1339682985655</created>
+      <updated>1339682985655</updated>
+    </task>
+    <task id="LOCAL-00209" summary="Fixed both parsers. Can now handle equalities between predicates.">
+      <created>1339689797632</created>
+      <updated>1339689797632</updated>
+    </task>
+    <task id="LOCAL-00210" summary="Assignments aren't deleted on substitution anymore.">
+      <created>1339690518911</created>
+      <updated>1339690518911</updated>
+    </task>
+    <task id="LOCAL-00211" summary="Queries can now be any inferable except denials.">
+      <created>1339691285627</created>
+      <updated>1339691285628</updated>
+    </task>
+    <task id="LOCAL-00212" summary="Fixed bugs where failed nodes were being evaluated as success nodes.">
+      <created>1339693733160</created>
+      <updated>1339693733160</updated>
+    </task>
+    <task id="LOCAL-00213" summary="Added some more unit tests for predicates involved in equalities in rule bodies.">
+      <created>1339694427087</created>
+      <updated>1339694427087</updated>
+    </task>
+    <task id="LOCAL-00214" summary="Fixed problem with reduce where irrelevant variables were still turning up in explanations.">
+      <created>1339694752788</created>
+      <updated>1339694752788</updated>
+    </task>
+    <task id="LOCAL-00215" summary="Fixed another bug in the query parser whereby predicates were not being accepted as parameters to other predicates.">
+      <created>1339695915049</created>
+      <updated>1339695915049</updated>
+    </task>
+    <task id="LOCAL-00216" summary="Predicates in the head are now accepted.">
+      <created>1339697326823</created>
+      <updated>1339697326823</updated>
+    </task>
+    <task id="LOCAL-00217" summary="Added genes example as a unit test.">
+      <created>1339698252062</created>
+      <updated>1339698252062</updated>
+    </task>
+    <task id="LOCAL-00218" summary="Commiting all abductive theory examples that are used in unit testing.">
+      <created>1339698428220</created>
+      <updated>1339698428220</updated>
+    </task>
+    <task id="LOCAL-00219" summary="Unit tests no longer generate debug files.">
+      <created>1339699022163</created>
+      <updated>1339699022163</updated>
+    </task>
+    <task id="LOCAL-00220" summary="Updated API to reflect new changes.">
+      <created>1339699195220</created>
+      <updated>1339699195220</updated>
+    </task>
+    <task id="LOCAL-00221" summary="Improved error handling in the interpreter.">
+      <created>1339700309167</created>
+      <updated>1339700309167</updated>
+    </task>
+    <task id="LOCAL-00222" summary="Fixed bug in result, and also cleaned up result toString">
+      <created>1339702336080</created>
+      <updated>1339702336080</updated>
+    </task>
+    <task id="LOCAL-00223" summary="Improved interpreter further. Bug fixed result toString method.">
+      <created>1339704884744</created>
+      <updated>1339704884744</updated>
+    </task>
+    <option name="localTasksCounter" value="224" />
+    <servers />
+  </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="22" width="1440" height="830" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.70662904" sideWeight="0.49712643" order="7" side_tool="false" content_ui="tabs" x="361" y="235" width="717" height="403" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.674189" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.3977433" sideWeight="0.49712643" order="3" side_tool="false" content_ui="tabs" x="-1431" y="273" width="1344" height="709" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.70662904" sideWeight="0.49784482" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32863188" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.325811" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32863188" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32833788" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3994253" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32863188" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="270" y="183" width="1013" height="603" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34051725" sideWeight="0.29337093" order="0" side_tool="false" content_ui="combo" x="-644" y="91" width="507" height="830" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.3772791" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="-1007" y="385" width="744" height="568" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47531736" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.58110017" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39915374" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
+    <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improved interpreter further. Bug fixed result toString method." />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="All unit tests now reset the unique id generator." />
+    <MESSAGE value="Fixed bug in visualizer." />
+    <MESSAGE value="Made a change to InE2. != is now added to the front of goals rather than the back. Just makes more sense and probs more efficient." />
+    <MESSAGE value="Cleaned up visualizer files. Removed cloning test as its pointless. Fixed substitution unit tests." />
+    <MESSAGE value="Added comments to the grammar" />
+    <MESSAGE value="Modified grammar to change abducible(a(X,Y)) to abducible(a/2)" />
+    <MESSAGE value="Made improvements to the interpreter." />
+    <MESSAGE value="Fixed bugs in E2 with regards to reducing to equational solved form." />
+    <MESSAGE value="Added comments to unit tests." />
+    <MESSAGE value="Added more comments. Added unit tests involving predicates." />
+    <MESSAGE value="Fixed both parsers. Can now handle equalities between predicates." />
+    <MESSAGE value="Assignments aren't deleted on substitution anymore." />
+    <MESSAGE value="Queries can now be any inferable except denials." />
+    <MESSAGE value="Fixed bugs where failed nodes were being evaluated as success nodes." />
+    <MESSAGE value="Added some more unit tests for predicates involved in equalities in rule bodies." />
+    <MESSAGE value="Fixed problem with reduce where irrelevant variables were still turning up in explanations." />
+    <MESSAGE value="Fixed another bug in the query parser whereby predicates were not being accepted as parameters to other predicates." />
+    <MESSAGE value="Predicates in the head are now accepted." />
+    <MESSAGE value="Added genes example as a unit test." />
+    <MESSAGE value="Commiting all abductive theory examples that are used in unit testing." />
+    <MESSAGE value="Unit tests no longer generate debug files." />
+    <MESSAGE value="Updated API to reflect new changes." />
+    <MESSAGE value="Improved error handling in the interpreter." />
+    <MESSAGE value="Fixed bug in result, and also cleaned up result toString" />
+    <MESSAGE value="Improved interpreter further. Bug fixed result toString method." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NegativeConstraintTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="128" column="40" selection-start="4693" selection-end="4711" vertical-scroll-proportion="0.6935725" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NotTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="0" selection-start="1709" selection-end="1709" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/PredicateTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="163" column="50" selection-start="5958" selection-end="5958" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/logic/instance/ETest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="13" selection-start="787" selection-end="787" vertical-scroll-proportion="-4.3958945" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/logic/instance/equalities/EqualitySolverTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="13" selection-start="1123" selection-end="1123" vertical-scroll-proportion="-1.4164222" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/logic/instance/constraints/ConstraintSolverTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="13" selection-start="930" selection-end="930" vertical-scroll-proportion="-0.8370702" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/A1Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="129" column="1" selection-start="4046" selection-end="4046" vertical-scroll-proportion="-0.14956012" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/E1Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="13" selection-start="1027" selection-end="1027" vertical-scroll-proportion="-0.17302053" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALP.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="167" column="92" selection-start="7884" selection-end="7884" vertical-scroll-proportion="0.7369208" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/parse/query/JALPQueryParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1258" column="0" selection-start="36516" selection-end="36516" vertical-scroll-proportion="0.33333334" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="114" column="0" selection-start="3703" selection-end="3703" vertical-scroll-proportion="0.67155427" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="164" column="25" selection-start="6337" selection-end="6337" vertical-scroll-proportion="0.023916293" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/rules/visitor/RuleNodeVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="201" column="0" selection-start="10334" selection-end="10435" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/Result.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="184" column="53" selection-start="6657" selection-end="6657" vertical-scroll-proportion="4.137519" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPInterpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="153" column="0" selection-start="6041" selection-end="6041" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/AbductiveFramework.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="129" column="59" selection-start="3715" selection-end="3715" vertical-scroll-proportion="0.83258593">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>abduction</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>choco-solver-2.1.41</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+

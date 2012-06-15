@@ -36,7 +36,7 @@ public class JALPInterpreter {
     private static final String REDUCE_COMMAND = COMMAND_START+"r";
     private static final String QUIT_COMMAND = COMMAND_START+"q";
 
-    private final Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     private JALPSystem system;
 
@@ -51,6 +51,7 @@ public class JALPInterpreter {
         System.out.println("Welcome to JALP. Type :h for help.");
         String next = null;
         while(true) {
+            scanner = new Scanner(System.in); // Quick bug fix where JALP-> appears twice...
             System.out.print("JALP->");
             next=scanner.nextLine();
             next = next.trim();
@@ -134,12 +135,27 @@ public class JALPInterpreter {
                 System.out.println("No explanations available.");
             }
             else {
-                int rNum = 1;
-                for (Result r:results) {
+                do {
+                    Result r = results.remove(0);
                     if (reduceMode) r.reduce(queryVariables);
+                    System.out.println("Query");
+                    System.out.println("  "+query.toString().substring(1,query.toString().length()-1));
                     System.out.println(r.toString());
-                    rNum++;
+                    if (!results.isEmpty()) {
+                        System.out.print("There are "+results.size()+" results remaining. See next? (y/n): ");
+                        System.out.flush();
+                        String n = scanner.next();
+                        boolean seeNext = false;
+                        while (!(n.equals("y")||n.equals("n"))) {
+                            System.out.print("There are "+results.size()+" results remaining. See next? (y/n): ");
+                            System.out.flush();
+                            n = scanner.next();
+                        }
+                        if (n.equals("n")) break;
+
+                    }
                 }
+                while (!results.isEmpty());
             }
     }
 
