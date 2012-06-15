@@ -12,7 +12,9 @@ import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
-import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
+import uk.co.mtford.jalp.abduction.rules.visitor.AbstractRuleNodeVisitor;
+import uk.co.mtford.jalp.abduction.rules.visitor.EfficientRuleNodeVisitor;
+import uk.co.mtford.jalp.abduction.rules.visitor.SimpleRuleNodeVisitor;
 
 import java.io.*;
 import java.util.*;
@@ -27,8 +29,6 @@ import java.util.*;
 public class JALPSystem {
 
     private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
-
-    private static int MAX_EXPANSIONS = Integer.MAX_VALUE;
 
     private AbductiveFramework framework;
 
@@ -141,7 +141,7 @@ public class JALPSystem {
 
     public RuleNode query(List<IInferableInstance> query, List<Result> results) {
 
-        RuleNodeVisitor visitor = new RuleNodeVisitor();
+        AbstractRuleNodeVisitor visitor = new SimpleRuleNodeVisitor();
         Stack<RuleNode> nodeStack = new Stack<RuleNode>();
 
         List<IInferableInstance> goals = new LinkedList<IInferableInstance>(query);
@@ -151,14 +151,10 @@ public class JALPSystem {
         RuleNode currentNode;
         nodeStack.add(rootNode);
 
+
         int n = 0;
 
         while (!nodeStack.isEmpty()) {
-            if (n==MAX_EXPANSIONS) {
-                LOGGER.error("Hit max expansions of "+MAX_EXPANSIONS);
-                return rootNode;
-            }
-            n++;
             currentNode = nodeStack.pop();
             if (currentNode.getGoals().isEmpty()&&!currentNode.getNodeMark().equals(RuleNode.NodeMark.FAILED)) {
                 if (LOGGER.isDebugEnabled()) {
@@ -180,6 +176,45 @@ public class JALPSystem {
 
         return rootNode;
 
+    }
+
+    public List<Result> efficientQuery(List<IInferableInstance> query) {
+        List<Result> results = new LinkedList<Result>();
+
+        AbstractRuleNodeVisitor visitor = new EfficientRuleNodeVisitor();
+        Stack<RuleNode> nodeStack = new Stack<RuleNode>();
+
+        List<IInferableInstance> goals = new LinkedList<IInferableInstance>(query);
+        goals.addAll(framework.getIC());
+        RuleNode rootNode = goals.get(0).getPositiveRootRuleNode(framework,new LinkedList<IInferableInstance>(query),goals);
+
+        RuleNode currentNode;
+        nodeStack.add(rootNode);
+        rootNode = null; // Encourage garbage collect.
+
+        int n = 0;
+
+        while (!nodeStack.isEmpty()) {
+            currentNode = nodeStack.pop();
+            if (currentNode.getGoals().isEmpty()&&!currentNode.getNodeMark().equals(RuleNode.NodeMark.FAILED)) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Found a leaf node!");
+                }
+                generateResults(rootNode, currentNode, query, results);
+            }
+            else if (currentNode.getNodeMark()==RuleNode.NodeMark.FAILED) {
+                LOGGER.debug("Found a failed node:\n" + currentNode);
+            }
+            else if (currentNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
+                currentNode.acceptVisitor(visitor);
+                nodeStack.addAll(currentNode.getChildren());
+            }
+            else {
+                throw new JALPException("Expanded node on the node stack?\n"+currentNode); // Sanity check.
+            }
+        }
+
+        return results;
     }
 
     private void generateResults(RuleNode rootNode, RuleNode successNode, List<IInferableInstance> originalQuery, List<Result> results) {

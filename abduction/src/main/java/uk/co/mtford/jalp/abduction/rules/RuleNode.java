@@ -3,11 +3,10 @@ package uk.co.mtford.jalp.abduction.rules;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
-import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.*;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
-import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
+import uk.co.mtford.jalp.abduction.rules.visitor.AbstractRuleNodeVisitor;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -30,7 +29,6 @@ public abstract class RuleNode {
         EXPANDED
     };
 
-    protected RuleNode parent;
     protected List<IInferableInstance> query;
     protected List<IInferableInstance> goals; // G - {currentGoal}
     protected Store store; // ST
@@ -39,21 +37,8 @@ public abstract class RuleNode {
     protected NodeMark nodeMark; // Defines whether or not leaf node or search node.
     protected List<RuleNode> children; // Next states.
 
-    public RuleNode(AbductiveFramework abductiveFramework, RuleNode parent, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
-        this.parent = parent;
-        this.query = query;
-        children = new LinkedList<RuleNode>();
-        assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        nodeMark = nodeMark.UNEXPANDED;
-        this.abductiveFramework = abductiveFramework;
-        this.goals = restOfGoals;
-        store = new Store();
-    }
-
-    public RuleNode(AbductiveFramework abductiveFramework, RuleNode parent, List<IInferableInstance> query, List<IInferableInstance> restOfGoals,
+    public RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals,
                     Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
-
-        this.parent = parent;
         this.query = query;
         children = new LinkedList<RuleNode>();
         this.assignments = assignments;
@@ -72,18 +57,6 @@ public abstract class RuleNode {
         this.abductiveFramework = abductiveFramework;
         this.goals = restOfGoals;
         store = new Store();
-    }
-
-    public RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals,
-                    Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
-        this.query = query;
-        children = new LinkedList<RuleNode>();
-        this.assignments = assignments;
-        this.store = store;
-        this.abductiveFramework = abductiveFramework;
-        this.goals = restOfGoals;
-        this.nodeMark = nodeMark.UNEXPANDED;
-
     }
 
     protected RuleNode() {
@@ -145,17 +118,9 @@ public abstract class RuleNode {
         this.goals = goals;
     }
 
-    public RuleNode getParent() {
-        return parent;
-    }
-
-    public void setParent(RuleNode parent) {
-        this.parent = parent;
-    }
-
     public abstract RuleNode shallowClone();
 
-    public abstract void acceptVisitor(RuleNodeVisitor v);
+    public abstract void acceptVisitor(AbstractRuleNodeVisitor v);
 
     @Override
     public String toString() {
@@ -201,7 +166,7 @@ public abstract class RuleNode {
         LinkedList<DenialInstance> newDenials = new LinkedList<DenialInstance>();
         for (DenialInstance d:store.denials) {
             DenialInstance newDenial = (DenialInstance) d.shallowClone();
-            d.performSubstitutions(assignments);
+            newDenial.performSubstitutions(assignments);
             newDenials.add(newDenial);
         }
 
@@ -224,6 +189,33 @@ public abstract class RuleNode {
         }
 
         store.inequalities = newInequalities;
+    }
+
+    public void applySubstitutions2() {
+        for (IInferableInstance inferable:query) {
+            inferable.performSubstitutions(assignments);
+        }
+        for (IConstraintInstance constraint:store.constraints) {
+            constraint.performSubstitutions(assignments);
+        }
+
+        for (IInferableInstance inferable:goals) {
+            inferable.performSubstitutions(assignments);
+        }
+
+        for (DenialInstance d:store.denials) {
+            d.performSubstitutions(assignments);
+        }
+
+        for (PredicateInstance p:store.abducibles) {
+            p.performSubstitutions(assignments);
+        }
+
+        LinkedList<InEqualityInstance> newInequalities = new LinkedList<InEqualityInstance>();
+        for (InEqualityInstance ie:store.inequalities) {
+            ie.performSubstitutions(assignments);
+        }
+
     }
 
     public String toJSON()  {

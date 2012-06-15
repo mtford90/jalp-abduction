@@ -33,14 +33,12 @@ public class CharConstantInstance extends ConstantInstance {
         this.value = value;
     }
 
-    @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
         return new CharConstantInstance(value);
     }
 
-    @Override
     public IFirstOrderLogicInstance shallowClone() {
-        return new CharConstantInstance(new String(value));
+        return this;
     }
 
     @Override
@@ -65,12 +63,10 @@ public class CharConstantInstance extends ConstantInstance {
         return value;
     }
 
-    @Override
     public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
         throw new UnsupportedOperationException(); // Dealt with natively.
     }
 
-    @Override
     public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
         return constantList.getList().contains(this);
     }

@@ -6,13 +6,13 @@ import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.IEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.*;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
-import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
+import uk.co.mtford.jalp.abduction.rules.visitor.AbstractRuleNodeVisitor;
+import uk.co.mtford.jalp.abduction.rules.visitor.EfficientRuleNodeVisitor;
+import uk.co.mtford.jalp.abduction.rules.visitor.SimpleRuleNodeVisitor;
 
-import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -44,7 +44,7 @@ public class JALP {
      * @param node The rule node to which the inference rule will be applied.
      */
     public static void applyRule(RuleNode node) {
-        RuleNodeVisitor visitor = new RuleNodeVisitor();
+        AbstractRuleNodeVisitor visitor = new SimpleRuleNodeVisitor();
         node.acceptVisitor(visitor);
     }
 

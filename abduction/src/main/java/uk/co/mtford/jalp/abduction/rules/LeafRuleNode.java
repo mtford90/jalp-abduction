@@ -6,7 +6,7 @@ import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
-import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
+import uk.co.mtford.jalp.abduction.rules.visitor.AbstractRuleNodeVisitor;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -47,13 +47,11 @@ public class LeafRuleNode extends PositiveRuleNode {
         newRuleNode.parentNode = parentNode;
         newRuleNode.nodeMark=nodeMark;
         newRuleNode.nodeMark = nodeMark;
-        newRuleNode.parent = parent;
-
         return newRuleNode;
     }
 
     @Override
-    public void acceptVisitor(RuleNodeVisitor v) throws DefinitionException {
+    public void acceptVisitor(AbstractRuleNodeVisitor v) throws DefinitionException {
         v.visit(this);
     }
 

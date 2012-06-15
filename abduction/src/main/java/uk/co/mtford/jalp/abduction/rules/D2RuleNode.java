@@ -3,11 +3,10 @@ package uk.co.mtford.jalp.abduction.rules;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.DefinitionException;
 import uk.co.mtford.jalp.abduction.Store;
-import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
-import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
+import uk.co.mtford.jalp.abduction.rules.visitor.AbstractRuleNodeVisitor;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -52,13 +51,11 @@ public class D2RuleNode extends NegativeRuleNode {
         newRuleNode.goals = new LinkedList<IInferableInstance>(goals);
         newRuleNode.query = query;
         newRuleNode.nodeMark = nodeMark;
-        newRuleNode.parent = parent;
-
         return newRuleNode;
     }
 
     @Override
-    public void acceptVisitor(RuleNodeVisitor v) throws DefinitionException {
+    public void acceptVisitor(AbstractRuleNodeVisitor v) throws DefinitionException {
         v.visit(this);
     }
 }

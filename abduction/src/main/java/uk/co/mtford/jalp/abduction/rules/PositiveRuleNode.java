@@ -4,7 +4,6 @@ import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.List;
@@ -20,11 +19,11 @@ import java.util.Map;
 public abstract class PositiveRuleNode extends RuleNode {
 
     public PositiveRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
-        super(abductiveFramework, parent, query, restOfGoals);
+        super(abductiveFramework, query, restOfGoals);
     }
 
     public PositiveRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
-        super(abductiveFramework, parent, query, restOfGoals, store, assignments);
+        super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
     protected PositiveRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {

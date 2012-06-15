@@ -35,16 +35,19 @@ public class JALPInterpreter {
     private static final String CLEAR_COMMAND = COMMAND_START+"c";
     private static final String REDUCE_COMMAND = COMMAND_START+"r";
     private static final String QUIT_COMMAND = COMMAND_START+"q";
+    private static final String EFFICIENT_COMMAND = COMMAND_START+"e";
 
     private Scanner scanner = new Scanner(System.in);
 
     private JALPSystem system;
 
     boolean reduceMode;
+    boolean efficientMode;
 
     public JALPInterpreter(JALPSystem system) {
         this.system=system;
         this.reduceMode = false;
+        this.efficientMode=false;
     }
 
     public void start() {
@@ -78,6 +81,7 @@ public class JALPInterpreter {
             else if (next.startsWith(HELP_COMMAND)) printHelp();
             else if (next.startsWith(CLEAR_COMMAND)) resetSystem();
             else if (next.startsWith(REDUCE_COMMAND)) toggleReduceMode();
+            else if (next.startsWith(EFFICIENT_COMMAND)) toggleEfficientMode();
             else if (next.startsWith(QUIT_COMMAND)) quit();
             else {
                 try {
@@ -95,6 +99,7 @@ public class JALPInterpreter {
         System.out.println(":f - View framework.");
         System.out.println(":c - Reset framework.");
         System.out.println(":r - Enable reduce mode.");
+        System.out.println(":e - Enable efficient mode.");
         System.out.println(":q - Quit.");
     }
 
@@ -119,23 +124,29 @@ public class JALPInterpreter {
     }
 
     private void executeQuery(String next) throws uk.co.mtford.jalp.abduction.parse.query.ParseException {
-            List<IInferableInstance> query = JALPQueryParser.readFromString(next.substring(2, next.length() - 1));
-            List<VariableInstance> queryVariables = new LinkedList<VariableInstance>();
-            for (IInferableInstance i:query) {
-                queryVariables.addAll(i.getVariables());
-            }
-            List<Result> results = system.query(query);
-            if (results.isEmpty()) {
-                System.out.println("No explanations available.");
-            }
-            else {
-                if (reduceMode) {
-                    for (Result r:results) {
-                        r.reduce(queryVariables);
-                    }
+        List<IInferableInstance> query = JALPQueryParser.readFromString(next.substring(2, next.length() - 1));
+        List<VariableInstance> queryVariables = new LinkedList<VariableInstance>();
+        for (IInferableInstance i:query) {
+            queryVariables.addAll(i.getVariables());
+        }
+        List<Result> results;
+        if (!efficientMode) {
+            results = system.query(query);
+        }
+        else {
+            results = system.efficientQuery(query);
+        }
+        if (results.isEmpty()) {
+            System.out.println("No explanations available.");
+        }
+        else {
+            if (reduceMode) {
+                for (Result r:results) {
+                    r.reduce(queryVariables);
                 }
-                JALP.printResults(query, results);
             }
+            JALP.printResults(query, results);
+        }
     }
 
     private void printFramework() {
@@ -154,6 +165,11 @@ public class JALPInterpreter {
     private void toggleReduceMode() {
         reduceMode=!reduceMode;
         System.out.println(reduceMode?"Reduce mode enabled.":"Reduce mode disabled.");
+    }
+
+    private void toggleEfficientMode() {
+        efficientMode=!efficientMode;
+        System.out.println(efficientMode?"Efficient mode enabled.":"Efficient mode disabled.");
     }
 
 }
