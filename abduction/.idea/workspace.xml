@@ -7,7 +7,7 @@
   <component name="ChangeListManager">
     <list default="true" id="73fa91bc-40b6-4c73-b550-dc80aa73cd81" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NegativeConstraintTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NegativeConstraintTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALP.java" afterPath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALP.java" />
     </list>
     <ignored path="abduction.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -70,19 +70,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ConstraintTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ConstraintTest.java">
+      <file leaf-file-name="JALP.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALP.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="148" column="27" selection-start="4669" selection-end="4669" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NegativeConstraintTest.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NegativeConstraintTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="129" column="0" selection-start="4667" selection-end="4667" vertical-scroll-proportion="2.702541">
+            <state line="421" column="7" selection-start="16168" selection-end="16168" vertical-scroll-proportion="0.47384155">
               <folding />
             </state>
           </provider>
@@ -113,7 +104,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ClpEx1Test.java" />
         <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FactTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/PredicateTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/D2Test.java" />
@@ -129,6 +119,7 @@
         <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/CircuitsTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/AbducibleTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NegativeConstraintTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALP.java" />
       </list>
     </option>
   </component>
@@ -215,12 +206,22 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
+              <option name="myItemId" value="abduction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abduction" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -238,29 +239,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
+              <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jalp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1666,7 +1649,11 @@
       <created>1339742851515</created>
       <updated>1339742851515</updated>
     </task>
-    <option name="localTasksCounter" value="227" />
+    <task id="LOCAL-00227" summary="Some unit tests were still generating debug files.">
+      <created>1339743339510</created>
+      <updated>1339743339510</updated>
+    </task>
+    <option name="localTasksCounter" value="228" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1755,7 +1742,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed up error handling." />
+    <option name="LAST_COMMIT_MESSAGE" value="Some unit tests were still generating debug files." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1768,7 +1755,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Cleaned up visualizer files. Removed cloning test as its pointless. Fixed substitution unit tests." />
     <MESSAGE value="Added comments to the grammar" />
     <MESSAGE value="Modified grammar to change abducible(a(X,Y)) to abducible(a/2)" />
     <MESSAGE value="Made improvements to the interpreter." />
@@ -1793,6 +1779,7 @@
     <MESSAGE value="Improved toString method of abducible framework." />
     <MESSAGE value="Improved shell and interpreter interaction somemore." />
     <MESSAGE value="Fixed up error handling." />
+    <MESSAGE value="Some unit tests were still generating debug files." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1802,13 +1789,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ClpEx1Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="66" selection-start="1287" selection-end="1287" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FactTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="82" column="66" selection-start="2270" selection-end="2270" vertical-scroll-proportion="0.0">
@@ -1910,6 +1890,13 @@
     <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NegativeConstraintTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="129" column="0" selection-start="4667" selection-end="4667" vertical-scroll-proportion="2.702541">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALP.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="421" column="7" selection-start="16168" selection-end="16168" vertical-scroll-proportion="0.47384155">
           <folding />
         </state>
       </provider>
