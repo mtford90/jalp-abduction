@@ -13,6 +13,8 @@ import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 
 /**
@@ -42,7 +44,7 @@ public class D2Test {
    P = {p(X,Y) :- g(X), d(Y), P(X,Y) :- e(X,Y).}
     */
     @Test
-    public void test1() throws Exception, ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException { // TODO D1.alp
+    public void test1() throws ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException, IOException { // TODO D1.alp
         UniqueIdGenerator.reset();
 
         AbductiveFramework framework = JALPParser.readFromFile("examples/inference-rules/D1.alp");

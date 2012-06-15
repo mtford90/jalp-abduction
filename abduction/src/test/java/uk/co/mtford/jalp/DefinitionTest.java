@@ -11,6 +11,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class DefinitionTest {
     We expect two results, Y/jane or Y/mary
      */
     @Test
-    public void definitionTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void definitionTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/definition/definition.alp");

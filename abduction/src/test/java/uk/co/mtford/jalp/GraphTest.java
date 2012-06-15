@@ -12,6 +12,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class GraphTest {
 
      */
     @Test
-    public void graphTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/graph/graph.alp");
@@ -100,7 +101,7 @@ public class GraphTest {
 
     */
     @Test
-    public void graphTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphTest2() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/graph/graph.alp");
@@ -138,7 +139,7 @@ public class GraphTest {
 
      */
     @Test
-    public void graph2Test1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graph2Test1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/graph/graph2.alp");
@@ -177,7 +178,7 @@ public class GraphTest {
     the same colour red.
     */
     @Test
-    public void graphConstraintTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphConstraintTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/graph/graph-constraint.alp");
@@ -188,7 +189,7 @@ public class GraphTest {
         CharConstantInstance red = new CharConstantInstance("red");
         PredicateInstance has_colour = new PredicateInstance("has_colour",node1,red);
         query.add(has_colour);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/graph/graph-constraint-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         assertTrue(resultOne.getStore().abducibles.size()==1);
@@ -213,7 +214,7 @@ public class GraphTest {
     This is as per the result that ASystem gives.
     */
     @Test
-    public void graphConstraintTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void graphConstraintTest2() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/graph/graph-constraint.alp");
@@ -227,7 +228,7 @@ public class GraphTest {
         PredicateInstance has_colour2 = new PredicateInstance("has_colour",node2,D);
         query.add(has_colour1);
         query.add(has_colour2);
-        List<Result> result = system.generateDebugFiles(query, "debug/full/graph/graph-constraint-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==7); // Matches jiefeis ASystem implementation.
     }
 }

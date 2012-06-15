@@ -14,6 +14,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class AbducibleTest {
     We expect to collect an abducible girl(Y).
      */
     @Test
-    public void abducibleTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void abducibleTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/abducible/abducible.alp");
@@ -79,7 +80,7 @@ public class AbducibleTest {
    We expect to collect an abducible girl(jane).
     */
     @Test
-    public void abducibleTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void abducibleTest2() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/abducible/abducible.alp");
@@ -107,7 +108,7 @@ public class AbducibleTest {
     We expect to collect an inequality X!=1
     */
     @Test
-    public void ungroundAbducibleTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void ungroundAbducibleTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/abducible/unground-abducible.alp");
@@ -135,7 +136,7 @@ public class AbducibleTest {
     We expect 3 results: X!=1, Y!=2 or Z!=3.
     */
     @Test
-    public void ungroundAbducibleTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void ungroundAbducibleTest2() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/abducible/unground-abducible-2.alp");

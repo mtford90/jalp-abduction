@@ -41,7 +41,7 @@ public class PredicateTest {
     }
 
     @org.junit.Test
-    public void equalityTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void equalityTest1() throws  ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem();
@@ -54,7 +54,7 @@ public class PredicateTest {
     }
 
     @org.junit.Test
-    public void equalityTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void equalityTest2() throws  ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem();
@@ -66,7 +66,7 @@ public class PredicateTest {
     }
 
     @org.junit.Test
-    public void equalityTest3() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void equalityTest3() throws  ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem();
@@ -79,7 +79,7 @@ public class PredicateTest {
     }
 
     @org.junit.Test
-    public void equalityTest4() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void equalityTest4() throws  ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem();
@@ -96,7 +96,7 @@ public class PredicateTest {
     }
 
     @org.junit.Test
-    public void equalityTest5() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void equalityTest5() throws  ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem();
@@ -113,7 +113,7 @@ public class PredicateTest {
     }
 
     @org.junit.Test
-    public void equalityTest6() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void equalityTest6() throws  ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem();
@@ -130,7 +130,7 @@ public class PredicateTest {
     }
 
     @org.junit.Test
-    public void predicateInHeadTest1() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void predicateInHeadTest1() throws  ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem();
@@ -147,7 +147,7 @@ public class PredicateTest {
     }
 
     @org.junit.Test
-    public void predicateInHeadTest2() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void predicateInHeadTest2() throws  ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem();

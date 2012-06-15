@@ -52,6 +52,8 @@ public class JALPInterpreter {
         String next = null;
         while(true) {
             scanner = new Scanner(System.in); // Quick bug fix where JALP-> appears twice...
+            System.out.flush();
+            System.err.flush();
             System.out.print("JALP->");
             next=scanner.nextLine();
             next = next.trim();
@@ -60,22 +62,16 @@ public class JALPInterpreter {
                 try {
                     loadFrameworkFromFile(next);
                 } catch (FileNotFoundException e) {
-                    System.err.println("File "+next+" does not exist.");
-                    System.err.flush();
-                    continue;
+                    System.err.println("File " + next + " does not exist.");
                 } catch (ParseException e) {
-                    System.err.println("Parse error: "+e.getMessage().split("\n")[0]);
-                    System.err.flush();
-                    continue;
+                    System.err.println("Parse error: " + e.getMessage().split("\n")[0]);
                 }
             }
             else if (next.startsWith(QUERY_COMMAND)) {
                 try {
                     executeQuery(next);
                 } catch (uk.co.mtford.jalp.abduction.parse.query.ParseException e) {
-                    System.err.println("Parse error: "+e.getMessage().split("\n")[0]);
-                    System.err.flush();
-                    continue;
+                    System.err.println("Parse error: " + e.getMessage().split("\n")[0]);
                 }
             }
             else if (next.startsWith(PRINT_COMMAND)) printFramework();
@@ -87,9 +83,7 @@ public class JALPInterpreter {
                 try {
                     loadFrameworkFromString(next);
                 } catch (ParseException e) {
-                    System.err.println("Parse error: "+e.getMessage().split("\n")[0]);
-                    System.err.flush();
-                    continue;
+                    System.err.println("Parse error: " + e.getMessage().split("\n")[0]);
                 }
             }
         }
@@ -135,27 +129,12 @@ public class JALPInterpreter {
                 System.out.println("No explanations available.");
             }
             else {
-                do {
-                    Result r = results.remove(0);
-                    if (reduceMode) r.reduce(queryVariables);
-                    System.out.println("Query");
-                    System.out.println("  "+query.toString().substring(1,query.toString().length()-1));
-                    System.out.println(r.toString());
-                    if (!results.isEmpty()) {
-                        System.out.print("There are "+results.size()+" results remaining. See next? (y/n): ");
-                        System.out.flush();
-                        String n = scanner.next();
-                        boolean seeNext = false;
-                        while (!(n.equals("y")||n.equals("n"))) {
-                            System.out.print("There are "+results.size()+" results remaining. See next? (y/n): ");
-                            System.out.flush();
-                            n = scanner.next();
-                        }
-                        if (n.equals("n")) break;
-
+                if (reduceMode) {
+                    for (Result r:results) {
+                        r.reduce(queryVariables);
                     }
                 }
-                while (!results.isEmpty());
+                JALP.printResults(query, results);
             }
     }
 

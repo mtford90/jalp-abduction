@@ -88,11 +88,11 @@ public class JALPSystem {
         }
     }
 
-    public List<Result> generateDebugFiles(String query, String folderName) throws IOException, Exception, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public List<Result> generateDebugFiles(String query, String folderName) throws IOException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         return generateDebugFiles(new LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query)),folderName);
     }
 
-    public List<Result> generateDebugFiles(List<IInferableInstance> query, String folderName) throws Exception, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public List<Result> generateDebugFiles(List<IInferableInstance> query, String folderName) throws JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, IOException {
         File folder = new File(folderName);
         FileUtils.touch(folder);
         FileUtils.forceDelete(folder);
@@ -170,13 +170,7 @@ public class JALPSystem {
                 LOGGER.debug("Found a failed node:\n" + currentNode);
             }
             else if (currentNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
-                try {
-                    currentNode.acceptVisitor(visitor);
-                }
-                catch (Exception e) {
-                    LOGGER.fatal("Encountered an error whilst state rewriting. Returning what have so far.",e);
-                    return rootNode;
-                }
+                currentNode.acceptVisitor(visitor);
                 nodeStack.addAll(currentNode.getChildren());
             }
             else {

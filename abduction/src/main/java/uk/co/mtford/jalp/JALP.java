@@ -35,7 +35,7 @@ public class JALP {
     }
 
 
-    public static void applyRule(RuleNode node) throws Exception {
+    public static void applyRule(RuleNode node) {
         RuleNodeVisitor visitor = new RuleNodeVisitor();
         node.acceptVisitor(visitor);
     }

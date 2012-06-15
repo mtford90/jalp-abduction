@@ -10,6 +10,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class MedicalTest {
     Expect two results, either that john has a migraine, or jaundice and a stomach bug.
      */
     @Test
-    public void medicalHeadacheTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void medicalHeadacheTest() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/medical.alp");
@@ -103,7 +104,7 @@ public class MedicalTest {
    Expect one result: that john has a migraine.
     */
     @Test
-    public void medicalDizzinessTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void medicalDizzinessTest() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/medical.alp");
@@ -140,7 +141,7 @@ public class MedicalTest {
    Expect one result: that john has a stomach bug.
     */
     @Test
-    public void medicalSicknessTest() throws Exception, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void medicalSicknessTest() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/medical.alp");

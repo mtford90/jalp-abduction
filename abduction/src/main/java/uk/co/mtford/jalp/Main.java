@@ -94,8 +94,6 @@ public class Main {
                 printError("JALP encountered a problem.",e);
             } catch (uk.co.mtford.jalp.abduction.parse.query.ParseException e) {
                 printError("Error parsing query.",e);
-            } catch (Exception e) {
-                LOGGER.fatal("Encountered fatal error",e);
             }
         }
 

@@ -6,10 +6,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73fa91bc-40b6-4c73-b550-dc80aa73cd81" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/Test.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JalpInterpreter.java" afterPath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPInterpreter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALP.java" afterPath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALP.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPSystem.java" afterPath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPSystem.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/Main.java" afterPath="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/AbducibleTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/AbducibleTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/CarTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/CarTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/CircuitsTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/CircuitsTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ClpEx1Test.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ClpEx1Test.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ConstraintTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ConstraintTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/DefinitionTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/DefinitionTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FactTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FactTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FliesTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FliesTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GenesTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GenesTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GraphTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GraphTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/InsaneTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/InsaneTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/MedicalTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/MedicalTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NegativeConstraintTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NegativeConstraintTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NotTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NotTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/PredicateTest.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/PredicateTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/D1Test.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/D1Test.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/D2Test.java" afterPath="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/D2Test.java" />
     </list>
     <ignored path="abduction.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -72,13 +90,92 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Main.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/Main.java">
+      <file leaf-file-name="FliesTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FliesTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="107" column="38" selection-start="3593" selection-end="3593" vertical-scroll-proportion="0.4390244">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="121" column="17" selection-start="3202" selection-end="3202" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DefinitionTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/DefinitionTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="58" column="17" selection-start="1418" selection-end="1418" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GenesTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GenesTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="47" column="17" selection-start="1291" selection-end="1291" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConstraintTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ConstraintTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="148" column="27" selection-start="4669" selection-end="4669" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CircuitsTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/CircuitsTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="240" column="24" selection-start="7168" selection-end="7168" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbducibleTest.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/AbducibleTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="141" column="25" selection-start="4876" selection-end="4876" vertical-scroll-proportion="-0.3106646">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GraphTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GraphTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="144" column="17" selection-start="4650" selection-end="4650" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="InsaneTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/InsaneTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="153" column="17" selection-start="4634" selection-end="4634" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MedicalTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/MedicalTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="146" column="17" selection-start="4667" selection-end="4667" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NotTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NotTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="58" column="17" selection-start="1336" selection-end="1336" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -108,22 +205,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ConstraintTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/DefinitionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ClpEx1Test.java" />
         <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FactTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FliesTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GraphTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/InsaneTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/MedicalTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NegativeConstraintTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NotTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/PredicateTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPSystem.java" />
-        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/Result.java" />
-        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/AbductiveFramework.java" />
-        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALP.java" />
-        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPInterpreter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/Main.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/D2Test.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/D1Test.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NotTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/MedicalTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/InsaneTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GraphTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FliesTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/DefinitionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GenesTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ConstraintTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/CircuitsTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/AbducibleTest.java" />
       </list>
     </option>
   </component>
@@ -218,30 +315,8 @@
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="constraints" />
+              <option name="myItemId" value="rules" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -266,10 +341,6 @@
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jalp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -282,98 +353,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jalp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="abduction" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="debug" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -475,7 +454,7 @@
       <recent name="$PROJECT_DIR$/examples/full" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.console">
+  <component name="RunManager" selected="JUnit.AbducibleTest and 21 more">
     <configuration default="false" name="NegativeConstraintTest" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="abduction" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -1771,7 +1750,11 @@
       <created>1339740858216</created>
       <updated>1339740858216</updated>
     </task>
-    <option name="localTasksCounter" value="225" />
+    <task id="LOCAL-00225" summary="Improved shell and interpreter interaction somemore.">
+      <created>1339742237763</created>
+      <updated>1339742237763</updated>
+    </task>
+    <option name="localTasksCounter" value="226" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1814,7 +1797,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3994253" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32863188" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="270" y="183" width="1013" height="603" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34051725" sideWeight="0.52468264" order="0" side_tool="false" content_ui="combo" x="-644" y="91" width="507" height="830" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34051725" sideWeight="0.674189" order="0" side_tool="false" content_ui="combo" x="-644" y="91" width="507" height="830" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.3772791" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="-1007" y="385" width="744" height="568" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1860,7 +1843,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improved toString method of abducible framework." />
+    <option name="LAST_COMMIT_MESSAGE" value="Improved shell and interpreter interaction somemore." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1873,7 +1856,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Fixed bug in visualizer." />
     <MESSAGE value="Made a change to InE2. != is now added to the front of goals rather than the back. Just makes more sense and probs more efficient." />
     <MESSAGE value="Cleaned up visualizer files. Removed cloning test as its pointless. Fixed substitution unit tests." />
     <MESSAGE value="Added comments to the grammar" />
@@ -1898,6 +1880,7 @@
     <MESSAGE value="Fixed bug in result, and also cleaned up result toString" />
     <MESSAGE value="Improved interpreter further. Bug fixed result toString method." />
     <MESSAGE value="Improved toString method of abducible framework." />
+    <MESSAGE value="Improved shell and interpreter interaction somemore." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1907,99 +1890,115 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NotTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ClpEx1Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="0" selection-start="1709" selection-end="1709" vertical-scroll-proportion="0.0" />
+        <state line="60" column="66" selection-start="1287" selection-end="1287" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FactTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="82" column="66" selection-start="2270" selection-end="2270" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NegativeConstraintTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="196" column="73" selection-start="8096" selection-end="8096" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/PredicateTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="163" column="50" selection-start="5958" selection-end="5958" vertical-scroll-proportion="0.0" />
+        <state line="149" column="46" selection-start="5196" selection-end="5196" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/logic/instance/ETest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/D2Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="13" selection-start="787" selection-end="787" vertical-scroll-proportion="-4.3958945" />
+        <state line="68" column="48" selection-start="2025" selection-end="2025" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/logic/instance/equalities/EqualitySolverTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/D1Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="13" selection-start="1123" selection-end="1123" vertical-scroll-proportion="-1.4164222" />
+        <state line="59" column="26" selection-start="1846" selection-end="1846" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/A1Test.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/NotTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="129" column="1" selection-start="4046" selection-end="4046" vertical-scroll-proportion="-0.14956012" />
+        <state line="58" column="17" selection-start="1336" selection-end="1336" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/rules/E1Test.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/MedicalTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="13" selection-start="1027" selection-end="1027" vertical-scroll-proportion="-0.17302053" />
+        <state line="146" column="17" selection-start="4667" selection-end="4667" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/parse/query/JALPQueryParser.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/InsaneTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1258" column="0" selection-start="36516" selection-end="36516" vertical-scroll-proportion="0.33333334" />
+        <state line="153" column="17" selection-start="4634" selection-end="4634" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/rules/visitor/RuleNodeVisitor.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GraphTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="201" column="0" selection-start="10334" selection-end="10435" vertical-scroll-proportion="0.0" />
+        <state line="144" column="17" selection-start="4650" selection-end="4650" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/Result.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/FliesTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="184" column="53" selection-start="6657" selection-end="6657" vertical-scroll-proportion="4.137519" />
+        <state line="121" column="17" selection-start="3202" selection-end="3202" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/DefinitionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="17" selection-start="1418" selection-end="1418" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/GenesTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="17" selection-start="1291" selection-end="1291" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/ConstraintTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="510" column="64" selection-start="18404" selection-end="18404" vertical-scroll-proportion="0.980568">
+        <state line="148" column="27" selection-start="4669" selection-end="4669" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/abduction/logic/instance/constraints/ConstraintSolverTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/CircuitsTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="13" selection-start="930" selection-end="930" vertical-scroll-proportion="-0.50224215">
+        <state line="240" column="24" selection-start="7168" selection-end="7168" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPSystem.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/uk/co/mtford/jalp/AbducibleTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="164" column="25" selection-start="6337" selection-end="6337" vertical-scroll-proportion="-1.0807174">
+        <state line="141" column="25" selection-start="4876" selection-end="4876" vertical-scroll-proportion="-0.3106646">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALP.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="174" column="0" selection-start="8245" selection-end="8245" vertical-scroll-proportion="0.25859493">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/JALPInterpreter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="140" column="46" selection-start="5167" selection-end="5167" vertical-scroll-proportion="0.71847504">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/abduction/AbductiveFramework.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="129" column="59" selection-start="3715" selection-end="3715" vertical-scroll-proportion="2.8460388">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/uk/co/mtford/jalp/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="107" column="38" selection-start="3593" selection-end="3593" vertical-scroll-proportion="0.4390244">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
