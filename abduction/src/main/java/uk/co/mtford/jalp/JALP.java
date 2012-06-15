@@ -12,6 +12,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.*;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 import uk.co.mtford.jalp.abduction.rules.visitor.RuleNodeVisitor;
 
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -168,6 +169,31 @@ public class JALP {
     public static Definition makeRule(String headPredicateName, List<IUnifiableAtomInstance> headParameters, List<IInferableInstance> body) {
         return new Definition(new PredicateInstance(headPredicateName,new LinkedList<IUnifiableAtomInstance>(headParameters)),body,null);
     }
+
+    public static void printResults(List<IInferableInstance> query, List<Result> results) {
+        Scanner scanner = new Scanner(System.in);
+        do {
+            Result r = results.remove(0);
+            System.out.println("Query");
+            System.out.println("  "+query.toString().substring(1,query.toString().length()-1));
+            System.out.println(r.toString());
+            if (!results.isEmpty()) {
+                System.out.print("There are "+results.size()+" results remaining. See next? (y/n): ");
+                System.out.flush();
+                String n = scanner.next();
+                boolean seeNext = false;
+                while (!(n.equals("y")||n.equals("n"))) {
+                    System.out.print("There are "+results.size()+" results remaining. See next? (y/n): ");
+                    System.out.flush();
+                    n = scanner.next();
+                }
+                if (n.equals("n")) break;
+
+            }
+        }
+        while (!results.isEmpty());
+    }
+
 
 }
 

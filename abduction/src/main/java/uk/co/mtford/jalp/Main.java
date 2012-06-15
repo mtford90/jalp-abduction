@@ -1,7 +1,10 @@
 package uk.co.mtford.jalp;
 
+import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.Result;
+import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.parse.program.ParseException;
+import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,6 +17,8 @@ import java.util.List;
  *
  */
 public class Main {
+
+    private static Logger LOGGER = Logger.getLogger(Main.class);
 
     private static final String CMD_START = "-";
     private static final String REDUCE_OPTION = CMD_START+"r";
@@ -38,7 +43,7 @@ public class Main {
         System.exit(-1);
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args)  {
         for (int i=0;i<args.length;i++) {
 
             String s = args[i];
@@ -89,25 +94,22 @@ public class Main {
                 printError("JALP encountered a problem.",e);
             } catch (uk.co.mtford.jalp.abduction.parse.query.ParseException e) {
                 printError("Error parsing query.",e);
+            } catch (Exception e) {
+                LOGGER.fatal("Encountered fatal error",e);
             }
         }
 
         else {
             if (query!=null) {
                 try {
-                    List<Result> results = system.query(query);
-                    if (results.isEmpty()) {
-                        System.out.println("Found no explanation.");
-                    }
-                    else {
-                        int n = 1;
-                        for (Result r:results) {
-                            System.out.println("Result 1:\n"+r);
-                        }
-                    }
+                    List<IInferableInstance> queryList = JALPQueryParser.readFromString(query);
+                    List<Result> results = system.query(new LinkedList<IInferableInstance>(queryList));
+                    JALP.printResults(queryList,results);
                     System.out.println("Exiting...");
                 } catch (JALPException e) {
                     printError("JALP encountered a problem.",e);
+                } catch (uk.co.mtford.jalp.abduction.parse.query.ParseException e) {
+                    printError("Error parsing query",e);
                 }
             }
             else {
