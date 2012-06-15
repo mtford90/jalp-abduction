@@ -126,7 +126,7 @@ public class NegativeConstraintTest {
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         PredicateInstance q = new PredicateInstance("p",new CharConstantInstance("mary"));
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/in-constant-list-2");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==0);
     }
 
@@ -140,7 +140,7 @@ public class NegativeConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance q = new PredicateInstance("p",X,Y);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/less-than-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==6);
         List<VariableInstance> relevantVariables = new LinkedList<VariableInstance>();
         relevantVariables.add(X);
@@ -163,7 +163,7 @@ public class NegativeConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance q = new PredicateInstance("p",X,Y);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/less-than-eq-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==3);
         for (Result r:result) {
             r.reduce(q.getVariables());
@@ -183,7 +183,7 @@ public class NegativeConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance q = new PredicateInstance("p",X,Y);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/greater-than-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==6);
         for (Result r:result) {
             r.reduce(q.getVariables());
@@ -203,7 +203,7 @@ public class NegativeConstraintTest {
         VariableInstance Y = new VariableInstance("Y");
         PredicateInstance q = new PredicateInstance("p",X,Y);
         query.add(q);
-        List<Result> result = system.generateDebugFiles(query, "debug/basic/constraint/negative/greater-than-eq-1");
+        List<Result> result = system.query(query);
         assertTrue(result.size()==3);
         for (Result r:result) {
             r.reduce(q.getVariables());
