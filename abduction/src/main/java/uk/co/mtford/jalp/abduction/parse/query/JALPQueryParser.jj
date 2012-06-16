@@ -187,14 +187,17 @@ IInferableInstance EqualOrInequal(HashMap<String, VariableInstance> variablesSoF
     IUnifiableAtomInstance right;
 }
 {
-    (left = Variable(variablesSoFar) |
-    left = Constant() )
+
     (
+    (left = Variable(variablesSoFar) |
+     left = Constant() )
     <EQUALS>
     right = Parameter(variablesSoFar)
     {return new EqualityInstance(left,right);}
     ) |
     (
+    (left = Variable(variablesSoFar) |
+        left = Constant() )
     <NOTEQUALS>
     right = Parameter(variablesSoFar)
     {return new InEqualityInstance(left,right);}

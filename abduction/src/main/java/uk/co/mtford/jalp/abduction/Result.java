@@ -176,7 +176,7 @@ public class Result {
                 }
             }
             if (!equalitiesEmpty) {
-                message+="(In-)Equalities";
+                message+="(In-)Equalities\n";
                 for (Object o:epsilon) {
                     message+="  "+o+"\n";
                 }

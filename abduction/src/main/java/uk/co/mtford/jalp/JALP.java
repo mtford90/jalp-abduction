@@ -429,18 +429,22 @@ public class JALP {
             Result r = results.remove(0);
             System.out.println("Query");
             System.out.println("  "+query.toString().substring(1,query.toString().length()-1));
-            System.out.println(r.toString());
+            System.out.println(r.toString()+"\n");
             if (!results.isEmpty()) {
                 System.out.print("There are "+results.size()+" results remaining. See next? (y/n): ");
                 System.out.flush();
                 String n = scanner.next();
+                System.out.println();
                 boolean seeNext = false;
                 while (!(n.equals("y")||n.equals("n"))) {
                     System.out.print("There are "+results.size()+" results remaining. See next? (y/n): ");
                     System.out.flush();
                     n = scanner.next();
+                    System.out.println();
                 }
-                if (n.equals("n")) break;
+                if (n.equals("n")) {
+                    break;
+                }
 
             }
         }

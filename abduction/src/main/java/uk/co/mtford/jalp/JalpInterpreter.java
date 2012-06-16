@@ -16,6 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import static java.lang.System.nanoTime;
+
 /**
  * Created with IntelliJ IDEA.
  * User: mtford
@@ -36,6 +38,7 @@ public class JALPInterpreter {
     private static final String REDUCE_COMMAND = COMMAND_START+"r";
     private static final String QUIT_COMMAND = COMMAND_START+"q";
     private static final String EFFICIENT_COMMAND = COMMAND_START+"e";
+    private static final String TEST_COMMAND = COMMAND_START+"t";
 
     private Scanner scanner = new Scanner(System.in);
 
@@ -43,11 +46,13 @@ public class JALPInterpreter {
 
     boolean reduceMode;
     boolean efficientMode;
+    int repeat;
 
     public JALPInterpreter(JALPSystem system) {
         this.system=system;
         this.reduceMode = false;
         this.efficientMode=false;
+        this.repeat = 1;
     }
 
     public void start() {
@@ -67,14 +72,14 @@ public class JALPInterpreter {
                 } catch (FileNotFoundException e) {
                     System.err.println("File " + next + " does not exist.");
                 } catch (ParseException e) {
-                    System.err.println("Parse error: " + e.getMessage().split("\n")[0]);
+                    e.printStackTrace();
                 }
             }
             else if (next.startsWith(QUERY_COMMAND)) {
                 try {
                     executeQuery(next);
                 } catch (uk.co.mtford.jalp.abduction.parse.query.ParseException e) {
-                    System.err.println("Parse error: " + e.getMessage().split("\n")[0]);
+                    e.printStackTrace();
                 }
             }
             else if (next.startsWith(PRINT_COMMAND)) printFramework();
@@ -82,14 +87,33 @@ public class JALPInterpreter {
             else if (next.startsWith(CLEAR_COMMAND)) resetSystem();
             else if (next.startsWith(REDUCE_COMMAND)) toggleReduceMode();
             else if (next.startsWith(EFFICIENT_COMMAND)) toggleEfficientMode();
+            else if (next.startsWith(TEST_COMMAND)) {
+                testMode(next);
+            }
             else if (next.startsWith(QUIT_COMMAND)) quit();
             else {
                 try {
                     loadFrameworkFromString(next);
                 } catch (ParseException e) {
-                    System.err.println("Parse error: " + e.getMessage().split("\n")[0]);
+                    e.printStackTrace();
                 }
             }
+        }
+    }
+
+    private void testMode(String next) {
+        try {
+            next = next.substring(2, next.length());
+            int n = Integer.parseInt(next.trim());
+            if (n>0) {
+                repeat = n;
+            }
+            else {
+                System.err.println("Must be greater than 0.");
+            }
+        }
+        catch (NumberFormatException e) {
+            System.err.println("Error: Must be a number.");
         }
     }
 
@@ -129,17 +153,37 @@ public class JALPInterpreter {
         for (IInferableInstance i:query) {
             queryVariables.addAll(i.getVariables());
         }
-        List<Result> results;
+        List<Result> results = null;
+        long startTime = nanoTime();
+        if (repeat>1) {
+            System.out.println("Test mode enabled. Executing query "+repeat+" times.");
+        }
         if (!efficientMode) {
-            results = system.query(query);
+            for (int i = 0;i<repeat;i++) {
+                results = system.query(query);
+            }
         }
         else {
-            results = system.efficientQuery(query);
+            for (int i =0;i<repeat;i++) {
+                results = system.efficientQuery(query);
+            }
         }
+        long finishTime = System.nanoTime();
         if (results.isEmpty()) {
-            System.out.println("No explanations available.");
+            if (repeat>1) {
+                System.out.println("Computed no explanations in "+(finishTime-startTime)/1000/repeat+" microseconds on average.");
+            }
+            else {
+                System.out.println("Computed no explanations in "+(finishTime-startTime)/1000+" microseconds.");
+            }
         }
         else {
+            if (repeat>1) {
+                System.out.println("Computed " +results.size() + " explanations in "+(finishTime-startTime)/1000/repeat+" microseconds on average.\n");
+            }
+            else {
+                System.out.println("Computed " +results.size() + " explanations in "+(finishTime-startTime)/1000+" microseconds.\n");
+            }
             if (reduceMode) {
                 for (Result r:results) {
                     r.reduce(queryVariables);
