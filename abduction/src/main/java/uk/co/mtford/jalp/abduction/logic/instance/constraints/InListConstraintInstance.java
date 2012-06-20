@@ -8,11 +8,7 @@ import uk.co.mtford.jalp.abduction.rules.RuleNode;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 24/05/2012
- * Time: 11:46
- * To change this template use File | Settings | File Templates.
+ * e.g. 1 in [1,2,3]
  */
 public abstract class InListConstraintInstance extends ConstraintInstance {
     public InListConstraintInstance(ITermInstance left, ITermInstance right) {

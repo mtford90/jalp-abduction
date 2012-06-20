@@ -12,6 +12,8 @@ import uk.co.mtford.jalp.abduction.rules.RuleNode;
 import java.util.*;
 
 /**
+ * Represents a denial of the form ic :- ...
+ *
  * @author mtford
  */
 public class DenialInstance implements IInferableInstance, IFirstOrderLogicInstance {

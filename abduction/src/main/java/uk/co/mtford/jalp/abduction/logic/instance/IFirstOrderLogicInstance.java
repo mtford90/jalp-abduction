@@ -6,11 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 19/05/2012
- * Time: 12:45
- * To change this template use File | Settings | File Templates.
+ * Root class for first order logic representations.
  */
 public interface IFirstOrderLogicInstance {
 
@@ -18,7 +14,7 @@ public interface IFirstOrderLogicInstance {
      * Returns a deepClone of the formula, performing all substitutions specified by the mapping.
      *
      * @param substitutions
-     * @return
+     * @return This object.
      */
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions);
 
@@ -27,16 +23,21 @@ public interface IFirstOrderLogicInstance {
      * new instances of all variables. As such, new variable substitutions are added to the passed parameter.
      *
      * @param substitutions
-     * @return
+     * @return The clone.
      */
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions);
 
+    /** Returns a shallow clone of this object i.e. internal structure references are the same.
+     *
+     * @return The clone.
+     */
     public IFirstOrderLogicInstance shallowClone();
 
     /**
      * Returns a list of all variables nested in this first order logic formula.
      *
-     * @return
+     * @return A set of nested variables.
      */
     public Set<VariableInstance> getVariables();
+
 }

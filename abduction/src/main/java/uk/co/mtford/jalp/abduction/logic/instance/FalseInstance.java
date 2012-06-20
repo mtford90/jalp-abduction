@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Represents logical falsity or 'bottom'
+ *
  * @author mtford
  */
 public class FalseInstance implements IAtomInstance, IInferableInstance {
@@ -25,37 +27,30 @@ public class FalseInstance implements IAtomInstance, IInferableInstance {
         return "FALSE";
     }
 
-    @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         return new PositiveFalseRuleNode(abductiveFramework, query, goals);
     }
 
-    @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         return new NegativeFalseRuleNode(abductiveFramework, query, goals);
     }
 
-    @Override
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return this;
     }
 
-    @Override
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return new FalseInstance();
     }
 
-    @Override
     public IFirstOrderLogicInstance shallowClone() {
         return this;
     }
 
-    @Override
     public Set<VariableInstance> getVariables() {
         return new HashSet<VariableInstance>();
     }
 
-    @Override
     public boolean equals(Object other) {
         if (other instanceof FalseInstance) return true;
         return false;

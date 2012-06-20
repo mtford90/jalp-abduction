@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ *
+ * Represents the negation of an inferable of the form not inferable e.g. not p(X)
+ *
  * @author mtford
  */
 public class NegationInstance implements IInferableInstance, IFirstOrderLogicInstance {
@@ -36,38 +39,38 @@ public class NegationInstance implements IInferableInstance, IFirstOrderLogicIns
         this.subFormula = subFormula;
     }
 
-    @Override
+    
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         return new N1RuleNode(abductiveFramework, query, goals);
     }
 
-    @Override
+    
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         return new N2RuleNode(abductiveFramework, query, goals);
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         subFormula = (IInferableInstance) subFormula.performSubstitutions(substitutions);
         return this;
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return new NegationInstance((IInferableInstance) subFormula.deepClone(substitutions));
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance shallowClone() {
         return new NegationInstance((IInferableInstance) subFormula.shallowClone());
     }
 
-    @Override
+    
     public Set<VariableInstance> getVariables() {
         return subFormula.getVariables();
     }
 
-    @Override
+    
     public String toString() {
         return "not(" +
                  subFormula +

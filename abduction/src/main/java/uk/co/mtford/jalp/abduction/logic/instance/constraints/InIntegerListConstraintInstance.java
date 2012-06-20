@@ -14,11 +14,7 @@ import java.util.*;
 import static choco.Choco.makeIntVar;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 30/05/2012
- * Time: 12:06
- * To change this template use File | Settings | File Templates.
+ * e.g. 1 in [1,2,3]
  */
 public class InIntegerListConstraintInstance extends InListConstraintInstance {
 

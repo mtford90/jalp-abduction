@@ -13,13 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 24/05/2012
- * Time: 16:37
- * To change this template use File | Settings | File Templates.
- */
 public class NegativeConstraintInstance implements IConstraintInstance {
      private ConstraintInstance constraintInstance;
 

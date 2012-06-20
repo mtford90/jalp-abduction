@@ -10,6 +10,8 @@ import uk.co.mtford.jalp.abduction.rules.RuleNode;
 import java.util.List;
 
 /**
+ * An 'inferable' is a first order logic instance that we can apply an ASystem inference rule to.
+ *
  * @author mtford
  */
 public interface IInferableInstance extends IFirstOrderLogicInstance {

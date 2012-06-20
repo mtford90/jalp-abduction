@@ -12,13 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 24/05/2012
- * Time: 12:37
- * To change this template use File | Settings | File Templates.
- */
 public abstract class ConstraintInstance implements IConstraintInstance {
     protected ITermInstance left;
     protected ITermInstance right;

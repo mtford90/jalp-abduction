@@ -6,12 +6,16 @@ import uk.co.mtford.jalp.JALPException;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 08/06/2012
- * Time: 16:43
- * To change this template use File | Settings | File Templates.
+ * Interface representing methods that an inequality solver should have.
  */
 public interface IInEqualitySolver {
+    /**
+     * Takes the inequality and returns a list of pairs of equality and inequalities that represent a possible
+     * combination that must be true to make the inequality true.
+     *
+     * @param inEquality
+     * @return
+     * @throws JALPException
+     */
     public List<Pair<List<EqualityInstance>,List<InEqualityInstance>>> execute(InEqualityInstance inEquality) throws JALPException;
 }

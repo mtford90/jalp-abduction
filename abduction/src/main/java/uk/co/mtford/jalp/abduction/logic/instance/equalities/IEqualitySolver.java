@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 08/06/2012
- * Time: 16:13
- * To change this template use File | Settings | File Templates.
+ * Interface representing functions that an equality solver should have.
  */
 public interface IEqualitySolver {
+    /** Executes equality solver on the supplied equalities. Places substitutions made in subst.
+     *
+     * @param subst
+     * @param equalities
+     * @return True if solution exists.
+     */
     public boolean execute(Map<VariableInstance, IUnifiableInstance> subst, List<EqualityInstance> equalities);
 }

@@ -16,11 +16,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 30/05/2012
- * Time: 13:42
- * To change this template use File | Settings | File Templates.
+ * An interface to the Choco constraint solver.
  */
 public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
 

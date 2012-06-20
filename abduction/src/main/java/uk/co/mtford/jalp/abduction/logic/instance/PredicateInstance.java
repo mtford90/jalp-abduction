@@ -14,6 +14,8 @@ import uk.co.mtford.jalp.abduction.rules.*;
 import java.util.*;
 
 /**
+ * Represents a predicate of the form p(\bar u)
+ *
  * @author mtford
  */
 public class PredicateInstance implements IUnifiableInstance, IInferableInstance {
@@ -69,17 +71,17 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
         return parameters[i];
     }
 
-    @Override
+    
     public List<EqualityInstance> reduce(VariableInstance other) {
         return new LinkedList<EqualityInstance>();
     }
 
-    @Override
+    
     public List<EqualityInstance> reduce(ConstantInstance other) {
         return new LinkedList<EqualityInstance>();
     }
 
-    @Override
+    
     public List<EqualityInstance> reduce(PredicateInstance other) {
         LinkedList<EqualityInstance> newEqualities = new LinkedList<EqualityInstance>();
         if (this.isSameFunction(other)) {
@@ -91,27 +93,27 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
         return newEqualities;
     }
 
-    @Override
+    
     public List<EqualityInstance> reduce(IUnifiableInstance other) {
         return other.acceptReduceVisitor(this);
     }
 
-    @Override
+    
     public List<EqualityInstance> acceptReduceVisitor(IUnifiableInstance unifiable) {
         return unifiable.reduce(this);
     }
 
-    @Override
+    
     public boolean unify(VariableInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         return other.unify(this,assignment);
     }
 
-    @Override
+    
     public boolean unify(ConstantInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         return false;
     }
 
-    @Override
+    
     public boolean unify(PredicateInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         if (this.isSameFunction(other)) {
             for (int i = 0;i<parameters.length;i++) {
@@ -124,30 +126,30 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
         return false;
     }
 
-    @Override
+    
     public boolean unify(IUnifiableInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         return other.acceptUnifyVisitor(this,assignment);
     }
 
-    @Override
+    
     public boolean acceptUnifyVisitor(IUnifiableInstance unifiable, Map<VariableInstance, IUnifiableInstance> assignment) {
         return unifiable.unify(this,assignment);
     }
 
-    @Override
+    
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         if (abductiveFramework.isAbducible(this)) return new A1RuleNode(abductiveFramework, query,goals);
         else return new D1RuleNode(abductiveFramework, query, goals);
     }
 
-    @Override
+    
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         if (abductiveFramework.isAbducible(this))
             return new A2RuleNode(abductiveFramework, query, goals);
         else return new D2RuleNode(abductiveFramework,query, goals);
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         LinkedList<IAtomInstance> newParameters = new LinkedList<IAtomInstance>();
         for (IAtomInstance parameter : parameters) {
@@ -158,7 +160,7 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
         return this;
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         LinkedList<IUnifiableInstance> newParameters = new LinkedList<IUnifiableInstance>();
         for (IUnifiableInstance parameter : parameters) {
@@ -168,7 +170,7 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
         return new PredicateInstance(new String(name), newParameters);
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance shallowClone() {
         IUnifiableInstance[] newParameters = new IUnifiableInstance[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
@@ -177,7 +179,7 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
         return new PredicateInstance(new String(name), newParameters);
     }
 
-    @Override
+    
     public Set<VariableInstance> getVariables() {
         HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
         for (IAtomInstance parameter : parameters) {
@@ -209,7 +211,7 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
         return true;
     }
 
-    @Override
+    
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PredicateInstance)) return false;
@@ -222,14 +224,14 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
         return true;
     }
 
-    @Override
+    
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + Arrays.hashCode(parameters);
         return result;
     }
 
-    @Override
+    
     public String toString() {
         String paramList = "";
         for (IAtomInstance v : parameters) {

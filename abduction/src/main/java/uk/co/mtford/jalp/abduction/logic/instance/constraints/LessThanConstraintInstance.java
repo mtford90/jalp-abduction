@@ -17,11 +17,7 @@ import static choco.Choco.gt;
 import static choco.Choco.lt;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 24/05/2012
- * Time: 11:46
- * To change this template use File | Settings | File Templates.
+ * e.g. X < 1
  */
 public class LessThanConstraintInstance extends ConstraintInstance {
     public LessThanConstraintInstance(ITermInstance left, ITermInstance right) {

@@ -11,11 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 30/05/2012
- * Time: 12:06
- * To change this template use File | Settings | File Templates.
+ * bob in [john,jane,bob]
  */
 public class InConstantListConstraintInstance  extends InListConstraintInstance {
 
@@ -23,29 +19,29 @@ public class InConstantListConstraintInstance  extends InListConstraintInstance 
         super(left, right);
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         left = (ITermInstance)left.performSubstitutions(substitutions);
         right = (CharConstantListInstance) right.performSubstitutions(substitutions);
         return this;
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return new InConstantListConstraintInstance((ITermInstance)left.deepClone(substitutions), (CharConstantListInstance)right.deepClone(substitutions));
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance shallowClone() {
         return new InConstantListConstraintInstance((ITermInstance)left.shallowClone(),(CharConstantListInstance)right.shallowClone());
     }
 
-    @Override
+    
     public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         return left.inList((CharConstantListInstance) right,possSubst);
     }
 
-    @Override
+    
     public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         List<Map<VariableInstance,IUnifiableInstance>> newPossSubst = new LinkedList<Map<VariableInstance, IUnifiableInstance>>(possSubst);
         for (Map<VariableInstance, IUnifiableInstance> subst:possSubst) {

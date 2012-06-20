@@ -16,46 +16,47 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Represents logical truth i.e. 'top'
+ *
  * @author mtford
  */
 public class TrueInstance implements IAtomInstance, IInferableInstance {
 
-    @Override
     public String toString() {
         return "TRUE";
     }
 
-    @Override
+    
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         return new PositiveTrueRuleNode(abductiveFramework, query, goals);
     }
 
-    @Override
+    
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         return new NegativeTrueRuleNode(abductiveFramework, query, goals);
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return this;
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return new TrueInstance();
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance shallowClone() {
         return this;
     }
 
-    @Override
+    
     public Set<VariableInstance> getVariables() {
         return new HashSet<VariableInstance>();
     }
 
-    @Override
+    
     public boolean equals(Object other) {
         if (other instanceof TrueInstance) return true;
         return false;

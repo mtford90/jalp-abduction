@@ -12,13 +12,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 24/05/2012
- * Time: 11:45
- * To change this template use File | Settings | File Templates.
+ * Represents a constraint e.g. X<Y
  */
 public interface IConstraintInstance extends IInferableInstance {
+    /**
+     * Performs conversion to choco representation of this constraint, or solves the constraint natively.
+     *
+     * @param possSubst Substitutions.
+     * @param chocoConstraints Currently collected choco constraint representations.
+     * @param chocoVariables Current collection choco variable representations.
+     * @param constraintMap Maps internal representations onto choco representations.
+     * @return
+     */
     boolean reduceToChoco(List<Map<VariableInstance,IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap);
+    /**
+     * Performs conversion to negative choco representation of this constraint, or solves the constraint natively.
+     *
+     * e.g. X<Y would be X>=Y
+     *
+     * @param possSubst Substitutions.
+     * @param chocoConstraints Currently collected choco constraint representations.
+     * @param chocoVariables Current collection choco variable representations.
+     * @param constraintMap Maps internal representations onto choco representations.
+     * @return
+     */
     boolean reduceToNegativeChoco(List<Map<VariableInstance,IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap);
 }
