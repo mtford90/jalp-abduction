@@ -24,14 +24,14 @@ public class InConstantListConstraintInstance  extends InListConstraintInstance 
     }
 
     @Override
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         left = (ITermInstance)left.performSubstitutions(substitutions);
         right = (CharConstantListInstance) right.performSubstitutions(substitutions);
         return this;
     }
 
     @Override
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return new InConstantListConstraintInstance((ITermInstance)left.deepClone(substitutions), (CharConstantListInstance)right.deepClone(substitutions));
     }
 
@@ -41,14 +41,14 @@ public class InConstantListConstraintInstance  extends InListConstraintInstance 
     }
 
     @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         return left.inList((CharConstantListInstance) right,possSubst);
     }
 
     @Override
-    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
-        List<Map<VariableInstance,IUnifiableAtomInstance>> newPossSubst = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>(possSubst);
-        for (Map<VariableInstance, IUnifiableAtomInstance> subst:possSubst) {
+    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
+        List<Map<VariableInstance,IUnifiableInstance>> newPossSubst = new LinkedList<Map<VariableInstance, IUnifiableInstance>>(possSubst);
+        for (Map<VariableInstance, IUnifiableInstance> subst:possSubst) {
             for (CharConstantInstance constantInstance: ((CharConstantListInstance)right).getList()) {
                 CharConstantInstance substLeft = (CharConstantInstance) left.performSubstitutions(subst);
                 boolean unificationSuccess = substLeft.unify(constantInstance,subst);

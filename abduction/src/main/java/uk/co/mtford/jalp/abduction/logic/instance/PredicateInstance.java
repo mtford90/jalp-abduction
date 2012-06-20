@@ -16,26 +16,26 @@ import java.util.*;
 /**
  * @author mtford
  */
-public class PredicateInstance implements IUnifiableAtomInstance, IInferableInstance {
+public class PredicateInstance implements IUnifiableInstance, IInferableInstance {
 
     private static final Logger LOGGER = Logger.getLogger(PredicateInstance.class);
 
     protected String name;
-    protected IUnifiableAtomInstance[] parameters;
+    protected IUnifiableInstance[] parameters;
 
-    public PredicateInstance(String name, IUnifiableAtomInstance... parameters) {
+    public PredicateInstance(String name, IUnifiableInstance... parameters) {
         this.name = name;
         this.parameters = parameters;
     }
 
-    public PredicateInstance(String name, List<IUnifiableAtomInstance> parameters) {
+    public PredicateInstance(String name, List<IUnifiableInstance> parameters) {
         this.name = name;
-        this.parameters = parameters.toArray(new IUnifiableAtomInstance[1]);
+        this.parameters = parameters.toArray(new IUnifiableInstance[1]);
     }
 
     public PredicateInstance(String name, String varName) {
         this.name = name;
-        this.parameters = new IUnifiableAtomInstance[1];
+        this.parameters = new IUnifiableInstance[1];
         parameters[0] = new VariableInstance(varName);
     }
 
@@ -52,11 +52,11 @@ public class PredicateInstance implements IUnifiableAtomInstance, IInferableInst
         this.name = name;
     }
 
-    public IUnifiableAtomInstance[] getParameters() {
+    public IUnifiableInstance[] getParameters() {
         return parameters;
     }
 
-    public void setParameters(IUnifiableAtomInstance[] parameters) {
+    public void setParameters(IUnifiableInstance[] parameters) {
         this.parameters = parameters;
     }
 
@@ -64,7 +64,7 @@ public class PredicateInstance implements IUnifiableAtomInstance, IInferableInst
         return parameters.length;
     }
 
-    public IUnifiableAtomInstance getParameter(int i) {
+    public IUnifiableInstance getParameter(int i) {
         if (i > parameters.length || i < 0) return null;
         return parameters[i];
     }
@@ -92,27 +92,27 @@ public class PredicateInstance implements IUnifiableAtomInstance, IInferableInst
     }
 
     @Override
-    public List<EqualityInstance> reduce(IUnifiableAtomInstance other) {
+    public List<EqualityInstance> reduce(IUnifiableInstance other) {
         return other.acceptReduceVisitor(this);
     }
 
     @Override
-    public List<EqualityInstance> acceptReduceVisitor(IUnifiableAtomInstance unifiableAtom) {
-        return unifiableAtom.reduce(this);
+    public List<EqualityInstance> acceptReduceVisitor(IUnifiableInstance unifiable) {
+        return unifiable.reduce(this);
     }
 
     @Override
-    public boolean unify(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+    public boolean unify(VariableInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         return other.unify(this,assignment);
     }
 
     @Override
-    public boolean unify(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+    public boolean unify(ConstantInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         return false;
     }
 
     @Override
-    public boolean unify(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+    public boolean unify(PredicateInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         if (this.isSameFunction(other)) {
             for (int i = 0;i<parameters.length;i++) {
                 if (!parameters[i].unify(other.getParameter(i),assignment)) {
@@ -125,13 +125,13 @@ public class PredicateInstance implements IUnifiableAtomInstance, IInferableInst
     }
 
     @Override
-    public boolean unify(IUnifiableAtomInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+    public boolean unify(IUnifiableInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         return other.acceptUnifyVisitor(this,assignment);
     }
 
     @Override
-    public boolean acceptUnifyVisitor(IUnifiableAtomInstance unifiableAtom, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        return unifiableAtom.unify(this,assignment);
+    public boolean acceptUnifyVisitor(IUnifiableInstance unifiable, Map<VariableInstance, IUnifiableInstance> assignment) {
+        return unifiable.unify(this,assignment);
     }
 
     @Override
@@ -148,21 +148,21 @@ public class PredicateInstance implements IUnifiableAtomInstance, IInferableInst
     }
 
     @Override
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         LinkedList<IAtomInstance> newParameters = new LinkedList<IAtomInstance>();
         for (IAtomInstance parameter : parameters) {
             IAtomInstance newParameter = (IAtomInstance) parameter.performSubstitutions(substitutions);
             newParameters.add(newParameter);
         }
-        parameters = newParameters.toArray(new IUnifiableAtomInstance[parameters.length]);
+        parameters = newParameters.toArray(new IUnifiableInstance[parameters.length]);
         return this;
     }
 
     @Override
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        LinkedList<IUnifiableAtomInstance> newParameters = new LinkedList<IUnifiableAtomInstance>();
-        for (IUnifiableAtomInstance parameter : parameters) {
-            IUnifiableAtomInstance newParameter = (IUnifiableAtomInstance) parameter.deepClone(substitutions);
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
+        LinkedList<IUnifiableInstance> newParameters = new LinkedList<IUnifiableInstance>();
+        for (IUnifiableInstance parameter : parameters) {
+            IUnifiableInstance newParameter = (IUnifiableInstance) parameter.deepClone(substitutions);
             newParameters.add(newParameter);
         }
         return new PredicateInstance(new String(name), newParameters);
@@ -170,9 +170,9 @@ public class PredicateInstance implements IUnifiableAtomInstance, IInferableInst
 
     @Override
     public IFirstOrderLogicInstance shallowClone() {
-        IUnifiableAtomInstance[] newParameters = new IUnifiableAtomInstance[parameters.length];
+        IUnifiableInstance[] newParameters = new IUnifiableInstance[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            newParameters[i] = (IUnifiableAtomInstance) parameters[i].shallowClone();
+            newParameters[i] = (IUnifiableInstance) parameters[i].shallowClone();
         }
         return new PredicateInstance(new String(name), newParameters);
     }

@@ -20,11 +20,9 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 27/05/2012
- * Time: 08:33
- * To change this template use File | Settings | File Templates.
+ * Responsible for executing queries on an abductive theory. Used by both the shell and interpreter as well
+ * as with the Java API.
+ * @author Michael Ford
  */
 public class JALPSystem {
 
@@ -48,6 +46,10 @@ public class JALPSystem {
         framework = new AbductiveFramework();
     }
 
+    /** Combines the given framework with the current framework.
+     *
+     * @param newFramework
+     */
     public void mergeFramework(AbductiveFramework newFramework) {
         if (framework == null) {
             framework = newFramework;
@@ -58,14 +60,25 @@ public class JALPSystem {
         }
     }
 
+    /** Combines the given framework from the file specified with the current framework.
+     *
+     * @param file
+     */
     public void mergeFramework(File file) throws FileNotFoundException, ParseException {
         mergeFramework(JALPParser.readFromFile(file.getPath()));
     }
 
+    /** Combines the given framework with the current framework.
+     *
+     * @param program
+     */
     public void mergeFramework(String program) throws ParseException {
         mergeFramework(JALPParser.readFromString(program));
     }
 
+    /** Clears the current abductive framework.
+     *
+     */
     private void reset() {
         framework = new AbductiveFramework();
     }
@@ -88,10 +101,26 @@ public class JALPSystem {
         }
     }
 
+    /** For the given query, generates a log file and a visualizer at folderName.
+     *
+     * @param query
+     * @param folderName
+     * @return A list of results that represent abduction explanations.
+     * @throws IOException
+     * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
+     */
     public List<Result> generateDebugFiles(String query, String folderName) throws IOException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
         return generateDebugFiles(new LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query)),folderName);
     }
 
+    /** For the given query, generates a log file and a visualizer at folderName.
+     *
+     * @param query
+     * @param folderName
+     * @return A list of results that represent abduction explanations.
+     * @throws IOException
+     * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
+     */
     public List<Result> generateDebugFiles(List<IInferableInstance> query, String folderName) throws JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, IOException {
         File folder = new File(folderName);
         FileUtils.touch(folder);
@@ -122,23 +151,49 @@ public class JALPSystem {
         return results;
     }
 
+    /** Executes query represented by the string e.g. 'p(X)'
+     *
+     * @param query
+     * @return A list of results that represent abduction explanations.
+     * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
+     */
     public List<Result> query(String query) throws uk.co.mtford.jalp.abduction.parse.query.ParseException {
         List<Result> results = new LinkedList<Result>();
         query(query, results);
         return results;
     }
 
+    /** Executes query e.g. 'p(X)'
+     *
+     * @param query
+     * @return A list of results that represent abduction explanations.
+     * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
+     */
     public List<Result> query(List<IInferableInstance> query) {
         List<Result> results = new LinkedList<Result>();
         query(query, results);
         return results;
     }
 
+    /** Executes the query represented by the string and generates result objects in the list.
+     *
+     * @param query
+     * @param results
+     * @return The root node of the derivation tree.
+     * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
+     */
     public RuleNode query(String query, List<Result> results) throws uk.co.mtford.jalp.abduction.parse.query.ParseException {
         List<IInferableInstance> queryList = JALPQueryParser.readFromString(query);
         return query(queryList, results);
     }
 
+    /** Executes the query and generates result objects in the list.
+     *
+     * @param query
+     * @param results
+     * @return The root node of the derivation tree.
+     * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
+     */
     public RuleNode query(List<IInferableInstance> query, List<Result> results) {
 
         AbstractRuleNodeVisitor visitor = new SimpleRuleNodeVisitor();
@@ -178,10 +233,17 @@ public class JALPSystem {
 
     }
 
+    /** Executes the query represented by the string and generates result objects in the list. Doesn't preserve the
+     * derivation tree and ensures proper garbage collection.
+     *
+     * @param query
+     * @return The root node of the derivation tree.
+     * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
+     */
     public List<Result> efficientQuery(List<IInferableInstance> query) {
         List<Result> results = new LinkedList<Result>();
 
-        AbstractRuleNodeVisitor visitor = new SimpleRuleNodeVisitor();
+        AbstractRuleNodeVisitor visitor = new EfficientRuleNodeVisitor();
         Stack<RuleNode> nodeStack = new Stack<RuleNode>();
 
         List<IInferableInstance> goals = new LinkedList<IInferableInstance>(query);
@@ -217,6 +279,13 @@ public class JALPSystem {
         return results;
     }
 
+    /** Generates result objects. Each result object represents an abductive explanation.
+     *
+     * @param rootNode
+     * @param successNode
+     * @param originalQuery
+     * @param results
+     */
     private void generateResults(RuleNode rootNode, RuleNode successNode, List<IInferableInstance> originalQuery, List<Result> results) {
         List<RuleNode> newSuccessNodes = applyConstraintSolver(successNode);
         for (RuleNode node:newSuccessNodes) {
@@ -224,17 +293,31 @@ public class JALPSystem {
         }
     }
 
+    /** Generates a single result object.
+     *
+     * @param rootNode
+     * @param successNode
+     * @param originalQuery
+     * @param results
+     */
     private void generateResult(RuleNode rootNode, RuleNode successNode, List<IInferableInstance> originalQuery, List<Result> results) {
         Result result = new Result(successNode.getStore(),successNode.getAssignments(),originalQuery,rootNode);
         results.add(result);
     }
 
+    /**
+     * Applys the constraint solver to the given node.
+     *
+     * @param node
+     * @return A list of possible child nodes each one
+     *         representing a possible assignment to the constrained variables in the given node.
+     */
     private List<RuleNode> applyConstraintSolver(RuleNode node) {
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying constraint solver to ruleNode:\n"+node);
-        List<Map<VariableInstance,IUnifiableAtomInstance>> possibleAssignments;
+        List<Map<VariableInstance,IUnifiableInstance>> possibleAssignments;
         if (node.getStore().constraints.isEmpty()) {
             possibleAssignments
-                    = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
+                    = new LinkedList<Map<VariableInstance, IUnifiableInstance>>();
             possibleAssignments.add(node.getAssignments());
             if (LOGGER.isDebugEnabled()) LOGGER.debug("No need to apply constraint solver. Returning unmodified node.");
         }
@@ -247,7 +330,7 @@ public class JALPSystem {
             }
             ChocoConstraintSolverFacade constraintSolver = new ChocoConstraintSolverFacade();
             possibleAssignments
-                    = constraintSolver.execute(new HashMap<VariableInstance,IUnifiableAtomInstance>(node.getAssignments()),constraints);
+                    = constraintSolver.execute(new HashMap<VariableInstance,IUnifiableInstance>(node.getAssignments()),constraints);
         }
 
         if (possibleAssignments.isEmpty()) {
@@ -259,7 +342,7 @@ public class JALPSystem {
             List<RuleNode> results = new LinkedList<RuleNode>();
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver returned "+possibleAssignments.size()+" results.");
             node.setNodeMark(RuleNode.NodeMark.EXPANDED);
-            for (Map<VariableInstance,IUnifiableAtomInstance> assignment:possibleAssignments) {
+            for (Map<VariableInstance,IUnifiableInstance> assignment:possibleAssignments) {
                 RuleNode newLeafNode =node.shallowClone();
                 newLeafNode.setAssignments(assignment);
                 newLeafNode.applySubstitutions();

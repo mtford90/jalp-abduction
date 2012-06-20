@@ -23,7 +23,7 @@ import static choco.Choco.makeSetVar;
 /**
  * @author mtford
  */
-public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
+public class VariableInstance implements ITermInstance, IUnifiableInstance {
 
     private static final Logger LOGGER = Logger.getLogger(VariableInstance.class);
     private int uniqueId;
@@ -82,8 +82,7 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
         return true;
     }
 
-    @Override
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         if (substitutions.containsKey(this)) {
             return substitutions.get(this).performSubstitutions(substitutions);
         } else {
@@ -91,8 +90,7 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
         }
     }
 
-    @Override
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         if (substitutions.containsKey(this)) {
             if (substitutions.get(this).equals(this)) {
                 return this;
@@ -105,48 +103,40 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
         }
     }
 
-    @Override
     public IFirstOrderLogicInstance shallowClone() {
         return this;
     }
 
-    @Override
     public Set<VariableInstance> getVariables() {
         HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
         variables.add(this);
         return variables;
     }
 
-    @Override
     public List<EqualityInstance> reduce(VariableInstance other) {
         return new LinkedList<EqualityInstance>();
     }
 
-    @Override
     public List<EqualityInstance> reduce(ConstantInstance other) {
         return new LinkedList<EqualityInstance>();
     }
 
-    @Override
     public List<EqualityInstance> reduce(PredicateInstance other) {
         return new LinkedList<EqualityInstance>();
     }
 
-    @Override
-    public List<EqualityInstance> reduce(IUnifiableAtomInstance other) {
+    public List<EqualityInstance> reduce(IUnifiableInstance other) {
         return new LinkedList<EqualityInstance>();
     }
 
-    @Override
-    public List<EqualityInstance> acceptReduceVisitor(IUnifiableAtomInstance unifiableAtom) {
-        return unifiableAtom.reduce(this);
+    public List<EqualityInstance> acceptReduceVisitor(IUnifiableInstance unifiable) {
+        return unifiable.reduce(this);
     }
 
-    @Override
-    public boolean unify(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        List<IUnifiableAtomInstance> keySet = new LinkedList<IUnifiableAtomInstance>(assignment.keySet());
-        IUnifiableAtomInstance left = this;
-        IUnifiableAtomInstance right = other;
+    public boolean unify(VariableInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
+        List<IUnifiableInstance> keySet = new LinkedList<IUnifiableInstance>(assignment.keySet());
+        IUnifiableInstance left = this;
+        IUnifiableInstance right = other;
         if (this.equals(other)) return true;
         if (keySet.contains(left)) {
             while (keySet.contains(left)) left = assignment.get(left);
@@ -162,10 +152,9 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
         return true;
     }
 
-    @Override
-    public boolean unify(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        List<IUnifiableAtomInstance> keySet = new LinkedList<IUnifiableAtomInstance>(assignment.keySet());
-        IUnifiableAtomInstance left = this;
+    public boolean unify(ConstantInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
+        List<IUnifiableInstance> keySet = new LinkedList<IUnifiableInstance>(assignment.keySet());
+        IUnifiableInstance left = this;
         if (keySet.contains(left)) {
             while (keySet.contains(left)) left = assignment.get(left);
             return left.unify(other,assignment);
@@ -176,10 +165,9 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
         return true;
     }
 
-    @Override
-    public boolean unify(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        List<IUnifiableAtomInstance> keySet = new LinkedList<IUnifiableAtomInstance>(assignment.keySet());
-        IUnifiableAtomInstance left = this;
+    public boolean unify(PredicateInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
+        List<IUnifiableInstance> keySet = new LinkedList<IUnifiableInstance>(assignment.keySet());
+        IUnifiableInstance left = this;
         if (keySet.contains(left)) {
             while (keySet.contains(left)) left = assignment.get(left);
             return left.unify(other,assignment);
@@ -190,18 +178,15 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
         return true;
     }
 
-    @Override
-    public boolean unify(IUnifiableAtomInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+    public boolean unify(IUnifiableInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         return other.acceptUnifyVisitor(this,assignment);
     }
 
-    @Override
-    public boolean acceptUnifyVisitor(IUnifiableAtomInstance unifiableAtom, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        return unifiableAtom.unify(this,assignment);
+    public boolean acceptUnifyVisitor(IUnifiableInstance unifiable, Map<VariableInstance, IUnifiableInstance> assignment) {
+        return unifiable.unify(this,assignment);
     }
 
-    @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
         if (!termToVarMap.containsKey(this)) {
             IntegerVariable var = makeIntVar(name+uniqueId);
             termToVarMap.put(this,var);
@@ -209,16 +194,15 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
         return true;
     }
 
-    @Override
-    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
+    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableInstance>> possSubst) {
         if (possSubst.isEmpty()) {
-            Map<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+            Map<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
             possSubst.add(subst);
         }
-        List<Map<VariableInstance, IUnifiableAtomInstance>> newSubstList = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
-        for (Map<VariableInstance,IUnifiableAtomInstance> subst:possSubst) {
+        List<Map<VariableInstance, IUnifiableInstance>> newSubstList = new LinkedList<Map<VariableInstance, IUnifiableInstance>>();
+        for (Map<VariableInstance,IUnifiableInstance> subst:possSubst) {
             for (CharConstantInstance constant:constantList.getList()) {
-                HashMap<VariableInstance,IUnifiableAtomInstance> newSubst = new HashMap<VariableInstance, IUnifiableAtomInstance>(subst);
+                HashMap<VariableInstance,IUnifiableInstance> newSubst = new HashMap<VariableInstance, IUnifiableInstance>(subst);
                 boolean unificationSuccess = this.unify(constant,newSubst);
                 if (unificationSuccess) newSubstList.add(newSubst);
             }
@@ -231,7 +215,6 @@ public class VariableInstance implements ITermInstance, IUnifiableAtomInstance {
         }
     }
 
-    @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         if (((DenialInstance)goals.get(0)).getUniversalVariables().contains(this)) {
             return new F2bRuleNode(abductiveFramework,query,goals);

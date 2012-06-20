@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.javatuples.Pair;
 import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.*;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.LeafRuleNode;
@@ -35,10 +35,10 @@ public class SimpleRuleNodeVisitor extends AbstractRuleNodeVisitor {
         if (!(newGoals.isEmpty())) {
             newRuleNode = newGoals.get(0).getPositiveRootRuleNode(previousNode.getAbductiveFramework(), new LinkedList<IInferableInstance>(previousNode.getQuery()), newGoals);
             newRuleNode.setStore(previousNode.getStore().shallowClone());
-            newRuleNode.setAssignments(new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
+            newRuleNode.setAssignments(new HashMap<VariableInstance, IUnifiableInstance>(previousNode.getAssignments()));
         }
         else {
-            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode,new LinkedList<IInferableInstance>(previousNode.getQuery()),previousNode.getStore().shallowClone(),new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
+            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode,new LinkedList<IInferableInstance>(previousNode.getQuery()),previousNode.getStore().shallowClone(),new HashMap<VariableInstance, IUnifiableInstance>(previousNode.getAssignments()));
         }
 
         return newRuleNode;
@@ -111,7 +111,7 @@ public class SimpleRuleNodeVisitor extends AbstractRuleNodeVisitor {
 
     @Override
     protected boolean applyEqualitySolver(RuleNode node) {
-        Map<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(node.getAssignments());
+        Map<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>(node.getAssignments());
         List<EqualityInstance> equalities = new LinkedList<EqualityInstance>(node.getStore().equalities);
 
         if (!equalities.isEmpty()) {

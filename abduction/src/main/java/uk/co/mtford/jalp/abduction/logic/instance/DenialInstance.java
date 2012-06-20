@@ -89,7 +89,6 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
                 new LinkedList<VariableInstance>(universalVariables));
     }
 
-    @Override
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         if (this.getBody().size()==0) {
             FalseInstance f = new FalseInstance();
@@ -101,13 +100,11 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
         return this.getBody().get(0).getNegativeRootRuleNode(abductiveFramework, query, goals);
     }
 
-    @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         throw new UnsupportedOperationException(); // TODO: Nested denials...?
     }
 
-    @Override
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         // Substitute universal variables.
         LinkedList<IInferableInstance> newBody = new LinkedList<IInferableInstance>();
 
@@ -124,20 +121,19 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
         return this;
     }
 
-    @Override
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         // Substitute universal variables.
         LinkedList<IInferableInstance> newBody = new LinkedList<IInferableInstance>();
         LinkedList<VariableInstance> newUniversalVariables = new LinkedList<VariableInstance>();
 
         for (VariableInstance v:universalVariables) {
             v.deepClone(substitutions);
-            IUnifiableAtomInstance newV = v;
+            IUnifiableInstance newV = v;
             while (substitutions.containsKey(newV)) newV = substitutions.get(newV);
             if (newV instanceof VariableInstance) newUniversalVariables.add((VariableInstance)newV);
         }
 
-        Map<VariableInstance, IUnifiableAtomInstance> tempSubst = new HashMap<VariableInstance,IUnifiableAtomInstance>(substitutions);
+        Map<VariableInstance, IUnifiableInstance> tempSubst = new HashMap<VariableInstance,IUnifiableInstance>(substitutions);
 
         for (IInferableInstance inferable : body) {
             newBody.add((IInferableInstance) inferable.deepClone(tempSubst));
@@ -147,7 +143,6 @@ public class DenialInstance implements IInferableInstance, IFirstOrderLogicInsta
     }
 
 
-    @Override
     public Set<VariableInstance> getVariables() {
         HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
         for (IInferableInstance inferable : body) {

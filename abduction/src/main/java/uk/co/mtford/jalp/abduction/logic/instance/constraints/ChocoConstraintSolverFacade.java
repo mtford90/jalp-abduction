@@ -1,18 +1,14 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
-import choco.Choco;
 import choco.cp.model.CPModel;
 import choco.cp.solver.CPSolver;
-import choco.cp.solver.search.integer.varselector.RandomIntVarSelector;
-import choco.kernel.common.util.iterators.DisposableIntIterator;
 import choco.kernel.model.Model;
 import choco.kernel.model.constraints.Constraint;
 import choco.kernel.model.variables.Variable;
-import choco.kernel.model.variables.integer.IntegerVariable;
 import choco.kernel.solver.Solver;
 import choco.kernel.solver.variables.integer.IntVar;
 import org.apache.log4j.Logger;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.ITermInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
@@ -48,20 +44,19 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
         return chocoVariables;
     }
 
-    @Override
-    public List<Map<VariableInstance, IUnifiableAtomInstance>> execute(Map<VariableInstance, IUnifiableAtomInstance> subst, List<IConstraintInstance> listConstraints) {
+    public List<Map<VariableInstance, IUnifiableInstance>> execute(Map<VariableInstance, IUnifiableInstance> subst, List<IConstraintInstance> listConstraints) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Executing constraint solver");
             LOGGER.debug("Received "+listConstraints);
         }
 
-        List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
+        List<Map<VariableInstance,IUnifiableInstance>> possSubst = new LinkedList<Map<VariableInstance, IUnifiableInstance>>();
         possSubst.add(subst);
         for (IConstraintInstance constraintInstance:listConstraints) {
             boolean reduce = constraintInstance.reduceToChoco(possSubst,chocoConstraints,chocoVariables,constraintMap);
             if (!reduce) {
                 if (LOGGER.isDebugEnabled()) LOGGER.debug("Native constraint checked failed. Found 0 possible assignments.");
-                return new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>(); // One of the natively implemented constraint checks has failed.
+                return new LinkedList<Map<VariableInstance, IUnifiableInstance>>(); // One of the natively implemented constraint checks has failed.
             }
         }
 
@@ -84,19 +79,19 @@ public class ChocoConstraintSolverFacade implements IConstraintSolverFacade {
 
         s.read(m);
 
-        List<Map<VariableInstance,IUnifiableAtomInstance>> newPossSubst = new LinkedList<Map<VariableInstance, IUnifiableAtomInstance>>();
+        List<Map<VariableInstance,IUnifiableInstance>> newPossSubst = new LinkedList<Map<VariableInstance, IUnifiableInstance>>();
 
         boolean success = s.solve();
 
         if (success) {
             do {
-                for (Map<VariableInstance,IUnifiableAtomInstance> nativeSubst:possSubst) {
-                    HashMap<VariableInstance,IUnifiableAtomInstance> newSubst = new HashMap<VariableInstance,IUnifiableAtomInstance>(nativeSubst);
+                for (Map<VariableInstance,IUnifiableInstance> nativeSubst:possSubst) {
+                    HashMap<VariableInstance,IUnifiableInstance> newSubst = new HashMap<VariableInstance,IUnifiableInstance>(nativeSubst);
                     boolean unificationSuccess = true;
                     for (ITermInstance term:chocoVariables.keySet()) {
                         Variable chocoVariable = chocoVariables.get(term);
                         int n = ((IntVar)s.getVar(chocoVariable)).getVal();
-                        IUnifiableAtomInstance v = (IUnifiableAtomInstance) term;
+                        IUnifiableInstance v = (IUnifiableInstance) term;
                         unificationSuccess = v.unify(new IntegerConstantInstance(n),newSubst);
                     }
                     if (unificationSuccess) newPossSubst.add(newSubst);

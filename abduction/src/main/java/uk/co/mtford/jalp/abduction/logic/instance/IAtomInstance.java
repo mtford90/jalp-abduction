@@ -5,7 +5,7 @@
 package uk.co.mtford.jalp.abduction.logic.instance;
 
 /**
- * Implementation of equality solver.
+ * An atom is a predicate.
  *
  * @author mtford
  */

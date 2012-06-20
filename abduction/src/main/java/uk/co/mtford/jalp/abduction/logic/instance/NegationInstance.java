@@ -47,13 +47,13 @@ public class NegationInstance implements IInferableInstance, IFirstOrderLogicIns
     }
 
     @Override
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         subFormula = (IInferableInstance) subFormula.performSubstitutions(substitutions);
         return this;
     }
 
     @Override
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return new NegationInstance((IInferableInstance) subFormula.deepClone(substitutions));
     }
 

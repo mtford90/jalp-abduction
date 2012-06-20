@@ -20,7 +20,7 @@ public interface IFirstOrderLogicInstance {
      * @param substitutions
      * @return
      */
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions);
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions);
 
     /**
      * Returns a deepClone of the formula, performing all substitutions specified by the mapping, as well as creating
@@ -29,7 +29,7 @@ public interface IFirstOrderLogicInstance {
      * @param substitutions
      * @return
      */
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions);
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions);
 
     public IFirstOrderLogicInstance shallowClone();
 

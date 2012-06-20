@@ -6,7 +6,6 @@ import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +25,7 @@ public class InEqualityInstance implements IInferableInstance {
         this.equalityInstance = equalityInstance;
     }
 
-    public InEqualityInstance(IUnifiableAtomInstance left, IUnifiableAtomInstance right) {
+    public InEqualityInstance(IUnifiableInstance left, IUnifiableInstance right) {
         this.equalityInstance = new EqualityInstance(left,right);
     }
 
@@ -62,12 +61,12 @@ public class InEqualityInstance implements IInferableInstance {
         return new InE2RuleNode(abductiveFramework, query, goals);
     }
 
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
        equalityInstance = ((EqualityInstance) equalityInstance.performSubstitutions(substitutions));
        return this;
     }
 
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return new InEqualityInstance((EqualityInstance) equalityInstance.deepClone(substitutions));
     }
 

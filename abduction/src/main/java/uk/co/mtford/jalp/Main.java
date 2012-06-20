@@ -17,7 +17,7 @@ import static java.lang.System.nanoTime;
 
 /**
  * Controls point of access to either command line or the interpreter.
- *
+ * @author Michael Ford
  */
 public class Main {
 

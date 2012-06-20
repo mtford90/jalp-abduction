@@ -24,7 +24,7 @@ public abstract class NegativeRuleNode extends RuleNode {
         super(abductiveFramework, query, restOfGoals);
     }
 
-    public NegativeRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public NegativeRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableInstance> assignments) {
         super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
@@ -32,7 +32,7 @@ public abstract class NegativeRuleNode extends RuleNode {
         super(abductiveFramework, query, restOfGoals);
     }
 
-    protected NegativeRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    protected NegativeRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableInstance> assignments) {
         super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 

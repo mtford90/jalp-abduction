@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.Map;
 import choco.kernel.model.variables.Variable;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
-import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
 /**
@@ -19,7 +18,7 @@ import uk.co.mtford.jalp.abduction.rules.RuleNode;
  * To change this template use File | Settings | File Templates.
  */
 public interface ITermInstance extends IAtomInstance {
-    boolean reduceToChoco(List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance,Variable> termToVarMap);
-    boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst);
+    boolean reduceToChoco(List<Map<VariableInstance,IUnifiableInstance>> possSubst, HashMap<ITermInstance,Variable> termToVarMap);
+    boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance,IUnifiableInstance>> possSubst);
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals);
 }

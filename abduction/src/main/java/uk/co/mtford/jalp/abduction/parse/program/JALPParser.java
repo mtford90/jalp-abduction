@@ -181,7 +181,7 @@ public class JALPParser implements JALPParserConstants {
 
   final public IInferableInstance PredicateOrEqualOrInequal(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     PredicateInstance left;
-    IUnifiableAtomInstance right;
+    IUnifiableInstance right;
     left = Predicate(variablesSoFar);
     if (jj_2_14(2)) {
       if (jj_2_12(2)) {
@@ -204,8 +204,8 @@ public class JALPParser implements JALPParserConstants {
   }
 
   final public IInferableInstance EqualOrInequal(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IUnifiableAtomInstance left = null;
-    IUnifiableAtomInstance right;
+    IUnifiableInstance left = null;
+    IUnifiableInstance right;
     if (jj_2_19(2)) {
       if (jj_2_15(2)) {
         left = Variable(variablesSoFar);
@@ -248,7 +248,7 @@ public class JALPParser implements JALPParserConstants {
   final public PredicateInstance Predicate(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     Token t;
     String name;
-    List<IUnifiableAtomInstance> parameters = new LinkedList<IUnifiableAtomInstance>();
+    List<IUnifiableInstance> parameters = new LinkedList<IUnifiableInstance>();
     t = jj_consume_token(LCASENAME);
       name = t.image;
     jj_consume_token(LBRACKET);
@@ -259,8 +259,8 @@ public class JALPParser implements JALPParserConstants {
   }
 
   final public EqualityInstance Equality(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IUnifiableAtomInstance left;
-    IUnifiableAtomInstance right;
+    IUnifiableInstance left;
+    IUnifiableInstance right;
     left = Parameter(variablesSoFar);
     jj_consume_token(EQUALS);
     right = Parameter(variablesSoFar);
@@ -269,8 +269,8 @@ public class JALPParser implements JALPParserConstants {
   }
 
   final public InEqualityInstance InEquality(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IUnifiableAtomInstance left;
-    IUnifiableAtomInstance right;
+    IUnifiableInstance left;
+    IUnifiableInstance right;
     left = Parameter(variablesSoFar);
     jj_consume_token(NOTEQUALS);
     right = Parameter(variablesSoFar);
@@ -378,9 +378,9 @@ public class JALPParser implements JALPParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public List<IUnifiableAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    LinkedList<IUnifiableAtomInstance> params = new LinkedList<IUnifiableAtomInstance>();
-    IUnifiableAtomInstance param;
+  final public List<IUnifiableInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+    LinkedList<IUnifiableInstance> params = new LinkedList<IUnifiableInstance>();
+    IUnifiableInstance param;
     if (jj_2_32(2)) {
       param = Parameter(variablesSoFar);
           params.add(param);
@@ -402,8 +402,8 @@ public class JALPParser implements JALPParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IUnifiableAtomInstance unifiable;
+  final public IUnifiableInstance Parameter(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+    IUnifiableInstance unifiable;
     if (jj_2_33(2)) {
       unifiable = Predicate(variablesSoFar);
           {if (true) return unifiable;}

@@ -20,27 +20,27 @@ public class EqualityInstance implements IEqualityInstance {
 
     private static Logger LOGGER = Logger.getLogger(EqualityInstance.class);
 
-    protected IUnifiableAtomInstance left;
-    protected IUnifiableAtomInstance right;
+    protected IUnifiableInstance left;
+    protected IUnifiableInstance right;
 
-    public EqualityInstance(IUnifiableAtomInstance left, IUnifiableAtomInstance right) {
+    public EqualityInstance(IUnifiableInstance left, IUnifiableInstance right) {
         this.left = left;
         this.right = right;
     }
 
-    public IUnifiableAtomInstance getLeft() {
+    public IUnifiableInstance getLeft() {
         return left;
     }
 
-    public void setLeft(IUnifiableAtomInstance left) {
+    public void setLeft(IUnifiableInstance left) {
         this.left = left;
     }
 
-    public IUnifiableAtomInstance getRight() {
+    public IUnifiableInstance getRight() {
         return right;
     }
 
-    public void setRight(IUnifiableAtomInstance right) {
+    public void setRight(IUnifiableInstance right) {
         this.right = right;
     }
 
@@ -108,22 +108,22 @@ public class EqualityInstance implements IEqualityInstance {
 
     }
 
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        IUnifiableAtomInstance newLeft = (IUnifiableAtomInstance) left.performSubstitutions(substitutions);
-        IUnifiableAtomInstance newRight = (IUnifiableAtomInstance) right.performSubstitutions(substitutions);
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
+        IUnifiableInstance newLeft = (IUnifiableInstance) left.performSubstitutions(substitutions);
+        IUnifiableInstance newRight = (IUnifiableInstance) right.performSubstitutions(substitutions);
         left = newLeft;
         right = newRight;
         return this;
     }
 
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
-        IUnifiableAtomInstance newLeft = (IUnifiableAtomInstance) left.deepClone(substitutions);
-        IUnifiableAtomInstance newRight = (IUnifiableAtomInstance) right.deepClone(substitutions);
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
+        IUnifiableInstance newLeft = (IUnifiableInstance) left.deepClone(substitutions);
+        IUnifiableInstance newRight = (IUnifiableInstance) right.deepClone(substitutions);
         return new EqualityInstance(newLeft, newRight);
     }
 
     public IFirstOrderLogicInstance shallowClone() {
-        return new EqualityInstance((IUnifiableAtomInstance)left.shallowClone(), (IUnifiableAtomInstance) right.shallowClone());
+        return new EqualityInstance((IUnifiableInstance)left.shallowClone(), (IUnifiableInstance) right.shallowClone());
     }
 
     public Set<VariableInstance> getVariables() {
@@ -150,7 +150,7 @@ public class EqualityInstance implements IEqualityInstance {
         return left.reduce(right);
     }
 
-    public boolean unifyLeftRight(Map<VariableInstance, IUnifiableAtomInstance> assignments)  {
+    public boolean unifyLeftRight(Map<VariableInstance, IUnifiableInstance> assignments)  {
         return left.unify(right,assignments);
     }
 
@@ -158,11 +158,11 @@ public class EqualityInstance implements IEqualityInstance {
         return right.reduce(left);
     }
 
-    public boolean unifyRightLeft(Map<VariableInstance, IUnifiableAtomInstance> assignments)  {
+    public boolean unifyRightLeft(Map<VariableInstance, IUnifiableInstance> assignments)  {
         return right.unify(left,assignments);
     }
 
-    public boolean equalitySolve(Map<VariableInstance, IUnifiableAtomInstance> equalitySolverAssignments) {
+    public boolean equalitySolve(Map<VariableInstance, IUnifiableInstance> equalitySolverAssignments) {
         return left.unify(right,equalitySolverAssignments);
     }
 }

@@ -2,12 +2,8 @@ package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
 import org.javatuples.Pair;
 import uk.co.mtford.jalp.JALPException;
-import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

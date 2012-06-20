@@ -32,13 +32,13 @@ public abstract class RuleNode {
     protected List<IInferableInstance> query;
     protected List<IInferableInstance> goals; // G - {currentGoal}
     protected Store store; // ST
-    protected Map<VariableInstance, IUnifiableAtomInstance> assignments;  // Theta
+    protected Map<VariableInstance, IUnifiableInstance> assignments;  // Theta
     protected AbductiveFramework abductiveFramework; // (P,A,IC),Theta
     protected NodeMark nodeMark; // Defines whether or not leaf node or search node.
     protected List<RuleNode> children; // Next states.
 
     public RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals,
-                    Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+                    Store store, Map<VariableInstance, IUnifiableInstance> assignments) {
         this.query = query;
         children = new LinkedList<RuleNode>();
         this.assignments = assignments;
@@ -52,7 +52,7 @@ public abstract class RuleNode {
     public RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {
         this.query = query;
         children = new LinkedList<RuleNode>();
-        assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         nodeMark = nodeMark.UNEXPANDED;
         this.abductiveFramework = abductiveFramework;
         this.goals = restOfGoals;
@@ -64,7 +64,7 @@ public abstract class RuleNode {
         store = new Store();
         abductiveFramework = new AbductiveFramework();
         goals = new LinkedList<IInferableInstance>();
-        assignments = new HashMap<VariableInstance,IUnifiableAtomInstance>();
+        assignments = new HashMap<VariableInstance,IUnifiableInstance>();
         children = new LinkedList<RuleNode>();
         nodeMark = nodeMark.UNEXPANDED;
     } // For use whilst cloning.
@@ -78,11 +78,11 @@ public abstract class RuleNode {
         this.children = children;
     }
 
-    public Map<VariableInstance, IUnifiableAtomInstance> getAssignments() {
+    public Map<VariableInstance, IUnifiableInstance> getAssignments() {
         return assignments;
     }
 
-    public void setAssignments(Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public void setAssignments(Map<VariableInstance, IUnifiableInstance> assignments) {
         this.assignments = assignments;
     }
 

@@ -27,7 +27,7 @@ public abstract class ListInstance<E extends ITermInstance> implements ITermInst
         return list;
     }
 
-    @Override
+     
     public Set<VariableInstance> getVariables() {
         HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
         for (E term:list) {
@@ -36,17 +36,17 @@ public abstract class ListInstance<E extends ITermInstance> implements ITermInst
         return variables;
     }
 
-    @Override
+     
     public String toString () {
         return list.toString();
     }
 
-    @Override
+     
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         throw new UnsupportedOperationException(); // TODO Nested lists.
     }
 
-    @Override
+     
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ListInstance)) return false;
@@ -58,7 +58,7 @@ public abstract class ListInstance<E extends ITermInstance> implements ITermInst
         return true;
     }
 
-    @Override
+     
     public int hashCode() {
         return list.hashCode();
     }

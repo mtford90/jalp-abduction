@@ -44,17 +44,17 @@ public abstract class ConstraintInstance implements IConstraintInstance {
         this.right = right;
     }
 
-    @Override
+    
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         return new F1RuleNode(abductiveFramework,query,goals);
     }
 
-    @Override
+    
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         return new F2RuleNode(abductiveFramework,query,goals);
     }
 
-    @Override
+    
     public Set<VariableInstance> getVariables() {
         HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
         variables.addAll(left.getVariables());
@@ -62,7 +62,7 @@ public abstract class ConstraintInstance implements IConstraintInstance {
         return variables;
     }
 
-    @Override
+    
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ConstraintInstance)) return false;
@@ -75,7 +75,7 @@ public abstract class ConstraintInstance implements IConstraintInstance {
         return true;
     }
 
-    @Override
+    
     public int hashCode() {
         int result = left.hashCode();
         result = 31 * result + right.hashCode();

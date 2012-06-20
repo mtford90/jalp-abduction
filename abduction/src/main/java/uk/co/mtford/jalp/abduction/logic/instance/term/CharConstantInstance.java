@@ -3,7 +3,7 @@ package uk.co.mtford.jalp.abduction.logic.instance.term;
 import choco.kernel.model.variables.Variable;
 import org.apache.log4j.Logger;
 import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +33,7 @@ public class CharConstantInstance extends ConstantInstance {
         this.value = value;
     }
 
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return new CharConstantInstance(value);
     }
 
@@ -63,11 +63,11 @@ public class CharConstantInstance extends ConstantInstance {
         return value;
     }
 
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
         throw new UnsupportedOperationException(); // Dealt with natively.
     }
 
-    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
+    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableInstance>> possSubst) {
         return constantList.getList().contains(this);
     }
 }

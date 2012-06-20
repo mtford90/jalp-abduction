@@ -25,7 +25,7 @@ public class SubstitutionTest {
 
     @Before
     public void noSetup() {
-        HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         x = new VariableInstance("X");
         y = new VariableInstance("Y");
         z = new VariableInstance("Z");
@@ -46,14 +46,14 @@ public class SubstitutionTest {
 
     @Test
     public void constantTest() {
-        HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         subst.put(x, d);
         assertTrue(c == c.performSubstitutions(subst));
     }
 
     @Test
     public void variableTest() {
-        HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         subst.put(x, d);
         assertTrue(y.performSubstitutions(subst) == y);
         assertTrue(x.performSubstitutions(subst) == d);
@@ -61,14 +61,14 @@ public class SubstitutionTest {
 
     @Test
     public void falseTest() {
-        HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         subst.put(x, d);
         assertTrue(f == f.performSubstitutions(subst));
     }
 
     @Test
     public void trueTest() {
-        HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         subst.put(x, d);
         assertTrue(t == t.performSubstitutions(subst));
     }
@@ -78,7 +78,7 @@ public class SubstitutionTest {
         PredicateInstance p = new PredicateInstance("p", x, y);
         PredicateInstance q = new PredicateInstance("q", z);
         DenialInstance denial = new DenialInstance(p, q);
-        HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         subst.put(x, d);
         assertTrue(denial.performSubstitutions(subst) == denial);
         assertTrue(denial.getBody().size() == 2);
@@ -95,7 +95,7 @@ public class SubstitutionTest {
         PredicateInstance q = new PredicateInstance("q", z);
         DenialInstance denial = new DenialInstance(p, q);
         NegationInstance neg = new NegationInstance(denial);
-        HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         subst.put(x, d);
         assertTrue(neg.performSubstitutions(subst) == neg);
         assertTrue(neg.getSubFormula() == denial);
@@ -114,7 +114,7 @@ public class SubstitutionTest {
     public void equalityTest1() {
         PredicateInstance p = new PredicateInstance("p", x, y);
         PredicateInstance q = new PredicateInstance("p", z, r);
-        HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         subst.put(x, d);
         EqualityInstance e = new EqualityInstance(p, q);
         assert (e.performSubstitutions(subst) == e);

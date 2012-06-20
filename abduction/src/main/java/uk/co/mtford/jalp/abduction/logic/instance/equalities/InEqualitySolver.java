@@ -2,12 +2,8 @@ package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
 import org.apache.log4j.Logger;
 import org.javatuples.Pair;
-import sun.tools.tree.ReturnStatement;
 import uk.co.mtford.jalp.JALPException;
-import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.TrueInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.HashMap;
@@ -29,8 +25,8 @@ public class InEqualitySolver implements IInEqualitySolver {
 
             List<Pair<List<EqualityInstance>,List<InEqualityInstance>>> result = new LinkedList<Pair<List<EqualityInstance>, List<InEqualityInstance>>>();
 
-            IUnifiableAtomInstance left;
-            IUnifiableAtomInstance right;
+            IUnifiableInstance left;
+            IUnifiableInstance right;
             List<EqualityInstance> reducedEqualities = new LinkedList<EqualityInstance>();
             reducedEqualities.add(inEquality.getEqualityInstance());
 
@@ -52,7 +48,7 @@ public class InEqualitySolver implements IInEqualitySolver {
             LinkedList<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
             LinkedList<InEqualityInstance> inequalities = new LinkedList<InEqualityInstance>();
             for (EqualityInstance reducedEquality:reducedEqualities) {
-                HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance,IUnifiableAtomInstance>();
+                HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance,IUnifiableInstance>();
                 boolean unificationSuccess = reducedEquality.equalitySolve(subst);
 
                 if (subst.size()>1) throw new JALPException("Reduce not working properly."); // Sanity check: Should be in reduced form, so only one substitution could occur.

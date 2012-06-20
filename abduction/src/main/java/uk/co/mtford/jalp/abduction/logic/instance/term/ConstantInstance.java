@@ -16,71 +16,58 @@ import java.util.*;
 /**
  * @author mtford
  */
-public abstract class ConstantInstance implements ITermInstance, IUnifiableAtomInstance {
+public abstract class ConstantInstance implements ITermInstance, IUnifiableInstance {
 
     private static final Logger LOGGER = Logger.getLogger(ConstantInstance.class);
 
-    @Override
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return this;
     }
 
-    @Override
     public Set<VariableInstance> getVariables() {
         return new HashSet<VariableInstance>();
     }
 
-    @Override
     public List<EqualityInstance> reduce(VariableInstance other) {
         return new LinkedList<EqualityInstance>();
     }
 
-    @Override
     public List<EqualityInstance> reduce(ConstantInstance other) {
         return new LinkedList<EqualityInstance>();
     }
 
-    @Override
     public List<EqualityInstance> reduce(PredicateInstance other) {
         return new LinkedList<EqualityInstance>();
     }
 
-    @Override
-    public List<EqualityInstance> reduce(IUnifiableAtomInstance other) {
+    public List<EqualityInstance> reduce(IUnifiableInstance other) {
         return new LinkedList<EqualityInstance>();
     }
 
-    @Override
-    public List<EqualityInstance> acceptReduceVisitor(IUnifiableAtomInstance unifiableAtom) {
-        return unifiableAtom.reduce(this);
+    public List<EqualityInstance> acceptReduceVisitor(IUnifiableInstance unifiable) {
+        return unifiable.reduce(this);
     }
 
-    @Override
-    public boolean unify(VariableInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+    public boolean unify(VariableInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         return other.unify(this,assignment);
     }
 
-    @Override
-    public boolean unify(ConstantInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+    public boolean unify(ConstantInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         return this.equals(other);
     }
 
-    @Override
-    public boolean unify(PredicateInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+    public boolean unify(PredicateInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         return false;
     }
 
-    @Override
-    public boolean unify(IUnifiableAtomInstance other, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
+    public boolean unify(IUnifiableInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         return other.acceptUnifyVisitor(this,assignment);
     }
 
-    @Override
-    public boolean acceptUnifyVisitor(IUnifiableAtomInstance unifiableAtom, Map<VariableInstance, IUnifiableAtomInstance> assignment) {
-        return unifiableAtom.unify(this,assignment);
+    public boolean acceptUnifyVisitor(IUnifiableInstance unifiable, Map<VariableInstance, IUnifiableInstance> assignment) {
+        return unifiable.unify(this,assignment);
     }
 
-    @Override
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         return new F2RuleNode(abductiveFramework,query,goals);
     }

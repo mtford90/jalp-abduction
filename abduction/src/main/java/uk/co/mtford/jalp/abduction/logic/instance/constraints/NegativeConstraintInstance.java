@@ -27,53 +27,53 @@ public class NegativeConstraintInstance implements IConstraintInstance {
         this.constraintInstance = constraintInstance;
     }
 
-    @Override
+    
     public RuleNode getPositiveRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         throw new UnsupportedOperationException(); // TODO Again ASystem paper may suggest rules to deal with negatives constraints?
     }
 
-    @Override
+    
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals) {
         throw new UnsupportedOperationException(); // TODO Again ASystem paper may suggest rules to deal with negatives constraints?
     }
 
-    @Override
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         constraintInstance = (ConstraintInstance)constraintInstance.performSubstitutions(substitutions);
         return this;
     }
 
-    @Override
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return new NegativeConstraintInstance((ConstraintInstance)constraintInstance.deepClone(substitutions));
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance shallowClone() {
         return new NegativeConstraintInstance((ConstraintInstance) constraintInstance.shallowClone());
     }
 
-    @Override
+    
     public Set<VariableInstance> getVariables() {
         return constraintInstance.getVariables();
     }
 
-    @Override
+    
     public String toString () {
         return "not " + constraintInstance;
     }
 
-    @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
+    
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         return constraintInstance.reduceToNegativeChoco(possSubst, chocoConstraints,chocoVariables,constraintMap);
     }
 
-    @Override
-    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
+    
+    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         return constraintInstance.reduceToChoco(possSubst, chocoConstraints,chocoVariables,constraintMap);
     }
 
-    @Override
+    
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof NegativeConstraintInstance)) return false;
@@ -85,7 +85,7 @@ public class NegativeConstraintInstance implements IConstraintInstance {
         return true;
     }
 
-    @Override
+    
     public int hashCode() {
         return constraintInstance.hashCode();
     }

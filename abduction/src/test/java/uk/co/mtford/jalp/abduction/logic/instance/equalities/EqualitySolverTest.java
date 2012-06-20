@@ -1,24 +1,17 @@
 package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
-import com.sun.net.httpserver.Authenticator;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import uk.co.mtford.jalp.abduction.AbductiveFramework;
-import uk.co.mtford.jalp.abduction.Store;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
-import uk.co.mtford.jalp.abduction.rules.LeafRuleNode;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
@@ -46,7 +39,7 @@ public class EqualitySolverTest {
 
     @Before
     public void noSetup() {
-        HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         X = new VariableInstance("X");
         Y = new VariableInstance("Y");
         B = new VariableInstance("B");
@@ -67,7 +60,7 @@ public class EqualitySolverTest {
     public void simpleEqualityTest1() {
         UniqueIdGenerator.reset();
 
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         assignments.put(Y,bob);
         List<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
         equalities.add(new EqualityInstance(B,Y));
@@ -80,8 +73,8 @@ public class EqualitySolverTest {
     @Test
     public void simpleEqualityTest2() {
         UniqueIdGenerator.reset();
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
-        assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments;
+        assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         assignments.put(Y,bob);
         List<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
         equalities.add(new EqualityInstance(Y,bob));
@@ -95,8 +88,8 @@ public class EqualitySolverTest {
     @Test
     public void simpleEqualityTest3() {
         UniqueIdGenerator.reset();
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
-        assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments;
+        assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         assignments.put(Y,bob);
         List<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
         equalities.add(E1);
@@ -112,8 +105,8 @@ public class EqualitySolverTest {
     @Test
     public void simpleEqualityTest4() {
         UniqueIdGenerator.reset();
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments;
-        assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments;
+        assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         assignments.put(Y,bob);
         List<EqualityInstance> equalities = new LinkedList<EqualityInstance>();
         equalities.add(E1);

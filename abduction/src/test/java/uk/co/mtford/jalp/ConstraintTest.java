@@ -514,7 +514,7 @@ public class ConstraintTest {
         Result resultOne = result.get(0);
         JALP.reduceResult(resultOne);
         assertTrue(resultOne.getStore().abducibles.size()==1);
-        IUnifiableAtomInstance XAssignment = resultOne.getAssignments().get(X);
+        IUnifiableInstance XAssignment = resultOne.getAssignments().get(X);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("a",XAssignment)));
         IntegerConstantListInstance list = new IntegerConstantListInstance();
         list.getList().add(new IntegerConstantInstance(1));

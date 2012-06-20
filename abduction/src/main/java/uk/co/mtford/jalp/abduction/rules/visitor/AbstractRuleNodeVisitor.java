@@ -75,7 +75,7 @@ public abstract class AbstractRuleNodeVisitor {
         for (DenialInstance collectedDenial : store.denials) {
             PredicateInstance collectedDenialHead = (PredicateInstance) collectedDenial.getBody().get(0);
             if (collectedDenialHead.isSameFunction(goalAbducible)) {
-                DenialInstance newDenial = (DenialInstance) collectedDenial.deepClone(new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments()));
+                DenialInstance newDenial = (DenialInstance) collectedDenial.deepClone(new HashMap<VariableInstance, IUnifiableInstance>(ruleNode.getAssignments()));
                 collectedDenialHead = (PredicateInstance) newDenial.getBody().remove(0);
                 newDenial.getBody().addAll(0,goalAbducible.reduce(collectedDenialHead));
                 newRestOfGoals.add(0, newDenial);
@@ -112,7 +112,7 @@ public abstract class AbstractRuleNodeVisitor {
         List<DenialInstance> newDenials = new LinkedList<DenialInstance>();
         for (PredicateInstance storeAbducible : store.abducibles) {
             if (storeAbducible.isSameFunction(abducibleDenialHead)) {
-                HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
+                HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>(ruleNode.getAssignments());
                 DenialInstance newDenial = (DenialInstance) currentGoal.shallowClone();
                 List<EqualityInstance> equalitySolved = storeAbducible.reduce(abducibleDenialHead);
                 newDenial.getBody().addAll(0,equalitySolved);
@@ -162,7 +162,7 @@ public abstract class AbstractRuleNodeVisitor {
 
         for (List<IInferableInstance> possibleUnfold:possibleUnfolds) {
 
-            HashMap<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
+            HashMap<VariableInstance,IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>(ruleNode.getAssignments());
             DenialInstance newUnfoldedDenial = (DenialInstance) currentGoal.shallowClone();
             Set<VariableInstance> newUniversalVariables = new HashSet<VariableInstance>();
             List<IInferableInstance> toAddToBody = new LinkedList<IInferableInstance>();
@@ -224,8 +224,8 @@ public abstract class AbstractRuleNodeVisitor {
         RuleNode childNode;
         List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
 
-        IUnifiableAtomInstance left = equalityDenialHead.getLeft();
-        IUnifiableAtomInstance right = equalityDenialHead.getRight();
+        IUnifiableInstance left = equalityDenialHead.getLeft();
+        IUnifiableInstance right = equalityDenialHead.getRight();
 
         List<EqualityInstance> reductionResult = left.reduce(right);
 
@@ -240,7 +240,7 @@ public abstract class AbstractRuleNodeVisitor {
         if (currentGoal.getUniversalVariables().contains(left)) { // For all X = u
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Current goal is of the form For All X. <- X=u");
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying E2 to rulenode.");
-            HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
+            HashMap<VariableInstance,IUnifiableInstance> newAssignments = new HashMap<VariableInstance,IUnifiableInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments);
             currentGoal.performSubstitutions(newAssignments);
             if (!unificationSuccess) {
@@ -255,7 +255,7 @@ public abstract class AbstractRuleNodeVisitor {
         else if (!(left instanceof VariableInstance) && currentGoal.getUniversalVariables().contains(right)) {  // For all u = X where u is not an existentially quantified variable.
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Current goal is of the form For All X. <- u=X, where u is not existentially quanitifed variable.");
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying E2 to rulenode.");
-            HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
+            HashMap<VariableInstance,IUnifiableInstance> newAssignments = new HashMap<VariableInstance,IUnifiableInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = equalityDenialHead.unifyRightLeft(newAssignments);
             currentGoal.performSubstitutions(newAssignments);
             if (!unificationSuccess) {
@@ -288,7 +288,7 @@ public abstract class AbstractRuleNodeVisitor {
         else { // c==d
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Current goal is of the form For All X. <- c=d, where d could be c.");
             if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying E2 to rulenode.");
-            HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
+            HashMap<VariableInstance,IUnifiableInstance> newAssignments = new HashMap<VariableInstance, IUnifiableInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments); // Blank assignments as should be just constants.
             if (unificationSuccess) {
                 currentGoal.performSubstitutions(newAssignments);
@@ -327,7 +327,7 @@ public abstract class AbstractRuleNodeVisitor {
         newGoals = new LinkedList<IInferableInstance>(ruleNode.getGoals());
         currentGoal = (DenialInstance) newGoals.remove(0).shallowClone();
         equalityDenialHead = (EqualityInstance) currentGoal.getBody().remove(0);
-        HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
+        HashMap<VariableInstance,IUnifiableInstance> newAssignments = new HashMap<VariableInstance,IUnifiableInstance>(ruleNode.getAssignments());
         boolean unificationSuccess = equalityDenialHead.unifyLeftRight(newAssignments);
         if (unificationSuccess) {
             currentGoal = (DenialInstance)currentGoal.performSubstitutions(newAssignments);
@@ -361,7 +361,7 @@ public abstract class AbstractRuleNodeVisitor {
         List<RuleNode> newChildNodes = new LinkedList<RuleNode>();
 
         if (LOGGER.isInfoEnabled()) LOGGER.info("Applying E2c to node.");
-        HashMap<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance,IUnifiableAtomInstance>(ruleNode.getAssignments());
+        HashMap<VariableInstance,IUnifiableInstance> newAssignments = new HashMap<VariableInstance,IUnifiableInstance>(ruleNode.getAssignments());
         boolean unificationSuccess = equalityDenialHead.unifyRightLeft(newAssignments);
         if (!unificationSuccess) {
             throw new JALPException("Error in JALP. E2c failed unification on rule node:\n"+ruleNode);  // Sanity check.
@@ -515,7 +515,7 @@ public abstract class AbstractRuleNodeVisitor {
         LinkedList<DenialInstance> newDenials = new LinkedList<DenialInstance>();
 
         for (ConstantInstance constant:constantList) {
-            Map<VariableInstance,IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
+            Map<VariableInstance,IUnifiableInstance> newAssignments = new HashMap<VariableInstance, IUnifiableInstance>(ruleNode.getAssignments());
             boolean unificationSuccess = variable.unify(constant,newAssignments);
             if (unificationSuccess) {
                 DenialInstance newDenialInstance = (DenialInstance) currentGoal.shallowClone();

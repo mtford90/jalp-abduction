@@ -36,10 +36,10 @@ public class EfficientRuleNodeVisitor extends AbstractRuleNodeVisitor {
         if (!(newGoals.isEmpty())) {
             newRuleNode = newGoals.get(0).getPositiveRootRuleNode(previousNode.getAbductiveFramework(), new LinkedList<IInferableInstance>(previousNode.getQuery()), newGoals);
             newRuleNode.setStore(previousNode.getStore().shallowClone());
-            newRuleNode.setAssignments(new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
+            newRuleNode.setAssignments(new HashMap<VariableInstance, IUnifiableInstance>(previousNode.getAssignments()));
         }
         else {
-            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode,new LinkedList<IInferableInstance>(previousNode.getQuery()),previousNode.getStore().shallowClone(),new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
+            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode,new LinkedList<IInferableInstance>(previousNode.getQuery()),previousNode.getStore().shallowClone(),new HashMap<VariableInstance, IUnifiableInstance>(previousNode.getAssignments()));
         }
 
         return newRuleNode;
@@ -53,7 +53,7 @@ public class EfficientRuleNodeVisitor extends AbstractRuleNodeVisitor {
             newRuleNode.setAssignments(previousNode.getAssignments());
         }
         else {
-            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode,new LinkedList<IInferableInstance>(previousNode.getQuery()),previousNode.getStore().shallowClone(),new HashMap<VariableInstance, IUnifiableAtomInstance>(previousNode.getAssignments()));
+            newRuleNode = new LeafRuleNode(previousNode.getAbductiveFramework(),previousNode,new LinkedList<IInferableInstance>(previousNode.getQuery()),previousNode.getStore().shallowClone(),new HashMap<VariableInstance, IUnifiableInstance>(previousNode.getAssignments()));
         }
 
         return newRuleNode;
@@ -74,7 +74,7 @@ public class EfficientRuleNodeVisitor extends AbstractRuleNodeVisitor {
         List<DenialInstance> newDenials = new LinkedList<DenialInstance>();
         for (PredicateInstance storeAbducible : store.abducibles) {
             if (storeAbducible.isSameFunction(abducibleDenialHead)) {
-                HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>(ruleNode.getAssignments());
+                HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>(ruleNode.getAssignments());
                 DenialInstance newDenial = (DenialInstance) currentGoal.shallowClone();
                 List<EqualityInstance> equalitySolved = storeAbducible.reduce(abducibleDenialHead);
                 newDenial.getBody().addAll(0,equalitySolved);
@@ -200,7 +200,7 @@ public class EfficientRuleNodeVisitor extends AbstractRuleNodeVisitor {
 
     @Override
     protected boolean applyEqualitySolver(RuleNode node) {
-        Map<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(node.getAssignments());
+        Map<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>(node.getAssignments());
         List<EqualityInstance> equalities = new LinkedList<EqualityInstance>(node.getStore().equalities);
 
         if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying equality solver to rule node:\n"+node);

@@ -14,23 +14,23 @@ import java.util.Map;
  * Time: 10:09
  * To change this template use File | Settings | File Templates.
  */
-public interface IUnifiableAtomInstance extends IAtomInstance {
+public interface IUnifiableInstance extends IAtomInstance {
 
     public List<EqualityInstance> reduce(VariableInstance other);
     public List<EqualityInstance> reduce(ConstantInstance other);
     public List<EqualityInstance> reduce(PredicateInstance other);
-    public List<EqualityInstance> reduce(IUnifiableAtomInstance other);
-    public List<EqualityInstance> acceptReduceVisitor (IUnifiableAtomInstance unifiableAtom);
+    public List<EqualityInstance> reduce(IUnifiableInstance other);
+    public List<EqualityInstance> acceptReduceVisitor (IUnifiableInstance unifiable);
 
     public boolean unify(VariableInstance other,
-                                  Map<VariableInstance, IUnifiableAtomInstance> assignment);
+                                  Map<VariableInstance, IUnifiableInstance> assignment);
     public boolean unify(ConstantInstance other,
-                                  Map<VariableInstance, IUnifiableAtomInstance> assignment);
+                                  Map<VariableInstance, IUnifiableInstance> assignment);
     public boolean  unify(PredicateInstance other,
-                                   Map<VariableInstance, IUnifiableAtomInstance> assignment);
-    public boolean  unify(IUnifiableAtomInstance other,
-                          Map<VariableInstance, IUnifiableAtomInstance> assignment);
-    public boolean  acceptUnifyVisitor(IUnifiableAtomInstance unifiableAtom,
-                                       Map<VariableInstance, IUnifiableAtomInstance> assignment);
+                                   Map<VariableInstance, IUnifiableInstance> assignment);
+    public boolean  unify(IUnifiableInstance other,
+                          Map<VariableInstance, IUnifiableInstance> assignment);
+    public boolean  acceptUnifyVisitor(IUnifiableInstance unifiable,
+                                       Map<VariableInstance, IUnifiableInstance> assignment);
 
 }

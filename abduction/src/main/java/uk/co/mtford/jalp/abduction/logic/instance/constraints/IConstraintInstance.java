@@ -3,7 +3,7 @@ package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 import choco.kernel.model.constraints.Constraint;
 import choco.kernel.model.variables.Variable;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.ITermInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
@@ -19,6 +19,6 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface IConstraintInstance extends IInferableInstance {
-    boolean reduceToChoco(List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap);
-    boolean reduceToNegativeChoco(List<Map<VariableInstance,IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap);
+    boolean reduceToChoco(List<Map<VariableInstance,IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap);
+    boolean reduceToNegativeChoco(List<Map<VariableInstance,IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap);
 }

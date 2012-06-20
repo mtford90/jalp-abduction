@@ -3,16 +3,14 @@ package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 import choco.kernel.model.constraints.Constraint;
 import choco.kernel.model.variables.Variable;
 import choco.kernel.model.variables.integer.IntegerVariable;
-import choco.kernel.model.variables.set.SetVariable;
 import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.ITermInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.*;
 
-import static choco.Choco.*;
 import static choco.Choco.makeIntVar;
 
 /**
@@ -28,25 +26,25 @@ public class InIntegerListConstraintInstance extends InListConstraintInstance {
         super(left, right);
     }
 
-    @Override
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         left = (ITermInstance)left.performSubstitutions(substitutions);
         right = (IntegerConstantListInstance) right.performSubstitutions(substitutions);
         return this;
     }
 
-    @Override
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         return new InIntegerListConstraintInstance((ITermInstance)left.deepClone(substitutions), (IntegerConstantListInstance)right.deepClone(substitutions));
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance shallowClone() {
         return new InIntegerListConstraintInstance((ITermInstance)left.shallowClone(),(IntegerConstantListInstance)right.shallowClone());
     }
 
-    @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
+    
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) {
         left.reduceToChoco(possSubst,chocoVariables);
         IntegerVariable leftVar = (IntegerVariable) chocoVariables.get(left);
         IntegerConstantListInstance rightVar = (IntegerConstantListInstance) right;
@@ -76,8 +74,8 @@ public class InIntegerListConstraintInstance extends InListConstraintInstance {
         return true;
     }
 
-    @Override
-    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) { // TODO messy
+    
+    public boolean reduceToNegativeChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, List<Constraint> chocoConstraints, HashMap<ITermInstance, Variable> chocoVariables, HashMap<Constraint,IConstraintInstance> constraintMap) { // TODO messy
         left.reduceToChoco(possSubst,chocoVariables);
         IntegerVariable leftVar = (IntegerVariable) chocoVariables.get(left);
         IntegerConstantListInstance rightVar = (IntegerConstantListInstance) right;

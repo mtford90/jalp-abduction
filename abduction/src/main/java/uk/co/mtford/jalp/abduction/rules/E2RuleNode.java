@@ -5,7 +5,7 @@ import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Store;
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.rules.visitor.AbstractRuleNodeVisitor;
@@ -34,7 +34,7 @@ public class E2RuleNode extends NegativeRuleNode {
         }
     }
 
-    public E2RuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public E2RuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableInstance> assignments) {
         super(abductiveFramework,parent,query,restOfGoals, store, assignments);
         if (!(restOfGoals.get(0) instanceof DenialInstance)) { // Sanity check.
             throw new JALPException("Was expecting a denial at goal head of E2 rule node, but there isnt. Instead there is "+restOfGoals.get(0));
@@ -49,7 +49,7 @@ public class E2RuleNode extends NegativeRuleNode {
         super(abductiveFramework, query, restOfGoals);
     }
 
-    public E2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public E2RuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> restOfGoals, Store store, Map<VariableInstance, IUnifiableInstance> assignments) {
         super(abductiveFramework, query, restOfGoals, store, assignments);
     }
 
@@ -61,7 +61,7 @@ public class E2RuleNode extends NegativeRuleNode {
     public RuleNode shallowClone() {
         E2RuleNode newRuleNode = new E2RuleNode();
         newRuleNode.children = new LinkedList<RuleNode>(children);
-        newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>(assignments);
+        newRuleNode.assignments = new HashMap<VariableInstance, IUnifiableInstance>(assignments);
         newRuleNode.abductiveFramework = abductiveFramework;
         newRuleNode.store = store.shallowClone();
         newRuleNode.goals = new LinkedList<IInferableInstance>(goals);

@@ -26,7 +26,7 @@ public class LeafRuleNode extends PositiveRuleNode {
     private static Logger LOGGER = Logger.getLogger(LeafRuleNode.class);
 
     public LeafRuleNode(AbductiveFramework framework, RuleNode parent,List<IInferableInstance> query,Store store, Map<VariableInstance,
-            IUnifiableAtomInstance> assignments) {
+            IUnifiableInstance> assignments) {
         super(framework, parent, query, new LinkedList<IInferableInstance>(), store, assignments);
         this.parentNode = parent;
     }

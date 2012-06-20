@@ -33,7 +33,7 @@ public class UnificationTest { // TODO
 
     @Before
     public void noSetup() {
-        HashMap<VariableInstance, IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance, IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         X = new VariableInstance("X");
         Y = new VariableInstance("Y");
         Z = new VariableInstance("Z");
@@ -105,49 +105,49 @@ public class UnificationTest { // TODO
 
     @Test
     public void reduceTest1a() {
-        List<EqualityInstance> results = c.reduce((IUnifiableAtomInstance)c);
+        List<EqualityInstance> results = c.reduce((IUnifiableInstance)c);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest2a() {
-        List<EqualityInstance> results = c.reduce((IUnifiableAtomInstance)d);
+        List<EqualityInstance> results = c.reduce((IUnifiableInstance)d);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest3a() {
-        List<EqualityInstance> results = c.reduce((IUnifiableAtomInstance) X);
+        List<EqualityInstance> results = c.reduce((IUnifiableInstance) X);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest4a() {
-        List<EqualityInstance> results = c.reduce((IUnifiableAtomInstance)p);
+        List<EqualityInstance> results = c.reduce((IUnifiableInstance)p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest5a() {
-        List<EqualityInstance> results = p.reduce((IUnifiableAtomInstance)q);
+        List<EqualityInstance> results = p.reduce((IUnifiableInstance)q);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest6a() {
-        List<EqualityInstance> results = p1.reduce((IUnifiableAtomInstance)p);
+        List<EqualityInstance> results = p1.reduce((IUnifiableInstance)p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest7a() {
-        List<EqualityInstance> results = X.reduce((IUnifiableAtomInstance)p);
+        List<EqualityInstance> results = X.reduce((IUnifiableInstance)p);
         assertTrue(results.isEmpty());
     }
 
     @Test
     public void reduceTest8a() {
-        List<EqualityInstance> results = p1.reduce((IUnifiableAtomInstance)p2);
+        List<EqualityInstance> results = p1.reduce((IUnifiableInstance)p2);
         assertTrue(!results.isEmpty());
         assertTrue(results.contains(new EqualityInstance(X, Y)));
         assertTrue(results.contains(new EqualityInstance(Z,e)));
@@ -155,7 +155,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest1() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = c.unify(c,assignments);
         assertTrue(success);
         assertTrue(assignments.isEmpty());
@@ -163,7 +163,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest2() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = c.unify(d,assignments);
         assertTrue(!success);
         assertTrue(assignments.isEmpty());
@@ -171,7 +171,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest3() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = c.unify(X,assignments);
         assertTrue(success);
         assertTrue(assignments.get(X).equals(c));
@@ -179,7 +179,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest4() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = X.unify(c,assignments);
         assertTrue(success);
         assertTrue(assignments.get(X).equals(c));
@@ -187,7 +187,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest5() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = X.unify(X,assignments);
         assertTrue(success);
         assertTrue(assignments.isEmpty());
@@ -195,7 +195,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest6() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = X.unify(p,assignments);
         assertTrue(success);
         assertTrue(assignments.get(X).equals(p));
@@ -203,7 +203,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest7() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = p.unify(X,assignments);
         assertTrue(success);
         assertTrue(assignments.get(X).equals(p));
@@ -211,7 +211,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest8() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = p.unify(q,assignments);
         assertTrue(!success);
         assertTrue(assignments.isEmpty());
@@ -219,7 +219,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest9() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = p1.unify(q,assignments);
         assertTrue(!success);
         assertTrue(assignments.isEmpty());
@@ -227,7 +227,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest10() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = q.unify(p,assignments);
         assertTrue(!success);
         assertTrue(assignments.isEmpty());
@@ -235,7 +235,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest11() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = q.unify(p1,assignments);
         assertTrue(!success);
         assertTrue(assignments.isEmpty());
@@ -243,7 +243,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest12() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = p1.unify(p2,assignments);
         assertTrue(success);
         assertTrue(assignments.get(X).equals(Y));
@@ -252,7 +252,7 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest13() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
         boolean success = p2.unify(p1,assignments);
         assertTrue(success);
         assertTrue(assignments.get(Y).equals(X));
@@ -261,96 +261,96 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest1a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = c.unify((IUnifiableAtomInstance)c,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = c.unify((IUnifiableInstance)c,assignments);
         assertTrue(success);
         assertTrue(assignments.isEmpty());
     }
 
     @Test
     public void unifyTest2a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = c.unify((IUnifiableAtomInstance)d,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = c.unify((IUnifiableInstance)d,assignments);
         assertTrue(!success);
         assertTrue(assignments.isEmpty());
     }
 
     @Test
     public void unifyTest3a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = c.unify((IUnifiableAtomInstance)X,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = c.unify((IUnifiableInstance)X,assignments);
         assertTrue(success);
         assertTrue(assignments.get(X).equals(c));
     }
 
     @Test
     public void unifyTest4a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = X.unify((IUnifiableAtomInstance)c,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = X.unify((IUnifiableInstance)c,assignments);
         assertTrue(success);
         assertTrue(assignments.get(X).equals(c));
     }
 
     @Test
     public void unifyTest5a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = X.unify((IUnifiableAtomInstance)X,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = X.unify((IUnifiableInstance)X,assignments);
         assertTrue(success);
         assertTrue(assignments.isEmpty());
     }
 
     @Test
     public void unifyTest6a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = X.unify((IUnifiableAtomInstance)p,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = X.unify((IUnifiableInstance)p,assignments);
         assertTrue(success);
         assertTrue(assignments.get(X).equals(p));
     }
 
     @Test
     public void unifyTest7a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = p.unify((IUnifiableAtomInstance)X,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = p.unify((IUnifiableInstance)X,assignments);
         assertTrue(success);
         assertTrue(assignments.get(X).equals(p));
     }
 
     @Test
     public void unifyTest8a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = p.unify((IUnifiableAtomInstance)q,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = p.unify((IUnifiableInstance)q,assignments);
         assertTrue(!success);
         assertTrue(assignments.isEmpty());
     }
 
     @Test
     public void unifyTest9a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = p1.unify((IUnifiableAtomInstance)q,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = p1.unify((IUnifiableInstance)q,assignments);
         assertTrue(!success);
         assertTrue(assignments.isEmpty());
     }
 
     @Test
     public void unifyTest10a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = q.unify((IUnifiableAtomInstance)p,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = q.unify((IUnifiableInstance)p,assignments);
         assertTrue(!success);
         assertTrue(assignments.isEmpty());
     }
 
     @Test
     public void unifyTest11a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = q.unify((IUnifiableAtomInstance)p1,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = q.unify((IUnifiableInstance)p1,assignments);
         assertTrue(!success);
         assertTrue(assignments.isEmpty());
     }
 
     @Test
     public void unifyTest12a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = p1.unify((IUnifiableAtomInstance)p2,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = p1.unify((IUnifiableInstance)p2,assignments);
         assertTrue(success);
         assertTrue(assignments.get(X).equals(Y));
         assertTrue(assignments.get(Z).equals(e));
@@ -358,8 +358,8 @@ public class UnificationTest { // TODO
 
     @Test
     public void unifyTest13a() {
-        HashMap<VariableInstance,IUnifiableAtomInstance> assignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
-        boolean success = p2.unify((IUnifiableAtomInstance)p1,assignments);
+        HashMap<VariableInstance,IUnifiableInstance> assignments = new HashMap<VariableInstance, IUnifiableInstance>();
+        boolean success = p2.unify((IUnifiableInstance)p1,assignments);
         assertTrue(success);
         assertTrue(assignments.get(Y).equals(X));
         assertTrue(assignments.get(Z).equals(e));

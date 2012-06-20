@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
@@ -120,7 +120,7 @@ public class AbducibleTest {
         assertTrue(result.size()==1);
         Result resultOne = result.get(0);
         assertTrue(resultOne.getStore().abducibles.size()==1);
-        IUnifiableAtomInstance XAssignment = resultOne.getAssignments().get(X);
+        IUnifiableInstance XAssignment = resultOne.getAssignments().get(X);
         assertTrue(resultOne.getStore().abducibles.get(0).equals(new PredicateInstance("a",XAssignment)));
         assertTrue(resultOne.getStore().inequalities.contains(new InEqualityInstance(XAssignment,new IntegerConstantInstance(1))));
     }
@@ -153,9 +153,9 @@ public class AbducibleTest {
         boolean three = false;
 
         for (Result r:result) {
-            IUnifiableAtomInstance XAssignment = r.getAssignments().get(X);
-            IUnifiableAtomInstance YAssignment = r.getAssignments().get(Y);
-            IUnifiableAtomInstance ZAssignment = r.getAssignments().get(Z);
+            IUnifiableInstance XAssignment = r.getAssignments().get(X);
+            IUnifiableInstance YAssignment = r.getAssignments().get(Y);
+            IUnifiableInstance ZAssignment = r.getAssignments().get(Z);
 
             assertTrue(r.getStore().abducibles.size()==1);
             if (r.getStore().inequalities.contains(new InEqualityInstance(XAssignment, new IntegerConstantInstance(1)))) {

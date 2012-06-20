@@ -4,9 +4,7 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.term.CharConstantInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.IntegerConstantListInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import uk.co.mtford.jalp.abduction.tools.UniqueIdGenerator;
@@ -87,9 +85,9 @@ public class ConstraintSolverTest {
 
         ChocoConstraintSolverFacade solver = new ChocoConstraintSolverFacade();
 
-        List<Map<VariableInstance,IUnifiableAtomInstance>> solutions = solver.execute(new HashMap<VariableInstance, IUnifiableAtomInstance>(), constraints);
+        List<Map<VariableInstance,IUnifiableInstance>> solutions = solver.execute(new HashMap<VariableInstance, IUnifiableInstance>(), constraints);
 
-        for (Map<VariableInstance, IUnifiableAtomInstance> s:solutions) {
+        for (Map<VariableInstance, IUnifiableInstance> s:solutions) {
             LOGGER.info("Possible Solution: "+s);
         }
 

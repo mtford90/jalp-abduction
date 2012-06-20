@@ -1,7 +1,7 @@
 package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
 import java.util.Map;
@@ -14,5 +14,5 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface IEqualityInstance extends IInferableInstance {
-    public boolean equalitySolve(Map<VariableInstance,IUnifiableAtomInstance> assignments);
+    public boolean equalitySolve(Map<VariableInstance,IUnifiableInstance> assignments);
 }

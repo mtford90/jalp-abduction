@@ -2,9 +2,8 @@ package uk.co.mtford.jalp.abduction;
 
 import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.PredicateInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.constraints.ChocoConstraintSolverFacade;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.IConstraintInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
@@ -14,19 +13,16 @@ import uk.co.mtford.jalp.abduction.rules.RuleNode;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 27/05/2012
- * Time: 09:30
- * To change this template use File | Settings | File Templates.
- */
+ *   Represents a single abductive explanation.
+ *
+**/
 public class Result {
     private List<IInferableInstance> query;
     private RuleNode root;
     private Store store;
-    private Map<VariableInstance, IUnifiableAtomInstance> assignments;  // Theta
+    private Map<VariableInstance, IUnifiableInstance> assignments;  // Theta
 
-    public Result(Store store,Map<VariableInstance, IUnifiableAtomInstance> assignments, List<IInferableInstance> query, RuleNode root) {
+    public Result(Store store,Map<VariableInstance, IUnifiableInstance> assignments, List<IInferableInstance> query, RuleNode root) {
         this.assignments = assignments;
         this.store = store;
         this.query = query;
@@ -45,11 +41,11 @@ public class Result {
         return store;
     }
 
-    public Map<VariableInstance, IUnifiableAtomInstance> getAssignments() {
+    public Map<VariableInstance, IUnifiableInstance> getAssignments() {
         return assignments;
     }
 
-    public void setAssignments(Map<VariableInstance, IUnifiableAtomInstance> assignments) {
+    public void setAssignments(Map<VariableInstance, IUnifiableInstance> assignments) {
         this.assignments = assignments;
     }
 
@@ -65,11 +61,16 @@ public class Result {
         this.store = store;
     }
 
+    /** Cycles through the store and assignments and removes any that do not include variables from
+     *  relevantVariables.
+     *
+     * @param relevantVariables
+     */
     public void reduce(Collection<VariableInstance> relevantVariables) {
         // Remove irrelevant assignments.
-        Map<VariableInstance, IUnifiableAtomInstance> newAssignments = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        Map<VariableInstance, IUnifiableInstance> newAssignments = new HashMap<VariableInstance, IUnifiableInstance>();
         for (VariableInstance v:relevantVariables) {
-            IUnifiableAtomInstance newValue = v;
+            IUnifiableInstance newValue = v;
             while (assignments.containsKey(newValue)) {
                 newValue = assignments.get(newValue);
             }

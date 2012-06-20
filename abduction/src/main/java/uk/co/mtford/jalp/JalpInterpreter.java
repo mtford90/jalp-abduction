@@ -19,11 +19,9 @@ import java.util.Scanner;
 import static java.lang.System.nanoTime;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 03/06/2012
- * Time: 19:57
- * To change this template use File | Settings | File Templates.
+ * Presents a command line interface to the user. The user can write out abductive theories,
+ * load abductive theories from files and execute queries on those theories.
+ * @author Michael Ford
  */
 public class JALPInterpreter {
 
@@ -55,6 +53,9 @@ public class JALPInterpreter {
         this.repeat = 1;
     }
 
+    /**
+     * Starts the interpreter. Prints a help message and waits for commands.
+     */
     public void start() {
         System.out.println("Welcome to JALP. Type :h for help.");
         String next = null;
@@ -101,6 +102,11 @@ public class JALPInterpreter {
         }
     }
 
+    /**
+     * Processes the test mode command whereby queries are repeated and an average execution time returned.
+     *
+     * @param next
+     */
     private void testMode(String next) {
         try {
             next = next.substring(2, next.length());
@@ -117,6 +123,9 @@ public class JALPInterpreter {
         }
     }
 
+    /** Prints a help message detailing available commands.
+     *
+     */
     private void printHelp() {
         System.out.println(":l <filename> -  Load a file.");
         System.out.println(":q <query> - Execute a query.");
@@ -124,29 +133,31 @@ public class JALPInterpreter {
         System.out.println(":c - Reset framework.");
         System.out.println(":r - Enable reduce mode.");
         System.out.println(":e - Enable efficient mode.");
+        System.out.println(":t <integer n> - Enable test mode. Run the query n times.");
         System.out.println(":q - Quit.");
     }
 
+    /** Terminates the interpreter.
+     *
+     */
     private void quit() {
         System.out.println("Bye.");
         System.exit(0);
     }
 
+    /**
+     * Clears the abductive framework.
+     */
     private void resetSystem() {
         system.setFramework(new AbductiveFramework());
     }
 
-    private void printDashes(int n) {
-        for (int i=0;i<n;i++) {
-            printDash();
-        }
-        System.out.println();
-    }
-
-    private void printDash() {
-        System.out.print("-");
-    }
-
+    /**
+     * Executes the abductive query represented by the string.
+     *
+     * @param next A query in prolog-like syntax e.g. 'p(X)'
+     * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
+     */
     private void executeQuery(String next) throws uk.co.mtford.jalp.abduction.parse.query.ParseException {
         List<IInferableInstance> query = JALPQueryParser.readFromString(next.substring(2, next.length() - 1));
         List<VariableInstance> queryVariables = new LinkedList<VariableInstance>();

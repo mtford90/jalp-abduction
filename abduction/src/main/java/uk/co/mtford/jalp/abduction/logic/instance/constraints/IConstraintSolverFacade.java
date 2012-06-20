@@ -1,10 +1,8 @@
 package uk.co.mtford.jalp.abduction.logic.instance.constraints;
 
-import choco.kernel.model.constraints.Constraint;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,5 +14,5 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface IConstraintSolverFacade {
-    public List<Map<VariableInstance,IUnifiableAtomInstance>> execute(Map<VariableInstance,IUnifiableAtomInstance> subst, List<IConstraintInstance> listConstraints);
+    public List<Map<VariableInstance,IUnifiableInstance>> execute(Map<VariableInstance,IUnifiableInstance> subst, List<IConstraintInstance> listConstraints);
 }

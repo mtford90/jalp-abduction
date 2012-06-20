@@ -2,7 +2,7 @@ package uk.co.mtford.jalp.abduction.logic.instance.term;
 
 import choco.kernel.model.variables.Variable;
 import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,8 +41,8 @@ public class CharConstantListInstance extends ListInstance<CharConstantInstance>
         }
     }
 
-    @Override
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         CharConstantListInstance newListInstance = new CharConstantListInstance();
         for (CharConstantInstance term:list) {
             CharConstantInstance newTerm = (CharConstantInstance) term.performSubstitutions(substitutions);
@@ -52,8 +52,8 @@ public class CharConstantListInstance extends ListInstance<CharConstantInstance>
         return this;
     }
 
-    @Override
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         CharConstantListInstance newListInstance = new CharConstantListInstance();
         for (CharConstantInstance term:list) {
             newListInstance.getList().add((CharConstantInstance) term.deepClone(substitutions));
@@ -61,7 +61,7 @@ public class CharConstantListInstance extends ListInstance<CharConstantInstance>
         return newListInstance;
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance shallowClone() {
         CharConstantListInstance newListInstance = new CharConstantListInstance();
         for (CharConstantInstance term:list) {
@@ -70,13 +70,13 @@ public class CharConstantListInstance extends ListInstance<CharConstantInstance>
         return newListInstance;
     }
 
-    @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
+    
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
         throw new UnsupportedOperationException(); // Dealt with natively.
     }
 
-    @Override
-    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
+    
+    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableInstance>> possSubst) {
         throw new UnsupportedOperationException();
     }
 }

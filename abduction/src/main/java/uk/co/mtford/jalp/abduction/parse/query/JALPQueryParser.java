@@ -2,17 +2,13 @@
 package uk.co.mtford.jalp.abduction.parse.query;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import uk.co.mtford.jalp.abduction.AbductiveFramework;
+
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
-import uk.co.mtford.jalp.abduction.logic.instance.DenialInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.constraints.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
-import uk.co.mtford.jalp.abduction.Definition;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.*;
@@ -83,7 +79,7 @@ public class JALPQueryParser implements JALPQueryParserConstants {
 
   final public IInferableInstance PredicateOrEqualOrInequal(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     PredicateInstance left;
-    IUnifiableAtomInstance right;
+    IUnifiableInstance right;
     left = Predicate(variablesSoFar);
     if (jj_2_9(2)) {
       if (jj_2_7(2)) {
@@ -106,8 +102,8 @@ public class JALPQueryParser implements JALPQueryParserConstants {
   }
 
   final public IInferableInstance EqualOrInequal(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IUnifiableAtomInstance left = null;
-    IUnifiableAtomInstance right;
+    IUnifiableInstance left = null;
+    IUnifiableInstance right;
     if (jj_2_14(2)) {
       if (jj_2_10(2)) {
         left = Variable(variablesSoFar);
@@ -150,7 +146,7 @@ public class JALPQueryParser implements JALPQueryParserConstants {
   final public PredicateInstance Predicate(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
     Token t;
     String name;
-    List<IUnifiableAtomInstance> parameters = new LinkedList<IUnifiableAtomInstance>();
+    List<IUnifiableInstance> parameters = new LinkedList<IUnifiableInstance>();
     t = jj_consume_token(LCASENAME);
       name = t.image;
     jj_consume_token(LBRACKET);
@@ -161,8 +157,8 @@ public class JALPQueryParser implements JALPQueryParserConstants {
   }
 
   final public EqualityInstance Equality(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IUnifiableAtomInstance left;
-    IUnifiableAtomInstance right;
+    IUnifiableInstance left;
+    IUnifiableInstance right;
     left = Parameter(variablesSoFar);
     jj_consume_token(EQUALS);
     right = Parameter(variablesSoFar);
@@ -171,8 +167,8 @@ public class JALPQueryParser implements JALPQueryParserConstants {
   }
 
   final public InEqualityInstance InEquality(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IUnifiableAtomInstance left;
-    IUnifiableAtomInstance right;
+    IUnifiableInstance left;
+    IUnifiableInstance right;
     left = Parameter(variablesSoFar);
     jj_consume_token(NOTEQUALS);
     right = Parameter(variablesSoFar);
@@ -280,9 +276,9 @@ public class JALPQueryParser implements JALPQueryParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public List<IUnifiableAtomInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    LinkedList<IUnifiableAtomInstance> params = new LinkedList<IUnifiableAtomInstance>();
-    IUnifiableAtomInstance param;
+  final public List<IUnifiableInstance> ParameterList(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+    LinkedList<IUnifiableInstance> params = new LinkedList<IUnifiableInstance>();
+    IUnifiableInstance param;
     if (jj_2_27(2)) {
       param = Parameter(variablesSoFar);
           params.add(param);
@@ -304,8 +300,8 @@ public class JALPQueryParser implements JALPQueryParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public IUnifiableAtomInstance Parameter(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
-    IUnifiableAtomInstance unifiable;
+  final public IUnifiableInstance Parameter(HashMap<String, VariableInstance> variablesSoFar) throws ParseException {
+    IUnifiableInstance unifiable;
     if (jj_2_28(2)) {
       unifiable = Predicate(variablesSoFar);
           {if (true) return unifiable;}

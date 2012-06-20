@@ -12,6 +12,10 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import java.util.*;
 
 /**
+ * Represents a 'rule' or 'horn clause'.
+ *
+ * E.g. p(X) <- q(X).
+ *
  * @author mtford
  */
 public class Definition {
@@ -82,10 +86,18 @@ public class Definition {
         return head.getVariables();
     }
 
-    public List<IInferableInstance> unfoldDefinition(IUnifiableAtomInstance... newParameters) throws DefinitionException {
+    /** 'Expands' the definition of this clause given the substituted parameters.
+     *
+     *   e.g. p(X) <- q(X). with new parameters {1} would return [X=1,q(X)]
+     *
+     * @param newParameters
+     * @return A list of inferables representing the expansion.
+     * @throws DefinitionException
+     */
+    public List<IInferableInstance> unfoldDefinition(IUnifiableInstance... newParameters) throws DefinitionException {
         if (newParameters.length!=head.getNumParams()) throw new DefinitionException("Incorrect number of parameters expanding "+this);
         List<IInferableInstance> unfold = new LinkedList<IInferableInstance>();
-        Map<VariableInstance,IUnifiableAtomInstance> subst = new HashMap<VariableInstance, IUnifiableAtomInstance>();
+        Map<VariableInstance,IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         if (!isFact()) {
             PredicateInstance clonedHead = (PredicateInstance) head.deepClone(subst);
             for (IInferableInstance inferable:body) {

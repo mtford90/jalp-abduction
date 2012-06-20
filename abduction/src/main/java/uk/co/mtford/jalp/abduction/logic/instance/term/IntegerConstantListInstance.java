@@ -44,8 +44,8 @@ public class IntegerConstantListInstance extends ListInstance<IntegerConstantIns
     }
 
 
-    @Override
-    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    
+    public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         IntegerConstantListInstance newListInstance = new IntegerConstantListInstance();
         for (IntegerConstantInstance term:list) {
             IntegerConstantInstance newTerm = (IntegerConstantInstance) term.performSubstitutions(substitutions);
@@ -55,8 +55,8 @@ public class IntegerConstantListInstance extends ListInstance<IntegerConstantIns
         return this;
     }
 
-    @Override
-    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableAtomInstance> substitutions) {
+    
+    public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         IntegerConstantListInstance newListInstance = new IntegerConstantListInstance();
         for (IntegerConstantInstance term:list) {
             newListInstance.getList().add((IntegerConstantInstance) term.deepClone(substitutions));
@@ -64,7 +64,7 @@ public class IntegerConstantListInstance extends ListInstance<IntegerConstantIns
         return newListInstance;
     }
 
-    @Override
+    
     public IFirstOrderLogicInstance shallowClone() {
         IntegerConstantListInstance newListInstance = new IntegerConstantListInstance();
         for (IntegerConstantInstance term:list) {
@@ -73,8 +73,8 @@ public class IntegerConstantListInstance extends ListInstance<IntegerConstantIns
         return newListInstance;
     }
 
-    @Override
-    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
+    
+    public boolean reduceToChoco(List<Map<VariableInstance, IUnifiableInstance>> possSubst, HashMap<ITermInstance, Variable> termToVarMap) {
         if (!termToVarMap.containsKey(this)) {
             SetVariable setVariable = makeSetVar(NameGenerator.upperCaseNameGen.getNextName(), getMin(), getMax());
             termToVarMap.put(this,setVariable);
@@ -82,8 +82,8 @@ public class IntegerConstantListInstance extends ListInstance<IntegerConstantIns
         return true;
     }
 
-    @Override
-    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableAtomInstance>> possSubst) {
+    
+    public boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance, IUnifiableInstance>> possSubst) {
         throw new UnsupportedOperationException();
     }
 

@@ -86,6 +86,16 @@ public class AbductiveFramework implements Cloneable {
         return false;
     }
 
+    /**
+     * Resolves the definedPredicate with the horn clauses that have a matching head.
+     *
+     * e.g. rules p(X) <- q(X) and p(X) <- r(X)
+     *       with new parameters {1} would return [[X=1,q(X)],[X=1,r(X)]]
+     *
+     * @param definedPredicate
+     * @return A list of possible 'expansions' of those matched clauses.
+     * @throws DefinitionException
+     */
     public List<List<IInferableInstance>> unfoldDefinitions(PredicateInstance definedPredicate) throws DefinitionException {
         if (isAbducible(definedPredicate))
             throw new DefinitionException("Attempted to unfold an abducible predicate " + definedPredicate);
