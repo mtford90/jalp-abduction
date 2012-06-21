@@ -29,6 +29,7 @@ public class JALPSystem {
     private static final Logger LOGGER = Logger.getLogger(JALPSystem.class);
 
     private AbductiveFramework framework;
+    private static final int MAX_SECONDS = 3;
 
     public JALPSystem(AbductiveFramework framework) {
         this.framework = framework;
@@ -109,7 +110,7 @@ public class JALPSystem {
      * @throws IOException
      * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
      */
-    public List<Result> generateDebugFiles(String query, String folderName) throws IOException, uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public List<Result> generateDebugFiles(String query, String folderName) throws IOException, uk.co.mtford.jalp.abduction.parse.query.ParseException, InterruptedException {
         return generateDebugFiles(new LinkedList<IInferableInstance>(JALPQueryParser.readFromString(query)),folderName);
     }
 
@@ -121,7 +122,7 @@ public class JALPSystem {
      * @throws IOException
      * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
      */
-    public List<Result> generateDebugFiles(List<IInferableInstance> query, String folderName) throws JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, IOException {
+    public List<Result> generateDebugFiles(List<IInferableInstance> query, String folderName) throws JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, IOException, InterruptedException {
         File folder = new File(folderName);
         FileUtils.touch(folder);
         FileUtils.forceDelete(folder);
@@ -157,7 +158,7 @@ public class JALPSystem {
      * @return A list of results that represent abduction explanations.
      * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
      */
-    public List<Result> query(String query) throws uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public List<Result> query(String query) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, InterruptedException {
         List<Result> results = new LinkedList<Result>();
         query(query, results);
         return results;
@@ -169,7 +170,7 @@ public class JALPSystem {
      * @return A list of results that represent abduction explanations.
      * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
      */
-    public List<Result> query(List<IInferableInstance> query) {
+    public List<Result> query(List<IInferableInstance> query) throws InterruptedException {
         List<Result> results = new LinkedList<Result>();
         query(query, results);
         return results;
@@ -182,7 +183,7 @@ public class JALPSystem {
      * @return The root node of the derivation tree.
      * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
      */
-    public RuleNode query(String query, List<Result> results) throws uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public RuleNode query(String query, List<Result> results) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, InterruptedException {
         List<IInferableInstance> queryList = JALPQueryParser.readFromString(query);
         return query(queryList, results);
     }
@@ -194,7 +195,7 @@ public class JALPSystem {
      * @return The root node of the derivation tree.
      * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
      */
-    public RuleNode query(List<IInferableInstance> query, List<Result> results) {
+    public RuleNode query(List<IInferableInstance> query, List<Result> results) throws InterruptedException {
 
         try {
             AbstractRuleNodeVisitor visitor = new SimpleRuleNodeVisitor();
@@ -247,7 +248,7 @@ public class JALPSystem {
      * @return The root node of the derivation tree.
      * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
      */
-    public List<Result> efficientQuery(List<IInferableInstance> query) {
+    public List<Result> efficientQuery(List<IInferableInstance> query) throws InterruptedException {
         try {
             List<Result> results = new LinkedList<Result>();
 
@@ -299,7 +300,7 @@ public class JALPSystem {
      * @param originalQuery
      * @param results
      */
-    private void generateResults(RuleNode rootNode, RuleNode successNode, List<IInferableInstance> originalQuery, List<Result> results) {
+    private void generateResults(RuleNode rootNode, RuleNode successNode, List<IInferableInstance> originalQuery, List<Result> results) throws InterruptedException {
         List<RuleNode> newSuccessNodes = applyConstraintSolver(successNode);
         for (RuleNode node:newSuccessNodes) {
             generateResult(rootNode,node,originalQuery,results);
@@ -325,45 +326,64 @@ public class JALPSystem {
      * @return A list of possible child nodes each one
      *         representing a possible assignment to the constrained variables in the given node.
      */
-    private List<RuleNode> applyConstraintSolver(RuleNode node) {
-        if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying constraint solver to ruleNode:\n"+node);
-        List<Map<VariableInstance,IUnifiableInstance>> possibleAssignments;
-        if (node.getStore().constraints.isEmpty()) {
-            possibleAssignments
-                    = new LinkedList<Map<VariableInstance, IUnifiableInstance>>();
-            possibleAssignments.add(node.getAssignments());
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("No need to apply constraint solver. Returning unmodified node.");
-        }
-        else {
-            LinkedList<IConstraintInstance> constraints = new LinkedList<IConstraintInstance>();
-            for (IConstraintInstance d:node.getStore().constraints) {
-                IConstraintInstance newConstraint = (IConstraintInstance) d.shallowClone();
-                newConstraint = (IConstraintInstance) newConstraint.performSubstitutions(node.getAssignments()); // TODO Substitute elsewhere i.e. at each state rewrite.
-                constraints.add(newConstraint);
+    private synchronized List<RuleNode> applyConstraintSolver(final RuleNode node) throws InterruptedException {
+        final List<RuleNode> results = new LinkedList<RuleNode>();
+
+        Runnable r = new Runnable() {
+            public void run() {
+                if (LOGGER.isDebugEnabled()) LOGGER.debug("Applying constraint solver to ruleNode:\n"+node);
+                List<Map<VariableInstance,IUnifiableInstance>> possibleAssignments;
+                if (node.getStore().constraints.isEmpty()) {
+                    possibleAssignments
+                            = new LinkedList<Map<VariableInstance, IUnifiableInstance>>();
+                    possibleAssignments.add(node.getAssignments());
+                    if (LOGGER.isDebugEnabled()) LOGGER.debug("No need to apply constraint solver. Returning unmodified node.");
+                }
+                else {
+                    LinkedList<IConstraintInstance> constraints = new LinkedList<IConstraintInstance>();
+                    for (IConstraintInstance d:node.getStore().constraints) {
+                        IConstraintInstance newConstraint = (IConstraintInstance) d.shallowClone();
+                        newConstraint = (IConstraintInstance) newConstraint.performSubstitutions(node.getAssignments()); // TODO Substitute elsewhere i.e. at each state rewrite.
+                        constraints.add(newConstraint);
+                    }
+                    ChocoConstraintSolverFacade constraintSolver = new ChocoConstraintSolverFacade();
+                    possibleAssignments
+                            = constraintSolver.execute(new HashMap<VariableInstance,IUnifiableInstance>(node.getAssignments()),constraints);
+                }
+
+                if (possibleAssignments.isEmpty()) {
+                    if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver failed on rulenode:\n"+node);
+                    node.setNodeMark(RuleNode.NodeMark.FAILED);
+                }
+                else { // Constraint solver succeeded. Generate possible children.
+                    if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver returned "+possibleAssignments.size()+" results.");
+                    node.setNodeMark(RuleNode.NodeMark.EXPANDED);
+                    for (Map<VariableInstance,IUnifiableInstance> assignment:possibleAssignments) {
+                        RuleNode newLeafNode =node.shallowClone();
+                        newLeafNode.setAssignments(assignment);
+                        newLeafNode.applySubstitutions();
+                        newLeafNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
+                        results.add(newLeafNode);
+                    }
+                }
             }
-            ChocoConstraintSolverFacade constraintSolver = new ChocoConstraintSolverFacade();
-            possibleAssignments
-                    = constraintSolver.execute(new HashMap<VariableInstance,IUnifiableInstance>(node.getAssignments()),constraints);
+        };
+        Thread t = new Thread(r);
+        t.start();
+
+        int n = 0;
+
+        while (n<MAX_SECONDS) {
+            wait(1000);
+            n++;
+            if (!t.isAlive()) break;
+            if (n==MAX_SECONDS) {
+                t.stop();
+                throw new JALPException("Floundering detected.");
+            }
         }
 
-        if (possibleAssignments.isEmpty()) {
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver failed on rulenode:\n"+node);
-            node.setNodeMark(RuleNode.NodeMark.FAILED);
-            return new LinkedList<RuleNode>();
-        }
-        else { // Constraint solver succeeded. Generate possible children.
-            List<RuleNode> results = new LinkedList<RuleNode>();
-            if (LOGGER.isDebugEnabled()) LOGGER.debug("Constraint solver returned "+possibleAssignments.size()+" results.");
-            node.setNodeMark(RuleNode.NodeMark.EXPANDED);
-            for (Map<VariableInstance,IUnifiableInstance> assignment:possibleAssignments) {
-                RuleNode newLeafNode =node.shallowClone();
-                newLeafNode.setAssignments(assignment);
-                newLeafNode.applySubstitutions();
-                newLeafNode.setNodeMark(RuleNode.NodeMark.SUCCEEDED);
-                results.add(newLeafNode);
-            }
-            return results;
-        }
+        return results;
 
     }
 

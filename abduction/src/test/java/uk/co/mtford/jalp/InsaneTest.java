@@ -60,7 +60,7 @@ public class InsaneTest {
     We expect 9 results. All the girls like all the guys, but the guys only like jane as maria is insane.
      */
     @Test
-    public void insaneTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void insaneTest1() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/insane/insane.alp");
@@ -91,7 +91,7 @@ public class InsaneTest {
    We expect one result where Y is assigned to jane, as maria is insane.
     */
     @Test
-    public void insaneTest2() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void insaneTest2() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/insane/insane.alp");
@@ -121,7 +121,7 @@ public class InsaneTest {
    We expect nine results. The girls like all the guys, but the guys only like jane.
     */
     @Test
-    public void insaneConstraintTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void insaneConstraintTest1() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/insane/insane-constraint.alp");
@@ -148,7 +148,7 @@ public class InsaneTest {
    We expect one result where Y is assigned to jane, as maria is insane.
     */
     @Test
-    public void insaneConstraintTest2() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void insaneConstraintTest2() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/insane/insane-constraint.alp");

@@ -58,7 +58,7 @@ public class FliesTest {
     We expect X/sam
      */
     @Test
-    public void fliesX() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void fliesX() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/flies.alp");
@@ -89,7 +89,7 @@ public class FliesTest {
    We expect no
     */
     @Test
-    public void fliesTweety() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void fliesTweety() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/flies.alp");
@@ -116,7 +116,7 @@ public class FliesTest {
    We expect yes
     */
     @Test
-    public void fliesSam() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void fliesSam() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/flies.alp");
@@ -144,7 +144,7 @@ public class FliesTest {
    We expect X/tweety
     */
     @Test
-    public void fliesAbnormalX() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void fliesAbnormalX() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/flies.alp");

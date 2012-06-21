@@ -52,7 +52,7 @@ public class FactTest {
 
      */
     @Test
-    public void oneFactTest() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void oneFactTest() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/fact/one-fact.alp");
@@ -80,7 +80,7 @@ public class FactTest {
 
     */
     @Test
-    public void twoFactTest() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void twoFactTest() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/fact/two-fact.alp");

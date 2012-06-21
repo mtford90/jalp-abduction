@@ -53,7 +53,7 @@ public class NotTest {
     Result should be that jane isnt a girl (denial).
      */
     @Test
-    public void notTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void notTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException, InterruptedException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/negation/not.alp");

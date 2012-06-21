@@ -40,7 +40,7 @@ public class GenesTest {
     }
 
     @org.junit.Test
-    public void genesTest() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void genesTest() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException, InterruptedException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/genes.alp");

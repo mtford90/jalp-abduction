@@ -58,7 +58,7 @@ public class ClpEx1Test {
 
      */
     @Test
-    public void clpEx1Test1() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void clpEx1Test1() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/clp-ex1.alp");

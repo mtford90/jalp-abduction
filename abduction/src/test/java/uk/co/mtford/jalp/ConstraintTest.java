@@ -49,7 +49,7 @@ public class ConstraintTest {
     We expect three results i.e. an assignment to X of one of 3 in the list.
      */
     @Test
-    public void constantListTest1() throws ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void constantListTest1() throws InterruptedException, ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/constant-list.alp");
@@ -84,7 +84,7 @@ public class ConstraintTest {
    We expect to fail i.e. 'no'
     */
     @Test
-    public void constantListTest2() throws ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void constantListTest2() throws InterruptedException, ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/constant-list.alp");
@@ -103,7 +103,7 @@ public class ConstraintTest {
    We expect one result i.e. 'yes'
     */
     @Test
-    public void constantListTest3() throws ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void constantListTest3() throws InterruptedException, ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/constant-list.alp");
@@ -123,7 +123,7 @@ public class ConstraintTest {
     We expect 'yes'
      */
     @Test
-    public void integerListTest1() throws ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void integerListTest1() throws InterruptedException, ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/integer-list.alp");
@@ -143,7 +143,7 @@ public class ConstraintTest {
    We expect 'no'
     */
     @Test
-    public void integerListTest2() throws ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void integerListTest2() throws InterruptedException, ParseException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/integer-list.alp");
@@ -163,7 +163,7 @@ public class ConstraintTest {
    We expect 3 results.
     */
     @Test
-    public void integerListTest3() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void integerListTest3() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/integer-list.alp");
@@ -182,7 +182,7 @@ public class ConstraintTest {
     We expect one result: X/1
      */
     @Test
-    public void lessThanTest1() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanTest1() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/less-than.alp");
@@ -204,7 +204,7 @@ public class ConstraintTest {
    We expect one result: yes
     */
     @Test
-    public void lessThanTest2() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanTest2() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/less-than.alp");
@@ -222,7 +222,7 @@ public class ConstraintTest {
    We expect one result no
     */
     @Test
-    public void lessThanTest3() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanTest3() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/less-than.alp");
@@ -240,7 +240,7 @@ public class ConstraintTest {
    We expect result no
     */
     @Test
-    public void lessThanTest4() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanTest4() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/less-than.alp");
@@ -258,7 +258,7 @@ public class ConstraintTest {
    We expect result no
     */
     @Test
-    public void lessThanTest5() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanTest5() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/less-than.alp");
@@ -276,7 +276,7 @@ public class ConstraintTest {
    We expect 3 results.
     */
     @Test
-    public void greaterThanTest1() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void greaterThanTest1() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/greater-than.alp");
@@ -296,7 +296,7 @@ public class ConstraintTest {
    We expect no result.
     */
     @Test
-    public void greaterThanTest2() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void greaterThanTest2() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/greater-than.alp");
@@ -317,7 +317,7 @@ public class ConstraintTest {
    We expect no result.
     */
     @Test
-    public void greaterThanTest3() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void greaterThanTest3() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/greater-than.alp");
@@ -338,7 +338,7 @@ public class ConstraintTest {
    We expect Y/1
     */
     @Test
-    public void greaterThanTest4() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void greaterThanTest4() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/greater-than.alp");
@@ -361,7 +361,7 @@ public class ConstraintTest {
    We expect 5 results.
     */
     @Test
-    public void greaterThanEqTest1() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void greaterThanEqTest1() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/greater-than-eq.alp");
@@ -381,7 +381,7 @@ public class ConstraintTest {
    We expect Y/1
     */
     @Test
-    public void greaterThanEqTest2() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void greaterThanEqTest2() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/greater-than-eq.alp");
@@ -405,7 +405,7 @@ public class ConstraintTest {
    We expect no result.
     */
     @Test
-    public void greaterThanEqTest3() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void greaterThanEqTest3() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/greater-than-eq.alp");
@@ -426,7 +426,7 @@ public class ConstraintTest {
    We expect 3 explanations.
     */
     @Test
-    public void lessThanEqTest1() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanEqTest1() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/less-than-eq.alp");
@@ -446,7 +446,7 @@ public class ConstraintTest {
     We expect 2 results, Y/2 and Y/1
     */
     @Test
-    public void lessThanEqTest2() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanEqTest2() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/less-than-eq.alp");
@@ -478,7 +478,7 @@ public class ConstraintTest {
 
     */
     @Test
-    public void lessThanEqTest3() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanEqTest3() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/less-than-eq.alp");
@@ -503,7 +503,7 @@ public class ConstraintTest {
     We expect to collect a FD not X in [1].
 
     @Test
-    public void ungroundAbducible() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void ungroundAbducible() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         system = new JALPSystem("examples/constraint/unground-abducible.alp");
         List<IInferableInstance> query = new LinkedList<IInferableInstance>();
         VariableInstance X = new VariableInstance("X");
@@ -531,7 +531,7 @@ public class ConstraintTest {
    We expect one result: X/1
     */
     @Test
-    public void lessThanInfDomTest1() throws IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    public void lessThanInfDomTest1() throws InterruptedException, IOException, ParseException,  uk.co.mtford.jalp.abduction.parse.query.ParseException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/constraint/individual/less-than-inf-dom.alp");

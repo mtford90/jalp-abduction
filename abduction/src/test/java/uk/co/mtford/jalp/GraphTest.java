@@ -61,7 +61,7 @@ public class GraphTest {
 
      */
     @Test
-    public void graphTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void graphTest1() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/graph/graph.alp");
@@ -101,7 +101,7 @@ public class GraphTest {
 
     */
     @Test
-    public void graphTest2() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void graphTest2() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/graph/graph.alp");
@@ -139,7 +139,7 @@ public class GraphTest {
 
      */
     @Test
-    public void graph2Test1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void graph2Test1() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/graph/graph2.alp");
@@ -178,7 +178,7 @@ public class GraphTest {
     the same colour red.
     */
     @Test
-    public void graphConstraintTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void graphConstraintTest1() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/graph/graph-constraint.alp");
@@ -214,7 +214,7 @@ public class GraphTest {
     This is as per the result that ASystem gives.
     */
     @Test
-    public void graphConstraintTest2() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void graphConstraintTest2() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/graph/graph-constraint.alp");

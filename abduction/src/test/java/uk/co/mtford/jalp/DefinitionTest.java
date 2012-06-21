@@ -53,7 +53,7 @@ public class DefinitionTest {
     We expect two results, Y/jane or Y/mary
      */
     @Test
-    public void definitionTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void definitionTest1() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/basic/definition/definition.alp");

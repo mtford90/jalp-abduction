@@ -72,7 +72,7 @@ public class CircuitsTest {
 
      */
     @Test
-    public void circuitTest1() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void circuitTest1() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/circuits1.alp");
@@ -125,7 +125,7 @@ public class CircuitsTest {
 
     */
     @Test
-    public void circuitTest2() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void circuitTest2() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/circuits1.alp");
@@ -179,7 +179,7 @@ public class CircuitsTest {
 
     */
     @Test
-    public void circuitTest3() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void circuitTest3() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/circuits2.alp");
@@ -235,7 +235,7 @@ public class CircuitsTest {
    Expected result is an abducible hypothesizing that the car has no fuel.
     */
     @Test
-    public void circuitTest4() throws ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
+    public void circuitTest4() throws InterruptedException, ParseException, JALPException, uk.co.mtford.jalp.abduction.parse.query.ParseException, FileNotFoundException {
         UniqueIdGenerator.reset();
 
         system = new JALPSystem("examples/full/jiefei/circuits2.alp");
