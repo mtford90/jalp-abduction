@@ -28,6 +28,7 @@ public class Main {
     private static final String QUERY_OPTION = CMD_START+"q";
     private static final String EFFICIENT_OPTION = CMD_START+"e";
     private static final String DEBUG_OPTION = CMD_START+"d";
+    private static final String HELP_OPTION = CMD_START+"h";
 
     private static boolean reduce = false;
     private static boolean efficient = false;
@@ -66,6 +67,9 @@ public class Main {
                 debug = true;
                 i++;
                 debugFolder = args[i];
+            }
+            else if (s.equals(HELP_OPTION)) {
+                printHelp();
             }
             else {
                 fileNames.add(args[i]);
@@ -155,5 +159,16 @@ public class Main {
 
         }
 
+    }
+    /** Prints a help message detailing available commands.
+     *
+     */
+    private static void printHelp() {
+        System.out.println("Syntax: ( (filename)* (<option>)* )*");
+        System.out.println("-q <query> - Execute a query.");
+        System.out.println("-d <folder> - Create log file and visualizer in <folder>");
+        System.out.println("-r - Enable reduce mode.");
+        System.out.println("-e - Enable efficient mode.");
+        System.out.println("-h - This help.");
     }
 }
