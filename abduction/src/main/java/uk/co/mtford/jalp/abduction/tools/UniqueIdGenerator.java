@@ -7,7 +7,8 @@ package uk.co.mtford.jalp.abduction.tools;
 import java.util.HashMap;
 
 /**
- *
+ * Generates unique ids appending a number to the end of each named id.
+ * i.e. A,A1,A2 and B,B1,B2
  * @author mtford
  */
 public class UniqueIdGenerator {

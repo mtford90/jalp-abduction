@@ -10,11 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 18/05/2012
- * Time: 06:45
- * To change this template use File | Settings | File Templates.
+ * Rule nodes for the positive mode of reasoning i.e. current goal is in the head of a denial.
+ *
  */
 public abstract class PositiveRuleNode extends RuleNode {
 

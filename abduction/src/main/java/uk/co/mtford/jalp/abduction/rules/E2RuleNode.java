@@ -16,11 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 18/05/2012
- * Time: 06:47
- * To change this template use File | Settings | File Templates.
+ * Rule node for which inference rule E2 will next be applied. Equality as the next goal at head of a denial. One of the
+ * variables is existentially quantified. The LHS variable is universally quantified or a predicate or constant.
  */
 public class E2RuleNode extends NegativeRuleNode {
     public E2RuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query,List<IInferableInstance> restOfGoals) {

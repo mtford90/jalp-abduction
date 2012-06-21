@@ -11,14 +11,31 @@ import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 23/05/2012
- * Time: 18:17
- * To change this template use File | Settings | File Templates.
+ * Interface for terms i.e. variables, constants and functions.
  */
 public interface ITermInstance extends IAtomInstance {
+    /** Returns the choco representation of this term.
+     *
+     * @param possSubst
+     * @param termToVarMap
+     * @return
+     */
     boolean reduceToChoco(List<Map<VariableInstance,IUnifiableInstance>> possSubst, HashMap<ITermInstance,Variable> termToVarMap);
+
+    /** Returns true if this term is in the specified list.
+     *
+     * @param constantList
+     * @param possSubst
+     * @return
+     */
     boolean inList(CharConstantListInstance constantList, List<Map<VariableInstance,IUnifiableInstance>> possSubst);
+
+    /**
+     * Returns the ruleNode for which this term is at the head of the current denial goal.
+     * @param abductiveFramework
+     * @param query
+     * @param goals
+     * @return
+     */
     public RuleNode getNegativeRootRuleNode(AbductiveFramework abductiveFramework, List<IInferableInstance> query, List<IInferableInstance> goals);
 }

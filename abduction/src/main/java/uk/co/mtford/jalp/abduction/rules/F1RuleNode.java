@@ -14,11 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 24/05/2012
- * Time: 11:40
- * To change this template use File | Settings | File Templates.
+ * Rule node for which inference rule F1 will next be applied. Finite domain constraint as the next goal.
  */
 public class F1RuleNode extends PositiveRuleNode {
 

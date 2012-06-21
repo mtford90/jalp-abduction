@@ -13,11 +13,7 @@ import java.util.Map;
 import static choco.Choco.makeSetVar;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 30/05/2012
- * Time: 10:24
- * To change this template use File | Settings | File Templates.
+ * A list of integer constants e.g. [1,2,3]
  */
 public class IntegerConstantListInstance extends ListInstance<IntegerConstantInstance> {
     public IntegerConstantListInstance() {

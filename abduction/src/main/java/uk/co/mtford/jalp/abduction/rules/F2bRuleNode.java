@@ -14,11 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 31/05/2012
- * Time: 09:41
- * To change this template use File | Settings | File Templates.
+ * Rule node for which inference rule F2b will next be applied. Constraint of form X in [...] as next goal in head
+ * of denial.
  */
 public class F2bRuleNode extends NegativeRuleNode {
 

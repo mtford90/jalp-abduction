@@ -5,7 +5,8 @@
 package uk.co.mtford.jalp.abduction.tools;
 
 /**
- *
+ * Abstract class that defines a type of class that generates unique names sequentially.
+ * Also presents static instantiations of some implementations of name generators.
  * @author mtford
  */
 public abstract class NameGenerator {

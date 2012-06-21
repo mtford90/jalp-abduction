@@ -11,11 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 08/06/2012
- * Time: 16:44
- * To change this template use File | Settings | File Templates.
+ * Implementation of inequality solver.
  */
 public class InEqualitySolver implements IInEqualitySolver {
 

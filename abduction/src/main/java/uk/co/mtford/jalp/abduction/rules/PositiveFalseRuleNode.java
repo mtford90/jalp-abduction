@@ -13,11 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 18/05/2012
- * Time: 06:46
- * To change this template use File | Settings | File Templates.
+ * Rule node for which a basic inference rule will next be applied. False as next goal.
  */
 public class PositiveFalseRuleNode extends PositiveRuleNode {
     public PositiveFalseRuleNode(AbductiveFramework abductiveFramework,RuleNode parent,List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {

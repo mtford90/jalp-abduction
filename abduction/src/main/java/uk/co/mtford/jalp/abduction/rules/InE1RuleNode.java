@@ -13,11 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 26/05/2012
- * Time: 20:14
- * To change this template use File | Settings | File Templates.
+ * Rule node for which inference rule InE2 will next be applied. Inequality at the head of a denial which is the current goal.
  */
 public class InE1RuleNode extends PositiveRuleNode {
 

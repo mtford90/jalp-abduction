@@ -16,11 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 15/06/2012
- * Time: 16:48
- * To change this template use File | Settings | File Templates.
+ * A less efficient implementation of rule node visitor. Preserves the structure of the derivation tree.
  */
 public class SimpleRuleNodeVisitor extends AbstractRuleNodeVisitor {
 

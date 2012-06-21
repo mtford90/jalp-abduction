@@ -14,11 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 18/05/2012
- * Time: 06:40
- * To change this template use File | Settings | File Templates.
+ * Base class for rulenodes.
+ *
  */
 public abstract class RuleNode {
 

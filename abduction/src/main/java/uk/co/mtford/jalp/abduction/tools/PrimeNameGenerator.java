@@ -5,7 +5,7 @@
 package uk.co.mtford.jalp.abduction.tools;
 
 /**
- *
+ * Generates prime names i.e. A,A',A'',A'''
  * @author mtford
  */
 public class PrimeNameGenerator extends NameGenerator {

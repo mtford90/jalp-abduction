@@ -10,11 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 30/05/2012
- * Time: 10:24
- * To change this template use File | Settings | File Templates.
+ * A list of character constants e.g. [bob,mike,john]
  */
 public class CharConstantListInstance extends ListInstance<CharConstantInstance> {
 

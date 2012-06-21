@@ -13,11 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 18/05/2012
- * Time: 06:47
- * To change this template use File | Settings | File Templates.
+ * Rule node for which inference rule E2b will next be applied. Equality as the next goal at head of a denial. One of the
+ * variables is existentially quantified. The other is any term except a universally quantified variable.
  */
 public class E2bRuleNode extends NegativeRuleNode {
     public E2bRuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {

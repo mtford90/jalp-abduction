@@ -8,12 +8,8 @@ import uk.co.mtford.jalp.abduction.rules.RuleNode;
 
 import java.util.*;
 
-/**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 24/05/2012
- * Time: 11:49
- * To change this template use File | Settings | File Templates.
+/** Abstract class for lists e.g. [1,2,3], [bob,carl]
+ * @author Michael Ford
  */
 public abstract class ListInstance<E extends ITermInstance> implements ITermInstance {
 

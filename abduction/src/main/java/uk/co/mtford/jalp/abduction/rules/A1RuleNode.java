@@ -13,11 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 18/05/2012
- * Time: 06:47
- * To change this template use File | Settings | File Templates.
+ * Rule node for which inference rule A1 will next be applied. Abducible as the next goal.
  */
 public class A1RuleNode extends PositiveRuleNode {
 
@@ -40,8 +36,6 @@ public class A1RuleNode extends PositiveRuleNode {
     protected A1RuleNode() {
         super();
     }
-
-
 
     @Override
     public RuleNode shallowClone() {

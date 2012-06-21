@@ -11,11 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 30/05/2012
- * Time: 09:27
- * To change this template use File | Settings | File Templates.
+ * An integer constant e.g. 50, 3
  */
 public class IntegerConstantInstance extends ConstantInstance {
     private static final Logger LOGGER = Logger.getLogger(ConstantInstance.class);

@@ -13,11 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 20/05/2012
- * Time: 17:14
- * To change this template use File | Settings | File Templates.
+ * Rule node for which there are no more goals.
  */
 public class LeafRuleNode extends PositiveRuleNode {
 

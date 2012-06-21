@@ -17,11 +17,8 @@ import uk.co.mtford.jalp.abduction.rules.*;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 15/06/2012
- * Time: 16:43
- * To change this template use File | Settings | File Templates.
+ * Interface defining the types of nodes that a RuleNodeVisitor must be capable of visiting and applying state rewriting
+ * rules to.
  */
 public interface IRuleNodeVisitor {
     public void visit(A1RuleNode ruleNode);

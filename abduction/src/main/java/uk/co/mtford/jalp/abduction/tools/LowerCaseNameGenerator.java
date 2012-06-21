@@ -5,7 +5,7 @@
 package uk.co.mtford.jalp.abduction.tools;
 
 /**
- *
+ * Generates lower case names. i.e. a,b,...,z,aa,ab,...
  * @author mtford
  */
 public class LowerCaseNameGenerator extends NameGenerator {

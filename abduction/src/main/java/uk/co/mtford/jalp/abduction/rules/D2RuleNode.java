@@ -14,11 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 18/05/2012
- * Time: 06:46
- * To change this template use File | Settings | File Templates.
+ * Rule node for which inference rule D1 will next be applied. Defined predicate as the next goal at the head of a
+ * denial i.e. is the head of a rule.
  */
 public class D2RuleNode extends NegativeRuleNode {
     public D2RuleNode(AbductiveFramework abductiveFramework, RuleNode parent,List<IInferableInstance> query, List<IInferableInstance> restOfGoals) {

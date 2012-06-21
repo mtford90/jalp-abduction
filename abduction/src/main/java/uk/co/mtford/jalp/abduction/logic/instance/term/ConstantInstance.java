@@ -14,6 +14,7 @@ import uk.co.mtford.jalp.abduction.rules.RuleNode;
 import java.util.*;
 
 /**
+ * Abstract class for constants e.g. bob, c, 1
  * @author mtford
  */
 public abstract class ConstantInstance implements ITermInstance, IUnifiableInstance {

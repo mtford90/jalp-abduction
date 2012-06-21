@@ -21,6 +21,8 @@ import static choco.Choco.makeIntVar;
 import static choco.Choco.makeSetVar;
 
 /**
+ * Represents a variable e.g. X, Y
+ *
  * @author mtford
  */
 public class VariableInstance implements ITermInstance, IUnifiableInstance {

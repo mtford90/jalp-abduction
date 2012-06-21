@@ -14,11 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mtford
- * Date: 24/05/2012
- * Time: 11:42
- * To change this template use File | Settings | File Templates.
+ * Rule node for which inference rule F2 will next be applied. Constraint as next goal in the head of a denial.
  */
 public class F2RuleNode extends NegativeRuleNode {
 
