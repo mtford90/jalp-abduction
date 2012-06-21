@@ -56,7 +56,7 @@ public class JALPInterpreter {
     /**
      * Starts the interpreter. Prints a help message and waits for commands.
      */
-    public void start() {
+    public void start() throws InterruptedException {
         System.out.println("Welcome to JALP. Type :h for help.");
         String next = null;
         while(true) {
@@ -158,7 +158,7 @@ public class JALPInterpreter {
      * @param next A query in prolog-like syntax e.g. 'p(X)'
      * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
      */
-    private void executeQuery(String next) throws uk.co.mtford.jalp.abduction.parse.query.ParseException {
+    private void executeQuery(String next) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, InterruptedException {
         List<IInferableInstance> query = JALPQueryParser.readFromString(next.substring(2, next.length() - 1));
         List<VariableInstance> queryVariables = new LinkedList<VariableInstance>();
         for (IInferableInstance i:query) {

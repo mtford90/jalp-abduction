@@ -95,7 +95,12 @@ public class Definition {
      * @throws DefinitionException
      */
     public List<IInferableInstance> unfoldDefinition(IUnifiableInstance... newParameters) throws DefinitionException {
-        if (newParameters.length!=head.getNumParams()) throw new DefinitionException("Incorrect number of parameters expanding "+this);
+        if (newParameters!=null) {
+            if (newParameters.length!=head.getNumParams()) throw new DefinitionException("Incorrect number of parameters expanding "+this);
+        }
+        else {
+            newParameters=new IUnifiableInstance[0];
+        }
         List<IInferableInstance> unfold = new LinkedList<IInferableInstance>();
         Map<VariableInstance,IUnifiableInstance> subst = new HashMap<VariableInstance, IUnifiableInstance>();
         if (!isFact()) {

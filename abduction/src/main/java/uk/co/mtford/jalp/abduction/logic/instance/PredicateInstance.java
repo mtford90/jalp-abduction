@@ -31,8 +31,13 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
     }
 
     public PredicateInstance(String name, List<IUnifiableInstance> parameters) {
+        if (parameters.size()==0) {
+            this.parameters=null;
+        }
+        else {
+            this.parameters = parameters.toArray(new IUnifiableInstance[1]);
+        }
         this.name = name;
-        this.parameters = parameters.toArray(new IUnifiableInstance[1]);
     }
 
     public PredicateInstance(String name, String varName) {
@@ -63,6 +68,7 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
     }
 
     public int getNumParams() {
+        if (parameters==null) return 0;
         return parameters.length;
     }
 
@@ -85,8 +91,10 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
     public List<EqualityInstance> reduce(PredicateInstance other) {
         LinkedList<EqualityInstance> newEqualities = new LinkedList<EqualityInstance>();
         if (this.isSameFunction(other)) {
-            for (int i = 0;i<parameters.length;i++) {
-                newEqualities.add(new EqualityInstance(parameters[i],other.getParameter(i)));
+            if (parameters != null) {
+                for (int i = 0;i<parameters.length;i++) {
+                    newEqualities.add(new EqualityInstance(parameters[i],other.getParameter(i)));
+                }
             }
         }
 
@@ -116,11 +124,14 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
     
     public boolean unify(PredicateInstance other, Map<VariableInstance, IUnifiableInstance> assignment) {
         if (this.isSameFunction(other)) {
-            for (int i = 0;i<parameters.length;i++) {
-                if (!parameters[i].unify(other.getParameter(i),assignment)) {
-                    return false;
+            if (parameters!=null) {
+                for (int i = 0;i<parameters.length;i++) {
+                    if (!parameters[i].unify(other.getParameter(i),assignment)) {
+                        return false;
+                    }
                 }
             }
+
             return true;
         }
         return false;
@@ -152,38 +163,48 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
     
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
         LinkedList<IAtomInstance> newParameters = new LinkedList<IAtomInstance>();
-        for (IAtomInstance parameter : parameters) {
-            IAtomInstance newParameter = (IAtomInstance) parameter.performSubstitutions(substitutions);
-            newParameters.add(newParameter);
+        if (parameters!=null) {
+            for (IAtomInstance parameter : parameters) {
+                IAtomInstance newParameter = (IAtomInstance) parameter.performSubstitutions(substitutions);
+                newParameters.add(newParameter);
+            }
+            parameters = newParameters.toArray(new IUnifiableInstance[parameters.length]);
         }
-        parameters = newParameters.toArray(new IUnifiableInstance[parameters.length]);
         return this;
     }
 
     
     public IFirstOrderLogicInstance deepClone(Map<VariableInstance, IUnifiableInstance> substitutions) {
         LinkedList<IUnifiableInstance> newParameters = new LinkedList<IUnifiableInstance>();
-        for (IUnifiableInstance parameter : parameters) {
-            IUnifiableInstance newParameter = (IUnifiableInstance) parameter.deepClone(substitutions);
-            newParameters.add(newParameter);
+        if (parameters!=null) {
+            for (IUnifiableInstance parameter : parameters) {
+                IUnifiableInstance newParameter = (IUnifiableInstance) parameter.deepClone(substitutions);
+                newParameters.add(newParameter);
+            }
         }
         return new PredicateInstance(new String(name), newParameters);
     }
 
     
     public IFirstOrderLogicInstance shallowClone() {
-        IUnifiableInstance[] newParameters = new IUnifiableInstance[parameters.length];
-        for (int i = 0; i < parameters.length; i++) {
-            newParameters[i] = (IUnifiableInstance) parameters[i].shallowClone();
+        IUnifiableInstance[] newParameters = null;
+        if (parameters!=null)  {
+           newParameters = new IUnifiableInstance[parameters.length];
+            for (int i = 0; i < parameters.length; i++) {
+                newParameters[i] = (IUnifiableInstance) parameters[i].shallowClone();
+            }
         }
+
         return new PredicateInstance(new String(name), newParameters);
     }
 
     
     public Set<VariableInstance> getVariables() {
         HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
-        for (IAtomInstance parameter : parameters) {
-            variables.addAll(parameter.getVariables());
+        if (parameters != null) {
+            for (IAtomInstance parameter : parameters) {
+                variables.addAll(parameter.getVariables());
+            }
         }
         return variables;
     }
@@ -205,7 +226,7 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
         if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
             return false;
         }
-        if (this.parameters.length != other.parameters.length) {
+        if (this.getNumParams() != other.getNumParams()) {
             return false;
         }
         return true;
@@ -234,10 +255,13 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
     
     public String toString() {
         String paramList = "";
-        for (IAtomInstance v : parameters) {
-            paramList += v + ",";
+        if (parameters!=null) {
+            for (IAtomInstance v : parameters) {
+                paramList += v + ",";
+            }
+            paramList = paramList.substring(0, paramList.length() - 1);
         }
-        paramList = paramList.substring(0, paramList.length() - 1);
+
         return name + "(" + paramList + ")";
     }
 
