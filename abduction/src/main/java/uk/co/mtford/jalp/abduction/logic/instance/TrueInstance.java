@@ -20,7 +20,7 @@ import java.util.Set;
  *
  * @author mtford
  */
-public class TrueInstance implements IAtomInstance, IInferableInstance {
+public class TrueInstance implements IInferableInstance, IFirstOrderLogicInstance {
 
     public String toString() {
         return "TRUE";

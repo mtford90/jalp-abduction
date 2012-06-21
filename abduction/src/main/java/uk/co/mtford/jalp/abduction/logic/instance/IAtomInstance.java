@@ -1,13 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uk.co.mtford.jalp.abduction.logic.instance;
 
 /**
- * An atom is a predicate.
- *
- * @author mtford
+ * Created with IntelliJ IDEA.
+ * User: mtford
+ * Date: 21/06/2012
+ * Time: 19:43
+ * To change this template use File | Settings | File Templates.
  */
-public interface IAtomInstance extends IFirstOrderLogicInstance {
+public interface IAtomInstance {
 }

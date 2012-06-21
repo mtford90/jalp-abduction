@@ -20,7 +20,7 @@ import java.util.Set;
  *
  * @author mtford
  */
-public class FalseInstance implements IAtomInstance, IInferableInstance {
+public class FalseInstance implements IInferableInstance, IFirstOrderLogicInstance {
 
     @Override
     public String toString() {

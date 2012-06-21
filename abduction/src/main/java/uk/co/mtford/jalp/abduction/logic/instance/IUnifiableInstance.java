@@ -13,7 +13,7 @@ import java.util.Map;
  * e.g. p(X) unified with Z would generate a substitution Z/p(X)
  *
  */
-public interface IUnifiableInstance extends IAtomInstance {
+public interface IUnifiableInstance extends IFirstOrderLogicInstance {
 
     /** Performs one level of unification but doesn't perform any substitutions.
      *  e.g. X reduce Y would return X == Y

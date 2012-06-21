@@ -18,7 +18,7 @@ import java.util.*;
  *
  * @author mtford
  */
-public class PredicateInstance implements IUnifiableInstance, IInferableInstance {
+public class PredicateInstance implements IUnifiableInstance, IInferableInstance, IAtomInstance {
 
     private static final Logger LOGGER = Logger.getLogger(PredicateInstance.class);
 
@@ -162,10 +162,10 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
 
     
     public IFirstOrderLogicInstance performSubstitutions(Map<VariableInstance, IUnifiableInstance> substitutions) {
-        LinkedList<IAtomInstance> newParameters = new LinkedList<IAtomInstance>();
+        LinkedList<IUnifiableInstance> newParameters = new LinkedList<IUnifiableInstance>();
         if (parameters!=null) {
-            for (IAtomInstance parameter : parameters) {
-                IAtomInstance newParameter = (IAtomInstance) parameter.performSubstitutions(substitutions);
+            for (IUnifiableInstance parameter : parameters) {
+                IUnifiableInstance newParameter = (IUnifiableInstance) parameter.performSubstitutions(substitutions);
                 newParameters.add(newParameter);
             }
             parameters = newParameters.toArray(new IUnifiableInstance[parameters.length]);
@@ -202,7 +202,7 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
     public Set<VariableInstance> getVariables() {
         HashSet<VariableInstance> variables = new HashSet<VariableInstance>();
         if (parameters != null) {
-            for (IAtomInstance parameter : parameters) {
+            for (IUnifiableInstance parameter : parameters) {
                 variables.addAll(parameter.getVariables());
             }
         }
@@ -256,7 +256,7 @@ public class PredicateInstance implements IUnifiableInstance, IInferableInstance
     public String toString() {
         String paramList = "";
         if (parameters!=null) {
-            for (IAtomInstance v : parameters) {
+            for (IUnifiableInstance v : parameters) {
                 paramList += v + ",";
             }
             paramList = paramList.substring(0, paramList.length() - 1);

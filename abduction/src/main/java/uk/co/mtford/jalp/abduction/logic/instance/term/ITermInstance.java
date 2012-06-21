@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import choco.kernel.model.variables.Variable;
 import uk.co.mtford.jalp.abduction.AbductiveFramework;
-import uk.co.mtford.jalp.abduction.logic.instance.IAtomInstance;
+import uk.co.mtford.jalp.abduction.logic.instance.IFirstOrderLogicInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IInferableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
@@ -13,7 +13,7 @@ import uk.co.mtford.jalp.abduction.rules.RuleNode;
 /**
  * Interface for terms i.e. variables, constants and functions.
  */
-public interface ITermInstance extends IAtomInstance {
+public interface ITermInstance extends IFirstOrderLogicInstance {
     /** Returns the choco representation of this term.
      *
      * @param possSubst
