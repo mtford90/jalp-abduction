@@ -145,6 +145,7 @@ public class Main {
 
 
                     System.out.println("Exiting...");
+
                 } catch (JALPException e) {
                     printError("JALP encountered a problem.",e);
                 } catch (uk.co.mtford.jalp.abduction.parse.query.ParseException e) {
