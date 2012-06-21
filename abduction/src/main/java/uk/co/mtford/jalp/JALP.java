@@ -1,6 +1,7 @@
 package uk.co.mtford.jalp;
 
 import org.apache.commons.io.FileUtils;
+import uk.co.mtford.jalp.abduction.AbductiveFramework;
 import uk.co.mtford.jalp.abduction.Definition;
 import uk.co.mtford.jalp.abduction.Result;
 import uk.co.mtford.jalp.abduction.logic.instance.*;
@@ -8,6 +9,9 @@ import uk.co.mtford.jalp.abduction.logic.instance.constraints.*;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.EqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.equalities.InEqualityInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.*;
+import uk.co.mtford.jalp.abduction.parse.program.JALPParser;
+import uk.co.mtford.jalp.abduction.parse.query.JALPQueryParser;
+import uk.co.mtford.jalp.abduction.parse.query.ParseException;
 import uk.co.mtford.jalp.abduction.rules.RuleNode;
 import uk.co.mtford.jalp.abduction.rules.visitor.AbstractRuleNodeVisitor;
 import uk.co.mtford.jalp.abduction.rules.visitor.SimpleRuleNodeVisitor;
@@ -448,6 +452,26 @@ public class JALP {
             }
         }
         while (!results.isEmpty());
+    }
+
+    /**
+     * Parses the given query and returns a list of inferables.
+     * @param query A query e.g. p(X),q(X),X<2.
+     * @return A list of inferables.
+     * @throws ParseException
+     */
+    public static List<IInferableInstance> parseQuery(String query) throws ParseException {
+       return JALPQueryParser.readFromString(query);
+    }
+
+    /**
+     * Parses the given program and returns an abductiveframework that represents that program.
+     * @param program a program e.g. 'p(X) :- q(X).'
+     * @return An abductive framework representing the program.
+     * @throws uk.co.mtford.jalp.abduction.parse.program.ParseException
+     */
+    public static AbductiveFramework parseProgram(String program) throws uk.co.mtford.jalp.abduction.parse.program.ParseException {
+        return JALPParser.readFromString(program);
     }
 
 
