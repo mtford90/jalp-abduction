@@ -196,40 +196,47 @@ public class JALPSystem {
      */
     public RuleNode query(List<IInferableInstance> query, List<Result> results) {
 
-        AbstractRuleNodeVisitor visitor = new SimpleRuleNodeVisitor();
-        Stack<RuleNode> nodeStack = new Stack<RuleNode>();
+        try {
+            AbstractRuleNodeVisitor visitor = new SimpleRuleNodeVisitor();
+            Stack<RuleNode> nodeStack = new Stack<RuleNode>();
 
-        List<IInferableInstance> goals = new LinkedList<IInferableInstance>(query);
-        goals.addAll(framework.getIC());
-        RuleNode rootNode = goals.get(0).getPositiveRootRuleNode(framework,new LinkedList<IInferableInstance>(query),goals);
+            List<IInferableInstance> goals = new LinkedList<IInferableInstance>(query);
+            goals.addAll(framework.getIC());
+            RuleNode rootNode = goals.get(0).getPositiveRootRuleNode(framework,new LinkedList<IInferableInstance>(query),goals);
 
-        RuleNode currentNode;
-        nodeStack.add(rootNode);
+            RuleNode currentNode;
+            nodeStack.add(rootNode);
 
 
-        int n = 0;
+            int n = 0;
 
-        while (!nodeStack.isEmpty()) {
-            currentNode = nodeStack.pop();
-            if (currentNode.getGoals().isEmpty()&&!currentNode.getNodeMark().equals(RuleNode.NodeMark.FAILED)) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Found a leaf node!");
+            while (!nodeStack.isEmpty()) {
+                currentNode = nodeStack.pop();
+                if (currentNode.getGoals().isEmpty()&&!currentNode.getNodeMark().equals(RuleNode.NodeMark.FAILED)) {
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("Found a leaf node!");
+                    }
+                    generateResults(rootNode, currentNode, query, results);
                 }
-                generateResults(rootNode, currentNode, query, results);
+                else if (currentNode.getNodeMark()==RuleNode.NodeMark.FAILED) {
+                    LOGGER.debug("Found a failed node:\n" + currentNode);
+                }
+                else if (currentNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
+                    currentNode.acceptVisitor(visitor);
+                    nodeStack.addAll(currentNode.getChildren());
+                }
+                else {
+                    throw new JALPException("Expanded node on the node stack?\n"+currentNode); // Sanity check.
+                }
             }
-            else if (currentNode.getNodeMark()==RuleNode.NodeMark.FAILED) {
-                LOGGER.debug("Found a failed node:\n" + currentNode);
-            }
-            else if (currentNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
-                currentNode.acceptVisitor(visitor);
-                nodeStack.addAll(currentNode.getChildren());
-            }
-            else {
-                throw new JALPException("Expanded node on the node stack?\n"+currentNode); // Sanity check.
-            }
-        }
 
-        return rootNode;
+            return rootNode;
+
+            }
+
+        catch (StackOverflowError e) {
+            throw new JALPException("Error: Stack overflow detected. Occurs problem?");
+        }
 
     }
 
@@ -241,42 +248,48 @@ public class JALPSystem {
      * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
      */
     public List<Result> efficientQuery(List<IInferableInstance> query) {
-        List<Result> results = new LinkedList<Result>();
+        try {
+            List<Result> results = new LinkedList<Result>();
 
-        AbstractRuleNodeVisitor visitor = new EfficientRuleNodeVisitor();
-        Stack<RuleNode> nodeStack = new Stack<RuleNode>();
+            AbstractRuleNodeVisitor visitor = new EfficientRuleNodeVisitor();
+            Stack<RuleNode> nodeStack = new Stack<RuleNode>();
 
-        List<IInferableInstance> goals = new LinkedList<IInferableInstance>(query);
-        goals.addAll(framework.getIC());
-        RuleNode rootNode = goals.get(0).getPositiveRootRuleNode(framework,new LinkedList<IInferableInstance>(query),goals);
+            List<IInferableInstance> goals = new LinkedList<IInferableInstance>(query);
+            goals.addAll(framework.getIC());
+            RuleNode rootNode = goals.get(0).getPositiveRootRuleNode(framework,new LinkedList<IInferableInstance>(query),goals);
 
-        RuleNode currentNode;
-        nodeStack.add(rootNode);
-        rootNode = null; // Encourage garbage collect.
+            RuleNode currentNode;
+            nodeStack.add(rootNode);
+            rootNode = null; // Encourage garbage collect.
 
-        int n = 0;
+            int n = 0;
 
-        while (!nodeStack.isEmpty()) {
-            currentNode = nodeStack.pop();
-            if (currentNode.getGoals().isEmpty()&&!currentNode.getNodeMark().equals(RuleNode.NodeMark.FAILED)) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Found a leaf node!");
+            while (!nodeStack.isEmpty()) {
+                currentNode = nodeStack.pop();
+                if (currentNode.getGoals().isEmpty()&&!currentNode.getNodeMark().equals(RuleNode.NodeMark.FAILED)) {
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("Found a leaf node!");
+                    }
+                    generateResults(rootNode, currentNode, query, results);
                 }
-                generateResults(rootNode, currentNode, query, results);
+                else if (currentNode.getNodeMark()==RuleNode.NodeMark.FAILED) {
+                    LOGGER.debug("Found a failed node:\n" + currentNode);
+                }
+                else if (currentNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
+                    currentNode.acceptVisitor(visitor);
+                    nodeStack.addAll(currentNode.getChildren());
+                }
+                else {
+                    throw new JALPException("Expanded node on the node stack?\n"+currentNode); // Sanity check.
+                }
             }
-            else if (currentNode.getNodeMark()==RuleNode.NodeMark.FAILED) {
-                LOGGER.debug("Found a failed node:\n" + currentNode);
-            }
-            else if (currentNode.getNodeMark()==RuleNode.NodeMark.UNEXPANDED) {
-                currentNode.acceptVisitor(visitor);
-                nodeStack.addAll(currentNode.getChildren());
-            }
-            else {
-                throw new JALPException("Expanded node on the node stack?\n"+currentNode); // Sanity check.
-            }
+
+            return results;
+        }
+        catch (StackOverflowError e) {
+             throw new JALPException("Error: Stack overflow detected. Occurs problem?");
         }
 
-        return results;
     }
 
     /** Generates result objects. Each result object represents an abductive explanation.

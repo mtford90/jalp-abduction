@@ -1,5 +1,6 @@
 package uk.co.mtford.jalp.abduction.logic.instance.equalities;
 
+import uk.co.mtford.jalp.JALPException;
 import uk.co.mtford.jalp.abduction.logic.instance.IUnifiableInstance;
 import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 
