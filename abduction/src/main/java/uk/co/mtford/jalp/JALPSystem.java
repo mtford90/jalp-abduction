@@ -374,7 +374,7 @@ public class JALPSystem {
         int n = 0;
 
         while (n<MAX_SECONDS) {
-            wait(1000);
+            t.join(1000);
             n++;
             if (!t.isAlive()) break;
             if (n==MAX_SECONDS) {
