@@ -56,7 +56,7 @@ public class Main {
             if (s.equals(REDUCE_OPTION)) {
                 reduce = true;
             }
-            if (s.equals(EFFICIENT_OPTION)) {
+            else if (s.equals(EFFICIENT_OPTION)) {
                 efficient = true;
             }
             else if (s.equals(QUERY_OPTION)) {

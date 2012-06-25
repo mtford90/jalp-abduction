@@ -154,7 +154,7 @@ public class Result {
                            finiteDomainConstraintsEmpty;
 
         if (allEmpty) {
-            return "Yes.";
+            return "True";
         }
         else {
             String message = "";

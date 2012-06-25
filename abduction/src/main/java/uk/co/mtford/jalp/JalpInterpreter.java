@@ -34,7 +34,7 @@ public class JALPInterpreter {
     private static final String HELP_COMMAND = COMMAND_START+"h";
     private static final String CLEAR_COMMAND = COMMAND_START+"c";
     private static final String REDUCE_COMMAND = COMMAND_START+"r";
-    private static final String QUIT_COMMAND = COMMAND_START+"q";
+    private static final String QUIT_COMMAND = COMMAND_START+"b";
     private static final String EFFICIENT_COMMAND = COMMAND_START+"e";
     private static final String TEST_COMMAND = COMMAND_START+"t";
 
@@ -134,7 +134,7 @@ public class JALPInterpreter {
         System.out.println(":r - Enable reduce mode.");
         System.out.println(":e - Enable efficient mode.");
         System.out.println(":t <integer n> - Enable test mode. Run the query n times.");
-        System.out.println(":q - Quit.");
+        System.out.println(":b - Quit.");
     }
 
     /** Terminates the interpreter.
@@ -159,7 +159,12 @@ public class JALPInterpreter {
      * @throws uk.co.mtford.jalp.abduction.parse.query.ParseException
      */
     private void executeQuery(String next) throws uk.co.mtford.jalp.abduction.parse.query.ParseException, InterruptedException {
-        List<IInferableInstance> query = JALPQueryParser.readFromString(next.substring(2, next.length() - 1));
+        String s = next.substring(2, next.length());
+        if (s.trim().isEmpty()) {
+            System.err.println("Empty query.");
+            return;
+        }
+        List<IInferableInstance> query = JALPQueryParser.readFromString(s);
         List<VariableInstance> queryVariables = new LinkedList<VariableInstance>();
         for (IInferableInstance i:query) {
             queryVariables.addAll(i.getVariables());
