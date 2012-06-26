@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: choco:choco-kernel:sources:2.1.5-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/choco/choco-kernel/2.1.5-SNAPSHOT/choco-kernel-2.1.5-SNAPSHOT-sources.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/choco/choco-kernel/2.1.5-SNAPSHOT/choco-kernel-2.1.5-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/choco/choco-kernel/2.1.5-SNAPSHOT/choco-kernel-2.1.5-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

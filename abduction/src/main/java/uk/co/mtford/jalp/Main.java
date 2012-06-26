@@ -154,7 +154,7 @@ public class Main {
             }
             else {
                 JALPInterpreter jalpInterpreter = new JALPInterpreter(system);
-                jalpInterpreter.start();
+                    jalpInterpreter.start();
             }
 
 

@@ -12,6 +12,7 @@ import uk.co.mtford.jalp.abduction.logic.instance.term.VariableInstance;
 import java.util.*;
 
 import static choco.Choco.makeIntVar;
+import static choco.Choco.notMember;
 
 /**
  * e.g. 1 in [1,2,3]
@@ -78,22 +79,27 @@ public class InIntegerListConstraintInstance extends InListConstraintInstance {
         int[] leftDomainArray = leftVar.getValues();
         int[] rightDomainArray = rightVar.getIntArray();
 
-        Set<Integer> leftDomainSet = new HashSet<Integer>();
-        Set<Integer> rightDomainSet = new HashSet<Integer>();
-        for (int i:leftDomainArray) leftDomainSet.add(i);
-        for (int i:rightDomainArray) rightDomainSet.add(i);
-        leftDomainSet.removeAll(rightDomainSet);
-        if (leftDomainSet.isEmpty()) return false;
-        List<Integer> newDomain = new LinkedList<Integer>(leftDomainSet);
-
-        IntegerVariable newLeftVar = makeIntVar(leftVar.getName(), newDomain);
-
-        for (Constraint c:chocoConstraints) {
-            c.replaceBy(leftVar,newLeftVar);
+        if (leftDomainArray==null) {
+            chocoConstraints.add(notMember(leftVar,rightDomainArray));
         }
 
-        chocoVariables.put(left,newLeftVar);
+        else {
+            Set<Integer> leftDomainSet = new HashSet<Integer>();
+            Set<Integer> rightDomainSet = new HashSet<Integer>();
+            for (int i:leftDomainArray) leftDomainSet.add(i);
+            for (int i:rightDomainArray) rightDomainSet.add(i);
+            leftDomainSet.removeAll(rightDomainSet);
+            if (leftDomainSet.isEmpty()) return false;
+            List<Integer> newDomain = new LinkedList<Integer>(leftDomainSet);
 
+            IntegerVariable newLeftVar = makeIntVar(leftVar.getName(), newDomain);
+
+            for (Constraint c:chocoConstraints) {
+                c.replaceBy(leftVar,newLeftVar);
+            }
+
+            chocoVariables.put(left,newLeftVar);
+        }
 
         return true;
 
